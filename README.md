@@ -23,7 +23,8 @@
    - systematically create a pull request to check conflicts and review code if necessary
 
 3. **Delete** your branch if the feature or fix is **done**
- 
+
+4. ALWAYS PUSH TO THE `develop`BRANCH 
 ## II - Client
 
 ### Todo list
