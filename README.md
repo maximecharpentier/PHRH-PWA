@@ -6,14 +6,13 @@
   - [I - Guidelines](#i---guidelines)
     - [1. Prod & Dev branches](#1-prod--dev-branches)
     - [2. Features & Fix branches](#2-features--fix-branches)
-  - [II - Client](#ii---client)
-    - [Todo list](#todo-list)
-  - [III - Server / API](#iii---server--api)
-    - [Todo list](#todo-list-1)
-  - [IV - Infrastructure](#iv---infrastructure)
-    - [Images](#images)
-  - [V - Team](#v---team)
-  - [VI - License](#vi---license)
+    - [3. Naming chart](#3-naming-chart)
+  - [II - Technical choices & specifications](#ii---technical-choices--specifications)
+    - [Front-End](#front-end)
+    - [Back-End](#back-end)
+    - [Infrastructure](#infrastructure)
+  - [IV - Team](#iv---team)
+  - [V - License](#v---license)
 
 ## I - Guidelines
 
@@ -31,30 +30,40 @@
 - A `fix/<client|server>-bug-to-fix` is used to fix a bug (lol)
   - e.g. `fix/server-env-vars`
 
-
 - **Delete** your branch if the feature or fix is **done**
+
+### 3. Naming chart
+
+- **"Visitor"** - the person in charge of **going to the hotels** in order to make a **state of insalubrity**. They are also responsible for **organizing their planning** according to the **resources provided** by the planner
+- **"Planner"** - the person responsible for **pooling available hotels** organized **according to different criteria and priorities** with **visitors**
+- 
  
-## II - Client
+## II - Technical choices & specifications
 
-### Todo list
+### Front-End
 
-- [ ] Create React App (choose JS/TS)
-- [ ] Install a linter
-- [ ] Jest is already installed, create UT/DT
-- [ ] Create GitHub Actions
+- [React](https://reactjs.org/) 
+  - for its ease of use, its numerous plugins, its precise doc and its prototype-oriented aspect
+- [styled components](https://styled-components.com/)
+  - for its dynamism and adaptability
 
-## III - Server / API
+### Back-End
 
-### Todo list
+- [Express](https://expressjs.com/)
+  - for its ease of use
 
-## IV - Infrastructure
+### Infrastructure
 
-We use a AWS EC2 instance to run our app, with docker images.
+- [AWS](https://aws.amazon.com/)
+  - to instantiate our VM in an adequate environment
+- [Docker](https://www.docker.com/)
+  - for securely building and sharing our client & server
+- [Terraform](https://www.terraform.io/)
+  - for automation & managing infrastructures
 
-### Images
+=> [Client Docker image](https://hub.docker.com/repository/docker/blyndusk/phrh-client)
 
-
-## V - Team
+## IV - Team
 
 - Sophia GOUNANI
 - Maxime CHARPENTIER 
@@ -65,6 +74,6 @@ We use a AWS EC2 instance to run our app, with docker images.
 - Alexandre DELALOY
 
 
-## VI - License
+## V - License
 
 Under [MIT](https://github.com/blyndusk/PHRH-PWA/blob/master/LICENSE) license.
