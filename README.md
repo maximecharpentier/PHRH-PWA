@@ -1,68 +1,70 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# PHRH-PWA
 
-## Available Scripts
+> A progressive web-app about managing homeless accommodation in hotels
 
-In the project directory, you can run:
+- [PHRH-PWA](#phrh-pwa)
+  - [I - Guidelines](#i---guidelines)
+    - [1. Prod & Dev branches](#1-prod--dev-branches)
+    - [2. Features & Fix branches](#2-features--fix-branches)
+  - [II - Client](#ii---client)
+    - [Todo list](#todo-list)
+  - [III - Server / API](#iii---server--api)
+    - [Todo list](#todo-list-1)
+  - [IV - Infrastructure](#iv---infrastructure)
+    - [Images](#images)
+  - [V - Team](#v---team)
+  - [VI - License](#vi---license)
 
-### `npm start`
+## I - Guidelines
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### 1. Prod & Dev branches
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+- The `master` branch is the **production** branch. **NEVER** push *source* or *compiled* code on it. **Documentation** and stuff like that are allowed
 
-### `npm test`
+- The `develop` branch is the developement branch (lol). **NEVER DIRECTLY** push *source* or *compiled* code on it. Instead, merge your `<feature|fix>` branches on it
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 2. Features & Fix branches
 
-### `npm run build`
+- A `feature/<client|server>-name-of-the-feature` is used to implement **new content** to the app
+  - e.g. `feature/client-router`
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- A `fix/<client|server>-bug-to-fix` is used to fix a bug (lol)
+  - e.g. `fix/server-env-vars`
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- **Delete** your branch if the feature or fix is **done**
+ 
+## II - Client
 
-### `npm run eject`
+### Todo list
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- [ ] Create React App (choose JS/TS)
+- [ ] Install a linter
+- [ ] Jest is already installed, create UT/DT
+- [ ] Create GitHub Actions
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## III - Server / API
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Todo list
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## IV - Infrastructure
 
-## Learn More
+We use a AWS EC2 instance to run our app, with docker images.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Images
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+## V - Team
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+- Sophia GOUNANI
+- Maxime CHARPENTIER 
+- Nancy CAMPBELL
+- Nino LAM
+- Nicolas MARTIN
+- Pierre-Alexis KRSTIC
+- Alexandre DELALOY
 
-### Analyzing the Bundle Size
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+## VI - License
 
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Under [MIT](https://github.com/blyndusk/PHRH-PWA/blob/master/LICENSE) license.
