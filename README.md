@@ -31,9 +31,12 @@
 - A `fix/<client|server>-bug-to-fix` is used to fix a bug (lol)
   - e.g. `fix/server-env-vars`
 
-
 - **Delete** your branch if the feature or fix is **done**
  
+3. **Delete** your branch if the feature or fix is **done**
+
+4. ALWAYS PUSH TO THE `develop`BRANCH 
+
 ## II - Client
 
 ### Todo list

@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyledNavbar, RedCircle, StyledAccount, MenuContainer, MenuItems, MenuItem } from './StyledNavbar';
 import { BrowserRouter as Route, Switch } from 'react-router-dom';
+import './Navbar.scss'
 
 const Navbar = () => (
     <StyledNavbar>
