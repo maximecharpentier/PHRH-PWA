@@ -7,6 +7,7 @@ import './styles/master.scss';
 
 // Pages
 import Login from './pages/Login'
+import Managers from './pages/Managers'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         </header>
         <Switch>
           <Route path="/login" component={Login} />
+          <Route path="/managers" component={Managers} />
           <Route path="/" component={Status} />
           {/* <Route path="/planning" component={Planning} />
           <Route path="/plannification" component={plannification} /> */}
