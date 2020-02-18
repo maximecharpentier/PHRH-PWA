@@ -34,9 +34,11 @@
 
 ### 3. Naming chart
 
-- **"Visitor"** - the person in charge of **going to the hotels** in order to make a **state of insalubrity**. They are also responsible for **organizing their planning** according to the **resources provided** by the planner
-- **"Planner"** - the person responsible for **pooling available hotels** organized **according to different criteria and priorities** with **visitors**
-- 
+- **"Visitor"** 
+  - the person in charge of **going to the hotels** in order to make a **state of insalubrity**. They are also responsible for **organizing their planning** according to the **resources provided** by the planner
+- **"Planner"** 
+  - the person responsible for **pooling available hotels** organized **according to different criteria and priorities** with **visitors**
+
  
 ## II - Technical choices & specifications
 
