@@ -4,7 +4,7 @@ import Footer from './components/Footer/Footer.js';
 import Status from './components/Visitor/Status/Status.js';
 import Dashboard from './components/Visitor/Dashboard/Dashboard.js';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import './App.css';
+import './styles/master.scss';
 
 // Pages
 import Login from './pages/Login'

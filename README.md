@@ -4,48 +4,68 @@
 
 - [PHRH-PWA](#phrh-pwa)
   - [I - Guidelines](#i---guidelines)
-  - [II - Client](#ii---client)
-    - [Todo list](#todo-list)
-  - [III - Server / API](#iii---server--api)
-    - [Todo list](#todo-list-1)
-  - [IV - Infrastructure](#iv---infrastructure)
-    - [Images](#images)
-  - [V - Team](#v---team)
-  - [VI - License](#vi---license)
+    - [1. Prod & Dev branches](#1-prod--dev-branches)
+    - [2. Features & Fix branches](#2-features--fix-branches)
+    - [3. Naming chart](#3-naming-chart)
+  - [II - Technical choices & specifications](#ii---technical-choices--specifications)
+    - [Front-End](#front-end)
+    - [Back-End](#back-end)
+    - [Infrastructure](#infrastructure)
+  - [IV - Team](#iv---team)
+  - [V - License](#v---license)
 
 ## I - Guidelines
 
-1. **NEVER** WORK ON THE `master` BRANCH
-  - use `feature/<client|server>-name-of-the-feature` or `fix/<client|server>-bug-to-fix`
-    - e.g. `feature/client-router` or `fix/server-env-vars`
+### 1. Prod & Dev branches
 
-2. **NEVER** DIRECTLY MERGE ON THE `master` BRANCH:
-   - systematically create a pull request to check conflicts and review code if necessary
+- The `master` branch is the **production** branch. **NEVER** push *source* or *compiled* code on it. **Documentation** and stuff like that are allowed
 
-3. **Delete** your branch if the feature or fix is **done**
+- The `develop` branch is the developement branch (lol). **NEVER DIRECTLY** push *source* or *compiled* code on it. Instead, merge your `<feature|fix>` branches on it
 
-4. ALWAYS PUSH TO THE `develop`BRANCH 
-## II - Client
+### 2. Features & Fix branches
 
-### Todo list
+- A `feature/<client|server>-name-of-the-feature` is used to implement **new content** to the app
+  - e.g. `feature/client-router`
 
-- [ ] Create React App (choose JS/TS)
-- [ ] Install a linter
-- [ ] Jest is already installed, create UT/DT
-- [ ] Create GitHub Actions
+- A `fix/<client|server>-bug-to-fix` is used to fix a bug (lol)
+  - e.g. `fix/server-env-vars`
 
-## III - Server / API
+- **Delete** your branch if the feature or fix is **done**
 
-### Todo list
+### 3. Naming chart
 
-## IV - Infrastructure
+- **"Visitor"** 
+  - the person in charge of **going to the hotels** in order to make a **state of insalubrity**. They are also responsible for **organizing their planning** according to the **resources provided** by the planner
+- **"Planner"** 
+  - the person responsible for **pooling available hotels** organized **according to different criteria and priorities** with **visitors**
 
-We use a AWS EC2 instance to run our app, with docker images.
+ 
+## II - Technical choices & specifications
 
-### Images
+### Front-End
 
+- [React](https://reactjs.org/) 
+  - for its ease of use, its numerous plugins, its precise doc and its prototype-oriented aspect
+- [styled components](https://styled-components.com/)
+  - for its dynamism and adaptability
 
-## V - Team
+### Back-End
+
+- [Express](https://expressjs.com/)
+  - for its ease of use
+
+### Infrastructure
+
+- [AWS](https://aws.amazon.com/)
+  - to instantiate our VM in an adequate environment
+- [Docker](https://www.docker.com/)
+  - for securely building and sharing our client & server
+- [Terraform](https://www.terraform.io/)
+  - for automation & managing infrastructures
+
+=> [Client Docker image](https://hub.docker.com/repository/docker/blyndusk/phrh-client)
+
+## IV - Team
 
 - Sophia GOUNANI
 - Maxime CHARPENTIER 
@@ -56,6 +76,6 @@ We use a AWS EC2 instance to run our app, with docker images.
 - Alexandre DELALOY
 
 
-## VI - License
+## V - License
 
 Under [MIT](https://github.com/blyndusk/PHRH-PWA/blob/master/LICENSE) license.
