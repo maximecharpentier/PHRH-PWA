@@ -31,7 +31,6 @@
   - e.g. `fix/server-env-vars`
 
 - **Delete** your branch if the feature or fix is **done**
-- **ALWAYS** PUSH TO THE `develop` BRANCH for code modifications
 
 ### 3. Naming chart
 

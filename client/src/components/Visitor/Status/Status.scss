@@ -1,0 +1,14 @@
+.status{
+    max-width: 960px;
+    width: 100%;
+    &__intro{
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+    }
+    &__card-container{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+}
