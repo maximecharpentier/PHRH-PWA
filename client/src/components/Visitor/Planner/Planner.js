@@ -6,18 +6,16 @@ class Planner extends Component {
         super(props);
         this.state = { 
             visitsToPlan: [
-                {key:1 ,name: "Welcomo", address:"26 avenue...", department:"93100", chambers:"19", lastVisit:"22/05/2019", mark:"29,1", urgency:"URGENCE", natureOfTheUrgency:"Moisissure"},
-                {key:2 ,name: "Ibis", address:"23 avenue...", department:"92OOO", chambers:"25", lastVisit:"19/08/2019", mark:"15", urgency:"URGENCE", natureOfTheUrgency:"Chauffage"}
+                {key:1 ,name: "Welcomo", address:"26 avenue...", department:"93100", chambers:19, lastVisit:"22/05/2019", mark:"29,1", urgency:"URGENCE", natureOfTheUrgency:"Moisissure"},
+                {key:2 ,name: "Ibis", address:"23 avenue...", department:"92OOO", chambers:25, lastVisit:"19/08/2019", mark:"15", urgency:"URGENCE", natureOfTheUrgency:"Chauffage"}
             ],
             visitsOfTheDay: [],
+            chambersToVisit: 50
          }
          this.createVisitOfDay = this.createVisitOfDay.bind(this);
          this.createVisitOfList = this.createVisitOfList.bind(this);
       }
       
-     
-    
-            
      createVisitOfList(hotel){
         return ( 
             <ul className="list-item" key={hotel.key} >
@@ -44,19 +42,23 @@ class Planner extends Component {
 
       addToVisitOfTheDay(key){
         var visitsToPlanClicked = this.state.visitsToPlan.filter(visit => visit.key === key);
-        var visitsToPlanfiltered = this.state.visitsToPlan.filter(visit => visit.key !== key)
+        visitsToPlanClicked = visitsToPlanClicked[0];
+        var visitsToPlanfiltered = this.state.visitsToPlan.filter(visit => visit.key !== key);
         this.setState({
-            visitsOfTheDay: this.state.visitsOfTheDay.concat(visitsToPlanClicked[0]),
-            visitsToPlan: visitsToPlanfiltered            
+            visitsOfTheDay: this.state.visitsOfTheDay.concat(visitsToPlanClicked),
+            visitsToPlan: visitsToPlanfiltered,
+            chambersToVisit: this.state.chambersToVisit - visitsToPlanClicked.chambers
         })
      } 
 
       deleteVisitOfTheDay(key){
         var visitsOfTheDayClicked = this.state.visitsOfTheDay.filter(visit => visit.key === key);
+        visitsOfTheDayClicked = visitsOfTheDayClicked[0]
         var visitsOfTheDayfiltered = this.state.visitsOfTheDay.filter(visit => visit.key !== key)
         this.setState({
             visitsOfTheDay: visitsOfTheDayfiltered,
-            visitsToPlan: this.state.visitsToPlan.concat(visitsOfTheDayClicked[0]),
+            visitsToPlan: this.state.visitsToPlan.concat(visitsOfTheDayClicked),
+            chambersToVisit: this.state.chambersToVisit + visitsOfTheDayClicked.chambers
         })
     } 
       
@@ -70,6 +72,7 @@ class Planner extends Component {
                     <div className="visits-of-the-day">
                         {this.visitsOfTheDay}
                     </div>
+                <div>Vous avez {this.state.chambersToVisit} à visiter</div>
                 </div>
                 <div className="visits-to-plan">
                     <ul className="list-labels">
