@@ -1,0 +1,19 @@
+.card{
+    width: auto;
+    margin-right: 10px;
+    &:last-child{
+        margin-right: 0;
+    }
+    &__name{
+        background: grey;
+    }
+    &__block{
+        display: flex;
+        &_inside{
+            width: auto;
+            &:first-child{
+                margin-right: 30px;
+            }
+        }
+    }
+}

@@ -1,8 +1,8 @@
 import React from 'react';
 import Navbar from './components/Navbar/Navbar.js';
 import Footer from './components/Footer/Footer.js';
+import Status from './components/Visitor/Status/Status.js';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import logo from './logo.svg';
 import './App.css';
 
 // Pages
@@ -17,6 +17,9 @@ function App() {
         </header>
         <Switch>
           <Route path="/login" component={Login} />
+          <Route path="/" component={Status} />
+          {/* <Route path="/planning" component={Planning} />
+          <Route path="/plannification" component={plannification} /> */}
         </Switch>
         <Footer />
       </Router>
