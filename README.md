@@ -4,6 +4,8 @@
 
 - [PHRH-PWA](#phrh-pwa)
   - [I - Guidelines](#i---guidelines)
+    - [1. Prod & Dev branches](#1-prod--dev-branches)
+    - [2. Features & Fix branches](#2-features--fix-branches)
   - [II - Client](#ii---client)
     - [Todo list](#todo-list)
   - [III - Server / API](#iii---server--api)
@@ -15,16 +17,26 @@
 
 ## I - Guidelines
 
-1. **NEVER** WORK ON THE `master` BRANCH
-  - use `feature/<client|server>-name-of-the-feature` or `fix/<client|server>-bug-to-fix`
-    - e.g. `feature/client-router` or `fix/server-env-vars`
+### 1. Prod & Dev branches
 
-2. **NEVER** DIRECTLY MERGE ON THE `master` BRANCH:
-   - systematically create a pull request to check conflicts and review code if necessary
+- The `master` branch is the **production** branch. **NEVER** push *source* or *compiled* code on it. **Documentation** and stuff like that are allowed
 
+- The `develop` branch is the developement branch (lol). **NEVER DIRECTLY** push *source* or *compiled* code on it. Instead, merge your `<feature|fix>` branches on it
+
+### 2. Features & Fix branches
+
+- A `feature/<client|server>-name-of-the-feature` is used to implement **new content** to the app
+  - e.g. `feature/client-router`
+
+- A `fix/<client|server>-bug-to-fix` is used to fix a bug (lol)
+  - e.g. `fix/server-env-vars`
+
+- **Delete** your branch if the feature or fix is **done**
+ 
 3. **Delete** your branch if the feature or fix is **done**
 
 4. ALWAYS PUSH TO THE `develop`BRANCH 
+
 ## II - Client
 
 ### Todo list
