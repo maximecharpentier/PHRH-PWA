@@ -15,7 +15,7 @@ class Status extends Component {
             <section className="status">
                 <div className="status__intro">
                     <p>Vos infos de la semaine</p>
-                    <Link to="/login">CREER UN PLANNING</Link>
+                    <Link to="/planner">CREER UN PLANNING</Link>
                 </div>
                 <div className="status__card-container">
                     <Card descriptionLeft={this.state.binomial.descriptionLeft} descriptionRight={this.state.binomial.descriptionRight} name={this.state.binomial.name} />
