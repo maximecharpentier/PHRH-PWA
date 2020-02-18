@@ -14,7 +14,7 @@ const tacheSchema = new Schema({
     },
     date_au_plus_tard : {
         type: Date,
-        require: true
+        required: true
     }
 })
 

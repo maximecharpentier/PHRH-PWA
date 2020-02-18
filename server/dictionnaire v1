@@ -14,7 +14,7 @@ Taches : liste(Objet Tache)
 
 /////ANOMALIES/////
 ———
-nature_of_anomaly: text 100
+nature: text 100
 
 /////URGENCES/////
 ———
