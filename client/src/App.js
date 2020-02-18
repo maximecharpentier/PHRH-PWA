@@ -4,7 +4,7 @@ import Footer from './components/Footer/Footer.js';
 import Status from './components/Visitor/Status/Status.js';
 import Planner from './components/Visitor/Planner/Planner.js';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import './App.css';
+import './styles/master.scss';
 
 // Pages
 import Login from './pages/Login'
