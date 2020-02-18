@@ -3,11 +3,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const anomalieSchema = new Schema({
-    type: {
+    nature_of_anomaly: {
         type: String, 
         required: true,
         trim: true,
-        maxlength: 50
+        maxlength: 100
     }
 })
 
