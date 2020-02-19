@@ -2,6 +2,6 @@ version: "3"
 
 services:
     client:
-        image: blyndusk/phrh-client:0.1
+        image: blyndusk/phrh-client:latest
         ports: 
             - 8080:80
