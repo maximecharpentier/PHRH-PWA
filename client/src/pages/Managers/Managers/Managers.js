@@ -76,7 +76,7 @@ const Managers = () => {
           <th>Urgence</th>
           <th>Nature de l'urgence</th>
         </tr>
-        { HOTELS.map((hotelData, i) => {
+        { MANAGERS.map((hotelData, i) => {
           return <ListItem 
             key={i}
             hotel={hotelData}

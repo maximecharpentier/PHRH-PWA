@@ -14,7 +14,7 @@ import HotelsManagement from './pages/Managers/Hotels/Hotels'
 import ManagersManagement from './pages/Managers/Managers/Managers'
 import VisitorsManagement from './pages/Managers/Visitors'
 
-function App() {
+const App = () => {
   return (
     <div className="App">
       <Router>
@@ -29,7 +29,7 @@ function App() {
           <Route path="/visitors-management" component={VisitorsManagement} />    
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/planner" component={Planner} />
-          <Route path="/managers" component={Managers} />
+          {/* <Route path="/managers" component={Managers} /> */}
         </Switch>
         <Footer />
       </Router>
