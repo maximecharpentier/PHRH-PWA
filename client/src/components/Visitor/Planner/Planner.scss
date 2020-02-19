@@ -1,0 +1,9 @@
+.planner{
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+}
+.list-item, .list-labels{
+    display: flex;
+    justify-content: space-between;
+}

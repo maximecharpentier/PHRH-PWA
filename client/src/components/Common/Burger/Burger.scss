@@ -1,0 +1,12 @@
+.burger {
+  &__item {
+    width: 24px;
+    height: 4px;
+    background: #031772;
+    margin-bottom: 3px;
+    border-radius: 6px;
+    &:last-child{
+        margin-bottom: 0;
+    }
+  }
+}
