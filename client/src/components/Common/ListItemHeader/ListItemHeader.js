@@ -3,7 +3,7 @@ import Burger from '../Burger/Burger.js'
 import Input from '../Input/Input.js'
 import './ListItemHeader.scss'
 
-function ListItemHeader() {
+const ListItemHeader = props => {
     return ( 
     <div className="listItemHeader">
       <Burger 

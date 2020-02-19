@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Delete(){
+const Delete = () => {
     return ( 
       <svg width="25px" height="25px" viewBox="0 0 21 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
         <g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd">

@@ -1,7 +1,7 @@
 import React from 'react';
 import './Burger.scss'
 
-function Burger(){
+const Burger = props => {
     return ( 
     <div className="burger" onClick={props.handleClick}>
       <div className="burger__item" />
