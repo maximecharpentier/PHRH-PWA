@@ -6,7 +6,9 @@ import './ListItemHeader.scss'
 function ListItemHeader(props) {
     return ( 
     <div className="listItemHeader">
-      <Burger />
+      <Burger 
+        handleClick={() => alert()}
+      />
       <div className="listItemHeader__search">
         <Input placeholder="Hôtels / Adresses" />
         <p className="listItemHeader__search_item">Secteur ▼</p>

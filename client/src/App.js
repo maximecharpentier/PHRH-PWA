@@ -7,7 +7,9 @@ import './styles/master.scss';
 
 // Pages
 import Login from './pages/Login'
-import Managers from './pages/Managers'
+import HotelsManagement from './pages/Managers/Hotels/Hotels'
+import ManagersManagement from './pages/Managers/Managers/Managers'
+// import VisitorsManagement from './pages/Managers/Visitors'
 
 function App() {
   return (
@@ -18,7 +20,9 @@ function App() {
         </header>
         <Switch>
           <Route path="/login" component={Login} />
-          <Route path="/managers" component={Managers} />
+          <Route path="/hotels-management" component={HotelsManagement} />
+          <Route path="/managers-management" component={ManagersManagement} />
+          {/* <Route path="/visitors-management" component={VisitorsManagement} /> */}
           <Route path="/" component={Status} />
           {/* <Route path="/planning" component={Planning} />
           <Route path="/plannification" component={plannification} /> */}
