@@ -2,11 +2,13 @@ import React from 'react';
 import Navbar from './components/Navbar/Navbar.js';
 import Footer from './components/Footer/Footer.js';
 import Status from './components/Visitor/Status/Status.js';
+import Planner from './components/Visitor/Planner/Planner.js';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import './App.css';
+import './styles/master.scss';
 
 // Pages
 import Login from './pages/Login'
+import Managers from './pages/Managers'
 
 function App() {
   return (
@@ -17,9 +19,10 @@ function App() {
         </header>
         <Switch>
           <Route path="/login" component={Login} />
-          <Route path="/" component={Status} />
-          {/* <Route path="/planning" component={Planning} />
-          <Route path="/plannification" component={plannification} /> */}
+          <Route exact path="/" component={Status} />
+          <Route path="/planner" component={Planner} />
+          {/* <Route path="/plannification" component={plannification} /> */}
+          <Route path="/managers" component={Managers} />
         </Switch>
         <Footer />
       </Router>
