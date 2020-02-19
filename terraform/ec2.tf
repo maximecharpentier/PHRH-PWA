@@ -7,4 +7,7 @@ resource "aws_instance" "phrh-server" {
   ami                = "ami-096b8af6e7e8fb927"
   instance_type      = "t2.micro"
   key_name           = "phrh-key"
+  vpc_security_group_ids = [
+    "${aws_security_group.phrh_security_group.id}"
+  ]
 }
