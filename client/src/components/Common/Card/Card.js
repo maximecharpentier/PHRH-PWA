@@ -1,7 +1,7 @@
 import React from 'react';
 import './Card.scss'
 
-function Card(props){
+const Card = props => {
 	return ( 
 	<div className="card">
 		<h1 className="card__name">{props.name}</h1>

@@ -2,7 +2,7 @@ import React from 'react';
 import './DisplayList.scss'
 import ListItem from '../../Common/ListItem/ListItem.js'
 
-function DisplayList(props){
+const DisplayList = props => {
     return ( 
     <table>
       <tr>

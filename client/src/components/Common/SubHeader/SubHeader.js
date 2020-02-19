@@ -2,7 +2,7 @@ import React from 'react';
 import './SubHeader.scss'
 import Button from '../Button/Button.js'
 
-function SubHeader(props){
+const SubHeader = props => {
     return ( 
     <div className="subheader">
       <div className="subheader__inside">

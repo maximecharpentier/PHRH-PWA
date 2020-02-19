@@ -11,7 +11,7 @@ mobiscroll.settings = {
     lang: 'fr'
 };
 
-class Calendar extends React.Component {
+class Calendar extends Component {
 
     render() {
 
