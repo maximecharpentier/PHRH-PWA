@@ -6,19 +6,21 @@ class Planner extends Component {
 		super(props);
 		this.state = {
 			visitsToPlan: [
-				{ key: 1, name: "Welcomo", address: "26 avenue...", department: "93100", chambers: 26, lastVisit: "22/05/2019", mark: "29,1", urgency: "URGENCE", natureOfTheUrgency: "Moisissure" },
-				{ key: 2, name: "Ibis", address: "23 avenue...", department: "92OOO", chambers: 25, lastVisit: "19/08/2019", mark: "15", urgency: "URGENCE", natureOfTheUrgency: "Chauffage" }
+				{ key: 1, name: "Welcomo", address: "26 avenue...", department: "93100", chambers: "19", lastVisit: "22/05/2019", mark: "29,1", urgency: "URGENCE", natureOfTheUrgency: "Moisissure" },
+				{ key: 2, name: "Ibis", address: "23 avenue...", department: "92OOO", chambers: "25", lastVisit: "19/08/2019", mark: "15", urgency: "URGENCE", natureOfTheUrgency: "Chauffage" }
 			],
 			visitsOfTheDay: [],
-			chambersToVisit: 0
 		}
 		this.createVisitOfDay = this.createVisitOfDay.bind(this);
 		this.createVisitOfList = this.createVisitOfList.bind(this);
 	}
 
+
+
+
 	createVisitOfList(hotel) {
 		return (
-			<ul className="visits-of-the-day__hotel" key={hotel.key} >
+			<ul className="list-item" key={hotel.key} >
 				<li>{hotel.name}</li>
 				<li>{hotel.address}</li>
 				<li>{hotel.department}</li>
@@ -27,38 +29,34 @@ class Planner extends Component {
 				<li>{hotel.mark}</li>
 				<li>{hotel.urgency}</li>
 				<li>{hotel.natureOfTheUrgency}</li>
-				<span className="btnAddDelete" onClick={() => this.addToVisitOfTheDay(hotel.key)} >+</span>
+				<span onClick={() => this.addToVisitOfTheDay(hotel.key)} >+</span>
 			</ul>
 		)
 	}
 
 	createVisitOfDay(hotel) {
 		return (
-			<div className="visits-of-the-day__hotel" key={hotel.key} >
-				<p>{hotel.name}</p> <span className="btnAddDelete" onClick={() => this.deleteVisitOfTheDay(hotel.key)}>-</span>
+			<div className="list-item" key={hotel.key} >
+				<p>{hotel.name}</p> <span onClick={() => this.deleteVisitOfTheDay(hotel.key)}>-</span>
 			</div>
 		)
 	}
 
 	addToVisitOfTheDay(key) {
 		var visitsToPlanClicked = this.state.visitsToPlan.filter(visit => visit.key === key);
-		visitsToPlanClicked = visitsToPlanClicked[0];
-		var visitsToPlanfiltered = this.state.visitsToPlan.filter(visit => visit.key !== key);
+		var visitsToPlanfiltered = this.state.visitsToPlan.filter(visit => visit.key !== key)
 		this.setState({
-			visitsOfTheDay: this.state.visitsOfTheDay.concat(visitsToPlanClicked),
-			visitsToPlan: visitsToPlanfiltered,
-			chambersToVisit: this.state.chambersToVisit + visitsToPlanClicked.chambers
+			visitsOfTheDay: this.state.visitsOfTheDay.concat(visitsToPlanClicked[0]),
+			visitsToPlan: visitsToPlanfiltered
 		})
 	}
 
 	deleteVisitOfTheDay(key) {
 		var visitsOfTheDayClicked = this.state.visitsOfTheDay.filter(visit => visit.key === key);
-		visitsOfTheDayClicked = visitsOfTheDayClicked[0]
 		var visitsOfTheDayfiltered = this.state.visitsOfTheDay.filter(visit => visit.key !== key)
 		this.setState({
 			visitsOfTheDay: visitsOfTheDayfiltered,
-			visitsToPlan: this.state.visitsToPlan.concat(visitsOfTheDayClicked),
-			chambersToVisit: this.state.chambersToVisit - visitsOfTheDayClicked.chambers
+			visitsToPlan: this.state.visitsToPlan.concat(visitsOfTheDayClicked[0]),
 		})
 	}
 
@@ -67,30 +65,24 @@ class Planner extends Component {
 		this.visitsOfTheDay = this.state.visitsOfTheDay.map(this.createVisitOfDay)
 		return (
 			<section className="planner">
-				<div className="planner-container">
-					<div className="visits-of-the-day-container">
-						<h1>Mardi 18 fevrier</h1>
-						<div className="visits-of-the-day">
-							{this.visitsOfTheDay}
-						</div>
-						<div>
-							<p>Vous avez <span className={this.state.chambersToVisit > 50 ? "red" : ""}> {this.state.chambersToVisit}</span> chambres à visiter</p>
-							{this.state.chambersToVisit > 50 && <p className="red">TU VAS PAS AVOIR LE TEMPS DE TOUT VISITER MON GARS</p>}
-						</div>
+				<div className="day">
+					<h1>Mardi 18 fevrier</h1>
+					<div className="visits-of-the-day">
+						{this.visitsOfTheDay}
 					</div>
-					<div className="visits-to-plan-container">
-						<ul className="visits-to-plan">
-							<li>Hôtel</li>
-							<li>Adresse</li>
-							<li>Secteur</li>
-							<li>Chambres</li>
-							<li>Date de dernière visite</li>
-							<li>Taux d’anomalie</li>
-							<li>Urgence</li>
-							<li>Nature de l’urgence</li>
-						</ul>
-						{this.visitsToPlan}
-					</div>
+				</div>
+				<div className="visits-to-plan">
+					<ul className="list-labels">
+						<li>Hôtel</li>
+						<li>Adresse</li>
+						<li>Secteur</li>
+						<li>Chambres</li>
+						<li>Date de dernière visite</li>
+						<li>Taux d’anomalie</li>
+						<li>Urgence</li>
+						<li>Nature de l’urgence</li>
+					</ul>
+					{this.visitsToPlan}
 				</div>
 			</section>
 		);

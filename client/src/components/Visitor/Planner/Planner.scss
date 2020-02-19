@@ -1,7 +1,9 @@
 .planner{
     width: 90%;
+    height: 440px;
     padding: 10px;
     &-container{
+        height: 100%;
         display: flex;
         justify-content: space-between;
     }

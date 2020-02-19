@@ -8,6 +8,7 @@ import './styles/master.scss';
 
 // Pages
 import Login from './pages/Login'
+import Managers from './pages/Managers'
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/login" component={Login} />
           <Route exact path="/" component={Status} />
           <Route path="/planner" component={Planner} />
+          <Route path="/managers" component={Managers} />
         </Switch>
         <Footer />
       </Router>
