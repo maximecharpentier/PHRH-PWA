@@ -6,50 +6,73 @@
         height: 100%;
         display: flex;
         justify-content: space-between;
-    }
+   }
     .visits-of-the-day-container{
-        width: 15%;
+        width: 25%;
         padding: 0 10px;
         border-right: 1px solid rgba(67, 87, 234, 0.5);
-    }
-    .visits-of-the-day-content{
-        height: 100%;
-    }
+        .visits-of-the-day-content{
+            height: 100%;
+            .visits-of-the-day-hotel{
+                margin-top: 10px;
+                height: 60px;
+           }
+       }
+        h1{
+            font-size: 18px;
+            color: #4357EA;
+            text-align: center;
+       }
+   }
     .visits-of-the-day, .visits-to-plan-container{
         height: 100%;
         overflow: scroll;
-    }
+   }
     .visits-to-plan-container{
-        width: 80%;
-    }
+        width: 70%;
+        tr.labels td{
+            font-weight: bold;
+       }
+   }
+    .visits-of-the-day__hotel, .visits-to-plan, .visits-labels{
+        height: 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #F9FAFD;
+        padding: 0 15px;
+   }
 }
-.visits-of-the-day__hotel, .visits-to-plan, .visits-labels{
-    height: 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #F9FAFD;
-    padding: 0 15px;
+.orange{
+    color: orange;
 }
-
-.visits-of-the-day__hotel{
-    margin-top: 10px;
-    height: 60px;
-}
-.visits-to-plan{
-    margin-top: 10px;
-}
-
 .red{
     color: red;
 }
-
+.btn-container{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    button{
+        background: #FFFFFF;
+        color: #333333;
+        border-color: #333333;
+   }
+    a:last-child button{
+        color: #4357EA;
+        border-color: #4357EA;
+   }
+}
 .btnAddDelete{
     cursor: pointer;
+    display: block;
     font-size: 17px;
     width: 15px;
-    border-radius: 50px;
+    border-radius: 50%;
     border: 2px #4357EA solid;
     height: 15px;
     text-align: center;
+}
+th, td {
+    padding: 15px !important;
 }
