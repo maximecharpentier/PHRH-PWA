@@ -43,6 +43,9 @@ const hotelSchema = new Schema({
         trim: true,
         maxlength: 2
     },
+    last_time_visited : {
+        type : Date
+    },
     urgences : [Urgence],
     anomalies : [Anomalie],
     taches : [Tache]

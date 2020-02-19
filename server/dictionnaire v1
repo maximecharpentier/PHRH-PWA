@@ -5,6 +5,7 @@ CP : int 5
 Ville : text 25
 (Status : int (toujours 0 ds le jeu de test))
 Nb_chambres_utilise : int 3
+last_time_visited : date
 ———
 Nb visite pour la période : int 2
 Urgences : liste(Objet Urgence)
@@ -13,7 +14,7 @@ Taches : liste(Objet Tache)
 
 /////ANOMALIES/////
 ———
-Type : text 30
+nature: text 100
 
 /////URGENCES/////
 ———
@@ -45,18 +46,19 @@ Message : text 3600
 /////USER/////
 Nom : text 20
 Prénom : text 20
+Pwd : text 20
 Fonction : enum (Médiateur, Intervenant Terrain, Médiateur SAS)
 Secteur : text (75, 92-94) ..
 — — —
 Plage horaire : enum (matin, journée, soir)
-Info equipe : text 50
-Equipier : Id User
-Vehicule : Id Véhicule
+Infos_equipe : text 50
+Equipier_id : Id User
+Vehicule_id : Id Véhicule
+Visites_id : liste(id Visites)
 
-Visites : liste(id Visites)
 /////VEHICULE/////
 Immatriculation : text 15
 Type : text 10
 Adresse parking : text 50
 CP : int 5
-Ville : text 25
+Ville : text 25#
