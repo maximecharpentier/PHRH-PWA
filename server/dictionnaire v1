@@ -1,0 +1,64 @@
+/////HOTEL/////
+Nom : text 50
+Adresse : text 50
+CP : int 5
+Ville : text 25
+(Status : int (toujours 0 ds le jeu de test))
+Nb_chambres_utilise : int 3
+last_time_visited : date
+———
+Nb visite pour la période : int 2
+Urgences : liste(Objet Urgence)
+Anomalies : liste(Objet Anomalie)
+Taches : liste(Objet Tache)
+
+/////ANOMALIES/////
+———
+nature: text 100
+
+/////URGENCES/////
+———
+Resume : text 50
+Detail : text 3600
+
+/////TACHES////
+———
+Type : enum (Relance Hotel pour anomalie, Appel famille, Amende à envoyer)
+Date au plus tôt : Date JJ/MM
+Date au plus tard : Date JJ/MM
+
+————————————————————
+/////VISITE/////
+Hotel_id : Id Hotel
+Date visite : Date JJ/MM
+Note : float 4
+———
+Durée : int 3
+Type : enum (visite, contre-visite)
+Priorisations : liste(Objet Priorisation)
+
+////PRIORISATION////
+———
+Type : text 35
+Message : text 3600
+
+————————————————————
+/////USER/////
+Nom : text 20
+Prénom : text 20
+Pwd : text 20
+Fonction : enum (Médiateur, Intervenant Terrain, Médiateur SAS)
+Secteur : text (75, 92-94) ..
+— — —
+Plage horaire : enum (matin, journée, soir)
+Infos_equipe : text 50
+Equipier_id : Id User
+Vehicule_id : Id Véhicule
+Visites_id : liste(id Visites)
+
+/////VEHICULE/////
+Immatriculation : text 15
+Type : text 10
+Adresse parking : text 50
+CP : int 5
+Ville : text 25#
