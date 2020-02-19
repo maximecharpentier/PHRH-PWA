@@ -6,6 +6,7 @@ import Dashboard from './components/Visitor/Dashboard/Dashboard.js';
 import Planner from './components/Visitor/Planner/Planner.js';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './styles/master.scss';
+import './App.scss';
 
 // Pages
 import Login from './pages/Login'

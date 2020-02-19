@@ -31,34 +31,34 @@ const Managers = () => {
       nature: "TROU"
     },
     { 
-      nom: "Welcomo",
-      adresse: "26 avenue ...",
+      nom: 'Welcomo',
+      adresse: '26 avenue ...',
       cp: 75013,
       nb_chambres_utilise: 5,
       nb_visites_periode: 6,
-      anomalie: "foobar",
+      anomalie: 'foobar',
       urgence: true,
-      nature: "TROU"
+      nature: 'TROU'
     },
     { 
-      nom: "Welcomo",
-      adresse: "26 avenue ...",
+      nom: 'Welcomo',
+      adresse: '26 avenue ...',
       cp: 75013,
       nb_chambres_utilise: 5,
       nb_visites_periode: 6,
-      anomalie: "foobar",
+      anomalie: 'foobar',
       urgence: true,
-      nature: "TROU"
+      nature: 'TROU'
     },
     { 
-      nom: "Welcomo",
-      adresse: "26 avenue ...",
+      nom: 'Welcomo',
+      adresse: '26 avenue ...',
       cp: 75013,
       nb_chambres_utilise: 5,
       nb_visites_periode: 6,
-      anomalie: "foobar",
+      anomalie: 'foobar',
       urgence: true,
-      nature: "TROU"
+      nature: 'TROU'
     }
   ]
   return (
@@ -76,8 +76,9 @@ const Managers = () => {
           <th>Urgence</th>
           <th>Nature de l'urgence</th>
         </tr>
-        { MANAGERS.map(hotelData => {
+        { HOTELS.map((hotelData, i) => {
           return <ListItem 
+            key={i}
             hotel={hotelData}
           />
         })}

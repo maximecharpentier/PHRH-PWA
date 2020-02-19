@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
-import mobiscroll from "@mobiscroll/react";
-import "@mobiscroll/react/dist/css/mobiscroll.min.css";
+import mobiscroll from '@mobiscroll/react';
+import '@mobiscroll/react/dist/css/mobiscroll.min.css';
 
 import './Calendar.scss';
 
