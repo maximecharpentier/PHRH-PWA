@@ -7,37 +7,37 @@ import './Calendar.scss';
 
 mobiscroll.settings = {
     theme: 'ios',
-    themeVariant: 'light'
+    themeVariant: 'light',
+    lang: 'fr'
 };
 
 class Calendar extends React.Component {
+
     render() {
+
         let fromMonday = [];
-        let fromSaturday = [];
-        let twoWeeks = [];
-
         for (let i = 0; i < 7; i++) {
-            fromMonday.push(new Date(2018, 0, 8 + i));
-            fromSaturday.push(new Date(2018, 0, 6 + i));
+            fromMonday.push(new Date(2020, 1, 17 + i));
         }
 
-        for (let j = 0; j < 14; j++) {
-            twoWeeks.push(new Date(2018, 0, 8 + j));
-        }
         return (
             <mobiscroll.Form>
                 <div className="mbsc-grid">
                     <div className="mbsc-row">
                         <div className="mbsc-col-sm-12 mbsc-col-md-4">
                             <mobiscroll.FormGroup>
-                                <mobiscroll.FormGroupTitle>Mon-Sun</mobiscroll.FormGroupTitle>
                                 <mobiscroll.Calendar
+                                    dateFormat="yy.mm.dd"
                                     selectType="week"
                                     defaultValue={fromMonday}
                                     firstSelectDay={1}
                                     firstDay={1}
                                     display="inline"
                                     type="hidden"
+                                    onDayChange={function (event, inst) {
+                                        var selectedWeek = inst.getVal();
+                                        console.log(selectedWeek)
+                                    }}
                                 />
                             </mobiscroll.FormGroup>
                         </div>
@@ -50,17 +50,15 @@ class Calendar extends React.Component {
 
 export default Calendar;
 
-
-
-
-const divs = document.querySelectorAll('div')
-
+/*
 const doIt = () => {
+    const divs = document.querySelectorAll('div')
     for (let i = 0; i < divs.length; i++) {
         const div = divs[i];
         if (div.innerText === 'TRIAL') {
+            div.innerText = '';
             console.log('trial')
-            div.remove()
         }
     }
 }
+*/
