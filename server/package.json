@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "serve": "json-server --watch -p 4000 fake-data/fake-data.json"
+    "serve": "json-server --watch -p 3001 -H 0.0.0.0 fake-data/fake-data.json"
   },
   "author": "",
   "license": "ISC",
