@@ -6,8 +6,8 @@ class Planner extends Component {
         super(props);
         this.state = { 
             visitsToPlan: [
-                {key:1 ,name: "Welcomo", address:"26 avenue...", department:"93100", chambers:"19", lastVisit:"22/05/2019", mark:"29,1", urgency:"URGENCE", natureOfTheUrgency:"Moisissure"},
-                {key:2 ,name: "Ibis", address:"23 avenue...", department:"92OOO", chambers:"25", lastVisit:"19/08/2019", mark:"15", urgency:"URGENCE", natureOfTheUrgency:"Chauffage"}
+                {key:1 ,name: 'Welcomo', address:'26 avenue...', department:'93100', chambers:'19', lastVisit:'22/05/2019', mark:'29,1', urgency:'URGENCE', natureOfTheUrgency:'Moisissure'},
+                {key:2 ,name: 'Ibis', address:'23 avenue...', department:'92OOO', chambers:'25', lastVisit:'19/08/2019', mark:'15', urgency:'URGENCE', natureOfTheUrgency:'Chauffage'}
             ],
             visitsOfTheDay: [],
          }

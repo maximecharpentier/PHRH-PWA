@@ -5,11 +5,11 @@ import './Status.scss';
 
 class Status extends Component {
     state = {
-        name: "Antoine",
-        binomial: { name: "Votre binome", descriptionBottom: "01/02/2020->05/02/2020", descriptionTop: "Clementine Baillard" },
-        timeSlots: { name: "Plage Horaire", descriptionBottom: "9h-16h30", descriptionTop: "Matin" },
-        car: { name: "Véhicule", descriptionBottom: "AA123A", descriptionTop: "peugeot 205" },
-        unavailability: { name: "Vos indisponibilités", descriptionBottom: "01/01/2020->05/01/2020", descriptionTop: "Arret maladie" },
+        name: 'Antoine',
+        binomial: { name: 'Votre binome', descriptionBottom: '01/02/2020->05/02/2020', descriptionTop: 'Clementine Baillard' },
+        timeSlots: { name: 'Plage Horaire', descriptionBottom: '9h-16h30', descriptionTop: 'Matin' },
+        car: { name: 'Véhicule', descriptionBottom: 'AA123A', descriptionTop: 'peugeot 205' },
+        unavailability: { name: 'Vos indisponibilités', descriptionBottom: '01/01/2020->05/01/2020', descriptionTop: 'Arret maladie' },
     }
     render() {
         return (

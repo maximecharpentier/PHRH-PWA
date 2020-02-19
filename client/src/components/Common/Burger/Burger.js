@@ -1,7 +1,7 @@
 import React from 'react';
 import './Burger.scss'
 
-function Burger(props){
+function Burger(){
     return ( 
     <div className="burger">
       <div className="burger__item" />

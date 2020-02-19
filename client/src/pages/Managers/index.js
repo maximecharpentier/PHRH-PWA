@@ -3,41 +3,41 @@ import './styles.css'
 import ListItem from './../../components/Common/ListItem/ListItem.js'
 import ListItemHeader from './../../components/Common/ListItemHeader/ListItemHeader.js'
 
-const Managers = (props) => {
+const Managers = () => {
   // fetch('https://monapi.com/hotels')
   // .then(res => {
     
   // })
   const HOTELS = [
     { 
-      nom: "Welcomo",
-      adresse: "26 avenue ...",
+      nom: 'Welcomo',
+      adresse: '26 avenue ...',
       cp: 75013,
       nb_chambres_utilise: 5,
       nb_visites_periode: 6,
-      anomalie: "foobar",
+      anomalie: 'foobar',
       urgence: true,
-      nature: "TROU"
+      nature: 'TROU'
     },
     { 
-      nom: "Welcomo",
-      adresse: "26 avenue ...",
+      nom: 'Welcomo',
+      adresse: '26 avenue ...',
       cp: 75013,
       nb_chambres_utilise: 5,
       nb_visites_periode: 6,
-      anomalie: "foobar",
+      anomalie: 'foobar',
       urgence: true,
-      nature: "TROU"
+      nature: 'TROU'
     },
     { 
-      nom: "Welcomo",
-      adresse: "26 avenue ...",
+      nom: 'Welcomo',
+      adresse: '26 avenue ...',
       cp: 75013,
       nb_chambres_utilise: 5,
       nb_visites_periode: 6,
-      anomalie: "foobar",
+      anomalie: 'foobar',
       urgence: true,
-      nature: "TROU"
+      nature: 'TROU'
     }
   ]
   return (
@@ -54,8 +54,9 @@ const Managers = (props) => {
           <th>Urgence</th>
           <th>Nature de l'urgence</th>
         </tr>
-        { HOTELS.map(hotelData => {
+        { HOTELS.map((hotelData, i) => {
           return <ListItem 
+            key={i}
             hotel={hotelData}
           />
         })}
