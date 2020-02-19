@@ -3,12 +3,46 @@
     width: 100%;
     &__intro{
         display: flex;
-        width: 100%;
         justify-content: space-between;
+        align-items: center;
+        font-weight: bold;
+        &_container{
+            background: #F9FAFD;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 550px;
+            height: 150px;
+            padding-left: 70px;
+        }
+        &_description{
+            font-size: 14px;
+            color: #4357EA;
+        }
+        &_title{
+            font-size: 38px;
+            color: #333333;
+        }
+        &_btn{
+            border: 2px solid #ED254E;
+            box-shadow: 2px 2px 1px rgba(119, 114, 114, 0.08);
+            border-radius: 6px;
+            color: #ED254E;
+            display: table;
+            font-size: 14px;
+            padding: 5px 10px;
+            text-decoration: none;
+        }
     }
     &__card-container{
         display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-start;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        &_flex{
+            display: flex;
+            margin-top: 50px;
+        }
     }
+    
 }

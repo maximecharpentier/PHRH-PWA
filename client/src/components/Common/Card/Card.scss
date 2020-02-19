@@ -1,19 +1,43 @@
 .card{
-    width: auto;
     margin-right: 10px;
-    &:last-child{
-        margin-right: 0;
-    }
+    text-align: center;
     &__name{
-        background: grey;
+        font-size: 28px;
+        color: #031772;
+        margin-bottom: 10px;
     }
     &__block{
         display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 400px;
+        height: 200px;
+        margin-right: 10px;
+        background: #F9FAFD;
         &_inside{
-            width: auto;
+            font-size: 20px;
+            color: #333333;
             &:first-child{
-                margin-right: 30px;
+                margin-bottom: 10px;
+            }
+            &:last-child{
+                font-size: 14px;
+                border: 1px solid #4357EA;
+                border-radius: 6px;
+                padding: 2px 10px;
+                margin-top: 10px;
             }
         }
     }
+
+}
+
+.red-point{
+    background: #ED254E;
+    border-radius: 50px;
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 5px;
 }
