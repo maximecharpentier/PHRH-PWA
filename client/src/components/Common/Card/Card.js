@@ -4,10 +4,10 @@ import './Card.scss'
 function Card(props){
     return ( 
     <div className="card">
-        <div className="card__name">{props.name}</div>
+        <h1 className="card__name">{props.name}</h1>
         <section className="card__block">
-            <div className="card__block_inside">{props.descriptionLeft}</div>
-            <div className="card__block_inside">{props.descriptionRight}</div>
+            <p className="card__block_inside"><span className="red-point"></span>{props.descriptionTop}</p>
+            <p className="card__block_inside">{props.descriptionBottom}</p>
         </section>
     </div> 
     );

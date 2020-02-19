@@ -44,4 +44,11 @@ table {
 	border-spacing: 0;
 }
 
-/* !RESET */
+button {
+  background: transparent;
+  border: none;
+  padding: 0px;
+  margin: 0px;
+  outline: none;
+  cursor: pointer;
+}

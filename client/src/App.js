@@ -2,6 +2,8 @@ import React from 'react';
 import Navbar from './components/Navbar/Navbar.js';
 import Footer from './components/Footer/Footer.js';
 import Status from './components/Visitor/Status/Status.js';
+import Dashboard from './components/Visitor/Dashboard/Dashboard.js';
+import Planner from './components/Visitor/Planner/Planner.js';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './styles/master.scss';
 
@@ -19,13 +21,14 @@ function App() {
           <Navbar />
         </header>
         <Switch>
+          <Route exact path="/" component={Status} />
           <Route path="/login" component={Login} />
           <Route path="/hotels-management" component={HotelsManagement} />
           <Route path="/managers-management" component={ManagersManagement} />
-          <Route path="/visitors-management" component={VisitorsManagement} />
-          <Route path="/" component={Status} />
-          {/* <Route path="/planning" component={Planning} />
-          <Route path="/plannification" component={plannification} /> */}
+          <Route path="/visitors-management" component={VisitorsManagement} />    
+          <Route path="/dashboard" component={Dashboard} />
+          <Route path="/planner" component={Planner} />
+          <Route path="/managers" component={Managers} />
         </Switch>
         <Footer />
       </Router>
