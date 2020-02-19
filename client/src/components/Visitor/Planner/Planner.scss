@@ -1,9 +1,33 @@
 .planner{
-    display: flex;
-    justify-content: space-between;
-    width: 80%;
+    width: 90%;
+    padding: 10px;
+    &-container{
+        display: flex;
+        justify-content: space-between;
+    }
+    .visits-of-the-day-container{
+        width: 30%;
+    }
+
+    .visits-to-plan-container{
+        width: 70%;
+    }
 }
-.list-item, .list-labels{
+.visits-of-the-day__hotel, .visits-to-plan{
     display: flex;
     justify-content: space-between;
+}
+
+.red{
+    color: red;
+}
+
+.btnAddDelete{
+    cursor: pointer;
+    font-size: 13px;
+    width: 15px;
+    border-radius: 50%;
+    border: 2px #4357EA solid;
+    height: 15px;
+    text-align: center;
 }

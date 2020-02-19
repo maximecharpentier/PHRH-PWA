@@ -20,7 +20,6 @@ function App() {
           <Route path="/login" component={Login} />
           <Route exact path="/" component={Status} />
           <Route path="/planner" component={Planner} />
-          {/* <Route path="/plannification" component={plannification} /> */}
         </Switch>
         <Footer />
       </Router>
