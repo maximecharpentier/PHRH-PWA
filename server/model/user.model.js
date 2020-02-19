@@ -10,7 +10,7 @@ const Schema = mongoose.Schema;
     /*bcrypt = require('bcrypt'),
     SALT_WORK_FACTOR = 10;*/
 
-const visiteSchema = new Schema({
+const userSchema = new Schema({
     nom : {
         type: String, 
         required: true, 
