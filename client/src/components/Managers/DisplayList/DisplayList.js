@@ -11,7 +11,7 @@ function DisplayList(props){
         <th>Secteur</th>
         <th>Chambres</th>
         <th>Nombre de visites par mois</th>
-        <th>Taux d'anomalie</th>
+        <th>Note</th>
         <th>Urgence</th>
         <th>Nature de l'urgence</th>
       </tr>

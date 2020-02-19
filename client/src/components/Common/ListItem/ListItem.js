@@ -1,6 +1,8 @@
 import React from 'react';
 import Tag from '../Tag/Tag.js'
 import './ListItem.scss'
+import Edit from '../../../assets/edit.js'
+import Delete from '../../../assets/delete.js'
 
 const ListItem = props => {
     return ( 
@@ -13,6 +15,7 @@ const ListItem = props => {
       <td>{props.hotel.anomalie}</td>
       <td>{props.hotel.urgence ? <Tag name="Urgence" />: null}</td>
       <td>{props.hotel.nature}</td>
+      <td className="listItem__buttons"><Delete /><Edit /></td>
     </tr>
     );
 }

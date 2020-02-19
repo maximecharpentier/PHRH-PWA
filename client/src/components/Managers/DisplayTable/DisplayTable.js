@@ -2,11 +2,11 @@ import React from 'react';
 import './DisplayTable.scss'
 import TableItem from '../../Common/TableItem/TableItem.js'
 
-function DisplayList(props){
+function DisplayTable(props){
     return ( 
-      <div>
+      <div className="displayTable">
         { props.data.map(hotelData => {
-        return <TableItem 
+        return <TableItem
           hotel={hotelData}
         />
       })}
@@ -14,4 +14,4 @@ function DisplayList(props){
     );
 }
  
-export default DisplayList;
+export default DisplayTable;

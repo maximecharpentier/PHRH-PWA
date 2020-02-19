@@ -10,10 +10,10 @@ function ListItemHeader(props) {
         handleClick={() => alert()}
       />
       <div className="listItemHeader__search">
-        <Input placeholder="Hôtels / Adresses" />
+        <Input placeholder={props.placeholder} />
         <p className="listItemHeader__search_item">Secteur ▼</p>
         <p className="listItemHeader__search_item">Date de dernière visite ▼</p>
-        <p className="listItemHeader__search_item">Taux d'anomalies ▼</p>
+        <p className="listItemHeader__search_item">Note ▼</p>
       </div>
     </div> 
     );

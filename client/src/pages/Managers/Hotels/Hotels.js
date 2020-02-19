@@ -17,7 +17,7 @@ const Hotels = () => {
       cp: 75013,
       nb_chambres_utilise: 5,
       nb_visites_periode: 6,
-      anomalie: "foobar",
+      anomalie: 27.6,
       urgence: true,
       nature: "TROU"
     },
@@ -27,7 +27,7 @@ const Hotels = () => {
       cp: 75013,
       nb_chambres_utilise: 5,
       nb_visites_periode: 6,
-      anomalie: "foobar",
+      anomalie: 27.5,
       urgence: false,
       nature: "TROU"
     },
@@ -37,7 +37,7 @@ const Hotels = () => {
       cp: 75013,
       nb_chambres_utilise: 5,
       nb_visites_periode: 6,
-      anomalie: "foobar",
+      anomalie: 27.5,
       urgence: true,
       nature: "TROU"
     },
@@ -47,7 +47,7 @@ const Hotels = () => {
       cp: 75013,
       nb_chambres_utilise: 5,
       nb_visites_periode: 6,
-      anomalie: "foobar",
+      anomalie: 27.5,
       urgence: true,
       nature: "TROU"
     },
@@ -57,7 +57,7 @@ const Hotels = () => {
       cp: 75013,
       nb_chambres_utilise: 5,
       nb_visites_periode: 6,
-      anomalie: "foobar",
+      anomalie: 27.5,
       urgence: true,
       nature: "Moisissure"
     }
@@ -72,9 +72,7 @@ const Hotels = () => {
   return (
     <div className="container">
       <SubHeader button="Ajouter un hôtel →" title="Les hôtels à votre disposition" overtitle="Gestion des hôtels" />
-      <ListItemHeader 
-
-      />
+      <ListItemHeader placeholder="Hôtels / Adresses" />
       {toggleDisplay}
     </div>
   );

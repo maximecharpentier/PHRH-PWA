@@ -1,17 +1,17 @@
 import React from 'react';
 import './styles.scss'
-import SubHeader from '../../../components/Common/SubHeader/SubHeader.js'
-import ListItem from '../../../components/Common/ListItem/ListItem.js'
-import ListItemHeader from '../../../components/Common/ListItemHeader/ListItemHeader.js'
+import SubHeader from '../../components/Common/SubHeader/SubHeader.js'
+import ListItem from '../../components/Common/ListItem/ListItem.js'
+import ListItemHeader from '../../components/Common/ListItemHeader/ListItemHeader.js'
 
-const Managers = () => {
+const Visitors = () => {
   // fetch('https://monapi.com/hotels')
   // .then(res => {
     
   // })
-  const MANAGERS = [
+  const VISITORS = [
     { 
-      nom: "Welcomo",
+      nom: "Coucou",
       adresse: "26 avenue ...",
       cp: 75013,
       nb_chambres_utilise: 5,
@@ -76,7 +76,7 @@ const Managers = () => {
           <th>Urgence</th>
           <th>Nature de l'urgence</th>
         </tr>
-        { MANAGERS.map(hotelData => {
+        { VISITORS.map(hotelData => {
           return <ListItem 
             hotel={hotelData}
           />
@@ -86,4 +86,4 @@ const Managers = () => {
   );
 }
 
-export default Managers;
+export default Visitors;

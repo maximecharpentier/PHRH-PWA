@@ -9,7 +9,7 @@ import './styles/master.scss';
 import Login from './pages/Login'
 import HotelsManagement from './pages/Managers/Hotels/Hotels'
 import ManagersManagement from './pages/Managers/Managers/Managers'
-// import VisitorsManagement from './pages/Managers/Visitors'
+import VisitorsManagement from './pages/Managers/Visitors'
 
 function App() {
   return (
@@ -22,7 +22,7 @@ function App() {
           <Route path="/login" component={Login} />
           <Route path="/hotels-management" component={HotelsManagement} />
           <Route path="/managers-management" component={ManagersManagement} />
-          {/* <Route path="/visitors-management" component={VisitorsManagement} /> */}
+          <Route path="/visitors-management" component={VisitorsManagement} />
           <Route path="/" component={Status} />
           {/* <Route path="/planning" component={Planning} />
           <Route path="/plannification" component={plannification} /> */}
