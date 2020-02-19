@@ -1,0 +1,29 @@
+table {
+  border-collapse: separate;
+  border-spacing: 0 25px;
+}
+
+tr {
+  background: #F9FAFD;
+  border-radius: 2px;
+}
+
+tr:first-of-type {
+  margin-top: 0;
+  background: #FFFFFF;
+  border: 2px solid #4357EA;
+  border-radius: 2px;
+}
+
+th {
+  font-size: 18px;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #031772;
+  text-align: left;
+  vertical-align: middle;
+}
+
+th, td {
+  padding: 25px;
+}

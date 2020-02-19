@@ -1,0 +1,15 @@
+.listItemHeader {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  &__search {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    &_item {
+      white-space: nowrap;
+      margin-left: 25px;
+    }
+  }
+}

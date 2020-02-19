@@ -1,0 +1,9 @@
+.Dashboard {
+    margin: 80px auto 0px auto;
+    padding-top: 40px;
+    max-width: 1280px;
+    &__container {
+        display: flex;
+        justify-content: space-between;
+    }
+}

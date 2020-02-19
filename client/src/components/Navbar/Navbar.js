@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyledNavbar, RedCircle, StyledAccount, MenuContainer, MenuItems, MenuItem } from './StyledNavbar';
-import { BrowserRouter as Route, Switch } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './Navbar.scss'
 
 const Navbar = () => (
@@ -8,9 +8,9 @@ const Navbar = () => (
       <RedCircle />
       <MenuContainer>
         <MenuItems>
-          <MenuItem>Gestion<br />des planificateurs</MenuItem>
-          <MenuItem>Gestion<br />des superviseurs</MenuItem>
-          <MenuItem>Gestion<br />des visiteurs</MenuItem>
+          <MenuItem><Link to="/hotels-management">Gestion<br />des hôtels</Link></MenuItem>
+          <MenuItem><Link to="/managers-management">Gestion<br />des superviseurs</Link></MenuItem>
+          <MenuItem><Link to="/visitors-management">Gestion<br />des visiteurs</Link></MenuItem>
         </MenuItems>
         <StyledAccount>
           MH
