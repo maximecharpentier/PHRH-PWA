@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const StyledFooter = styled.div`
   background: #031772;
-  position: fixed;
+  position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
@@ -10,6 +10,7 @@ export const StyledFooter = styled.div`
   font-size: 12px;
   display: flex;
   align-items: center;
+  display: none;
 `
 
 export const StyledFooterWrapper = styled.div`
