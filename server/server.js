@@ -28,11 +28,25 @@ baseValueInsertor.insertProtoBaseValues(
 )
 
 //Route to end points
-const studentRouter = require('./routes/student.route.js')
-app.use('/student', studentRouter)
+const crudHotelRouter = require('./routes/crudHotels.routes.js')
+app.use('/hotel', crudHotelRouter)
 
-const authRouter = require('./routes/auth.route.js')
-app.use('/auth', authRouter)
+const crudUrgenceRouter = require('./routes/crudUrgences.routes.js')
+app.use('/urgence', crudUrgenceRouter)
+
+const crudNoteHotelRouter = require('./routes/crudNoteHotel.routes.js')
+app.use('/note', crudNoteHotelRouter)
+
+const crudVisiteRouter = require('./routes/crudVisites.routes.js')
+app.use('/visite', crudVisiteRouter)
+   //get liste visites pour le jour de plannif
+   //get edt visites
+   //placer visite dans emploi du temps
+
+const crudUserRouter = require('./routes/crudUsers.routes.js')
+app.use('/user', crudUserRouter)
+
+
 
 //lancer le serv
 const serv_port = process.env.SERV_PORT
