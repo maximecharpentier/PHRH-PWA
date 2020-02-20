@@ -13,7 +13,6 @@ class Dashboard extends Component {
             <section className="Dashboard">
                 <div className="Dashboard__container">
                     <Calendar />
-                    <Mode />
                 </div>
                 <Week />
             </section>

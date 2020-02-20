@@ -21,7 +21,7 @@ class Calendar extends Component {
         }
 
         return (
-            <mobiscroll.Form>
+            <mobiscroll.Form className="Calendar">
                 <div className="mbsc-grid">
                     <div className="mbsc-row">
                         <div className="mbsc-col-sm-12 mbsc-col-md-4">
@@ -49,16 +49,3 @@ class Calendar extends Component {
 }
 
 export default Calendar;
-
-/*
-const doIt = () => {
-    const divs = document.querySelectorAll('div')
-    for (let i = 0; i < divs.length; i++) {
-        const div = divs[i];
-        if (div.innerText === 'TRIAL') {
-            div.innerText = '';
-            console.log('trial')
-        }
-    }
-}
-*/
