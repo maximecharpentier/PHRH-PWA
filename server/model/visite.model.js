@@ -52,15 +52,15 @@ const visiteSchema = new Schema({
 })
 
 //definir la methode insertIfNotExist
-visiteSchema.statics.insertIfNotExist = function(auth, cb) {
+visiteSchema.statics.insertIfNotExist = function(visite, cb) {
     this.find({/*name : auth.name*/}).exec(function(err, docs) {
         if (!docs.length){
-            auth.save(function(err) {
-                cb(err, auth)
+            visite.save(function(err) {
+                cb(err, visite)
             })
         }
         else{
-            cb('Auth <<'+ auth.nom +'>> existe deja', null);
+            cb('Visite <<X>> existe deja', null);
         }
     })
 }

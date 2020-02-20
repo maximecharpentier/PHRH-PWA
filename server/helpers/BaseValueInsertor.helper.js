@@ -35,7 +35,7 @@ class BaseValueInsertor {
                                     //Inserer visites associées
                                     dbtest.visits.forEach((visite, index) => {
                                         //Insere Visites associés a l'Hotel
-                                        if(visite.id_Hotel === hotel.id_temp) {
+                                        if(visite.hotel_id === hotel.id_temp) {
                                             Visite.insertIfNotExist(
                                                 new Visite({
                                                     hotel_id:   HotelDB._id, 
@@ -49,7 +49,7 @@ class BaseValueInsertor {
                                                 //insertion visite à échoué
                                                 (err, VisiteDB) => {
                                                     if(VisiteDB) {
-                                                        cbconfirm("<<Visite "+ (index + 1) + "/" + dbtest.visites.length +" inséré>>")
+                                                        cbconfirm("<<Visite "+ (index + 1) + "/" + dbtest.visits.length +" inséré>>")
                                                     }
                                                     else {
                                                         cberror(err)
