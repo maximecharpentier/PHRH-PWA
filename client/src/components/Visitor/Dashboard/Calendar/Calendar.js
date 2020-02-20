@@ -1,28 +1,37 @@
-import React, { Component } from 'react'
+import React, { Component, useState, useContext } from 'react'
 
-import mobiscroll from '@mobiscroll/react';
-import '@mobiscroll/react/dist/css/mobiscroll.min.css';
+import mobiscroll from "@mobiscroll/react";
+import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 
 import './Calendar.scss';
 
-mobiscroll.settings = {
-    lang: 'fr',
-    layout: 'fixed',
-    maxWidth: '1',
-    rows: 3
-};
-
 class Calendar extends Component {
-    state = {}
+    constructor(props) {
+        super(props);
+        this.state = {
+            week: [],
+            defaultValue: []
+        }
+    }
+
+    componentWillMount() {
+        let fromMonday = [];
+        let defaultValue = [];
+        for (let i = 0; i < 7; i++) {
+            var newDate = new Date(2020, 1, 17 + i);
+            defaultValue.push(new Date(2020, 1, 17 + i));
+            fromMonday.push({ day: newDate.getDate(), month: newDate.getMonth() });
+        };
+
+        this.setState({
+            week: fromMonday,
+            defaultValue: defaultValue
+        })
+    }
     render() {
 
-        let fromMonday = [];
-        for (let i = 0; i < 7; i++) {
-            fromMonday.push(new Date(2020, 1, 17 + i));
-        }
-
         return (
-            <mobiscroll.Form className="Calendar">
+            <mobiscroll.Form>
                 <div className="mbsc-grid">
                     <div className="mbsc-row">
                         <div className="mbsc-col-sm-12 mbsc-col-md-4">
@@ -30,15 +39,20 @@ class Calendar extends Component {
                                 <mobiscroll.Calendar
                                     dateFormat="yy.mm.dd"
                                     selectType="week"
-                                    defaultValue={fromMonday}
+                                    defaultValue={this.state.defaultValue}
                                     firstSelectDay={1}
                                     firstDay={1}
                                     display="inline"
                                     type="hidden"
                                     onDayChange={function (event, inst) {
-                                        this.setState({
-                                            myDate: inst.getVal()
-                                        });
+                                        setTimeout(function () {
+                                            var selectedWeek = inst.getVal();
+                                            var daysFormat = [];
+                                            selectedWeek.map(day => daysFormat.push({ day: day.getDate(), month: day.getMonth() }))
+                                            this.setState({
+                                                week: daysFormat
+                                            })
+                                        }.bind(this), 100);
                                     }.bind(this)}
                                 />
                             </mobiscroll.FormGroup>
@@ -51,3 +65,16 @@ class Calendar extends Component {
 }
 
 export default Calendar;
+
+/*
+const doIt = () => {
+    const divs = document.querySelectorAll('div')
+    for (let i = 0; i < divs.length; i++) {
+        const div = divs[i];
+        if (div.innerText === 'TRIAL') {
+            div.innerText = '';
+            console.log('trial')
+        }
+    }
+}
+*/
