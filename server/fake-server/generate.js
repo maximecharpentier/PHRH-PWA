@@ -1,8 +1,8 @@
 var fs = require('fs');
 
-const generateUsers = require('./generate-users');
-const generateHotels = require('./generate-hotels');
-const generateVisits = require('./generate-visits');
+const generateUsers = require('./scripts/generate-users');
+const generateHotels = require('./scripts/generate-hotels');
+const generateVisits = require('./scripts/generate-visits');
 
 const FAKE_DATA = JSON.stringify({
   hotels: generateHotels(),
