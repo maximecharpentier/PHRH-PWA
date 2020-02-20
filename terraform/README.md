@@ -41,7 +41,11 @@ We use `Terraform` for its capacity to **automate all the creation of an instanc
 
 #### How we are using it
 
-We create an **Ubuntu@18.04** (type `ami-096b8af6e7e8fb927`) instance, located in Paris (`eu-west-3`)
+We create an **Ubuntu@18.04** (type `ami-096b8af6e7e8fb927`) *instance*, located in Paris (`eu-west-3`)
 
-We use a security group
+We use a *security group* that allows **all ountbound connections**, but only allows inbound connections on ports `8080` and `3001` (**client** and **server** apps), and `22` (**SSH**)
+
+Obviously, we provide a **public key** to be able to connect in `SSH`.
+
+
 
