@@ -1,10 +1,10 @@
 import React from 'react';
 import './SearchInput.scss'
 
-const Input = props => {
+const SearchInput = props => {
     return ( 
-    <input className="input" placeholder={props.placeholder}/> 
+    <input className="searchInput" placeholder={props.placeholder}/> 
     );
 }
  
-export default Input;
+export default SearchInput;
