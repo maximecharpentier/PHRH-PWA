@@ -7,8 +7,12 @@ import './Dashboard.scss';
 
 class Dashboard extends Component {
     state = {}
+    
+
     render() { 
+        
         return (
+            
             <section className="Dashboard">
                 <WeekSelection />
                 <Week />
