@@ -1,5 +1,5 @@
 class BaseValueInsertor {
-    static insertProtoBaseValues(cbconfirm, cberror){
+    static insertProtoBaseValues(dbtest, cbconfirm, cberror){
         //Models
         let Hotel = require('./model/hotel.model')
         let Visite = require('./model/visite.model')

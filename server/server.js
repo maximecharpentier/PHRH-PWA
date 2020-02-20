@@ -23,6 +23,7 @@ mongoose.connection.once('open', () => {
 //insert base values
 const baseValueInsertor = require('./helpers/BaseValueInsertor')
 baseValueInsertor.insertProtoBaseValues(
+    require('./datas/data.json'),
     (msg) => {console.log(msg)}, 
     (err) => {console.error(err)}
 )
