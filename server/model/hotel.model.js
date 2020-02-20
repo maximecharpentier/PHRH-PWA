@@ -1,9 +1,5 @@
 const mongoose = require('mongoose');
 
-const Urgence = require("urgence.model");
-const Anomalie = require("anomalie.model");
-const Tache = require("tache.model");
-
 const Schema = mongoose.Schema;
 
 const urgenceSchema = new Schema({
