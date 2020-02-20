@@ -1,6 +1,6 @@
 import React from 'react';
-import './DisplayList.scss'
-import ListItem from '../../Common/ListItem/ListItem.js'
+import './HotelDisplayList.scss'
+import HotelListItem from '../../Common/ListItem/HotelListItem/HotelListItem.js'
 
 const DisplayList = props => {
     return ( 
@@ -16,7 +16,7 @@ const DisplayList = props => {
         <th>Nature de l'urgence</th>
       </tr>
       { props.data.map(hotelData => {
-        return <ListItem 
+        return <HotelListItem 
           hotel={hotelData}
         />
       })}

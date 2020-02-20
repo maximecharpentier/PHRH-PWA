@@ -7,7 +7,7 @@ const ListItemHeader = props => {
     return ( 
     <div className="listItemHeader">
       <Burger 
-        handleClick={() => alert()}
+        handleClick={props.toggle}
       />
       <div className="listItemHeader__search">
         <Input placeholder={props.placeholder} />

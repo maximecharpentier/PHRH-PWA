@@ -20,7 +20,7 @@ export const RedCircle = styled.div`
     left: -75px;
     width: 200px;
     height: 200px;
-    background: #ED254E;
+    background: #FFA700;
     border-radius: 100%;
 `
 

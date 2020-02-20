@@ -2,23 +2,24 @@ import axios from 'axios'
 import React, { Component } from 'react';
 import './styles.scss'
 import SubHeader from '../../../components/Common/SubHeader/SubHeader.js'
-import HotelDisplayList from '../../../components/Managers/HotelDisplayList/HotelDisplayList.js'
-import HotelDisplayTable from '../../../components/Managers/HotelDisplayTable/HotelDisplayTable.js'
+import VisitorDisplayList from '../../../components/Managers/VisitorDisplayList/VisitorDisplayList.js'
+import VisitorDisplayTable from '../../../components/Managers/VisitorDisplayTable/VisitorDisplayTable.js'
 import ListItemHeader from '../../../components/Common/ListItemHeader/ListItemHeader.js'
 
-class Hotels extends Component {
+class Visitors extends Component {
   state = {
     isToggled: false,
-    hotels: []
+    users: []
   }
   componentDidMount() {
     this.getUsers();
   }
+
   getUsers = () => {
-    axios.get('http://35.180.37.72:3001/hotels')
+    axios.get('http://35.180.37.72:3001/users')
       .then(res => {
         this.setState({
-          hotels: res.data
+          users: res.data
         }, () => console.log(res.data))
         
       })
@@ -34,16 +35,16 @@ class Hotels extends Component {
   render() {
     return <div className="container">
       <div className="container__inside">
-        <SubHeader button="Ajouter un hôtel →" title="Les hôtels à votre disposition" overtitle="Gestion des hôtels" />
-        <ListItemHeader placeholder="Hôtels / Adresses" toggle={this.toggle} />
+        <SubHeader button="Ajouter un visiteur →" title="Les visiteurs à votre disposition" overtitle="Gestion des visiteurs" />
+        <ListItemHeader placeholder="Nom / Prénom" toggle={this.toggle} />
         {
           this.state.isToggled ? 
-          <HotelDisplayList data={this.state.hotels}/> : 
-          <HotelDisplayTable data={this.state.hotels} />
+          <VisitorDisplayList data={this.state.users}/> : 
+          <VisitorDisplayTable data={this.state.users} />
         }
     </div>
   </div>
   }
 }
 
-export default Hotels;
+export default Visitors;
