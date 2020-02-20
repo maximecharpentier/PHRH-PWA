@@ -3,9 +3,6 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 require('dotenv').config()
 
-//base values for test
-const dbtest = require('dbtest')
-
 const app = express()
 //brancher cors
 app.use(cors())
