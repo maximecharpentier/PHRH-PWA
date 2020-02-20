@@ -1,9 +1,11 @@
+let Hotel = require('./../model/hotel.model')
+let Visite = require('../model/visite.model')
+let User = require('../model/user.model')
+
 class BaseValueInsertor {
     static insertProtoBaseValues(dbtest, cbconfirm, cberror){
         //Models
-        let Hotel = require('./model/hotel.model')
-        let Visite = require('./model/visite.model')
-        let User = require('./model/user.model')
+       
 
         //Clean DATABASE avant insertion
         Hotel.remove({}, function(err) {console.log('Hotels & entités liées removed')});
@@ -62,7 +64,7 @@ class BaseValueInsertor {
                 }
             )
         })
-        const visites = await Visites.find({})
+        const visites = Visites.find({})
         const visites_ids = visites.map(visite => visites._id)
         //insertion des users
         dbtest.users.map((user, index) => {
@@ -70,16 +72,16 @@ class BaseValueInsertor {
             if(user.fonction === 'Planificateur') {
                 User.insertIfNotExist(
                     new User({
-                        nom: user.nom,
-                        prenom: user.prenom,
-                        pwd: user.pwd,
-                        fonction: user.fonction,
-                        secteur: user.secteur,
-                        plage_h = user.plage_h,
-                        infos_equipe: user.infos_equipe,
-                        equipier_id: user.equipier_id, 
-                        visites_id: user.visites_id,
-                        vehicule_id: user.vehicule_id
+                        nom:        user.nom,
+                        prenom:     user.prenom,
+                        pwd:        user.pwd,
+                        fonction:   user.fonction,
+                        secteur:    user.secteur,
+                        plage_h :   user.plage_h,
+                        infos_equipe:   user.infos_equipe,
+                        equipier_id:    user.equipier_id, 
+                        visites_id:     user.visites_id,
+                        vehicule_id:    user.vehicule_id
                     }),
                     (err, UserDB) => {
                         if(UserDB) {
@@ -94,16 +96,16 @@ class BaseValueInsertor {
             if(user.fonction === 'Intervenant terrain') {
                 User.insertIfNotExist(
                     new User({
-                        nom: user.nom,
-                        prenom: user.prenom,
-                        pwd: user.pwd,
-                        fonction: user.fonction,
-                        secteur: user.secteur,
-                        plage_h = user.plage_h,
-                        infos_equipe: user.infos_equipe,
-                        equipier_id: UserDB._id, //clef etrangère
-                        visites_id: visites_id,
-                        vehicule_id: user.vehicule_id
+                        nom:        user.nom,
+                        prenom:     user.prenom,
+                        pwd:        user.pwd,
+                        fonction:   user.fonction,
+                        secteur:    user.secteur,
+                        plage_h:    user.plage_h,
+                        infos_equipe:   user.infos_equipe,
+                        equipier_id:    UserDB._id, //clef etrangère
+                        visites_id:     visites_ids,
+                        vehicule_id:    user.vehicule_id
                     }),
                     (err, UserDB) => {
                         if(UserDB) {
@@ -117,7 +119,7 @@ class BaseValueInsertor {
             }
         })
         //maj des id users pour creer les equipes
-        const visiteurs = await User.find({fonction: 'Intervenant terrain'}) //pour clef etrangère
+        const visiteurs = User.find({fonction: 'Intervenant terrain'}) //pour clef etrangère
         const visiteur1_id = visiteurs[0]._id
         const visiteur2_id = visiteurs[1]._id
         User.findOneAndUpdate(

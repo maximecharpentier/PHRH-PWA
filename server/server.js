@@ -10,7 +10,7 @@ app.use(cors())
 app.use(express.json())
 
 //connection a la base mongo
-const uri = process.env.DB_URI
+const uri = "127.0.0.1:27017"
 mongoose.connect(uri, {useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true })
 //ouvrir & deleguer la gestion de la connection a nodemon
 mongoose.connection.once('open', () => {
@@ -18,7 +18,7 @@ mongoose.connection.once('open', () => {
 })
 
 //insert base values
-const baseValueInsertor = require('./helpers/BaseValueInsertor')
+const baseValueInsertor = require('./helpers/BaseValueInsertor.helper')
 baseValueInsertor.insertProtoBaseValues(
     require('./datas/data.json'),
     (msg) => {console.log(msg)}, 
@@ -47,7 +47,7 @@ app.use('/user', crudUserRouter)
 
 
 //lancer le serv
-const serv_port = process.env.SERV_PORT
+const serv_port = "27017" //process.env.SERV_PORT
 app.listen(serv_port, function() {
     console.log("server runing PORT: " + serv_port)
 })
