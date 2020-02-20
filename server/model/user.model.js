@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
-Schema = mongoose.Schema,
+/*Schema = mongoose.Schema,
     bcrypt = require('bcrypt'),
-    SALT_WORK_FACTOR = 10;
+    SALT_WORK_FACTOR = 10;*/
 
-const Visite = require("visite.model");
-const Vehicule = require("vehicule.model");
+const Visite = require("./visite.model");
+const Vehicule = require("./vehicule.model");
 
 const Schema = mongoose.Schema;
     /*bcrypt = require('bcrypt'),
@@ -32,7 +32,7 @@ const userSchema = new Schema({
     fonction : {
         type: String,
         required: true, 
-        enum: ['Médiateur', 'Intervenant terrain', 'Mediateur SAS', 'Plannificateur'],
+        enum: ['Médiateur', 'Intervenant terrain', 'Mediateur SAS', 'Gestionnaire'],
         required: true
     },
     secteur : {
@@ -70,20 +70,20 @@ const userSchema = new Schema({
 })
 
 //definir la methode insertIfNotExist
-/*authSchema.statics.insertIfNotExist = function(auth, cb) {
-    this.find({name : auth.name}).exec(function(err, docs) {
+userSchema.statics.insertIfNotExist = function(user, cb) {
+    this.find({user : user.nom}).exec(function(err, docs) {
         if (!docs.length){
-            auth.save(function(err) {
-                cb(err, auth)
+            user.save(function(err) {
+                cb(err, user)
             })
         }
         else{
-            cb('Auth <<'+ auth.nom +'>> existe deja', null);
+            cb('Auth <<'+ user.nom +'>> existe deja', null);
         }
     })
-}*/
+}
 
 
-const User = mongoose.model('User', userSchema)
+const User = mongoose.model('Utilisateur', userSchema)
 
 module.exports = User
