@@ -1,8 +1,9 @@
 name: Main Workflow
 on: 
   push:
-    - develop
-    - master
+    branches:
+      - develop
+      - master
 jobs:
   build:
     runs-on: ubuntu-latest
