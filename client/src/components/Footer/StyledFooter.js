@@ -6,15 +6,24 @@ export const StyledFooter = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  height: 100px;
-  padding: 0 5%;
+  height: 64px;
   font-size: 12px;
   display: flex;
   align-items: center;
+`
+
+export const StyledFooterWrapper = styled.div`
+  max-width: 1240px;
+  padding: 0px 20px;
+  width: 100%;
+  display: flex;
   justify-content: flex-end;
+  margin: 0px auto;
 `
 
 export const StyledFooterTitle = styled.p`
-  text-align: right;
-  color: white;
+  font-weight: 500;
+  font-size: 12px;
+  color: #FFFFFF;
+  line-height: 18px;
 `

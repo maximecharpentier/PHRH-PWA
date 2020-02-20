@@ -6,13 +6,14 @@ import '@mobiscroll/react/dist/css/mobiscroll.min.css';
 import './Calendar.scss';
 
 mobiscroll.settings = {
-    theme: 'ios',
-    themeVariant: 'light',
-    lang: 'fr'
+    lang: 'fr',
+    layout: 'fixed',
+    maxWidth: '1',
+    rows: 3
 };
 
 class Calendar extends Component {
-
+    state = {}
     render() {
 
         let fromMonday = [];
@@ -21,7 +22,7 @@ class Calendar extends Component {
         }
 
         return (
-            <mobiscroll.Form>
+            <mobiscroll.Form className="Calendar">
                 <div className="mbsc-grid">
                     <div className="mbsc-row">
                         <div className="mbsc-col-sm-12 mbsc-col-md-4">
@@ -35,9 +36,10 @@ class Calendar extends Component {
                                     display="inline"
                                     type="hidden"
                                     onDayChange={function (event, inst) {
-                                        var selectedWeek = inst.getVal();
-                                        console.log(selectedWeek)
-                                    }}
+                                        this.setState({
+                                            myDate: inst.getVal()
+                                        });
+                                    }.bind(this)}
                                 />
                             </mobiscroll.FormGroup>
                         </div>
@@ -49,16 +51,3 @@ class Calendar extends Component {
 }
 
 export default Calendar;
-
-/*
-const doIt = () => {
-    const divs = document.querySelectorAll('div')
-    for (let i = 0; i < divs.length; i++) {
-        const div = divs[i];
-        if (div.innerText === 'TRIAL') {
-            div.innerText = '';
-            console.log('trial')
-        }
-    }
-}
-*/
