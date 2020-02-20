@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-const Priorisation = require("priorisation.model");
 const Hotel = require('hotel.model');
 
 const Schema = mongoose.Schema;
