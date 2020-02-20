@@ -1,29 +1,35 @@
 import React, { Component } from 'react'
 
 import Day from './../Day/Day'
+import './Week.scss';
 
 class Week extends Component {
 
     state = [
         {
             label: 'Lundi',
-            date: '17'
+            date: '17',
+            month: 'Février'
         },
         {
             label: 'Mardi',
-            date: '18'
+            date: '18',
+            month: 'Février'
         },
         {
             label: 'Mercredi',
-            date: '19'
+            date: '19',
+            month: 'Février'
         },
         {
             label: 'Jeudi',
-            date: '20'
+            date: '20',
+            month: 'Février'
         },
         {
             label: 'Vendredi',
-            date: '21'
+            date: '21',
+            month: 'Février'
         }
     ]
 
@@ -34,6 +40,7 @@ class Week extends Component {
                 key={id}
                 label={item.label}
                 date={item.date}
+                month={item.month}
             />
         );
     }

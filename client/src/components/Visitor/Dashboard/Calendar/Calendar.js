@@ -6,13 +6,14 @@ import '@mobiscroll/react/dist/css/mobiscroll.min.css';
 import './Calendar.scss';
 
 mobiscroll.settings = {
-    theme: 'ios',
-    themeVariant: 'light',
-    lang: 'fr'
+    lang: 'fr',
+    layout: 'fixed',
+    maxWidth: '1',
+    rows: 3
 };
 
 class Calendar extends Component {
-
+    state = {}
     render() {
 
         let fromMonday = [];
@@ -35,9 +36,10 @@ class Calendar extends Component {
                                     display="inline"
                                     type="hidden"
                                     onDayChange={function (event, inst) {
-                                        var selectedWeek = inst.getVal();
-                                        console.log(selectedWeek)
-                                    }}
+                                        this.setState({
+                                            myDate: inst.getVal()
+                                        });
+                                    }.bind(this)}
                                 />
                             </mobiscroll.FormGroup>
                         </div>
