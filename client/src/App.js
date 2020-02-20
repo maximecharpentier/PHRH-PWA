@@ -11,8 +11,10 @@ import './App.scss';
 // Pages
 import Login from './pages/Login'
 import HotelsManagement from './pages/Managers/Hotels/Hotels'
+import HotelsFormula from './pages/Managers/Hotels/Formula'
 import ManagersManagement from './pages/Managers/Managers/Managers'
 import VisitorsManagement from './pages/Managers/Visitors/Visitors'
+import VisitorsFormula from './pages/Managers/Visitors/Formula'
 
 const App = () => {
   return (
@@ -25,8 +27,10 @@ const App = () => {
           <Route exact path="/" component={Status} />
           <Route path="/login" component={Login} />
           <Route path="/hotels-management" component={HotelsManagement} />
+          <Route path="/hotels-formula" component={HotelsFormula} />
           <Route path="/managers-management" component={ManagersManagement} />
           <Route path="/visitors-management" component={VisitorsManagement} />    
+          <Route path="/visitors-formula" component={VisitorsFormula} />    
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/planner" component={Planner} />
           {/* <Route path="/managers" component={Managers} /> */}

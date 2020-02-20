@@ -8,9 +8,9 @@ const DisplayList = props => {
       <tr>
         <th>Hôtel</th>
         <th>Adresse</th>
-        <th>Secteur</th>
+        <th>Code postal</th>
         <th>Chambres</th>
-        <th>Nombre de visites par mois</th>
+        <th>Nbre. de visites / mois</th>
         <th>Note</th>
         <th>Urgence</th>
         <th>Nature de l'urgence</th>
