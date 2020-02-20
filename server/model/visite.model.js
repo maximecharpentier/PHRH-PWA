@@ -5,6 +5,21 @@ const Hotel = require('hotel.model');
 
 const Schema = mongoose.Schema;
 
+const priorisationSchema = new Schema({
+    type: {
+        type: String, 
+        required: true,
+        trim: true,
+        maxlength: 35
+    },
+    message: {
+        type: String, 
+        required: true,
+        trim: true,
+        maxlength: 3600
+    }
+})
+
 const visiteSchema = new Schema({
     hotel_id: {
         type: Schema.Types.ObjectId, 
@@ -32,7 +47,9 @@ const visiteSchema = new Schema({
         required: true
 
     },
-    Priorisations : [Priorisation]
+    Priorisations : {
+        type: [priorisationSchema]
+    }
 })
 
 //definir la methode insertIfNotExist
