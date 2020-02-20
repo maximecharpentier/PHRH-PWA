@@ -10,7 +10,7 @@ const Schema = mongoose.Schema;
     /*bcrypt = require('bcrypt'),
     SALT_WORK_FACTOR = 10;*/
 
-const userSchema = new Schema({
+const utilisateurSchema = new Schema({
     nom : {
         type: String, 
         required: true, 
@@ -56,7 +56,6 @@ const userSchema = new Schema({
     equipier_id : {
         type: Schema.Types.ObjectId, 
         ref: 'User', 
-        required: true,
     },
     visites_id : [{
         type: Schema.Types.ObjectId, 
@@ -65,25 +64,21 @@ const userSchema = new Schema({
     vehicule_id : {
         type: Schema.Types.ObjectId, 
         ref: 'Vehicule', 
-        required: true,
     }
 })
 
 //definir la methode insertIfNotExist
-userSchema.statics.insertIfNotExist = function(user, cb) {
-    this.find({user : user.nom}).exec(function(err, docs) {
-        if (!docs.length){
-            user.save(function(err) {
-                cb(err, user)
-            })
-        }
-        else{
-            cb('Auth <<'+ user.nom +'>> existe deja', null);
-        }
-    })
+utilisateurSchema.statics.insertIfNotExist = async function(user) {
+    const docs = await this.find({user : user.nom}).exec()
+    if (!docs.length){
+        return await user.save()
+    }
+    else{
+        throw new Error('Utilisateur <<'+ user.nom +'>> existe deja', null);
+    }
 }
 
 
-const User = mongoose.model('Utilisateur', userSchema)
+const User = mongoose.model('Utilisateur', utilisateurSchema)
 
 module.exports = User
