@@ -19,7 +19,7 @@ class Status extends Component {
                         <p className="status__intro_description">Vos informations de la semaine</p>
                         <p className="status__intro_title">Bonjour, {this.state.name}</p>
                     </div>
-                    <Link className="status__intro_btn" to="/planner">CREER UN PLANNING</Link>
+                    <Link className="status__intro_btn" to="/dashboard">CREER UN PLANNING</Link>
                 </div>
                 <div className="status__card-container">
                     <div className="status__card-container_flex">

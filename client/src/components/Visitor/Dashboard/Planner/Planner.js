@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Route, Link, } from 'react-router-dom';
-import './Planner.scss'
-import Tag from '../../Common/Tag/Tag'
+import './Planner.scss';
+import Tag from '../../../Common/Tag/Tag';
 
 class Planner extends Component {
 	constructor(props) {
