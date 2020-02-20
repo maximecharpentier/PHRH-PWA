@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
+import styled from 'styled-components';
 import { Form, Field, ErrorMessage } from 'formik'
-import { StyledErrorMessage } from './StyledLogin';
 
 export default class Login extends PureComponent {
   render() {
@@ -23,3 +23,7 @@ export default class Login extends PureComponent {
     )
   }
 }
+
+const StyledErrorMessage = styled.p`
+    color: red;
+`
