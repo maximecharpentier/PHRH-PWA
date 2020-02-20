@@ -7,6 +7,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      working-directory: ./client
     steps:
     - uses: actions/checkout@master
         
