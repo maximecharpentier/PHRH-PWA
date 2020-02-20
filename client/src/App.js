@@ -12,7 +12,7 @@ import './App.scss';
 import Login from './pages/Login'
 import HotelsManagement from './pages/Managers/Hotels/Hotels'
 import ManagersManagement from './pages/Managers/Managers/Managers'
-import VisitorsManagement from './pages/Managers/Visitors'
+import VisitorsManagement from './pages/Managers/Visitors/Visitors'
 
 const App = () => {
   return (

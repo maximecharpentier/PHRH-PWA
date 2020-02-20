@@ -1,12 +1,12 @@
 import React from 'react';
-import Tag from '../Tag/Tag.js'
-import './TableItem.scss'
+import Tag from '../../Tag/Tag.js'
+import './ManagerTableItem.scss'
 
 // SVG
-import Calendar from '../../../assets/calendar.js'
-import Graphic from '../../../assets/graphic.js'
-import Edit from '../../../assets/edit.js'
-import Delete from '../../../assets/delete.js'
+import Calendar from '../../../../assets/calendar.js'
+import Graphic from '../../../../assets/graphic.js'
+import Edit from '../../../../assets/edit.js'
+import Delete from '../../../../assets/delete.js'
 
 const TableItem = props => {
     return ( 
