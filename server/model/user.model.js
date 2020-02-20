@@ -32,7 +32,7 @@ const userSchema = new Schema({
     fonction : {
         type: String,
         required: true, 
-        enum: ['Médiateur', 'Intervenant terrain', 'Mediateur SAS', 'Plannificateur'],
+        enum: ['Médiateur', 'Intervenant terrain', 'Mediateur SAS', 'Gestionnaire'],
         required: true
     },
     secteur : {
