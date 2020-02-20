@@ -17,16 +17,12 @@ jobs:
 
     - name: install
       run: npm install
-      working-directory: ./client
 
     - name: lint
       run: npm run lint
-      working-directory: ./client
 
     - name: build
       run: npm run build
-      working-directory: ./client
 
     - name: test
       run: npm run test
-      working-directory: ./client
