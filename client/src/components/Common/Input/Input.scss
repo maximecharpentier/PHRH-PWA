@@ -1,8 +1,48 @@
 .input {
-  min-width: 150px;
-  height: 25px;
-  background: #F9FAFD;
-  border: none;
-  border-radius: 20.5px;
+  width: 100%;
+  font-size: 14px;
+  background: white;
   padding: 0 15px;
+  height: 40px;
+  border: 1px solid #C8C3C3;
+  box-sizing: border-box;
+  border-radius: 6px;
+  transition: 0.3s all;
+  &:focus {
+    border: 1px solid #FFA700;
+    outline: none;
+  }
+  &__select {
+    font-size: 14px;
+    line-height: 20px;
+    border: 1px solid #C8C3C3;
+    height: 40px;
+    width: 100%;
+    border-radius: 6px;
+    &:hover {
+      border: 1px solid #FFA700;
+      outline: none;
+    }
+    &:focus {
+      border: 1px solid #FFA700;
+      outline: none;
+    }
+    & div {
+      border: none;
+    }
+  }
+  &__container {
+    margin-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+  &__label {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
 }

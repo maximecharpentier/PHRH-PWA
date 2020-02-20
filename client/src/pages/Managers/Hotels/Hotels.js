@@ -12,9 +12,9 @@ class Hotels extends Component {
     hotels: []
   }
   componentDidMount() {
-    this.getUsers();
+    this.getHotels();
   }
-  getUsers = () => {
+  getHotels = () => {
     axios.get('http://35.180.37.72:3001/hotels')
       .then(res => {
         this.setState({
@@ -34,7 +34,7 @@ class Hotels extends Component {
   render() {
     return <div className="container">
       <div className="container__inside">
-        <SubHeader button="Ajouter un hôtel →" title="Les hôtels à votre disposition" overtitle="Gestion des hôtels" />
+        <SubHeader href="/hotels-formula" button="Ajouter un hôtel →" title="Les hôtels à votre disposition" overtitle="Gestion des hôtels" />
         <ListItemHeader placeholder="Hôtels / Adresses" toggle={this.toggle} />
         {
           this.state.isToggled ? 
