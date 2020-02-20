@@ -1,10 +1,15 @@
 import React, { Component } from 'react'
+import Day from '../../Day/Day'
 
 class Week extends Component {
-    state = {}
+    state = {
+        allDay: ["Monday", "Thusday"],
+    }
     render() {
         return (
-            <div className="Week"></div>
+            <div className="Week">
+                {/* {this.state.allDay.map(days => <Day OneDay={days} />)} */}
+            </div>
         );
     }
 }

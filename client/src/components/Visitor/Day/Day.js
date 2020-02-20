@@ -5,6 +5,11 @@ class Day extends Component {
         day: "",
         visitsOfTheDay: []
     }
+    render(){
+        return(
+        <h1>{this.props.OneDay}</h1>
+        )
+    }
 }
  
 export default Day;

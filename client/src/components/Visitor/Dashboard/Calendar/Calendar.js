@@ -1,24 +1,34 @@
-import React, { Component } from 'react'
+import React, { Component, useState, useContext } from 'react'
 
 import mobiscroll from "@mobiscroll/react";
 import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 
 import './Calendar.scss';
 
-mobiscroll.settings = {
-    theme: 'ios',
-    themeVariant: 'light',
-    lang: 'fr'
-};
-
-class Calendar extends React.Component {
-
-    render() {
-
-        let fromMonday = [];
-        for (let i = 0; i < 7; i++) {
-            fromMonday.push(new Date(2020, 1, 17 + i));
+class Calendar extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            week: [],
+            defaultValue: []
         }
+    }
+
+    componentWillMount() {
+        let fromMonday = [];
+        let defaultValue = [];
+        for (let i = 0; i < 7; i++) {
+            var newDate = new Date(2020, 1, 17 + i);
+            defaultValue.push(new Date(2020, 1, 17 + i));
+            fromMonday.push({ day: newDate.getDate(), month: newDate.getMonth() });
+        };
+
+        this.setState({
+            week: fromMonday,
+            defaultValue: defaultValue
+        })
+    }
+    render() {
 
         return (
             <mobiscroll.Form>
@@ -29,15 +39,21 @@ class Calendar extends React.Component {
                                 <mobiscroll.Calendar
                                     dateFormat="yy.mm.dd"
                                     selectType="week"
-                                    defaultValue={fromMonday}
+                                    defaultValue={this.state.defaultValue}
                                     firstSelectDay={1}
                                     firstDay={1}
                                     display="inline"
                                     type="hidden"
                                     onDayChange={function (event, inst) {
-                                        var selectedWeek = inst.getVal();
-                                        console.log(selectedWeek)
-                                    }}
+                                        setTimeout(function () {
+                                            var selectedWeek = inst.getVal();
+                                            var daysFormat = [];
+                                            selectedWeek.map(day => daysFormat.push({ day: day.getDate(), month: day.getMonth() }))
+                                            this.setState({
+                                                week: daysFormat
+                                            })
+                                        }.bind(this), 100);
+                                    }.bind(this)}
                                 />
                             </mobiscroll.FormGroup>
                         </div>
