@@ -1,12 +1,19 @@
 import React, { Component } from 'react'
 
+import Week from './../Week/Week'
 import './Day.scss';
 
 class Day extends Component {
-    state = {  }
-    render() { 
+
+    state = {}
+    
+    render() {
         return ( 
-            <div></div>
+            <div className="Day">
+                <div className="Day__header">
+                    <ul className="Day__label">{this.props.label}</ul>
+                </div>
+            </div>
          );
     }
 }
