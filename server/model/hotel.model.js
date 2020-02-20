@@ -1,10 +1,46 @@
 const mongoose = require('mongoose');
 
-const Urgence = require("urgence.model");
-const Anomalie = require("anomalie.model");
-const Tache = require("tache.model");
-
 const Schema = mongoose.Schema;
+
+const urgenceSchema = new Schema({
+    resume: {
+        type: String, 
+        required: true,
+        trim: true,
+        maxlength: 50
+    },
+    detail: {
+        type: String, 
+        required: true,
+        trim: true,
+        maxlength: 3600
+    }
+})
+
+const tacheSchema = new Schema({
+    type: {
+        type: String, 
+        required: true,
+        enum: ['Relance hotel pour reglement anomalie', 'Appel famille', 'Amende à envoyer'],
+    },
+    date_au_plus_tot : {
+        type: Date,
+        required: true
+    },
+    date_au_plus_tard : {
+        type: Date,
+        required: true
+    }
+})
+
+const anomalieSchema = new Schema({
+    nature: {
+        type: String, 
+        required: true,
+        trim: true,
+        maxlength: 100
+    }
+})
 
 const hotelSchema = new Schema({
     nom: {
@@ -46,25 +82,30 @@ const hotelSchema = new Schema({
     last_time_visited : {
         type : Date
     },
-    urgences : [Urgence],
-    anomalies : [Anomalie],
-    taches : [Tache]
+    urgences : {
+        type: [urgenceSchema]
+    },
+    anomalies : {
+        type: [anomalieSchema]
+    },
+    taches : {
+        type: [tacheSchema]
+    },
 })
 
 //definir la methode insertIfNotExist
-/*authSchema.statics.insertIfNotExist = function(auth, cb) {
-    this.find({name : auth.name}).exec(function(err, docs) {
+hotelSchema.statics.insertIfNotExist = function(hotel, cb) {
+    this.find({nom : hotel.nom}).exec(function(err, docs) {
         if (!docs.length){
-            auth.save(function(err) {
-                cb(err, auth)
+            hotel.save(function(err) {
+                cb(err, hotel)
             })
         }
         else{
-            cb('Auth <<'+ auth.nom +'>> existe deja', null);
+            cb('Hotel <<'+ hotel.nom +'>> existe deja', null);
         }
     })
-}*/
-
+}
 
 const Hotel = mongoose.model('Hotel', hotelSchema)
 

@@ -1,0 +1,34 @@
+name: Main Workflow
+on: 
+  push:
+    branches:
+      - develop
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./client
+    steps:
+    - uses: actions/checkout@master
+        
+    - name: Set Node.js 10.x
+      uses: actions/setup-node@master
+      with:
+        node-version: 10.x
+
+    - name: install
+      run: npm install
+      working-directory: ${{env.working-directory}}
+
+    - name: lint
+      run: npm run lint
+      working-directory: ${{env.working-directory}}
+
+    - name: build
+      run: npm run build
+      working-directory: ${{env.working-directory}}
+
+    - name: test
+      run: npm run test
+      working-directory: ${{env.working-directory}}
