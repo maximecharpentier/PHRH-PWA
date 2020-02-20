@@ -1,0 +1,18 @@
+.button {
+  padding: 10px 15px;
+  background: white;
+  color: #ED254E;
+  border: 2px solid #ED254E;
+  box-sizing: border-box;
+  border-radius: 6px;
+  transition: 0.3s all;
+  text-transform: uppercase;
+  font-weight: bold;
+  &:hover {
+    background: #ED254E;
+    color: white;
+  }
+  &:active {
+    background: darken(#ED254E, 10%);
+  }
+}

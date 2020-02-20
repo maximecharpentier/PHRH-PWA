@@ -2,9 +2,11 @@ import styled from 'styled-components';
 
 export const StyledFooter = styled.div`
   background: #031772;
-  margin-top: 50px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
   height: 100px;
-  width: 90%;
   padding: 0 5%;
   font-size: 12px;
   display: flex;
