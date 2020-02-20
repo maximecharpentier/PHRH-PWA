@@ -4,11 +4,12 @@ version: "3"
 
 services:
     client:
-        image: blyndusk/phrh-client:0.4
+        # env_file: versions.env
+        image: blyndusk/phrh-client:${PHRH_CLIENT_VERSION}
         ports: 
             - 8080:80
 
     fake-server:
-        image: blyndusk/phrh-fake-server:0.5
+        image: blyndusk/phrh-fake-server:${PHRH_FAKE_SERVER_VERSION}
         ports: 
             - 3001:3001
