@@ -1,12 +1,13 @@
 import React from 'react';
-import { StyledFooter, StyledFooterTitle } from './StyledFooter';
+import { StyledFooter, StyledFooterWrapper, StyledFooterTitle } from './StyledFooter';
 
 const Footer = () => (
     <StyledFooter>
-      <StyledFooterTitle>
-        © 2020 SAMUSOCIALDEPARIS.<br />
-        Tout droits réservés.
-      </StyledFooterTitle>
+      <StyledFooterWrapper>
+        <StyledFooterTitle>
+          © 2020 SAMUSOCIALDEPARIS.<br />Tout droits réservés.
+        </StyledFooterTitle>
+      </StyledFooterWrapper>
     </StyledFooter>
 );
 

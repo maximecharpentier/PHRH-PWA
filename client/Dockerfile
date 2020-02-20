@@ -1,15 +1,17 @@
-# PHRH-client:0.1
+# phrh-client:0.1
 
 # expand node:10 img as build folder
 FROM node:10 as build
 # work in /home/node dir
 WORKDIR /home/node
 # copy package.json to /home/node
-COPY package*.json ./
+COPY package.json .
+# copy .npmrc to /home/node
+COPY .npmrc .
 # install deps
 RUN npm install
 # copy source code
-COPY . ./
+COPY . .
 # declare global variable
 # ARG REACT_APP_BACKEND_URL
 # lauch default command

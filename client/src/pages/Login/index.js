@@ -1,6 +1,6 @@
-import { withFormik } from "formik"
-import * as yup from "yup"
-import Login from "../../components/Login/Login"
+import { withFormik } from 'formik'
+import * as yup from 'yup'
+import Login from '../../components/Login/Login'
 
 const LoginWrapper = Login
 
@@ -13,7 +13,7 @@ const LoginValidation = yup.object().shape({
     .string()
     .min(8)
     .max(16)
-    .matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*d)[a-zA-Zd]$")
+    .matches('^(?=.*[a-z])(?=.*[A-Z])(?=.*d)[a-zA-Zd]$')
     .required(),
 })
 
@@ -21,8 +21,8 @@ export default withFormik({
     // Handles our submission
     handleSubmit: (values, { setSubmitting }) => {
     // This is where you could send the submitted values to the backend
-    console.log("Submitted Email:", values.email)
-    console.log("Submitted Password:", values.password)
+    console.log('Submitted Email:', values.email)
+    console.log('Submitted Password:', values.password)
     // Simulates the delay of a real request
     setTimeout(() => setSubmitting(false), 3 * 1000)
   },
