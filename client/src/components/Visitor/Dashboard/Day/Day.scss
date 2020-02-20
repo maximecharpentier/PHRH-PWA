@@ -1,0 +1,49 @@
+.Day {
+    width: 20%;
+    padding: 0px 20px;
+    margin-top: 48px;
+    position: relative;
+    &:not(:last-child) {
+        border-right: 1px solid rgba(67, 87, 234, 0.5);
+    }
+    &__header {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100px;
+        font-weight: 500;
+        font-size: 18px;
+        text-transform: capitalize;
+        color: #4357EA;
+    }
+    &__label {
+        margin-bottom: 8px;
+    }
+    &__date {
+        font-weight: bold;
+    }
+    &__tasks {
+        display: flex;
+        flex-direction: column;
+        min-height: 50vh;
+    }
+    &__button {
+        width: calc(100% - 40px);
+        height: 80px;
+        background: #F9FAFD;
+        border: 1px solid #4357EA;
+        border-radius: 6px;
+        font-weight: 500;
+        font-size: 14px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 0px 16px;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+}

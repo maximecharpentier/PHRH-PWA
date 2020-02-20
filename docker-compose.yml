@@ -1,0 +1,14 @@
+# PHRH
+
+version: "3"
+
+services:
+    client:
+        image: blyndusk/phrh-client:0.4
+        ports: 
+            - 8080:80
+
+    fake-server:
+        image: blyndusk/phrh-fake-server:0.5
+        ports: 
+            - 3001:3001

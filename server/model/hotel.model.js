@@ -94,19 +94,18 @@ const hotelSchema = new Schema({
 })
 
 //definir la methode insertIfNotExist
-/*authSchema.statics.insertIfNotExist = function(auth, cb) {
-    this.find({name : auth.name}).exec(function(err, docs) {
+hotelSchema.statics.insertIfNotExist = function(hotel, cb) {
+    this.find({nom : hotel.nom}).exec(function(err, docs) {
         if (!docs.length){
-            auth.save(function(err) {
-                cb(err, auth)
+            hotel.save(function(err) {
+                cb(err, hotel)
             })
         }
         else{
-            cb('Auth <<'+ auth.nom +'>> existe deja', null);
+            cb('Hotel <<'+ hotel.nom +'>> existe deja', null);
         }
     })
-}*/
-
+}
 
 const Hotel = mongoose.model('Hotel', hotelSchema)
 

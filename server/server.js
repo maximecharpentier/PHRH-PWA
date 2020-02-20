@@ -10,12 +10,21 @@ app.use(cors())
 app.use(express.json())
 
 //connection a la base mongo
-const uri = "127.0.0.1:27017"
-mongoose.connect(uri, {useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true })
+const uri = "mongodb://localhost:27017/test"
+mongoose.connect(
+    uri, 
+    {
+        useNewUrlParser: true, 
+        useCreateIndex: true, 
+        useUnifiedTopology: true 
+    } 
+)
 //ouvrir & deleguer la gestion de la connection a nodemon
-mongoose.connection.once('open', () => {
-    console.log('PHRH database connection established')
-})
+mongoose.connection.once(
+    'open', () => {
+        console.log('PHRH database connection established')
+    }
+)
 
 //insert base values
 const baseValueInsertor = require('./helpers/BaseValueInsertor.helper')
@@ -26,22 +35,22 @@ baseValueInsertor.insertProtoBaseValues(
 )
 
 //Route to end points
-const crudHotelRouter = require('./routes/crudHotels.routes.js')
+const crudHotelRouter = require('./routes/crudHotel.routes.js')
 app.use('/hotel', crudHotelRouter)
 
-const crudUrgenceRouter = require('./routes/crudUrgences.routes.js')
+const crudUrgenceRouter = require('./routes/crudUrgence.routes.js')
 app.use('/urgence', crudUrgenceRouter)
 
 const crudNoteHotelRouter = require('./routes/crudNoteHotel.routes.js')
 app.use('/note', crudNoteHotelRouter)
 
-const crudVisiteRouter = require('./routes/crudVisites.routes.js')
+const crudVisiteRouter = require('./routes/crudVisite.routes.js')
 app.use('/visite', crudVisiteRouter)
    //get liste visites pour le jour de plannif
    //get edt visites
    //placer visite dans emploi du temps
 
-const crudUserRouter = require('./routes/crudUsers.routes.js')
+const crudUserRouter = require('./routes/crudUser.routes.js')
 app.use('/user', crudUserRouter)
 
 
