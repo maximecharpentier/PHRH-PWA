@@ -9,6 +9,6 @@ services:
             - 8080:80
 
     fake-server:
-        image: blyndusk/phrh-fake-server:0.4
+        image: blyndusk/phrh-fake-server:0.5
         ports: 
             - 3001:3001
