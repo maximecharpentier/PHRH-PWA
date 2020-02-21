@@ -10,7 +10,7 @@ app.use(cors())
 app.use(express.json())
 
 //connection a la base mongo
-const uri = "mongodb://localhost:27017/test"
+const uri = "mongodb://localhost:27017/PHRH"
 mongoose.connect(
     uri, 
     {

@@ -52,17 +52,14 @@ const visiteSchema = new Schema({
 })
 
 //definir la methode insertIfNotExist
-visiteSchema.statics.insertIfNotExist = function(visite, cb) {
-    this.find({/*name : auth.name*/}).exec(function(err, docs) {
-        if (!docs.length){
-            visite.save(function(err) {
-                cb(err, visite)
-            })
-        }
-        else{
-            cb('Visite <<X>> existe deja', null);
-        }
-    })
+visiteSchema.statics.insertIfNotExist = async function(visite) {
+    //const docs = await this.find({date_visite: visite.date_visite, hotel_id : visite.hotel_id}).exec()
+    //if (!docs.length){
+        return await visite.save()
+    /*}
+    else{
+        throw new Error('Visite <<X>> existe deja', null);
+    }*/
 }
 
 
