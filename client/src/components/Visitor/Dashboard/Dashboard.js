@@ -23,7 +23,7 @@ class Dashboard extends Component {
         }
         this.setState({
             currentWeek
-        }, () => console.log(this.state))
+        })
     }
 
     getNextWeek = () => {
@@ -38,7 +38,7 @@ class Dashboard extends Component {
         }
         this.setState({
             nextWeek
-        }, () => console.log(this.state))
+        })
     }
 
     componentDidMount() {

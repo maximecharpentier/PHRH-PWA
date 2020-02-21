@@ -20,7 +20,7 @@ class Visitors extends Component {
       .then(res => {
         this.setState({
           users: res.data
-        }, () => console.log(res.data))
+        })
         
       })
       .catch(err => {
