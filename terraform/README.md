@@ -37,14 +37,6 @@ This problem will **obviously** be solved in future versions.
 
 We didn't have time to complete **full infrastructure automation using Ansible**. But we code this [script](https://github.com/blyndusk/PHRH-PWA/blob/master/bin/entrypoint.sh) allowing to update the **configuration files on the remote instance**, and also allowing to **push new versions of our Docker images**.
 
-## Technical choices
-
-### 1. Docker & Docker Compose
-
-#### Why we are using it
-
-We use `Docker` firstly for its capacity to **create apps in remote dev environments**, but also for its ability to **connect different apps to each other**, and finally for its **ease of use and automation**.
-
 At the root of the project, try:
 
 ```bash
@@ -54,6 +46,14 @@ OR
 
 source ./bin/entrypoint.sh --build-img
 ```
+
+## Technical choices
+
+### 1. Docker & Docker Compose
+
+#### Why we are using it
+
+We use `Docker` firstly for its capacity to **create apps in remote dev environments**, but also for its ability to **connect different apps to each other**, and finally for its **ease of use and automation**.
 
 #### How we are using it
 
