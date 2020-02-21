@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const StyledFooter = styled.div`
   background: #031772;
+  width: 100%;
   position: absolute;
   bottom: 0;
   left: 0;
