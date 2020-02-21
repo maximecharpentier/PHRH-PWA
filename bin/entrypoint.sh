@@ -15,10 +15,12 @@ copy_local_docker_compose_config_to_remote_instance() {
 }
 
 build_phrh_client_docker_image() {
+  # ask for building a new image of the client
   echo "build blyndusk/phrh-client:"$PHRH_CLIENT_VERSION" ?"
   printf 'Enter [y/n] : '
   read -r opt
   if [[ "$opt" =~ ^([yY])$ ]] ; then
+    # if yes, then build the new image and push it
     cd ./client
     docker build -t blyndusk/phrh-client:"$PHRH_CLIENT_VERSION" .
     docker push blyndusk/phrh-client:"$PHRH_CLIENT_VERSION"
@@ -27,15 +29,22 @@ build_phrh_client_docker_image() {
   
 }
 build_phrh_server_docker_image() {
+  # ask for building a new image of the server
   echo "build blyndusk/phrh-fake-server:"$PHRH_SERVER_VERSION" ?"
   printf 'Enter [y/n] : '
   read -r opt
   if [[ "$opt" =~ ^([yY])$ ]] ; then
+    # if yes, then build the new image and push it
     cd ./server
     docker build -t blyndusk/phrh-fake-server:"$PHRH_SERVER_VERSION" .
     docker push blyndusk/phrh-fake-server:"$PHRH_SERVER_VERSION"
     cd ..
   fi
+}
+
+build_new_environment() {
+  ssh -i ~/.ssh/phrh-key ubuntu@"$INSTANCE_IP" 'sudo docker-compose config'
+  ssh -i ~/.ssh/phrh-key ubuntu@"$INSTANCE_IP" 'sudo docker-compose up --remove-orphan -d'
 }
 
 get_environment_variables
@@ -44,4 +53,6 @@ copy_local_docker_compose_config_to_remote_instance
 if [[ "$1" == "--build-img" ]] ; then 
   build_phrh_client_docker_image
   build_phrh_server_docker_image
+  build_new_environment
 fi
+
