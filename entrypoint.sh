@@ -20,7 +20,7 @@ build_phrh_client_docker_image() {
   read -r opt
   if [[ "$opt" =~ ^([yY])$ ]] ; then
     cd ./client
-    docker build blyndusk/phrh-client:"$PHRH_CLIENT_VERSION"
+    docker build -t blyndusk/phrh-client:"$PHRH_CLIENT_VERSION" .
     docker push blyndusk/phrh-client:"$PHRH_CLIENT_VERSION"
     cd ..
   fi
@@ -32,7 +32,7 @@ build_phrh_server_docker_image() {
   read -r opt
   if [[ "$opt" =~ ^([yY])$ ]] ; then
     cd ./server
-    docker build blyndusk/phrh-fake-server:"$PHRH_SERVER_VERSION"
+    docker build -t blyndusk/phrh-fake-server:"$PHRH_SERVER_VERSION" .
     docker push blyndusk/phrh-fake-server:"$PHRH_SERVER_VERSION"
     cd ..
   fi
