@@ -45,7 +45,6 @@ class Week extends Component {
     getDay = (dateString) => {
         const dates = this.props.isNextWeek ? this.props.nextWeek : this.props.currentWeek;
         if (dates.length) {
-            console.log('duh')
             return dateString.replace(/2020-[0-1][0-9]-/g, '')
         } else {
             return "00"
