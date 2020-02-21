@@ -59,12 +59,12 @@ We use `Docker` firstly for its capacity to **create apps in remote dev environm
 
 We create **two images**:
 
-- [phrh-client](https://hub.docker.com/repository/docker/blyndusk/phrh-client) 
+- [phrh-client](https://hub.docker.com/r/blyndusk/phrh-client) 
   - the React App, versioned by each release
   - running on port [8080](http://35.180.37.72:8080/)
   - [Dockerfile 🔗](https://github.com/blyndusk/PHRH-PWA/blob/master/client/Dockerfile)
   - ![](https://img.shields.io/docker/pulls/blyndusk/phrh-client?style=flat-square)
-- [phrh-fake-server](https://hub.docker.com/repository/docker/blyndusk/phrh-fake-server)
+- [phrh-fake-server](https://hub.docker.com/r/blyndusk/phrh-fake-server)
   - the API we're using a this moment, a JSON turned into a RESP API using [json-server](https://github.com/typicode/json-server)
   - running on port [3001](http://35.180.37.72:3001/)
   - [Dockerfile 🔗](https://github.com/blyndusk/PHRH-PWA/blob/master/server/Dockerfile)
