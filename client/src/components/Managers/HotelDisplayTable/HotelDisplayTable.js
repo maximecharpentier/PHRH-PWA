@@ -1,12 +1,12 @@
 import React from 'react';
-import './DisplayTable.scss'
-import TableItem from '../../Common/TableItem/TableItem.js'
+import './HotelDisplayTable.scss'
+import HotelTableItem from '../../Common/TableItem/HotelTableItem/HotelTableItem.js'
 
 const DisplayTable = props => {
     return ( 
       <div className="displayTable">
         { props.data.map(hotelData => {
-        return <TableItem
+        return <HotelTableItem
           hotel={hotelData}
         />
       })}

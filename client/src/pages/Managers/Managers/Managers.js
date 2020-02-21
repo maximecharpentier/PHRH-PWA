@@ -1,7 +1,8 @@
 import React from 'react';
 import './styles.scss'
 import SubHeader from '../../../components/Common/SubHeader/SubHeader.js'
-import ListItem from '../../../components/Common/ListItem/ListItem.js'
+import ManagerDisplayList from '../../../components/Managers/ManagerDisplayList/ManagerDisplayList.js'
+import ManagerDisplayTable from '../../../components/Managers/ManagerDisplayTable/ManagerDisplayTable.js'
 import ListItemHeader from '../../../components/Common/ListItemHeader/ListItemHeader.js'
 
 const Managers = () => {
@@ -11,78 +12,45 @@ const Managers = () => {
   // })
   const MANAGERS = [
     { 
-      nom: "Welcomo",
+      nom: "Jean-Pierre",
       adresse: "26 avenue ...",
       cp: 75013,
-      nb_chambres_utilise: 5,
-      nb_visites_periode: 6,
-      anomalie: "foobar",
-      urgence: true,
-      nature: "TROU"
     },
     { 
-      nom: "Welcomo",
+      nom: "Michel",
       adresse: "26 avenue ...",
       cp: 75013,
-      nb_chambres_utilise: 5,
-      nb_visites_periode: 6,
-      anomalie: "foobar",
-      urgence: false,
-      nature: "TROU"
     },
     { 
-      nom: 'Welcomo',
+      nom: 'Auguste',
       adresse: '26 avenue ...',
       cp: 75013,
-      nb_chambres_utilise: 5,
-      nb_visites_periode: 6,
-      anomalie: 'foobar',
-      urgence: true,
-      nature: 'TROU'
     },
     { 
-      nom: 'Welcomo',
+      nom: 'Antoine',
       adresse: '26 avenue ...',
       cp: 75013,
-      nb_chambres_utilise: 5,
-      nb_visites_periode: 6,
-      anomalie: 'foobar',
-      urgence: true,
-      nature: 'TROU'
     },
     { 
-      nom: 'Welcomo',
+      nom: 'Nicolas',
       adresse: '26 avenue ...',
       cp: 75013,
-      nb_chambres_utilise: 5,
-      nb_visites_periode: 6,
-      anomalie: 'foobar',
-      urgence: true,
-      nature: 'TROU'
     }
   ]
+  let displayList = true;
+  let toggleDisplay;
+  if (displayList) {
+    toggleDisplay = <ManagerDisplayList data={MANAGERS} />;
+  } else {
+    toggleDisplay = <ManagerDisplayTable data={MANAGERS} />
+  }
   return (
     <div className="container">
-      <SubHeader button="Ajouter un superviseur →" title="Les superviseurs à votre disposition" overtitle="Gestion des superviseurs" />
-      <ListItemHeader placeholder="Nom / Prénom" />
-      <table>
-        <tr>
-          <th>Hôtel</th>
-          <th>Adresse</th>
-          <th>Secteur</th>
-          <th>Chambres</th>
-          <th>Nombre de visites par mois</th>
-          <th>Note</th>
-          <th>Urgence</th>
-          <th>Nature de l'urgence</th>
-        </tr>
-        { MANAGERS.map((hotelData, i) => {
-          return <ListItem 
-            key={i}
-            hotel={hotelData}
-          />
-        })}
-      </table>
+      <div className="container__inside">
+        <SubHeader button="Ajouter un superviseur →" title="Les superviseurs à votre disposition" overtitle="Gestion des superviseurs" />
+        <ListItemHeader placeholder="Nom / Prénom" />
+        {toggleDisplay}
+      </div>
     </div>
   );
 }

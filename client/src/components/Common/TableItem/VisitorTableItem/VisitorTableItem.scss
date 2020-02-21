@@ -38,7 +38,9 @@
     align-items: center;
     margin-bottom: 30px;
     &_inside {
-      margin-left: 20px;
+      &:first-of-type {
+        margin-right: 30px;
+      }
       &_title {
         margin-bottom: 10px;
         font-weight: bold;

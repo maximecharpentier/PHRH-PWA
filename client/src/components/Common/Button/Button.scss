@@ -1,18 +1,18 @@
 .button {
   padding: 10px 15px;
   background: white;
-  color: #ED254E;
-  border: 2px solid #ED254E;
+  color: #FFA700;
+  border: 2px solid #FFA700;
   box-sizing: border-box;
   border-radius: 6px;
   transition: 0.3s all;
   text-transform: uppercase;
   font-weight: bold;
   &:hover {
-    background: #ED254E;
+    background: #FFA700;
     color: white;
   }
   &:active {
-    background: darken(#ED254E, 10%);
+    background: darken(#FFA700, 10%);
   }
 }
