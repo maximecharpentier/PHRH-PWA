@@ -2,6 +2,9 @@
 
 - [Infrastructure](#infrastructure)
   - [People in charge](#people-in-charge)
+  - [Explanations](#explanations)
+    - [Back-end](#back-end)
+    - [Infrastructure](#infrastructure-1)
   - [Technical choices](#technical-choices)
     - [1. Docker & Docker Compose](#1-docker--docker-compose)
       - [Why we are using it](#why-we-are-using-it)
@@ -20,6 +23,20 @@
 
 - Alexandre Delaloy
 
+## Explanations
+
+### Back-end
+
+We **did not have time** to set up a real **API system on a database server**, due to lack of **time** and **organization**. 
+
+In order to overcome this **problem** and still **be able to work** and **have views**, we have generated a **static API with fake data** running our instance.
+
+This problem will **obviously** be solved in future versions.
+
+### Infrastructure
+
+We didn't have time to complete **full infrastructure automation using Ansible**. But we code this [script](https://github.com/blyndusk/PHRH-PWA/blob/master/bin/entrypoint.sh) allowing to update the **configuration files on the remote instance**, and also allowing to **push new versions of our Docker images**.
+
 ## Technical choices
 
 ### 1. Docker & Docker Compose
@@ -27,6 +44,16 @@
 #### Why we are using it
 
 We use `Docker` firstly for its capacity to **create apps in remote dev environments**, but also for its ability to **connect different apps to each other**, and finally for its **ease of use and automation**.
+
+At the root of the project, try:
+
+```bash
+source ./bin/entrypoint.sh
+
+OR
+
+source ./bin/entrypoint.sh --build-img
+```
 
 #### How we are using it
 
