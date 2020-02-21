@@ -16,11 +16,11 @@ class Dashboard extends Component {
     static contextType = EdtContext
 
 
-    componentDidMount(){
-        this.setState({
-            currentVisits: this.context.journees
-        })
-    }
+    // componentDidMount(){
+    //     this.setState({
+    //         currentVisits: this.context.journees
+    //     })
+    // }
     getCurrentWeek = () => {
         let currentDay = new Date()
         let currentWeek = []

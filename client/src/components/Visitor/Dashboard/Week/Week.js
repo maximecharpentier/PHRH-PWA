@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import Day from '../Day/Day'
 import './Week.scss';
+import { EdtContext } from '../../../../contexts/edt.context'
+
 
 class Week extends Component {
     constructor(props) {
@@ -38,6 +40,8 @@ class Week extends Component {
             month: 'Février'
         }
     ]
+    static contextType = EdtContext
+
     getDay = (dateString) => {
         const dates = this.props.isNextWeek ? this.props.nextWeek : this.props.currentWeek;
         if (dates.length) {
@@ -103,7 +107,9 @@ class Week extends Component {
                 label={item.label}
                 date={this.getDay(this.props.isNextWeek ? this.props.nextWeek[id] : this.props.currentWeek[id])}
                 month={this.getMonthFr()}
+                visits={ id === 1 ? this.context.journees : null}
             />
+
         );
     }
 

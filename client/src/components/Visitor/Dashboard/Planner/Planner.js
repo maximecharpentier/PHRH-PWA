@@ -4,6 +4,7 @@ import './Planner.scss';
 import Tag from '../../../Common/Tag/Tag';
 import Day from '../Day/Day'
 import { EdtContext } from '../../../../contexts/edt.context'
+import api from '../../../../helpers/api'
 
 class Planner extends Component {
 	constructor(props) {
@@ -24,6 +25,14 @@ class Planner extends Component {
 	}
 
 	static contextType = EdtContext
+
+	// async componentDidMount() {
+	// 	var allHotels = await api.getAllHotels();
+	// 	this.setState({
+	// 		visitsToPlan: allHotels
+	// 	})
+	// 	console.log(this.state.visitsToPlan);
+	// }
 
 	createVisitOfList(hotel) {
 		return (
@@ -60,7 +69,7 @@ class Planner extends Component {
 			visitsToPlan: visitsToPlanfiltered,
 			chambersToVisit: this.state.chambersToVisit + visitsToPlanClicked.nb_chambres_utilise
 		})
-		this.context.setJourneyUser(this.state.visitsOfTheDay);
+		this.context.setJourneyUser(this.state.visitsToPlan);
 	}
 
 	deleteVisitOfTheDay(key) {
@@ -77,7 +86,7 @@ class Planner extends Component {
 	clearAllVisitsOfTheDay() {
 		var visitsOfTheDay = this.state.visitsOfTheDay;
 		this.setState({
-			visitsOfTheDay: [],
+			visitsOfTheDay: null,
 			visitsToPlan: this.state.visitsToPlan.concat(visitsOfTheDay),
 			chambersToVisit: 0
 		})
