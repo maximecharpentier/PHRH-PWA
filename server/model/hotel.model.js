@@ -1,10 +1,46 @@
 const mongoose = require('mongoose');
 
-const Urgence = require("urgence.model");
-const Anomalie = require("anomalie.model");
-const Tache = require("tache.model");
-
 const Schema = mongoose.Schema;
+
+const urgenceSchema = new Schema({
+    resume: {
+        type: String, 
+        required: true,
+        trim: true,
+        maxlength: 50
+    },
+    detail: {
+        type: String, 
+        required: true,
+        trim: true,
+        maxlength: 3600
+    }
+})
+
+const tacheSchema = new Schema({
+    type: {
+        type: String, 
+        required: true,
+        enum: ['Relance hotel pour reglement anomalie', 'Appel famille', 'Amende à envoyer'],
+    },
+    date_au_plus_tot : {
+        type: Date,
+        required: true
+    },
+    date_au_plus_tard : {
+        type: Date,
+        required: true
+    }
+})
+
+const anomalieSchema = new Schema({
+    nature: {
+        type: String, 
+        required: true,
+        trim: true,
+        maxlength: 100
+    }
+})
 
 const hotelSchema = new Schema({
     nom: {
@@ -17,7 +53,7 @@ const hotelSchema = new Schema({
         type: String, 
         required: true,
         trim: true,
-        maxlength: 6
+        maxlength: 400
     },
     cp : {
         type: Number, 
@@ -39,32 +75,32 @@ const hotelSchema = new Schema({
     },
     nb_visites_periode : {
         type: Number, 
-        required: true,
         trim: true,
         maxlength: 2
     },
     last_time_visited : {
         type : Date
     },
-    urgences : [Urgence],
-    anomalies : [Anomalie],
-    taches : [Tache]
+    urgences : {
+        type: [urgenceSchema]
+    },
+    anomalies : {
+        type: [anomalieSchema]
+    },
+    taches : {
+        type: [tacheSchema]
+    },
 })
 
-//definir la methode insertIfNotExist
-/*authSchema.statics.insertIfNotExist = function(auth, cb) {
-    this.find({name : auth.name}).exec(function(err, docs) {
-        if (!docs.length){
-            auth.save(function(err) {
-                cb(err, auth)
-            })
-        }
-        else{
-            cb('Auth <<'+ auth.nom +'>> existe deja', null);
-        }
-    })
-}*/
-
+hotelSchema.statics.insertIfNotExist = async function (hotel) {
+    const docs = await this.find({nom : hotel.nom}).exec()
+    if (!docs.length){
+        return await hotel.save()
+    }
+    else{
+        throw new Error('Hotel <<'+ hotel.nom +'>> existe deja');
+    }
+}
 
 const Hotel = mongoose.model('Hotel', hotelSchema)
 

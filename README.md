@@ -1,20 +1,69 @@
 # PHRH-PWA
 
+<p>
+  <a href="https://github.com/blyndusk/PHRH-PWA/actions" target="_blank">
+    <img src="https://github.com/blyndusk/PHRH-PWA/workflows/Main%20Workflow/badge.svg?branch=master" alt="GitHub Actions"/>
+  </a>
+  <a href="http://35.180.37.72:8080/" target="_blank">
+    <img src="https://img.shields.io/website?url=http%3A%2F%2F35.180.37.72%3A8080" alt="PHRH website"/>
+  </a>
+  
+  <a href="https://github.com/blyndusk/PHRH-PWA/blob/master/LICENSE" target="_blank">
+    <img src="https://img.shields.io/github/license/blyndusk/PHRH-PWA" alt="GitHub License"/>
+  </a>
+
+  <br/>
+   <a href="https://github.com/blyndusk/PHRH-PWA/pulls?q=is%3Aopen+is%3Apr" target="_blank">
+    <img src="https://img.shields.io/github/issues-pr-raw/blyndusk/PHRH-PWA" alt="GitHub open PR"/>
+  </a>
+  <a href="https://github.com/blyndusk/PHRH-PWA/pulls?q=is%3Apr+is%3Aclosed" target="_blank">
+    <img src="https://img.shields.io/github/issues-pr-closed-raw/blyndusk/PHRH-PWA" alt="GitHub closed PR"/>
+  </a>
+  <a href="https://github.com/blyndusk/PHRH-PWA/issues?q=is%3Aopen+is%3Aissue" target="_blank">
+    <img src="https://img.shields.io/github/issues-raw/blyndusk/PHRH-PWA" alt="GitHub open issues"/>
+  </a>
+  <a href="https://github.com/blyndusk/PHRH-PWA/issues?q=is%3Aissue+is%3Aclosed" target="_blank">
+    <img src="https://img.shields.io/github/issues-closed-raw/blyndusk/PHRH-PWA" alt="GitHub closed issues"/>
+  </a>
+ 
+</p>
+
+
 > A progressive web-app about managing homeless accommodation in hotels
 
 - [PHRH-PWA](#phrh-pwa)
-  - [I - Guidelines](#i---guidelines)
+  - [I - Links](#i---links)
+    - [1. Apps](#1-apps)
+    - [2. Technical choices & specifications](#2-technical-choices--specifications)
+    - [3. Docker images](#3-docker-images)
+  - [II - Guidelines](#ii---guidelines)
     - [1. Prod & Dev branches](#1-prod--dev-branches)
     - [2. Features & Fix branches](#2-features--fix-branches)
     - [3. Naming chart](#3-naming-chart)
-  - [II - Technical choices & specifications](#ii---technical-choices--specifications)
-    - [Front-End](#front-end)
-    - [Back-End](#back-end)
-    - [Infrastructure](#infrastructure)
-  - [IV - Team](#iv---team)
-  - [V - License](#v---license)
+  - [III - Team](#iii---team)
+  - [IV - License](#iv---license)
 
-## I - Guidelines
+## I - Links
+
+### 1. Apps
+
+- [App](http://35.180.37.72:8080)
+- [API](http://35.180.37.72:3001)
+
+### 2. Technical choices & specifications
+
+- [Front-End](https://github.com/blyndusk/PHRH-PWA/blob/master/client/README.md)
+- [Back-End](https://github.com/blyndusk/PHRH-PWA/blob/master/server/README.md)
+- [Infrastructure](https://github.com/blyndusk/PHRH-PWA/blob/master/terraform/README.md)
+
+
+### 3. Docker images
+
+- [phrh-client](https://hub.docker.com/r/blyndusk/phrh-client)
+- [phrh-fake-server](https://hub.docker.com/r/blyndusk/phrh-fake-server)
+
+
+## II - Guidelines
 
 ### 1. Prod & Dev branches
 
@@ -39,43 +88,27 @@
 - **"Planner"** 
   - the person responsible for **pooling available hotels** organized **according to different criteria and priorities** with **visitors**
 
- 
-## II - Technical choices & specifications
 
-### Front-End
+## III - Team
 
-- [React](https://reactjs.org/) 
-  - for its ease of use, its numerous plugins, its precise doc and its prototype-oriented aspect
-- [styled components](https://styled-components.com/)
-  - for its dynamism and adaptability
-
-### Back-End
-
-- [Express](https://expressjs.com/)
-  - for its ease of use
-
-### Infrastructure
-
-- [AWS](https://aws.amazon.com/)
-  - to instantiate our VM in an adequate environment
-- [Docker](https://www.docker.com/)
-  - for securely building and sharing our client & server
-- [Terraform](https://www.terraform.io/)
-  - for automation & managing infrastructures
-
-=> [Client Docker image](https://hub.docker.com/repository/docker/blyndusk/phrh-client)
-
-## IV - Team
-
-- Sophia GOUNANI
-- Maxime CHARPENTIER 
-- Nancy CAMPBELL
-- Nino LAM
-- Nicolas MARTIN
-- Pierre-Alexis KRSTIC
-- Alexandre DELALOY
+- **Sophia GOUNANI**
+  - Project Leader
+  - Designer
+- **Nancy CAMPBELL**
+  - Design
+- **Maxime CHARPENTIER**
+  - Front-end
+- **Nino LAM**
+  - Front-end
+- **Nicolas MARTIN**
+  - Front-end
+- **Pierre-Alexis KRSTIC**
+  - Back-end
+- **Alexandre DELALOY**
+  - Technical leader
+  - Infrastructure
 
 
-## V - License
+## IV - License
 
 Under [MIT](https://github.com/blyndusk/PHRH-PWA/blob/master/LICENSE) license.

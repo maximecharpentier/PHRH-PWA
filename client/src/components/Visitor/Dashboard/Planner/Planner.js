@@ -96,7 +96,6 @@ class Planner extends Component {
 						<div className="visits-of-the-day-content">
 							<div className="visits-of-the-day">
 								{this.visitsOfTheDay}
-								<Day listOfVisits={this.visitsOfTheDay} />
 							</div>
 							<p>Vous avez <span className={chambersToVisit > 50 && chambersToVisit < 60 ? "orange" : chambersToVisit >= 60 ? "red" : ""}> {chambersToVisit}</span> chambres à visiter</p>
 							{chambersToVisit > 60 && <p className="red">Vous avez atteint le nombre maximum de chambres à visiter</p>}

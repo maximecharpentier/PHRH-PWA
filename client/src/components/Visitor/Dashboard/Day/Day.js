@@ -3,10 +3,7 @@ import { BrowserRouter as Route, Link, } from 'react-router-dom';
 import './Day.scss';
 
 class Day extends Component {
-
-    state = {
-        currentDay: this.props.id
-    }
+    state = {}
     render() {
         return ( 
             <div className="Day">
@@ -16,7 +13,7 @@ class Day extends Component {
                 </div>
                 <div className="Day__tasks">
                     <Link to="/planner">
-                        <button className="Day__button" onClick={console.log(this.state.currentDay)}>
+                        <button className="Day__button">
                             <span>Planifier le</span>
                             <span>{this.props.label} {this.props.date} {this.props.month}</span>
                         </button>
