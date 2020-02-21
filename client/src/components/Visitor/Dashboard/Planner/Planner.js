@@ -2,22 +2,28 @@ import React, { Component } from 'react';
 import { BrowserRouter as Route, Link, } from 'react-router-dom';
 import './Planner.scss';
 import Tag from '../../../Common/Tag/Tag';
+import Day from '../Day/Day'
+import { EdtContext } from '../../../../contexts/edt.context'
 
 class Planner extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			visitsToPlan: [
-				{ key: 1, nom: "Welcomo", adresse: "26 avenue...", cp: "93100", nb_chambres_utilise: 26, nb_visites_periode: "22/05/2019", anomalie: "29,1", urgence: "URGENCE", nature: "Moisissure" },
-				{ key: 2, nom: "Ibis", adresse: "23 avenue...", cp: "92OOO", nb_chambres_utilise: 25, nb_visites_periode: "19/08/2019", anomalie: "15", urgence: "URGENCE", nature: "Chauffage" },
-				{ key: 3, nom: "Ibis", adresse: "23 avenue...", cp: "92OOO", nb_chambres_utilise: 25, nb_visites_periode: "19/08/2019", anomalie: "15", urgence: "URGENCE", nature: "Chauffage" }
+				{ date: "ddmmyy", key: 1, nom: "Welcomo", adresse: "26 avenue...", cp: "93100", nb_chambres_utilise: 26, nb_visites_periode: "22/05/2019", anomalie: "29,1", urgence: "URGENCE", nature: "Moisissure" },
+				{ date: "ddmmyy", key: 3, nom: "Welcomo", adresse: "26 avenue...", cp: "93100", nb_chambres_utilise: 26, nb_visites_periode: "22/05/2019", anomalie: "29,1", urgence: "URGENCE", nature: "Moisissure" },
+				{ date: "ddmmyy", key: 2, nom: "Welcomo", adresse: "26 avenue...", cp: "93100", nb_chambres_utilise: 26, nb_visites_periode: "22/05/2019", anomalie: "29,1", urgence: "URGENCE", nature: "Moisissure" },
+
 			],
 			visitsOfTheDay: [],
-			chambersToVisit: 0
+			chambersToVisit: 0,
+			idOfTheDay: null,
 		}
 		this.createVisitOfDay = this.createVisitOfDay.bind(this);
 		this.createVisitOfList = this.createVisitOfList.bind(this);
 	}
+
+	static contextType = EdtContext
 
 	createVisitOfList(hotel) {
 		return (
@@ -43,15 +49,18 @@ class Planner extends Component {
 		)
 	}
 
-	addToVisitOfTheDay(key) {
+	addToVisitOfTheDay = (key) => {
 		var visitsToPlanClicked = this.state.visitsToPlan.filter(visit => visit.key === key);
 		visitsToPlanClicked = visitsToPlanClicked[0];
 		var visitsToPlanfiltered = this.state.visitsToPlan.filter(visit => visit.key !== key);
+		var journee = this.state.visitsOfTheDay.concat(visitsToPlanClicked);
+		
 		this.setState({
-			visitsOfTheDay: this.state.visitsOfTheDay.concat(visitsToPlanClicked),
+			visitsOfTheDay: journee,
 			visitsToPlan: visitsToPlanfiltered,
 			chambersToVisit: this.state.chambersToVisit + visitsToPlanClicked.nb_chambres_utilise
 		})
+		this.context.setJourneyUser(this.state.visitsOfTheDay);
 	}
 
 	deleteVisitOfTheDay(key) {
@@ -87,6 +96,7 @@ class Planner extends Component {
 						<div className="visits-of-the-day-content">
 							<div className="visits-of-the-day">
 								{this.visitsOfTheDay}
+								<Day listOfVisits={this.visitsOfTheDay} />
 							</div>
 							<p>Vous avez <span className={chambersToVisit > 50 && chambersToVisit < 60 ? "orange" : chambersToVisit >= 60 ? "red" : ""}> {chambersToVisit}</span> chambres à visiter</p>
 							{chambersToVisit > 60 && <p className="red">Vous avez atteint le nombre maximum de chambres à visiter</p>}
@@ -120,3 +130,4 @@ class Planner extends Component {
 }
 
 export default Planner;
+

@@ -1,10 +1,12 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { BrowserRouter as Route, Link, } from 'react-router-dom';
 import './Day.scss';
 
 class Day extends Component {
 
-    state = {}
-    
+    state = {
+        currentDay: this.props.id
+    }
     render() {
         return ( 
             <div className="Day">
@@ -13,10 +15,12 @@ class Day extends Component {
                     <p className="Day__date">{this.props.date}</p>
                 </div>
                 <div className="Day__tasks">
-                    <button className="Day__button">
-                        <span>Planifier le</span>
-                        <span>{this.props.label} {this.props.date} {this.props.month}</span>
-                    </button>
+                    <Link to="/planner">
+                        <button className="Day__button" onClick={console.log(this.state.currentDay)}>
+                            <span>Planifier le</span>
+                            <span>{this.props.label} {this.props.date} {this.props.month}</span>
+                        </button>
+                    </Link>
                 </div>
             </div>
          );
