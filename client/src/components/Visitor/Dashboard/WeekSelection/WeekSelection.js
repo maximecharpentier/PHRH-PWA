@@ -3,53 +3,78 @@ import React, { Component } from 'react';
 import './WeekSelection.scss';
 
 class WeekSelection extends Component {
-    state = {
-        currentWeek: [],
-        nextWeek: []
+    constructor(props) {
+        super(props);
     }
-
-    getCurrentWeek = () => {
-        let currentDay = new Date()
-        let currentWeek = []
-
-        for (let i = 1; i <= 7; i++) {
-            let firstDayOfTheWeek = currentDay.getDate() - currentDay.getDay() + i
-            let newDay = new Date(currentDay.setDate(firstDayOfTheWeek)).toISOString().slice(0, 10)
-            currentWeek.push(newDay)
+    getFirstDay = () => {
+        if (this.props.currentWeek.length) {
+            return  this.props.isNextWeek ? this.props.nextWeek[0].replace(/2020-[0-1][0-9]-/g, '') : this.props.currentWeek[0].replace(/2020-[0-1][0-9]-/g, '')
+        } else {
+            return "00"
         }
-        this.setState({
-            currentWeek
-        }, () => console.log(this.state))
     }
-
-    getNextWeek = () => {
-        var currentDay = new Date();
-        currentDay.setDate(currentDay.getDate() + 7);
-        let nextWeek = []
-        
-        for (let i = 1; i <= 7; i++) {
-            let firstDayOfTheWeek = currentDay.getDate() - currentDay.getDay() + i
-            let newDay = new Date(currentDay.setDate(firstDayOfTheWeek)).toISOString().slice(0, 10)
-            nextWeek.push(newDay)
+    getLastDay = () => {
+        if (this.props.currentWeek.length) {
+            return  this.props.isNextWeek ? this.props.nextWeek[4].replace(/2020-[0-1][0-9]-/g, '') : this.props.currentWeek[4].replace(/2020-[0-1][0-9]-/g, '')
+        } else {
+            return "00"
         }
-        this.setState({
-            nextWeek
-        }, () => console.log(this.state))
     }
+    getMonthFr = () => {
+        const dates = this.props.isNextWeek ? this.props.nextWeek : this.props.currentWeek;
+        if (dates.length) {
+            const month = dates[0].match(/-[0-1][0-9]-/g)[0].replace(/-/g, '')
+            
+            switch (month) {
+                case '01':
+                    return 'Janvier'
+                case '02':
+                    return 'Février'
+            
+                case '03':
+                    return 'Mars'
+            
+                case '04':
+                    return 'Avril'
+                
+                case '05':
+                    return 'Mai'
 
-    componentDidMount() {
-        this.getCurrentWeek();
-        this.getNextWeek();
+                case '06':
+                    return 'Juin'
+                
+                case '07':
+                    return 'Juillet'
+                
+                case '08':
+                    return 'Août'
+                
+                case '09':
+                    return 'Septembre'
+                    
+                case '10':
+                    return 'Octobre'
+                        
+                case '11':
+                    return 'Novembre'
+
+                case '12':
+                    return 'Décembre'
+                            
+
+                default:
+                    break;
+            }
+        }
     }
-
     render() { 
         
         return (
             <div className="WeekSelection">
-                <p className="WeekSelection__text">15 - 21 Fév 2020</p>
+                <p className="WeekSelection__text">{this.getFirstDay()} - {this.getLastDay()} {this.getMonthFr()} 2020</p>
                 <div className="WeekSelection__buttons">
-                    <button className="WeekSelection__button WeekSelection__button--active">Semaine en cours</button>
-                    <button className="WeekSelection__button">Semaine suivante</button>
+                    <button className="WeekSelection__button WeekSelection__button--active" onClick={() => this.props.getToCurrentWeek()}>Semaine en cours</button>
+                    <button className="WeekSelection__button" onClick={() => this.props.getToNextWeek()}>Semaine suivante</button>
                 </div>
             </div>
         );
