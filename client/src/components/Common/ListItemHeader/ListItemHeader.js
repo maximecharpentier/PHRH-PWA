@@ -1,6 +1,6 @@
 import React from 'react';
 import Burger from '../Burger/Burger.js'
-import Input from '../Input/Input.js'
+import SearchInput from '../SearchInput/SearchInput'
 import './ListItemHeader.scss'
 
 const ListItemHeader = props => {
@@ -10,7 +10,7 @@ const ListItemHeader = props => {
         handleClick={props.toggle}
       />
       <div className="listItemHeader__search">
-        <Input placeholder={props.placeholder} />
+        <SearchInput placeholder={props.placeholder} />
         <p className="listItemHeader__search_item">Secteur ▼</p>
         <p className="listItemHeader__search_item">Date de dernière visite ▼</p>
         <p className="listItemHeader__search_item">Note ▼</p>

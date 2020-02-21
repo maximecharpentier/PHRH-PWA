@@ -4,4 +4,12 @@
   &__inside {
     padding: 0 5% 150px;
   }
+  &__inputs {
+    margin-top: 50px;
+    margin-bottom: 75px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column-gap: 100px;
+    grid-row-gap: 50px;
+  }
 }

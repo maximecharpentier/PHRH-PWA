@@ -1,47 +1,25 @@
-import React, { Component } from 'react'
-import Day from '../Day/Day'
-import './Week.scss';
+import React, { Component } from 'react';
 
-class Week extends Component {
+import './WeekSelection.scss';
+
+class WeekSelection extends Component {
     constructor(props) {
         super(props);
     }
-    state = [
-        {
-            label: 'Lundi',
-            date: '17',
-            month: 'Février'
-        },
-        {
-            label: 'Mardi',
-            date: '18',
-            month: 'Février'
-        },
-        {
-            label: 'Mercredi',
-            date: '19',
-            month: 'Février'
-        },
-        {
-            label: 'Jeudi',
-            date: '20',
-            month: 'Février'
-        },
-        {
-            label: 'Vendredi',
-            date: '21',
-            month: 'Février'
-        }
-    ]
-    getDay = (dateString) => {
-        const dates = this.props.isNextWeek ? this.props.nextWeek : this.props.currentWeek;
-        if (dates.length) {
-            console.log('duh')
-            return dateString.replace(/2020-[0-1][0-9]-/g, '')
+    getFirstDay = () => {
+        if (this.props.currentWeek.length) {
+            return  this.props.isNextWeek ? this.props.nextWeek[0].replace(/2020-[0-1][0-9]-/g, '') : this.props.currentWeek[0].replace(/2020-[0-1][0-9]-/g, '')
         } else {
             return "00"
         }
-    } 
+    }
+    getLastDay = () => {
+        if (this.props.currentWeek.length) {
+            return  this.props.isNextWeek ? this.props.nextWeek[4].replace(/2020-[0-1][0-9]-/g, '') : this.props.currentWeek[4].replace(/2020-[0-1][0-9]-/g, '')
+        } else {
+            return "00"
+        }
+    }
     getMonthFr = () => {
         const dates = this.props.isNextWeek ? this.props.nextWeek : this.props.currentWeek;
         if (dates.length) {
@@ -89,25 +67,18 @@ class Week extends Component {
             }
         }
     }
-    renderDays = () => {
-        const days = this.state;
-        return days.map((item, id) =>
-            <Day
-                key={id}
-                label={item.label}
-                date={this.getDay(this.props.isNextWeek ? this.props.nextWeek[id] : this.props.currentWeek[id])}
-                month={this.getMonthFr()}
-            />
-        );
-    }
-
-    render() {
+    render() { 
+        
         return (
-            <div className="Week">
-                {this.renderDays()}
+            <div className="WeekSelection">
+                <p className="WeekSelection__text">{this.getFirstDay()} - {this.getLastDay()} {this.getMonthFr()} 2020</p>
+                <div className="WeekSelection__buttons">
+                    <button className="WeekSelection__button WeekSelection__button--active" onClick={() => this.props.getToCurrentWeek()}>Semaine en cours</button>
+                    <button className="WeekSelection__button" onClick={() => this.props.getToNextWeek()}>Semaine suivante</button>
+                </div>
             </div>
         );
     }
 }
-
-export default Week;
+ 
+export default WeekSelection;
