@@ -13,7 +13,7 @@ class Day extends Component {
                     <p className="Day__date">{this.props.date}</p>
                 </div>
                 <div className="Day__tasks">
-                    <button className="Day__button">
+                    <button className="Day__button" onClick={() => {window.location = '/planner'}}>
                         <span>Planifier le</span>
                         <span>{this.props.label} {this.props.date} {this.props.month}</span>
                     </button>
