@@ -5,6 +5,7 @@ import HotelListItem from '../../Common/ListItem/HotelListItem/HotelListItem.js'
 const DisplayList = props => {
     return ( 
     <table>
+      <tbody>
       <tr>
         <th>Hôtel</th>
         <th>Adresse</th>
@@ -20,6 +21,7 @@ const DisplayList = props => {
           hotel={hotelData}
         />
       })}
+      </tbody>
     </table>
     );
 }
