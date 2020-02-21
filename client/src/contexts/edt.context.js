@@ -1,5 +1,4 @@
 import React, { createContext, Component } from "react";
-import { boolean } from "yup";
 import { ThemeProvider } from "styled-components";
 export const EdtContext = createContext();
 
@@ -59,8 +58,7 @@ export default class EdtContextProvider extends Component {
             <EdtContext.Provider value={{
                 setJourneyUser: this.setJourneyUser,
                 journees: this.state.journees
-            }}
-            >
+            }}>
                 {this.props.children}
             </EdtContext.Provider>
         )
