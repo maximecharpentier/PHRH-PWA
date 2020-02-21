@@ -49,6 +49,11 @@ export const MenuItems = styled.div`
     align-items: center;
     justify-content: center;
     margin-right: 100px;
+    a {
+        color: #4357EA;
+        font-weight: bold;
+    }
+    
 `
 
 export const MenuItem = styled.p`
