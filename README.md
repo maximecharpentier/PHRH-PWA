@@ -59,8 +59,8 @@
 
 ### 3. Docker images
 
-- [phrh-client](https://hub.docker.com/repository/docker/blyndusk/phrh-client)
-- [phrh-fake-server](https://hub.docker.com/repository/docker/blyndusk/phrh-fake-server)
+- [phrh-client](https://hub.docker.com/r/blyndusk/phrh-client)
+- [phrh-fake-server](https://hub.docker.com/r/blyndusk/phrh-fake-server)
 
 
 ## II - Guidelines
