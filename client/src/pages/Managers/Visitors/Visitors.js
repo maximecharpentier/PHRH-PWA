@@ -35,7 +35,7 @@ class Visitors extends Component {
   render() {
     return <div className="container">
       <div className="container__inside">
-        <SubHeader button="Ajouter un visiteur →" title="Les visiteurs à votre disposition" overtitle="Gestion des visiteurs" />
+        <SubHeader href="/visitors-formula" button="Ajouter un visiteur →" title="Les visiteurs à votre disposition" overtitle="Gestion des visiteurs" />
         <ListItemHeader placeholder="Nom / Prénom" toggle={this.toggle} />
         {
           this.state.isToggled ? 

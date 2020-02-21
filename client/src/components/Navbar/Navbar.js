@@ -1,11 +1,14 @@
 import React from 'react';
-import { StyledNavbar, RedCircle, StyledAccount, MenuContainer, MenuItems, MenuItem } from './StyledNavbar';
+import { StyledNavbar, YellowCircle, StyledAccount, MenuContainer, MenuItems, MenuItem } from './StyledNavbar';
 import { Link } from 'react-router-dom';
 import './Navbar.scss'
 
+import Logo from '../../assets/logo'
+
 const Navbar = () => (
     <StyledNavbar>
-      <RedCircle />
+      <YellowCircle />
+      <Logo />
       <MenuContainer>
         <MenuItems>
           <MenuItem><Link to="/hotels-management">Gestion<br />des hôtels</Link></MenuItem>

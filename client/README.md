@@ -1,13 +1,33 @@
-## Routes
-```javascript
-// home page visitor
-<Route exact path="/" component={Status} />
-<Route path="/login" component={Login} />
-// superviseur
-<Route path="/hotels-management" component={HotelsManagement} />
-<Route path="/managers-management" component={ManagersManagement} />
-<Route path="/visitors-management" component={VisitorsManagement} />
-// visitor
-<Route path="/dashboard" component={Dashboard} />
-<Route path="/planner" component={Planner} />
-```
+# Client app
+
+- [Client app](#client-app)
+  - [People in charge](#people-in-charge)
+  - [Technical choices](#technical-choices)
+    - [1. React](#1-react)
+    - [2. styled-components](#2-styled-components)
+    - [3. Formik](#3-formik)
+    - [4. Axios](#4-axios)
+
+## People in charge
+
+- Nicolas Martin
+- Nino Lam
+- Maxime Charpentier
+
+## Technical choices
+
+### 1. React
+
+We use `React` because ...
+
+### 2. styled-components
+
+We use `styled-components` because ...
+
+### 3. Formik
+
+We use `Formik` because ...
+
+### 4. Axios
+
+We use `Axios` because ...

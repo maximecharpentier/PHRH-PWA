@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const StyledNavbar = styled.div`
+    z-index: 999;
     padding: 0 5%;
     position: fixed;
     top: 0;
@@ -10,11 +11,12 @@ export const StyledNavbar = styled.div`
     background-color: #fff;
     height: 80px;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
 `
 
-export const RedCircle = styled.div`
+export const YellowCircle = styled.div`
+    z-index: -1;
     position: absolute;
     bottom: 0;
     left: -75px;

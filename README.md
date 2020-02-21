@@ -1,5 +1,34 @@
 # PHRH-PWA
 
+<p>
+  <a href="https://github.com/blyndusk/PHRH-PWA/actions" target="_blank">
+    <img src="https://github.com/blyndusk/PHRH-PWA/workflows/Main%20Workflow/badge.svg?branch=master" alt="GitHub Actions"/>
+  </a>
+  <a href="https://35.180.37.72:8080/" target="_blank">
+    <img src="https://img.shields.io/website?url=https%3A%2F%2F35.180.37.72%3A8080" alt="PHRH website"/>
+  </a>
+  
+  <a href="https://github.com/blyndusk/PHRH-PWA/blob/master/LICENSE" target="_blank">
+    <img src="https://img.shields.io/github/license/blyndusk/PHRH-PWA" alt="GitHub License"/>
+  </a>
+
+  <br/>
+   <a href="https://github.com/blyndusk/PHRH-PWA/pulls?q=is%3Aopen+is%3Apr" target="_blank">
+    <img src="https://img.shields.io/github/issues-pr-raw/blyndusk/PHRH-PWA" alt="GitHub open PR"/>
+  </a>
+  <a href="https://github.com/blyndusk/PHRH-PWA/pulls?q=is%3Apr+is%3Aclosed" target="_blank">
+    <img src="https://img.shields.io/github/issues-pr-closed-raw/blyndusk/PHRH-PWA" alt="GitHub closed PR"/>
+  </a>
+  <a href="https://github.com/blyndusk/PHRH-PWA/issues?q=is%3Aopen+is%3Aissue" target="_blank">
+    <img src="https://img.shields.io/github/issues-raw/blyndusk/PHRH-PWA" alt="GitHub open issues"/>
+  </a>
+  <a href="https://github.com/blyndusk/PHRH-PWA/issues?q=is%3Aissue+is%3Aclosed" target="_blank">
+    <img src="https://img.shields.io/github/issues-closed-raw/blyndusk/PHRH-PWA" alt="GitHub closed issues"/>
+  </a>
+ 
+</p>
+
+
 > A progressive web-app about managing homeless accommodation in hotels
 
 - [PHRH-PWA](#phrh-pwa)

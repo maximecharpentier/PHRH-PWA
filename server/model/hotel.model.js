@@ -53,7 +53,7 @@ const hotelSchema = new Schema({
         type: String, 
         required: true,
         trim: true,
-        maxlength: 6
+        maxlength: 400
     },
     cp : {
         type: Number, 
@@ -75,7 +75,6 @@ const hotelSchema = new Schema({
     },
     nb_visites_periode : {
         type: Number, 
-        required: true,
         trim: true,
         maxlength: 2
     },
@@ -93,18 +92,14 @@ const hotelSchema = new Schema({
     },
 })
 
-//definir la methode insertIfNotExist
-hotelSchema.statics.insertIfNotExist = function(hotel, cb) {
-    this.find({nom : hotel.nom}).exec(function(err, docs) {
-        if (!docs.length){
-            hotel.save(function(err) {
-                cb(err, hotel)
-            })
-        }
-        else{
-            cb('Hotel <<'+ hotel.nom +'>> existe deja', null);
-        }
-    })
+hotelSchema.statics.insertIfNotExist = async function (hotel) {
+    const docs = await this.find({nom : hotel.nom}).exec()
+    if (!docs.length){
+        return await hotel.save()
+    }
+    else{
+        throw new Error('Hotel <<'+ hotel.nom +'>> existe deja');
+    }
 }
 
 const Hotel = mongoose.model('Hotel', hotelSchema)
