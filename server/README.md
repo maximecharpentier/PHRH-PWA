@@ -1,56 +1,60 @@
-# Client app
+# API
 
-- [Client app](#client-app)
-  - [People in charge](#people-in-charge)
-  - [Technical choices](#technical-choices)
+- [API](#api)
+  - [Responsable](#responsable)
+  - [Choix techniques](#choix-techniques)
     - [1. Express](#1-express)
-      - [How we are using it](#how-we-are-using-it)
+      - [Pourquoi nous l'utilisons](#pourquoi-nous-lutilisons)
+      - [Comment nous l'utilisons](#comment-nous-lutilisons)
     - [2. Mongoose](#2-mongoose)
-      - [How we are using it](#how-we-are-using-it-1)
-    - [3. etc...](#3-etc)
-      - [How we are using it](#how-we-are-using-it-2)
+      - [Pourquoi nous l'utilisons](#pourquoi-nous-lutilisons-1)
+      - [Comment nous l'utilisons](#comment-nous-lutilisons-1)
+    - [3. Swagger](#3-swagger)
+      - [Pourquoi nous l'utilisons](#pourquoi-nous-lutilisons-2)
+      - [Comment nous l'utilisons](#comment-nous-lutilisons-2)
 
-## People in charge
+## Responsable
 
 - Pierre-Alexis KRSTIC
 
-## Technical choices
+## Choix techniques
 
 ### 1. Express
 
-We use `Express` because: 
-  - Open source
-  - Middleware très rapide à mettre en place et très performant car basé sur la technologie Node.js. 
-  - Il s'adapte parfaitement à des librairies de manipulation de technologies de bases de données comme MongoDB. 
-  - Il permet de gerer les resources serveurs avec la meme technologies que celle utilisée pour le front (Javascript ES6) ce qui uniformise les competences nescessaire pour maintenir l'application, rendant son cout de maintient plus faible.
-  - Standart (OAS) et très populaire car adapté aux applications de cette taille.
+#### Pourquoi nous l'utilisons
 
-#### How we are using it
-Connection au service mongoDB, création des routes de l'API.
+Nous utilisons `Express` car: 
+  - c'est **open-source**
+  - c'est un middleware très **rapide à mettre en place** et très performant car basé sur `Node.js`. 
+  - il s'adapte parfaitement à des **librairies de manipulation de technologies de bases de données** comme `MongoDB`. 
+  - il permet de gérer les **ressources serveurs** avec la même technologie que celle utilisée pour le front (`Javascript ES6`), ce qui uniformise les compétences nécessaires pour maintenir l'application, **rendant son coût de maintien plus faible**.
+  - standard (OAS) et très populaire car **adapté aux applications de cette taille**.
+
+#### Comment nous l'utilisons
+
+Connection au service `mongoDB`, **création des routes de l'API**.
 
 ### 2. Mongoose
 
-We use `Mongoose` because ...
-  - Package standart (encouragé par NodeJS) pour la gestion d'ecriture/lecture de données dans une base MongoDB.
+#### Pourquoi nous l'utilisons
 
-#### How we are using it
-Mongoose est utilisé pour réaliser et controller les models de d'entités de la base de donnée et dans les routes pour manipuler la donnée metier.
+Nous utilisons `Mongoose` car:
+  - c'est un package standard (encouragé par NodeJS) pour la **gestion d'écriture/lecture de données dans une base MongoDB**.
+
+#### Comment nous l'utilisons
+
+Mongoose est utilisé pour **réaliser** et **contrôler** les modèles d'entités de la base de donnée et dans les routes pour **manipuler la donnée métier**.
 
 ### 3. Swagger
 
-We use `etc...` because ...
-  - Projet Open Source chapoté par la Linux Fondation.
-  - Genération automatisée de la documentation.
+#### Pourquoi nous l'utilisons
+
+Nous utilisons `Swagger` car/pour:
+  - c'est un projet **open-source** chapoté par la **Linux Fondation**.
+  - il y a une **génération automatisée de la documentation**.
   - Auteur du standart OAS pour une visualisation/configuration de l'API.
-  - Pour le monitoring et la gestion à la volée des clefs d'accès à l'API
+  - le **monitoring** et la **gestion** à la volée des **clefs d'accès à l'API**
 
-#### How we are using it
-En cours d'étude
+#### Comment nous l'utilisons
 
-### 3. "sécurisation de l'API"
-
-We use `etc...` because ...
-  - Sécurise via un system robuste chaques requettes
-
-#### How we are using it
 En cours d'étude
