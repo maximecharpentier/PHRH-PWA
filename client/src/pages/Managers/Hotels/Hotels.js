@@ -19,7 +19,7 @@ class Hotels extends Component {
       .then(res => {
         this.setState({
           hotels: res.data
-        }, () => console.log(res.data))
+        })
         
       })
       .catch(err => {

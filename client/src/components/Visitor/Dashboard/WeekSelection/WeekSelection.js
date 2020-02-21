@@ -73,8 +73,8 @@ class WeekSelection extends Component {
             <div className="WeekSelection">
                 <p className="WeekSelection__text">{this.getFirstDay()} - {this.getLastDay()} {this.getMonthFr()} 2020</p>
                 <div className="WeekSelection__buttons">
-                    <button className="WeekSelection__button WeekSelection__button--active" onClick={() => this.props.getToCurrentWeek()}>Semaine en cours</button>
-                    <button className="WeekSelection__button" onClick={() => this.props.getToNextWeek()}>Semaine suivante</button>
+                    <button className={`WeekSelection__button ${!this.props.isNextWeek ? 'WeekSelection__button--active' : ''}`} onClick={() => this.props.getToCurrentWeek()}>Semaine en cours</button>
+                    <button className={`WeekSelection__button ${this.props.isNextWeek ? 'WeekSelection__button--active' : ''}`} onClick={() => this.props.getToNextWeek()}>Semaine suivante</button>
                 </div>
             </div>
         );

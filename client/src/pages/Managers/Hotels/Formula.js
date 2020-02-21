@@ -23,7 +23,7 @@ class HotelsFormula extends Component {
       .then(res => {
         this.setState({
           hotels: res.data
-        }, () => console.log(res.data))
+        })
         
       })
       .catch(err => {
