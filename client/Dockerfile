@@ -1,4 +1,4 @@
-# phrh-client:0.1
+# phrh-client:0.6
 
 # expand node:10 img as build folder
 FROM node:10 as build

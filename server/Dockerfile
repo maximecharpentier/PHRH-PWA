@@ -1,4 +1,4 @@
-# phrh-fake-server:0.2
+# phrh-fake-server:0.6
 
 # expand node:10 img
 FROM node:10
