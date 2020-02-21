@@ -37,14 +37,6 @@ This problem will **obviously** be solved in future versions.
 
 We didn't have time to complete **full infrastructure automation using Ansible**. But we code this [script](https://github.com/blyndusk/PHRH-PWA/blob/master/bin/entrypoint.sh) allowing to update the **configuration files on the remote instance**, and also allowing to **push new versions of our Docker images**.
 
-## Technical choices
-
-### 1. Docker & Docker Compose
-
-#### Why we are using it
-
-We use `Docker` firstly for its capacity to **create apps in remote dev environments**, but also for its ability to **connect different apps to each other**, and finally for its **ease of use and automation**.
-
 At the root of the project, try:
 
 ```bash
@@ -55,16 +47,24 @@ OR
 source ./bin/entrypoint.sh --build-img
 ```
 
+## Technical choices
+
+### 1. Docker & Docker Compose
+
+#### Why we are using it
+
+We use `Docker` firstly for its capacity to **create apps in remote dev environments**, but also for its ability to **connect different apps to each other**, and finally for its **ease of use and automation**.
+
 #### How we are using it
 
 We create **two images**:
 
-- [phrh-client](https://hub.docker.com/repository/docker/blyndusk/phrh-client) 
+- [phrh-client](https://hub.docker.com/r/blyndusk/phrh-client) 
   - the React App, versioned by each release
   - running on port [8080](http://35.180.37.72:8080/)
   - [Dockerfile 🔗](https://github.com/blyndusk/PHRH-PWA/blob/master/client/Dockerfile)
   - ![](https://img.shields.io/docker/pulls/blyndusk/phrh-client?style=flat-square)
-- [phrh-fake-server](https://hub.docker.com/repository/docker/blyndusk/phrh-fake-server)
+- [phrh-fake-server](https://hub.docker.com/r/blyndusk/phrh-fake-server)
   - the API we're using a this moment, a JSON turned into a RESP API using [json-server](https://github.com/typicode/json-server)
   - running on port [3001](http://35.180.37.72:3001/)
   - [Dockerfile 🔗](https://github.com/blyndusk/PHRH-PWA/blob/master/server/Dockerfile)
