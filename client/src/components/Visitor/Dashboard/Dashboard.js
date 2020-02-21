@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { EdtContext } from '../../../contexts/edt.context'
 
 import Week from './Week/Week';
 import WeekSelection from './WeekSelection/WeekSelection';
@@ -9,9 +10,17 @@ class Dashboard extends Component {
     state = {
         currentWeek: [],
         nextWeek: [],
+        currentVisits: [],
         isNextWeek: false
     }
+    static contextType = EdtContext
 
+
+    // componentDidMount(){
+    //     this.setState({
+    //         currentVisits: this.context.journees
+    //     })
+    // }
     getCurrentWeek = () => {
         let currentDay = new Date()
         let currentWeek = []
@@ -57,7 +66,6 @@ class Dashboard extends Component {
     }
     
     render() { 
-        
         return (
             
             <section className="Dashboard">
@@ -74,6 +82,7 @@ class Dashboard extends Component {
                     isNextWeek={this.state.isNextWeek}
                 />
             </section>
+
         );
     }
 }
