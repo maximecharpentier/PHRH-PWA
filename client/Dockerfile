@@ -6,8 +6,6 @@ FROM node:10 as build
 WORKDIR /home/node
 # copy package.json to /home/node
 COPY package.json .
-# copy .npmrc to /home/node
-COPY .npmrc .
 # install deps
 RUN npm install
 # copy source code
