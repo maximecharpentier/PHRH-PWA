@@ -26,7 +26,7 @@ build_phrh_client_docker_image() {
     docker build -t blyndusk/phrh-client:"$PHRH_CLIENT_VERSION" .
     docker push blyndusk/phrh-client:"$PHRH_CLIENT_VERSION"
     cd ..
-    echo "\e[36m[i] blyndusk/phrh-client:"$PHRH_CLIENT_VERSION" pushed on Docker Hub.\e[39m"
+    echo "\e[32m[v] blyndusk/phrh-client:"$PHRH_CLIENT_VERSION" pushed on Docker Hub.\e[39m"
   fi
   
 }
@@ -41,13 +41,14 @@ build_phrh_server_docker_image() {
     docker build -t blyndusk/phrh-fake-server:"$PHRH_SERVER_VERSION" .
     docker push blyndusk/phrh-fake-server:"$PHRH_SERVER_VERSION"
     cd ..
-    echo "\e[36m[i] blyndusk/phrh-fake-server:"$PHRH_SERVER_VERSION" pushed on Docker Hub.\e[39m"
+    echo "\e[32m[v] blyndusk/phrh-fake-server:"$PHRH_SERVER_VERSION" pushed on Docker Hub.\e[39m"
   fi
 }
 
 build_new_environment() {
   echo "\e[36m[i] launch production of the new images ...\e[39m"
-  ssh -i ~/.ssh/phrh-key ubuntu@"$INSTANCE_IP" 'sudo docker-compose up --remove-orphan -d' | echo "\e[36m[i] new version in production !\e[39m"
+  ssh -i ~/.ssh/phrh-key ubuntu@"$INSTANCE_IP" 'sudo docker-compose up --remove-orphan -d'
+  echo "\e[32m[v] new version in production !\e[39m"
 }
 
 get_environment_variables
