@@ -35,7 +35,7 @@ baseValueInsertor.insertProtoBaseValues(
 )
 
 //Route to end points
-const crudHotelRouter = require('./routes/crudHotel.routes.js')
+const crudHotelRouter = require('./routes/hotel/crudHotel.routes.js')
 app.use('/hotel', crudHotelRouter)
 
 const crudUrgenceRouter = require('./routes/crudUrgence.routes.js')
