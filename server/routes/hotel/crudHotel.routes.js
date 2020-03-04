@@ -2,7 +2,9 @@ const router = require('express').Router();
 
 const { Hotel, Urgence, Tache, Anomalie } = require('../../model/hotel.model');
 
-//route Add
+/*
+ * @route : add
+ */
 router.route('/add').get((req, res) => {
 
     //creer model Urgences
@@ -45,10 +47,13 @@ router.route('/add').get((req, res) => {
 
     //save
     newHotel.save()
-        .then(() => res.json('Hotel ajouté'))
+        .then(() => res.json('Hotel, urgences, anomalies et taches liées ajouté'))
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
+/*
+ * @route : get all
+ */
 router.route('/all').post((req, res) => {
     /*
     let mongoFilter = []
@@ -76,8 +81,10 @@ router.route('/all').post((req, res) => {
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
-//route Edit
-router.route('/update/:id').post((req, res) => {
+/*
+ * @route : edit
+ */
+router.route('/edit/:id').post((req, res) => {
     //creer model Urgences
     const urgences = JSON.parse(req.body.urgences).map( urgence => {
         new Urgence(
@@ -119,7 +126,18 @@ router.route('/update/:id').post((req, res) => {
         }}, 
         //{ new: true }
         )
-        .then(() => { res.json('Etudiant édité')})
+        .then(() => { res.json('Hotel, urgences, anomalies et taches liées edité')})
+        .catch(err => res.status(400).json('Erreurs: ' + err))
+
+})
+
+/*
+ * @route : edit
+ */
+router.route('/delete/:id').post((req, res) => {
+    
+    Hotel.findOneAndRemove({ id: req.params.id })
+        .then(() => { res.json('Hotel, urgences, anomalies et taches liées supprimé')})
         .catch(err => res.status(400).json('Erreurs: ' + err))
 
 })
