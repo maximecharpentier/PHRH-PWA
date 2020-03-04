@@ -103,5 +103,11 @@ hotelSchema.statics.insertIfNotExist = async function (hotel) {
 }
 
 const Hotel = mongoose.model('Hotel', hotelSchema)
+const Urgence = mongoose.model('Urgence', urgenceSchema)
+const Tache = mongoose.model('Tache', tacheSchema)
+const Anomalie = mongoose.model('Anomalie', anomalieSchema)
 
-module.exports = Hotel
+exports.Hotel = Hotel;
+exports.Urgence = Urgence;
+exports.Tache = Tache;
+exports.Anomalie = Anomalie;
