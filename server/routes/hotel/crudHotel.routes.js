@@ -4,6 +4,7 @@ const { Hotel, Urgence, Tache, Anomalie } = require('../../model/hotel.model');
 
 /*
  * @route : add
+ * @param : Hotel Object (voir schema)
  */
 router.route('/add').get((req, res) => {
 
@@ -17,7 +18,7 @@ router.route('/add').get((req, res) => {
 
     //creer model Taches
     const taches = JSON.parse(req.body.taches).map( tache => {
-        new Urgence(
+        new Tache(
             type = tache.type, 
             date_au_plus_tot = tache.date_au_plus_tot,
             date_au_plus_tard = tache.date_au_plus_tard,
@@ -26,7 +27,7 @@ router.route('/add').get((req, res) => {
 
     //creer model Anomalies
     const anomalies = JSON.parse(req.body.anomalies).map( anomalie => {
-        new Urgence(
+        new Anomalie(
             nature = anomalie.nature, 
         )
     })
@@ -53,6 +54,7 @@ router.route('/add').get((req, res) => {
 
 /*
  * @route : get all
+ * @param : void
  */
 router.route('/all').post((req, res) => {
     /*
@@ -70,19 +72,13 @@ router.route('/all').post((req, res) => {
     })*/
 
     Hotel.find({})
-        .then(hotels => res.json(hotels)/*{
-            /*var studentsMap = {}
-            students.forEach(student => {
-                studentsMap[student._id] = student
-            })
-          
-            res.json(studentsMap)*/
-        )            
+        .then(hotels => res.status(200).json(hotels))            
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
 /*
  * @route : edit
+ * @param : id Hotel
  */
 router.route('/edit/:id').post((req, res) => {
     //creer model Urgences
@@ -96,7 +92,7 @@ router.route('/edit/:id').post((req, res) => {
 
     //creer model Taches
     const taches = JSON.parse(req.body.taches).map( tache => {
-        new Urgence(
+        new Tache(
             _id = tache._id,
             type = tache.type, 
             date_au_plus_tot = tache.date_au_plus_tot,
@@ -106,7 +102,7 @@ router.route('/edit/:id').post((req, res) => {
 
     //creer model Anomalies
     const anomalies = JSON.parse(req.body.anomalies).map( anomalie => {
-        new Urgence(
+        new Anomalie(
             _id = tache._id,
             nature = anomalie.nature, 
         )
@@ -123,6 +119,7 @@ router.route('/edit/:id').post((req, res) => {
             urgences,
             anomalies,
             taches
+                
         }}, 
         //{ new: true }
         )
@@ -133,13 +130,13 @@ router.route('/edit/:id').post((req, res) => {
 
 /*
  * @route : edit
+ * @param : id Hotel
  */
 router.route('/delete/:id').post((req, res) => {
     
     Hotel.findOneAndRemove({ id: req.params.id })
-        .then(() => { res.json('Hotel, urgences, anomalies et taches liées supprimé')})
+        .then(() => { res.status(200).json('Hotel, urgences, anomalies et taches liées supprimé')})
         .catch(err => res.status(400).json('Erreurs: ' + err))
-
 })
 
 module.exports = router;
