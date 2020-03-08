@@ -2,6 +2,7 @@ const router = require('express').Router();
 
 const { Hotel, Urgence, Tache, Anomalie } = require('../../model/hotel.model');
 
+
 /*
  * @route : add
  * @param : Hotel Object (voir schema)
@@ -57,7 +58,7 @@ router.route('/add').get((req, res) => {
  * @param : void
  */
 router.route('/all').post((req, res) => {
-    /*
+    //
     let mongoFilter = []
     let filterObj = {}
 
@@ -69,8 +70,9 @@ router.route('/all').post((req, res) => {
         mongoFilter.push(
             {filterObj}
         )
-    })*/
+    })
 
+    //reprendre ici et construire le system de filtre dynamic
     Hotel.find({})
         .then(hotels => res.status(200).json(hotels))            
         .catch(err => res.status(400).json('Erreurs: ' + err))
@@ -81,33 +83,6 @@ router.route('/all').post((req, res) => {
  * @param : id Hotel
  */
 router.route('/edit/:id').post((req, res) => {
-    //creer model Urgences
-    const urgences = JSON.parse(req.body.urgences).map( urgence => {
-        new Urgence(
-            _id = tache._id,
-            resume = urgence.resume, 
-            detail = urgence.detail,
-        )
-    })
-
-    //creer model Taches
-    const taches = JSON.parse(req.body.taches).map( tache => {
-        new Tache(
-            _id = tache._id,
-            type = tache.type, 
-            date_au_plus_tot = tache.date_au_plus_tot,
-            date_au_plus_tard = tache.date_au_plus_tard,
-        )
-    })
-
-    //creer model Anomalies
-    const anomalies = JSON.parse(req.body.anomalies).map( anomalie => {
-        new Anomalie(
-            _id = tache._id,
-            nature = anomalie.nature, 
-        )
-    })
-
     Hotel.findOneAndUpdate(
         { id: req.params.id }, 
         { $set: { 
@@ -125,7 +100,6 @@ router.route('/edit/:id').post((req, res) => {
         )
         .then(() => { res.json('Hotel, urgences, anomalies et taches liées edité')})
         .catch(err => res.status(400).json('Erreurs: ' + err))
-
 })
 
 /*
