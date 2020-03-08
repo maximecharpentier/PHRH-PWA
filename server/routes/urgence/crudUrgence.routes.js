@@ -14,6 +14,7 @@ router.route('/add').get((req, res) => {
         detail = req.body.detail,
     )
 
+    //#reprendre ici finir routes
     //get Hotel
 
     /*
