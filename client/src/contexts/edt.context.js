@@ -1,5 +1,4 @@
 import React, { createContext, Component } from "react";
-import { ThemeProvider } from "styled-components";
 export const EdtContext = createContext();
 
 export default class EdtContextProvider extends Component {

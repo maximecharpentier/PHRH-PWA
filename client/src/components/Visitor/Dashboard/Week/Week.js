@@ -12,38 +12,45 @@ class Week extends Component {
         {
             id: 1,
             label: 'Lundi',
-            date: '17',
-            month: 'Février'
+            date: '',
+            month: ''
         },
         {
             id: 2,
             label: 'Mardi',
-            date: '18',
-            month: 'Février'
+            date: '',
+            month: ''
         },
         {
             id: 3,
             label: 'Mercredi',
-            date: '19',
-            month: 'Février'
+            date: '',
+            month: ''
         },
         {
             id: 4,
             label: 'Jeudi',
-            date: '20',
-            month: 'Février'
+            date: '',
+            month: ''
         },
         {
             id: 5,
             label: 'Vendredi',
-            date: '21',
-            month: 'Février'
+            date: '',
+            month: ''
         }
     ]
     static contextType = EdtContext
 
+    componentDidUpdate(){
+        this.state.map((item, id) =>
+            console.log(this.props.currentWeek[id].number)
+        );
+        // console.log(this.props.currentWeek[])
+    }
+
     getDay = (dateString) => {
-        const dates = this.props.isNextWeek ? this.props.nextWeek : this.props.currentWeek;
+        const dates = this.props.isNextWeek.number ? this.props.nextWeek.number : this.props.currentWeek.number;
         if (dates.length) {
             return dateString.replace(/2020-[0-1][0-9]-/g, '')
         } else {
@@ -53,7 +60,7 @@ class Week extends Component {
     getMonthFr = () => {
         const dates = this.props.isNextWeek ? this.props.nextWeek : this.props.currentWeek;
         if (dates.length) {
-            const month = dates[0].match(/-[0-1][0-9]-/g)[0].replace(/-/g, '')
+            const month = dates[0].number.match(/-[0-1][0-9]-/g)[0].replace(/-/g, '')
             
             switch (month) {
                 case '01':
@@ -99,16 +106,15 @@ class Week extends Component {
     }
     renderDays = () => {
         const days = this.state;
-        return days.map((item, id) =>
+        days.map((item, id) =>
             <Day
                 id={item.id}
                 key={id}
                 label={item.label}
-                date={this.getDay(this.props.isNextWeek ? this.props.nextWeek[id] : this.props.currentWeek[id])}
+                date={this.getDay(this.props.isNextWeek.number ? this.props.nextWeek[id].number : this.props.currentWeek[id].number)}
                 month={this.getMonthFr()}
                 visits={ id === 1 ? this.context.journees : null}
             />
-
         );
     }
 

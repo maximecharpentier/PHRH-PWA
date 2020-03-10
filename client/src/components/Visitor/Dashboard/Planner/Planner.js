@@ -14,7 +14,6 @@ class Planner extends Component {
 				{ date: "ddmmyy", key: 1, nom: "Welcomo", adresse: "26 avenue...", cp: "93100", nb_chambres_utilise: 26, nb_visites_periode: "22/05/2019", anomalie: "29,1", urgence: "URGENCE", nature: "Moisissure" },
 				{ date: "ddmmyy", key: 3, nom: "Welcomo", adresse: "26 avenue...", cp: "93100", nb_chambres_utilise: 26, nb_visites_periode: "22/05/2019", anomalie: "29,1", urgence: "URGENCE", nature: "Moisissure" },
 				{ date: "ddmmyy", key: 2, nom: "Welcomo", adresse: "26 avenue...", cp: "93100", nb_chambres_utilise: 26, nb_visites_periode: "22/05/2019", anomalie: "29,1", urgence: "URGENCE", nature: "Moisissure" },
-
 			],
 			visitsOfTheDay: [],
 			chambersToVisit: 0,
@@ -25,14 +24,6 @@ class Planner extends Component {
 	}
 
 	static contextType = EdtContext
-
-	// async componentDidMount() {
-	// 	var allHotels = await api.getAllHotels();
-	// 	this.setState({
-	// 		visitsToPlan: allHotels
-	// 	})
-	// 	console.log(this.state.visitsToPlan);
-	// }
 
 	createVisitOfList(hotel) {
 		return (

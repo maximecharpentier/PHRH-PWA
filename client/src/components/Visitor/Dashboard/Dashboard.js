@@ -15,20 +15,14 @@ class Dashboard extends Component {
     }
     static contextType = EdtContext
 
-
-    // componentDidMount(){
-    //     this.setState({
-    //         currentVisits: this.context.journees
-    //     })
-    // }
     getCurrentWeek = () => {
         let currentDay = new Date()
         let currentWeek = []
 
-        for (let i = 1; i <= 7; i++) {
+        for (let i = 1; i <= 5; i++) {
             let firstDayOfTheWeek = currentDay.getDate() - currentDay.getDay() + i
             let newDay = new Date(currentDay.setDate(firstDayOfTheWeek)).toISOString().slice(0, 10)
-            currentWeek.push(newDay)
+            currentWeek.push({day: i, number: newDay})
         }
         this.setState({
             currentWeek
@@ -40,10 +34,10 @@ class Dashboard extends Component {
         currentDay.setDate(currentDay.getDate() + 7);
         let nextWeek = []
         
-        for (let i = 1; i <= 7; i++) {
+        for (let i = 1; i <= 5; i++) {
             let firstDayOfTheWeek = currentDay.getDate() - currentDay.getDay() + i
             let newDay = new Date(currentDay.setDate(firstDayOfTheWeek)).toISOString().slice(0, 10)
-            nextWeek.push(newDay)
+            nextWeek.push({day: i, number: newDay})
         }
         this.setState({
             nextWeek
