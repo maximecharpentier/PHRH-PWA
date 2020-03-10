@@ -8,14 +8,14 @@ class WeekSelection extends Component {
     }
     getFirstDay = () => {
         if (this.props.currentWeek.length) {
-            return  this.props.isNextWeek ? this.props.nextWeek[0].number.replace(/2020-[0-1][0-9]-/g, '') : this.props.currentWeek[0].number.replace(/2020-[0-1][0-9]-/g, '')
+            return  this.props.isNextWeek ? this.props.nextWeek[0].replace(/2020-[0-1][0-9]-/g, '') : this.props.currentWeek[0].replace(/2020-[0-1][0-9]-/g, '')
         } else {
             return "00"
         }
     }
     getLastDay = () => {
         if (this.props.currentWeek.length) {
-            return  this.props.isNextWeek ? this.props.nextWeek[4].number.replace(/2020-[0-1][0-9]-/g, '') : this.props.currentWeek[4].number.replace(/2020-[0-1][0-9]-/g, '')
+            return  this.props.isNextWeek ? this.props.nextWeek[4].replace(/2020-[0-1][0-9]-/g, '') : this.props.currentWeek[4].replace(/2020-[0-1][0-9]-/g, '')
         } else {
             return "00"
         }
@@ -23,7 +23,7 @@ class WeekSelection extends Component {
     getMonthFr = () => {
         const dates = this.props.isNextWeek ? this.props.nextWeek : this.props.currentWeek;
         if (dates.length) {
-            const month = dates[0].number.match(/-[0-1][0-9]-/g)[0].replace(/-/g, '')
+            const month = dates[0].match(/-[0-1][0-9]-/g)[0].replace(/-/g, '')
             
             switch (month) {
                 case '01':
