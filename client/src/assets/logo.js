@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Route, Link, } from 'react-router-dom';
 
-const Edit = () => {
+const Logo = () => {
     return ( 
       <Link to="/">
 
@@ -19,4 +19,4 @@ const Edit = () => {
     );
 }
  
-export default Edit;
+export default Logo;
