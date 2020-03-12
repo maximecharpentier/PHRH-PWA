@@ -107,13 +107,13 @@ class BaseValueInsertor {
                         cberror(err)
                     }
                     //Inserer Assoc Visites / user
-                    for(const [index, visite_id] of visites_ids) {
+                    for (const [index, visite_id] of visites_ids.entries()) {
                         const assoc = new Assoc_user_visite({
                             user_id: userIntervenantDB._id,
-                            visite_id,
+                            visite_id: visite_id,
                             date : null
                         })
-                        const assocDB =  await assoc.insertIfNotExist(userIntervenant)
+                        const assocDB = await Assoc_user_visite.insertIfNotExist(assoc)
                         if (assocDB) {
                             cbconfirm("<<Association "+ (index + 1) + "/" + visites_ids.length +" inséré>>")
                         } else {
