@@ -57,10 +57,6 @@ const utilisateurSchema = new Schema({
         type: Schema.Types.ObjectId, 
         ref: 'User', 
     },
-    visites_id : [{
-        type: Schema.Types.ObjectId, 
-        ref: 'Visite'
-    }],
     vehicule_id : {
         type: Schema.Types.ObjectId, 
         ref: 'Vehicule', 

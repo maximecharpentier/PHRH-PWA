@@ -1,22 +1,33 @@
-let Hotel = require('./../model/hotel.model')
-let Visite = require('../model/visite.model')
-let User = require('../model/user.model')
+const Hotel = require('./../model/hotel.model')
+const Visite = require('../model/visite.model')
+const User = require('../model/user.model')
+const Anomalie = require('./../model/anomalie.model')
+const Assoc_user_visite = require('./../model/assoc_user_visite.model')
+const Priorisation = require('./../model/Priorisation.model')
+const Tache = require('./../model/tache.model')
+const Urgence = require('./../model/urgence.model')
+const Vehicule = require('./../model/vehicule.model')
 
 class BaseValueInsertor {
     static async insertProtoBaseValues(dbtest, cbconfirm, cberror){
         //Clean DATABASE avant insertion
         await Hotel.deleteMany({})
         await Visite.deleteMany({})
-        await User.deleteMany({})
+        await Anomalie.deleteMany({})
+        await Assoc_user_visite.deleteMany({})
+        await Priorisation.deleteMany({})
+        await Tache.deleteMany({})
+        await Urgence.deleteMany({})
+        await Vehicule.deleteMany({})
 
         //Insert base values HOTEL & VISITES
         for (const [ index, hotel ] of dbtest.hotels.entries()) {
             //inserer Hotel
             const hotelObj = new Hotel({
-                nom:        hotel.nom, 
-                adresse:    hotel.adresse , 
-                cp:         hotel.cp,
-                ville:      hotel.ville,
+                nom :        hotel.nom, 
+                adresse :    hotel.adresse , 
+                cp :         hotel.cp,
+                ville :      hotel.ville,
                 nb_chambres_utilise :   hotel.nb_chambres_utilise, 
                 nb_visites_periode :    hotel.nb_visites_periode,
                 last_time_visited :     null,
@@ -24,6 +35,7 @@ class BaseValueInsertor {
                 anomalies : hotel.anomalies,
                 taches :    hotel.taches,
             })
+
             const HotelDB = await Hotel.insertIfNotExist(hotelObj)
             if (HotelDB) {
                 //confirmation Hotel
@@ -39,7 +51,6 @@ class BaseValueInsertor {
                             ville:      visite.ville,
                             duree :     visite.duree, 
                             type :      visite.type,
-                            Priorisations : visite.priorisations,
                         })
                         const VisiteDB = await Visite.insertIfNotExist(visiteObj)
                         if(VisiteDB) {
@@ -67,7 +78,6 @@ class BaseValueInsertor {
                         plage_h :   user.plage_h,
                         infos_equipe:   user.infos_equipe,
                         equipier_id:    user.equipier_id, 
-                        visites_id:     user.visites_id,
                         vehicule_id:    user.vehicule_id
                     })
                     const userPlannifDB =  await User.insertIfNotExist(userPlannif)
@@ -78,6 +88,7 @@ class BaseValueInsertor {
                     }
                 }
                 if(user.fonction === 'Intervenant terrain') {
+                    //Inserer User
                     const userIntervenant = new User({
                         nom:        user.nom,
                         prenom:     user.prenom,
@@ -87,7 +98,6 @@ class BaseValueInsertor {
                         plage_h :   user.plage_h,
                         infos_equipe:   user.infos_equipe,
                         equipier_id:    user.equipier_id, 
-                        visites_id:     visites_ids,
                         vehicule_id:    user.vehicule_id
                     })
                     const userIntervenantDB =  await User.insertIfNotExist(userIntervenant)
@@ -95,6 +105,20 @@ class BaseValueInsertor {
                         cbconfirm("<<User "+ (index + 1) + "/" + dbtest.users.length +" inséré>>")
                     } else {
                         cberror(err)
+                    }
+                    //Inserer Assoc Visites / user
+                    for (const [index, visite_id] of visites_ids.entries()) {
+                        const assoc = new Assoc_user_visite({
+                            user_id: userIntervenantDB._id,
+                            visite_id: visite_id,
+                            date : null
+                        })
+                        const assocDB = await Assoc_user_visite.insertIfNotExist(assoc)
+                        if (assocDB) {
+                            cbconfirm("<<Association "+ (index + 1) + "/" + visites_ids.length +" inséré>>")
+                        } else {
+                            cberror(err)
+                        }
                     }
                 }
             }
