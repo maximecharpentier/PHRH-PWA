@@ -3,6 +3,17 @@ const router = require('express').Router();
 const Hotel = require('../../model/hotel.model');
 
 /*
+ * @route : get
+ * @param : id Hotel Object
+ */
+router.route('/get/:id').get((req, res) => {
+    //get hotel from DB
+    Hotel.findById(req.params.id)
+        .then( hotel => res.status(200).json(hotel))
+        .catch(err => res.status(400).json('Erreurs: ' + err))
+})
+
+/*
  * @route : add
  * @param : Hotel Object (voir schema)
  */
@@ -20,13 +31,13 @@ router.route('/add').post((req, res) => {
 
     //save
     hotel.save()
-        .then(() => res.json('Hotel ajouté'))
+        .then(() => res.status(200).json('Hotel ajouté'))
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
 /*
  * @route : get all
- * @param : void
+ * @param : filterObject : #toDefine
  */
 router.route('/all').get((req, res) => {    
     //let mongoFilter = []
@@ -46,8 +57,6 @@ router.route('/all').get((req, res) => {
         })
     }
     */
-    
-
     //reprendre ici et construire le system de filtre dynamic
     Hotel.find(filterObj/*{ville: { $in: '.*b*'}}*/)
         .then(hotels => res.status(200).json(hotels))            
@@ -59,7 +68,7 @@ router.route('/all').get((req, res) => {
  * @param : id Hotel
  */
 router.route('/edit/:id').post((req, res) => {
-    Hotel.findOneAndUpdate(
+    Hotel.findAndModify(
         { id: req.params.id }, 
         { $set: { 
             nom :           req.body.nom, 
@@ -72,17 +81,17 @@ router.route('/edit/:id').post((req, res) => {
         }}, 
         //{ new: true }
         )
-        .then(hotel => { res.json(hotel)})
+        .then(hotel => res.status(200).json('Hotel édité avec succès'))
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
 /*
- * @route : edit
+ * @route : delete
  * @param : id Hotel
  */
 router.route('/delete/:id').post((req, res) => {
-    Hotel.findOneAndRemove({ id: req.params.id })
-        .then(() => { res.status(200).json('Hotel, urgences, anomalies et taches liées supprimé')})
+    Hotel.findOneAndDelete({ id: req.params.id })
+        .then(() => { res.status(200).json('Hotel supprimé')})
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
