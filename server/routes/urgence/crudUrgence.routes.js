@@ -1,40 +1,44 @@
 const router = require('express').Router();
 
-const { Hotel, Urgence } = require('../../model/hotel.model');
+const Urgence = require('../../model/urgence.model');
+
+/*
+ * @route : get
+ * @param : id Urgence
+ */
+router.route('/get/:id').get((req, res) => {
+    //get urgence from DB
+    Urgence.findById(req.params.id)
+        .then( urgence => res.status(200).json(urgence))
+        .catch(err => res.status(400).json('Erreurs: ' + err))
+})
 
 /*
  * @route : add
- * @param : Urgence Object (voir schema)
+ * @param : Hotel Object (voir schema)
  */
-router.route('/add').get((req, res) => {
+router.route('/add').post((req, res) => {
+    //creer model Hotel
+    const urgence = new Urgence({
+        hotel_id : req.body.id_hotel, 
+        resume : req.body.resume, 
+        detail : req.body.detail 
+    })
 
-    //creer model Urgences
-    new Urgence(
-        resume = req.body.resume, 
-        detail = req.body.detail,
-    )
-
-    //#reprendre ici finir routes
-    //get Hotel
-
-    /*
     //save
-    newHotel.save()
-        .then(() => res.json('Hotel, urgences, anomalies et taches liées ajouté'))
+    urgence.save()
+        .then(() => res.status(200).json('Urgence ajoutée'))
         .catch(err => res.status(400).json('Erreurs: ' + err))
-        */
 })
 
 /*
  * @route : get all
  * @param : void
  */
-router.route('/all').post((req, res) => {
-    
-    /*Hotel.find({})
-        .then(hotels => res.status(200).json(hotels))            
+router.route('/all').get((req, res) => {
+    Urgence.find({})
+        .then(urgences => res.status(200).json(urgences))            
         .catch(err => res.status(400).json('Erreurs: ' + err))
-        */
 })
 
 /*
@@ -42,34 +46,16 @@ router.route('/all').post((req, res) => {
  * @param : id Urgence
  */
 router.route('/edit/:id').post((req, res) => {
-    //construire objet $set
-    //ex : { $set:  { 'urgences.$.name': req.body.name }}
-    let updateObj = {$set: {}}
-    for(var param in req.body) {
-        updateObj.$set['urgences.$.'+param] = req.body[param];
-    }
+    Urgence.findById(req.params.id) 
+        .then(urgence => {
+            urgence.resume = req.body.resume, 
+            urgence.detail = req.body.detail 
 
-    Hotel.update(
-        { 'urgences._id': req.body.id },
-        updateObj,
-        /*(err, result) => {
-          if (err) {
-            res.status(500)
-            .json({ error: 'Unable to update urgence.', });
-          } else {
-            res.status(200)
-            .json(result);
-          }
-       }*/
-    )
-    .then(result => {
-        res.status(200).json('Hotel, urgences, anomalies et taches liées edité')
-        }
-    )
-    .catch(err => {
-        res.status(500).json('Erreurs: ' + err)
-        }
-    )
+            urgence.save()
+                .then( urgence => res.status(200).json('Urgence édité avec succès') )
+                .catch( err => res.status(400).json('Erreur: ' + err) )
+        })
+        .catch(err => res.status(400).json('Erreur: urgence non treouvée : ' + err))
 })
 
 /*
@@ -77,12 +63,9 @@ router.route('/edit/:id').post((req, res) => {
  * @param : id Hotel
  */
 router.route('/delete/:id').post((req, res) => {
-    
-    /*Hotel.findOneAndRemove({ id: req.params.id })
-        .then(() => { res.json('Hotel, urgences, anomalies et taches liées supprimé')})
+    Urgence.findOneAndRemove({ _id: req.params.id })
+        .then(() => { res.json('Urgence supprimée')})
         .catch(err => res.status(400).json('Erreurs: ' + err))
-        */
-
 })
 
 module.exports = router;
