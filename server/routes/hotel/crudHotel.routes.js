@@ -68,8 +68,8 @@ router.route('/all').get((req, res) => {
  * @param : id Hotel
  */
 router.route('/edit/:id').post((req, res) => {
-    Hotel.findAndModify(
-        { id: req.params.id }, 
+    Hotel.findByIdAndUpdate(
+        { _id: req.params.id }, 
         { $set: { 
             nom :           req.body.nom, 
             adresse :       req.body.adresse, 
