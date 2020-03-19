@@ -1,44 +1,48 @@
 import React, { Component } from 'react';
-import ManageVisitor from './ManageVisitor/ManageVisitor'
-import ManageHotels from './ManageHotels/ManageHotels'
+import ManageVisitors from './ManageVisitors/ManageVisitors';
+import ManageHotels from './ManageHotels/ManageHotels';
+import ManageEmergencies from './ManageEmergencies/ManageEmergencies';
+import ManageTeams from './ManageTeams/ManageTeams';
 import './Manage.scss';
 
 class Manage extends Component {
     state = {
-        showVisitor: true,
+        showVisitors: true,
         showHotels: false,
-        showUrgency: false,
-        showTeam: false
+        showEmergencies: false,
+        showTeams: false
     }
-    showVisitor = () => {
-        this.setState({ showVisitor: true, showHotels: false, showUrgency: false, showTeam: false})
+
+    showVisitors = () => {
+        this.setState({ showVisitors: true, showHotels: false, showEmergencies: false, showTeams: false })
     }
     showHotels = () => {
-        this.setState({ showVisitor: false, showHotels: true })
+        this.setState({ showVisitors: false, showHotels: true, showEmergencies: false, showTeams: false })
     }
-    showUrgency = () => {
-        this.setState({ showVisitor: false, showHotels: true })
+    showEmergencies = () => {
+        this.setState({ showVisitors: false, showHotels: false, showEmergencies: true, showTeams: false })
     }
-    showTeam = () => {
-        this.setState({ showVisitor: false, showHotels: true })
+    showTeams = () => {
+        this.setState({ showVisitors: false, showHotels: false, showEmergencies: false, showTeams: true })
     }
+
     render() {
-        const { showVisitor, showHotels } = this.state;
+        const { showVisitors, showHotels, showEmergencies, showTeams } = this.state;
         return (
             <section>
                 <header>
-                    <h2>Gestions des <br/> ressources <span>.</span></h2>
+                    <h2>Gestions des <br /> ressources <span>.</span></h2>
                 </header>
                 <div>
                     <nav>
                         <ul>
-                            <li className={showVisitor ? "active" : ""} onClick={this.showVisitor}>Visiteurs</li>
+                            <li className={showVisitors ? "active" : ""} onClick={this.showVisitors}>Visiteurs</li>
                             <li className={showHotels ? "active" : ""} onClick={this.showHotels}>Hôtels</li>
-                            <li>Urgences</li>
-                            <li>Équipes</li>
+                            <li className={showEmergencies ? "active" : ""} onClick={this.showEmergencies}>Urgences</li>
+                            <li className={showTeams ? "active" : ""} onClick={this.showTeams}>Équipes</li>
                         </ul>
                     </nav>
-                    {showHotels ? <ManageHotels /> : <ManageVisitor />}
+                    {showHotels ? <ManageHotels /> : showEmergencies ? <ManageEmergencies /> : showTeams ? <ManageTeams /> : <ManageVisitors />}
                 </div>
             </section>
         );
