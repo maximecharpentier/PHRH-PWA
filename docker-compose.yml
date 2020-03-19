@@ -1,14 +1,25 @@
 # PHRH
 
 version: "3"
-
 services:
-    client:
-        image: blyndusk/phrh-client:${PHRH_CLIENT_VERSION}
-        ports: 
-            - ${PHRH_CLIENT_PORTS}
-
-    fake-server:
-        image: blyndusk/phrh-fake-server:${PHRH_SERVER_VERSION}
-        ports: 
-            - ${PHRH_SERVER_PORTS}
+  client:
+    container_name: phrh-client
+    restart: always
+    image: blyndusk/phrh-client:${PHRH_CLIENT_VERSION}
+    ports:
+      - ${PHRH_CLIENT_PORTS}
+  server:
+    container_name: phrh-server
+    restart: always
+    image: blyndusk/phrh-server:${PHRH_SERVER_VERSION}
+    ports:
+      - ${PHRH_SERVER_PORTS}
+    links:
+      - "db"
+  db:
+    container_name: phrh-db
+    image: mongo
+    volumes:
+      - ./data/db:/data/db
+    ports:
+      - ${PHRH_DB_PORTS}
