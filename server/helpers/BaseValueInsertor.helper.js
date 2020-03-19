@@ -11,14 +11,14 @@ const Vehicule = require('./../model/vehicule.model')
 class BaseValueInsertor {
     static async insertProtoBaseValues(dbtest, cbconfirm, cberror){
         //Clean DATABASE avant insertion
-        await Hotel.deleteMany({})
+        /*await Hotel.deleteMany({})
         await Visite.deleteMany({})
         await Anomalie.deleteMany({})
         await Assoc_user_visite.deleteMany({})
         await Priorisation.deleteMany({})
         await Tache.deleteMany({})
         await Urgence.deleteMany({})
-        await Vehicule.deleteMany({})
+        await Vehicule.deleteMany({})*/
 
         //Insert base values HOTEL & VISITES
         for (const [ index, hotel ] of dbtest.hotels.entries()) {

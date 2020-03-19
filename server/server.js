@@ -28,11 +28,11 @@ mongoose.connection.once(
 
 //insert base values
 const baseValueInsertor = require('./helpers/BaseValueInsertor.helper')
-baseValueInsertor.insertProtoBaseValues(
+/*baseValueInsertor.insertProtoBaseValues(
     require('./datas/data.json'),
     (msg) => {console.log(msg)}, 
     (err) => {console.error(err)}
-)
+)*/
 
 //Route to end points
 const crudHotelRouter = require('./routes/hotel/crudHotel.routes.js')
