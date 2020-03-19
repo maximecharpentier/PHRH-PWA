@@ -1,14 +1,15 @@
-# phrh-fake-server:0.6
+# phrh-server
 
-# expand node:10 img
 FROM node:10
-# work in /home/node dir
+
 WORKDIR /home/node
-# copy package.json to /home/node
-COPY package.json .
-# install deps
+
+COPY ./package.json .
+
 RUN npm install
-# copy source code
-COPY . .
-# lauch default command
-CMD ["npm", "run", "serve"]
+
+COPY . . 
+
+EXPOSE 3001
+
+CMD ["npm", "start"]

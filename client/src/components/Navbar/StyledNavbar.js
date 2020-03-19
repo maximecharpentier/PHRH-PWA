@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const StyledNavbar = styled.div`
-    z-index: 999;
+    z-index: 10;
     padding: 0 5%;
     position: fixed;
     top: 0;

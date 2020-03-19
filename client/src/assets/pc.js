@@ -1,8 +1,7 @@
 import React from 'react';
 
-const Calendar = () => {
-    return ( 
-      <svg width="25px" height="25px" viewBox="0 0 25 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+const Calendar = () => (
+    <svg width="25px" height="25px" viewBox="0 0 25 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
         <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
             <g id="Group" fill-rule="nonzero">
                 <g id="Ellipse-14" fill="#031772">
@@ -14,7 +13,6 @@ const Calendar = () => {
             </g>
         </g>
     </svg>
-    );
-}
- 
+);
+
 export default Calendar;
