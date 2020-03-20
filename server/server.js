@@ -28,11 +28,11 @@ mongoose.connection.once(
 
 //insert base values
 const baseValueInsertor = require('./helpers/BaseValueInsertor.helper')
-/*baseValueInsertor.insertProtoBaseValues(
+baseValueInsertor.insertProtoBaseValues(
     require('./datas/data.json'),
     (msg) => {console.log(msg)}, 
     (err) => {console.error(err)}
-)*/
+)
 
 //Route to end points
 const crudHotelRouter = require('./routes/hotel/crudHotel.routes.js')
@@ -41,19 +41,11 @@ app.use('/hotel', crudHotelRouter)
 const crudUrgenceRouter = require('./routes/urgence/crudUrgence.routes.js')
 app.use('/urgence', crudUrgenceRouter)
 
-const crudNoteHotelRouter = require('./routes/crudNoteHotel.routes.js')
-app.use('/note', crudNoteHotelRouter)
-
-const crudVisiteRouter = require('./routes/crudVisite.routes.js')
-app.use('/visite', crudVisiteRouter)
-   //get liste visites pour le jour de plannif
-   //get edt visites
-   //placer visite dans emploi du temps
-
 const crudUserRouter = require('./routes/user/crudUser.routes.js')
 app.use('/user', crudUserRouter)
 
-
+const featureNoterHotelRouter = require('./routes/feature.noterhotel/noterHotel.routes.js')
+app.use('/noter', featureNoterHotelRouter)
 
 //lancer le serv
 const serv_port = "27017" //process.env.SERV_PORT
