@@ -50,7 +50,7 @@ app.use('/visite', crudVisiteRouter)
    //get edt visites
    //placer visite dans emploi du temps
 
-const crudUserRouter = require('./routes/crudUser.routes.js')
+const crudUserRouter = require('./routes/user/crudUser.routes.js')
 app.use('/user', crudUserRouter)
 
 
