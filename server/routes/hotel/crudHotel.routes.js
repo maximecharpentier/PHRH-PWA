@@ -89,8 +89,8 @@ router.route('/edit/:id').post((req, res) => {
  * @route : delete
  * @param : id Hotel
  */
-router.route('/delete/:id').post((req, res) => {
-    Hotel.findOneAndDelete({ id: req.params.id })
+router.route('/delete/:id').delete((req, res) => {
+    Hotel.findOneAndDelete(req.params.id)
         .then(() => { res.status(200).json('Hotel supprimé')})
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
