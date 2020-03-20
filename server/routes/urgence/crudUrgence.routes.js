@@ -45,12 +45,14 @@ router.route('/all').get((req, res) => {
  * @route : edit
  * @param : id Urgence
  */
-router.route('/edit/:id').post((req, res) => {
+router.route('/edit/:id').post((req, res) => {   
     Urgence.findById(req.params.id) 
         .then(urgence => {
-            urgence.resume = req.body.resume, 
-            urgence.detail = req.body.detail 
-
+            const propList = ['resume', 'detail']
+            propList.forEach(prop => {
+                if(prop in req.body) urgence[prop] = req.body[prop]
+            })
+            
             urgence.save()
                 .then( urgence => res.status(200).json('Urgence édité avec succès') )
                 .catch( err => res.status(400).json('Erreur: ' + err) )
@@ -62,8 +64,8 @@ router.route('/edit/:id').post((req, res) => {
  * @route : delete
  * @param : id Hotel
  */
-router.route('/delete/:id').post((req, res) => {
-    Urgence.findOneAndRemove({ _id: req.params.id })
+router.route('/delete/:id').delete((req, res) => {
+    Urgence.findOneAndRemove(req.params.id)
         .then(() => { res.json('Urgence supprimée')})
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
