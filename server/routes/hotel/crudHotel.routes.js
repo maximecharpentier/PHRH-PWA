@@ -68,17 +68,19 @@ router.route('/all').get((req, res) => {
  * @param : id Hotel
  */
 router.route('/edit/:id').post((req, res) => {
+    //create 
+    const propList = [
+        'nom',      'adresse',              'cp',
+        'ville',    'nb_chambres_utilise',  'nb_visites_periode',
+        'last_time_visited']
+    const setObject = {}
+    propList.forEach(prop => {
+        if(prop in req.body) setObject[prop] = req.body[prop]
+    })
+
     Hotel.findByIdAndUpdate(
         { _id: req.params.id }, 
-        { $set: { 
-            nom :           req.body.nom, 
-            adresse :       req.body.adresse, 
-            cp :            Number(req.body.cp), 
-            ville :                 req.body.ville, 
-            nb_chambres_utilise :   req.body.nb_chambres_utilise, 
-            nb_visites_periode :    req.body.nb_visites_periode, 
-            last_time_visited :     Date.parse(req.body.last_time_visited),
-        }}, 
+        { $set: setObject }, 
         //{ new: true }
         )
         .then(hotel => res.status(200).json('Hotel édité avec succès'))
