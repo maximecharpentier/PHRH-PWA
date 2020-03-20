@@ -3,6 +3,16 @@ const router = require('express').Router();
 const Urgence = require('../../model/urgence.model');
 
 /*
+ * @route : get all
+ * @param : void
+ */
+router.route('/').get((req, res) => {
+    Urgence.find({})
+        .then(urgences => res.status(200).json(urgences))            
+        .catch(err => res.status(400).json('Erreurs: ' + err))
+})
+
+/*
  * @route : get
  * @param : id Urgence
  */
@@ -28,16 +38,6 @@ router.route('/add').post((req, res) => {
     //save
     urgence.save()
         .then(() => res.status(200).json('Urgence ajoutée'))
-        .catch(err => res.status(400).json('Erreurs: ' + err))
-})
-
-/*
- * @route : get all
- * @param : void
- */
-router.route('/all').get((req, res) => {
-    Urgence.find({})
-        .then(urgences => res.status(200).json(urgences))            
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
