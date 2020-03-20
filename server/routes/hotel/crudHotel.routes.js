@@ -3,6 +3,34 @@ const router = require('express').Router();
 const Hotel = require('../../model/hotel.model');
 
 /*
+ * @route : get all
+ * @param : filterObject : #toDefine
+ */
+router.route('/').get((req, res) => {    
+    //let mongoFilter = []
+    let filterObj = {}
+    /*
+    if(req.body.filters) {
+        req.body.filters.map(filter => {
+            //create filter from request
+            //old filterObj[filter.field] = { $regex: '.*' + filter.value + '*', $options: 'i' }
+            filterObj[filter.field] = { $in: '.*' + filter.value + '*'}
+            //filterObj['test'] = "ok"
+
+            //populate aray filters
+            //mongoFilter.push(
+            //    {filterObj}
+            //)
+        })
+    }
+    */
+    //reprendre ici et construire le system de filtre dynamic
+    Hotel.find(filterObj/*{ville: { $in: '.*b*'}}*/)
+        .then(hotels => res.status(200).json(hotels))            
+        .catch(err => res.status(400).json('Erreurs: ' + err))
+})
+
+/*
  * @route : get
  * @param : id Hotel Object
  */
@@ -32,34 +60,6 @@ router.route('/add').post((req, res) => {
     //save
     hotel.save()
         .then(() => res.status(200).json('Hotel ajouté'))
-        .catch(err => res.status(400).json('Erreurs: ' + err))
-})
-
-/*
- * @route : get all
- * @param : filterObject : #toDefine
- */
-router.route('/all').get((req, res) => {    
-    //let mongoFilter = []
-    let filterObj = {}
-    /*
-    if(req.body.filters) {
-        req.body.filters.map(filter => {
-            //create filter from request
-            //old filterObj[filter.field] = { $regex: '.*' + filter.value + '*', $options: 'i' }
-            filterObj[filter.field] = { $in: '.*' + filter.value + '*'}
-            //filterObj['test'] = "ok"
-
-            //populate aray filters
-            //mongoFilter.push(
-            //    {filterObj}
-            //)
-        })
-    }
-    */
-    //reprendre ici et construire le system de filtre dynamic
-    Hotel.find(filterObj/*{ville: { $in: '.*b*'}}*/)
-        .then(hotels => res.status(200).json(hotels))            
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 

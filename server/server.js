@@ -36,7 +36,7 @@ baseValueInsertor.insertProtoBaseValues(
 
 //Route to end points
 const crudHotelRouter = require('./routes/hotel/crudHotel.routes.js')
-app.use('/hotel', crudHotelRouter)
+app.use('/hotels', crudHotelRouter)
 
 const crudUrgenceRouter = require('./routes/urgence/crudUrgence.routes.js')
 app.use('/urgence', crudUrgenceRouter)
@@ -44,8 +44,8 @@ app.use('/urgence', crudUrgenceRouter)
 const crudUserRouter = require('./routes/user/crudUser.routes.js')
 app.use('/user', crudUserRouter)
 
-const featureNoterHotelRouter = require('./routes/feature.noterhotel/noterHotel.routes.js')
-app.use('/noter', featureNoterHotelRouter)
+/*const featureNoterHotelRouter = require('./routes/feature\.noterhotel/noterHotel.routes.js')
+app.use('/noter', featureNoterHotelRouter)*/
 
 //lancer le serv
 const serv_port = "27017" //process.env.SERV_PORT
