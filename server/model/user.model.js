@@ -70,7 +70,8 @@ utilisateurSchema.statics.insertIfNotExist = async function(user) {
         return await user.save()
     }
     else{
-        throw new Error('Utilisateur <<'+ user.nom +'>> existe deja', null);
+        //throw new Error('Utilisateur <<'+ user.nom +'>> existe deja', null);
+        console.log('Utilisateur <<'+ user.nom +'>> existe deja')
     }
 }
 
