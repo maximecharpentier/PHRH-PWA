@@ -40,7 +40,8 @@ visiteSchema.statics.insertIfNotExist = async function(visite) {
         return await visite.save()
     }
     else{
-        throw new Error('Visite <<X>> existe deja', null);
+        //throw new Error('Visite <<X>> existe deja', null);
+        console.log('Visite <<X>> existe deja')
     }
 }
 
