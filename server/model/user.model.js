@@ -57,10 +57,6 @@ const utilisateurSchema = new Schema({
         type: Schema.Types.ObjectId, 
         ref: 'User', 
     },
-    visites_id : [{
-        type: Schema.Types.ObjectId, 
-        ref: 'Visite'
-    }],
     vehicule_id : {
         type: Schema.Types.ObjectId, 
         ref: 'Vehicule', 
@@ -74,7 +70,8 @@ utilisateurSchema.statics.insertIfNotExist = async function(user) {
         return await user.save()
     }
     else{
-        throw new Error('Utilisateur <<'+ user.nom +'>> existe deja', null);
+        //throw new Error('Utilisateur <<'+ user.nom +'>> existe deja', null);
+        console.log('Utilisateur <<'+ user.nom +'>> existe deja')
     }
 }
 
