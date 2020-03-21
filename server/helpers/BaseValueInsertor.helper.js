@@ -9,16 +9,20 @@ const Urgence = require('./../model/urgence.model')
 const Vehicule = require('./../model/vehicule.model')
 
 class BaseValueInsertor {
-    static async insertProtoBaseValues(dbtest, cbconfirm, cberror){
+    static async insertProtoBaseValues(dbtest, deleteOldValues, cbconfirm, cberror){
         //Clean DATABASE avant insertion
-        /*await Hotel.deleteMany({})
-        await Visite.deleteMany({})
-        await Anomalie.deleteMany({})
-        await Assoc_user_visite.deleteMany({})
-        await Priorisation.deleteMany({})
-        await Tache.deleteMany({})
-        await Urgence.deleteMany({})
-        await Vehicule.deleteMany({})*/
+        if(deleteOldValues) {
+            await Hotel.deleteMany({})
+            await Visite.deleteMany({})
+            await Anomalie.deleteMany({})
+            await Assoc_user_visite.deleteMany({})
+            await Priorisation.deleteMany({})
+            await Tache.deleteMany({})
+            await Urgence.deleteMany({})
+            await Vehicule.deleteMany({})
+            await User.deleteMany({})
+        }
+        
 
         //Insert base values HOTEL & VISITES
         for (const [ index, hotel ] of dbtest.hotels.entries()) {
@@ -68,7 +72,7 @@ class BaseValueInsertor {
             //Insertion des users
             for (const [ index, user ] of dbtest.users.entries()) {
                 //inserer users
-                if(user.fonction === 'Gestionnaire') {
+                if(user.fonction === 'Superviseur') {
                     const userPlannif = new User({
                         nom:        user.nom,
                         prenom:     user.prenom,
@@ -83,8 +87,6 @@ class BaseValueInsertor {
                     const userPlannifDB =  await User.insertIfNotExist(userPlannif)
                     if (userPlannifDB) {
                         cbconfirm("<<User "+ (index + 1) + "/" + dbtest.users.length +" inséré>>")
-                    } else {
-                        cberror(err)
                     }
                 }
                 if(user.fonction === 'Intervenant terrain') {
@@ -103,21 +105,18 @@ class BaseValueInsertor {
                     const userIntervenantDB =  await User.insertIfNotExist(userIntervenant)
                     if (userIntervenantDB) {
                         cbconfirm("<<User "+ (index + 1) + "/" + dbtest.users.length +" inséré>>")
-                    } else {
-                        cberror(err)
-                    }
-                    //Inserer Assoc Visites / user
-                    for (const [index, visite_id] of visites_ids.entries()) {
-                        const assoc = new Assoc_user_visite({
-                            user_id: userIntervenantDB._id,
-                            visite_id: visite_id,
-                            date : null
-                        })
-                        const assocDB = await Assoc_user_visite.insertIfNotExist(assoc)
-                        if (assocDB) {
-                            cbconfirm("<<Association "+ (index + 1) + "/" + visites_ids.length +" inséré>>")
-                        } else {
-                            cberror(err)
+
+                        //Inserer Assoc Visites / user
+                        for (const [index, visite_id] of visites_ids.entries()) {
+                            const assoc = new Assoc_user_visite({
+                                user_id: userIntervenantDB._id,
+                                visite_id: visite_id,
+                                date : null
+                            })
+                            const assocDB = await Assoc_user_visite.insertIfNotExist(assoc)
+                            if (assocDB) {
+                                cbconfirm("<<Association "+ (index + 1) + "/" + visites_ids.length +" inséré>>")
+                            }
                         }
                     }
                 }
@@ -129,7 +128,7 @@ class BaseValueInsertor {
             const visiteur2_id = visiteurs[1]._id
             //inserer User 1 -> User 2
             User.findOneAndUpdate(
-                { id: visiteur1_id }, 
+                { _id: visiteur1_id }, 
                 { $set: { 
                     equipier_id: visiteur2_id
                 }}, 
@@ -139,7 +138,7 @@ class BaseValueInsertor {
 
             //inserer User 2 -> User 1
             User.findOneAndUpdate(
-                { id: visiteur2_id }, 
+                { _id: visiteur2_id }, 
                 { $set: { 
                     equipier_id: visiteur1_id
                 }}, 
