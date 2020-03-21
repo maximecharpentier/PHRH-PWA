@@ -3,6 +3,34 @@ const router = require('express').Router();
 const User = require('../../model/user.model');
 
 /*
+ * @route : get all
+ * @param : filterObject : #toDefine
+ */
+router.route('/').get((req, res) => {    
+    //let mongoFilter = []
+    let filterObj = {}
+    /*
+    if(req.body.filters) {
+        req.body.filters.map(filter => {
+            //create filter from request
+            //old filterObj[filter.field] = { $regex: '.*' + filter.value + '*', $options: 'i' }
+            filterObj[filter.field] = { $in: '.*' + filter.value + '*'}
+            //filterObj['test'] = "ok"
+
+            //populate aray filters
+            //mongoFilter.push(
+            //    {filterObj}
+            //)
+        })
+    }
+    */
+    //reprendre ici et construire le system de filtre dynamic
+    User.find(filterObj/*{ville: { $in: '.*b*'}}*/)
+        .then(Users => res.status(200).json(Users))            
+        .catch(err => res.status(400).json('Erreurs: ' + err))
+})
+
+/*
  * @route : get
  * @param : id User Object
  */
@@ -34,34 +62,6 @@ router.route('/add').post((req, res) => {
     //save
     user.save()
         .then(() => res.status(200).json('User ajouté'))
-        .catch(err => res.status(400).json('Erreurs: ' + err))
-})
-
-/*
- * @route : get all
- * @param : filterObject : #toDefine
- */
-router.route('/all').get((req, res) => {    
-    //let mongoFilter = []
-    let filterObj = {}
-    /*
-    if(req.body.filters) {
-        req.body.filters.map(filter => {
-            //create filter from request
-            //old filterObj[filter.field] = { $regex: '.*' + filter.value + '*', $options: 'i' }
-            filterObj[filter.field] = { $in: '.*' + filter.value + '*'}
-            //filterObj['test'] = "ok"
-
-            //populate aray filters
-            //mongoFilter.push(
-            //    {filterObj}
-            //)
-        })
-    }
-    */
-    //reprendre ici et construire le system de filtre dynamic
-    User.find(filterObj/*{ville: { $in: '.*b*'}}*/)
-        .then(Users => res.status(200).json(Users))            
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 

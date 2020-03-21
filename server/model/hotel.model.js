@@ -49,7 +49,8 @@ hotelSchema.statics.insertIfNotExist = async function (hotel) {
         return await hotel.save()
     }
     else{
-        throw new Error('Hotel <<'+ hotel.nom +'>> existe deja');
+        //throw new Error('Hotel <<'+ hotel.nom +'>> existe deja');
+        console.log('Hotel <<'+ hotel.nom +'>> existe deja')
     }
 }
 

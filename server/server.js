@@ -39,10 +39,10 @@ const crudHotelRouter = require('./routes/hotel/crudHotel.routes.js')
 app.use('/hotels', crudHotelRouter)
 
 const crudUrgenceRouter = require('./routes/urgence/crudUrgence.routes.js')
-app.use('/urgence', crudUrgenceRouter)
+app.use('/urgences', crudUrgenceRouter)
 
 const crudUserRouter = require('./routes/user/crudUser.routes.js')
-app.use('/user', crudUserRouter)
+app.use('/users', crudUserRouter)
 
 /*const featureNoterHotelRouter = require('./routes/feature\.noterhotel/noterHotel.routes.js')
 app.use('/noter', featureNoterHotelRouter)*/
