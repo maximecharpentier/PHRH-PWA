@@ -68,24 +68,24 @@ En cours d'étude
 ## Routes doc (temporary)
 **feature Gestion couverture terrain: CRUD Hotel :**
   - **_/hotels_** : get All
-      @method : GET
+    - @method : GET
 
   - **_/hotels/get/:id_** : get hotel by id
-      @method : GET
-      @param : (string) :id : id Hotel
+    - @method : GET
+    - @param : (string) :id : id Hotel
 
   - **_/hotels/add_** : ajouter un hotel
-      @method : POST
-      @param : (object JSON) : objet JSON conforme au model Hotel
+    - @method : POST
+    - @param : (object JSON) : objet JSON conforme au model Hotel
 
   - **_/hotels/edit/:id_** : editer l'hotel ayant l'id :id
-      @method : POST
-      @param : (string) :id : id Hotel
-      @param : (object JSON) : {prop1 : newValue, prop2 : newValue ...}, "propX" doit etre conforme au model Hotel
+    - @method : POST
+    - @param : (string) :id : id Hotel
+    - @param : (object JSON) : {prop1 : newValue, prop2 : newValue ...}, "propX" doit etre conforme au model Hotel
 
   - **_/hotels/delete/:id_** : supprimer l'hotel ayant l'id :id
-      @method : DELETE
-      @param : (string) :id : id Hotel
+    - @method : DELETE
+    - @param : (string) :id : id Hotel
 
 **feature Gestion couverture terrain: Associer equipier :**
   (INC)
@@ -95,42 +95,42 @@ En cours d'étude
 
 **feature Gestion utilisateur : CRUD User :**
   - **_/users_** : get All
-      @method : GET
+    - @method : GET
 
   - **_/users/get/:id_** : get user by id
-      @method : GET
-      @param : (string) :id : id User
+    - @method : GET
+    - @param : (string) :id : id User
 
   - **_/users/add_** : ajouter un user
-      @method : POST
-      @param : (object JSON) : objet JSON conforme au model User
+    - @method : POST
+    - @param : (object JSON) : objet JSON conforme au model User
 
   - **_/users/edit/:id_** : editer l'user ayant l'id :id
-      @method : POST
-      @param : (string) :id : id User
-      @param : (object JSON) : {prop1 : newValue, prop2 : newValue ...}, "propX" doit etre conforme au model User
+    - @method : POST
+    - @param : (string) :id : id User
+    - @param : (object JSON) : {prop1 : newValue, prop2 : newValue ...}, "propX" doit etre conforme au model User
 
   - **_/users/delete/:id_** : supprimer l'user ayant l'id :id
-      @method : DELETE
-      @param : (string) :id : id User
+    - @method : DELETE
+    - @param : (string) :id : id User
 
 **feature CRUD Urgence :**
   - **_/urgences_** : get All
-      @method : GET
+    - @method : GET
 
   - **_/urgences/get/:id_** : get urgence by id
-      @method : GET
-      @param : (string) :id : id Urgence
+    - @method : GET
+    - @param : (string) :id : id Urgence
 
   - **_/urgences/add_** : ajouter un urgence
-      @method : POST
-      @param : (object JSON) : objet JSON conforme au model Urgence
+    - @method : POST
+    - @param : (object JSON) : objet JSON conforme au model Urgence
 
   - **_/urgences/edit/:id_** : editer l'urgence ayant l'id :id
-      @method : POST
-      @param : (string) :id : id Urgence
-      @param : (object JSON) : {prop1 : newValue, prop2 : newValue ...}, "propX" doit etre conforme au model Urgence
+    - @method : POST
+    - @param : (string) :id : id Urgence
+    - @param : (object JSON) : {prop1 : newValue, prop2 : newValue ...}, "propX" doit etre conforme au model Urgence
 
   - **_/urgences/delete/:id_** : supprimer l'urgence ayant l'id :id
-      @method : DELETE
-      @param : (string) :id : id Urgence
+    - @method : DELETE
+    - @param : (string) :id : id Urgence
