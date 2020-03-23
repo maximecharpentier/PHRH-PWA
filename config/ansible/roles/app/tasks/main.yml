@@ -1,4 +1,3 @@
-
 - name: Create Application directory
   file:
     path: "{{ app_directory }}"
@@ -7,18 +6,17 @@
 - name: Copy Server application
   copy:
     src: ../../../server
-    dest:  "{{ app_directory }}"
+    dest: "{{ app_directory }}"
 
 - name: Copy Client Application
   copy:
     src: ../../../client
-    dest:  "{{ app_directory }}"
+    dest: "{{ app_directory }}"
 
 - name: Login to Docker registry
   docker_login:
-    username: "{{ application_docker_username }}"
-    password: "{{ application_docker_password }}"
-
+    username: "{{ docker_username }}"
+    password: "{{ docker_password }}"
 
 - name: Build and push docker image client
   docker_image:
@@ -30,7 +28,7 @@
     source: build
   notify: restart docker stack
   tags: ["build", "redeploy"]
-  
+
 - name: Build and push docker image server
   docker_image:
     build:
@@ -41,9 +39,9 @@
     source: build
   notify: restart docker stack
   tags: ["build", "redeploy"]
-  
-  - name: Copy docker-compose configuration file
-    template:
-      src: templates/docker-compose.yml
-      dest: "{{ app_directory }}/docker-compose.yml"
-    notify: restart docker stack
+
+- name: Copy docker-compose configuration file
+  template:
+    src: templates/docker-compose.yml
+    dest: "{{ app_directory }}/docker-compose.yml"
+  notify: restart docker stack

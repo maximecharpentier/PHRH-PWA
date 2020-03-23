@@ -1,0 +1,15 @@
+docker_username: blyndusk
+docker_password: Ew2V{ab}kLbS[ypP~FL]Dkn#g:wJ
+
+app_directory: /home/ubuntu/phrh
+
+phrh_client_image: "{{ docker_username }}/phrh-client"
+phrh_client_tag: 0.12
+phrh_client_port: 8080
+
+phrh_server_image: "{{ docker_username }}/phrh-server"
+phrh_server_tag: 0.2
+phrh_server_port: 3000
+phrh_server_host: db
+
+phrh_db_port: 27017

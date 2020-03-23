@@ -1,0 +1,15 @@
+- name: Install libs & packages
+  hosts: app
+  roles:
+    - role: common
+      become: true
+      tags: ["common"]
+    - role: ansible-role-docker
+      become: true
+      tags: ["docker"]
+
+- name: Deploy PHRH
+  hosts: app
+  roles:
+    - role: app
+      tags: ["app"]
