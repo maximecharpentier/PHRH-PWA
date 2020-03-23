@@ -1,5 +1,3 @@
-# PHRH
-
 version: "3"
 services:
   client:

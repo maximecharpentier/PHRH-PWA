@@ -3,13 +3,13 @@
   roles:
     - role: common
       become: true
-      tags: ["common"]
-    - role: ansible-role-docker
+      tags: ["install"]
+    - role: geerlingguy.docker
       become: true
-      tags: ["docker"]
+      tags: ["install", "docker"]
 
 - name: Deploy PHRH
   hosts: app
   roles:
     - role: app
-      tags: ["app"]
+      tags: ["deploy"]

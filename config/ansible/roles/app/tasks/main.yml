@@ -5,12 +5,12 @@
 
 - name: Copy Server application
   copy:
-    src: ../../../server
+    src: ../../../../server
     dest: "{{ app_directory }}"
 
 - name: Copy Client Application
   copy:
-    src: ../../../client
+    src: ../../../../client
     dest: "{{ app_directory }}"
 
 - name: Login to Docker registry
