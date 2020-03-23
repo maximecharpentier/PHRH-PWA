@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const Hotel = require('../../model/hotel.model');
+const User = require('../../model/user.model');
 
 /*
  * @route : get all
@@ -25,75 +25,76 @@ router.route('/').get((req, res) => {
     }
     */
     //reprendre ici et construire le system de filtre dynamic
-    Hotel.find(filterObj/*{ville: { $in: '.*b*'}}*/)
-        .then(hotels => res.status(200).json(hotels))            
+    User.find(filterObj/*{ville: { $in: '.*b*'}}*/)
+        .then(Users => res.status(200).json(Users))            
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
 /*
  * @route : get
- * @param : id Hotel Object
+ * @param : id User Object
  */
 router.route('/get/:id').get((req, res) => {
-    //get hotel from DB
-    Hotel.findById(req.params.id)
-        .then( hotel => res.status(200).json(hotel))
+    //get User from DB
+    User.findById(req.params.id)
+        .then( User => res.status(200).json(User))
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
 /*
  * @route : add
- * @param : Hotel Object (voir schema)
+ * @param : User Object (voir schema)
  */
 router.route('/add').post((req, res) => {
-    //creer model Hotel
-    const hotel = new Hotel({
-        nom :           req.body.nom, 
-        adresse :       req.body.adresse, 
-        cp :            Number(req.body.cp), 
-        ville :                 req.body.ville, 
-        nb_chambres_utilise :   req.body.nb_chambres_utilise, 
-        nb_visites_periode :    req.body.nb_visites_periode, 
-        last_time_visited :     Date.parse(req.body.last_time_visited),
+    //creer model User
+    const user = new User({
+        nom :       req.body.nom, 
+        prenom :    req.body.prenom, 
+        pwd :       req.body.pwd, 
+        fonction :  req.body.fonction, 
+        secteur :   req.body.secteur, 
+        plage_h :   req.body.plage_h, 
+        infos_equipe :req.body.infos_equipe,
+        equipier_id : req.body.equipier_id,
+        vehicule_id : req.body.vehicule_id,
     })
 
     //save
-    hotel.save()
-        .then(() => res.status(200).json('Hotel ajouté'))
+    user.save()
+        .then(() => res.status(200).json('User ajouté'))
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
 /*
  * @route : edit
- * @param : id Hotel
+ * @param : id User
  */
 router.route('/edit/:id').post((req, res) => {
     //create 
     const propList = [
-        'nom',      'adresse',              'cp',
-        'ville',    'nb_chambres_utilise',  'nb_visites_periode',
-        'last_time_visited']
+        'nom',          'prenom',       'pwd',
+        'fonction',     'secteur',      'plage_h',
+        'infos_equipe', 'equipier_id',  'vehicule_id']
     const setObject = {}
     propList.forEach(prop => {
         if(prop in req.body) setObject[prop] = req.body[prop]
     })
-
-    Hotel.findByIdAndUpdate(
+    User.findByIdAndUpdate(
         { _id: req.params.id }, 
         { $set: setObject }, 
         //{ new: true }
         )
-        .then(hotel => res.status(200).json('Hotel édité avec succès'))
+        .then(User => res.status(200).json('User édité avec succès'))
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
 /*
  * @route : delete
- * @param : id Hotel
+ * @param : id User
  */
 router.route('/delete/:id').delete((req, res) => {
-    Hotel.findOneAndDelete(req.params.id)
-        .then(() => { res.status(200).json('Hotel supprimé')})
+    User.findOneAndDelete(req.params.id)
+        .then(() => { res.status(200).json('User supprimé')})
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 

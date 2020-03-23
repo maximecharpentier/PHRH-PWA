@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 //connection a la base mongo
-const uri = `mongodb://${process.env.PHRH_SERVER_HOST}:27017/PHRH`;
+const uri = `mongodb://${process.env.SERVER_HOST}:27017/PHRH`;
 
 var connectWithRetry = function() {
   return mongoose.connect(
@@ -51,22 +51,16 @@ baseValueInsertor.insertProtoBaseValues(
 
 //Route to end points
 const crudHotelRouter = require("./routes/hotel/crudHotel.routes.js");
-app.use("/hotel", crudHotelRouter);
+app.use("/hotels", crudHotelRouter);
 
 const crudUrgenceRouter = require("./routes/urgence/crudUrgence.routes.js");
-app.use("/urgence", crudUrgenceRouter);
+app.use("/urgences", crudUrgenceRouter);
 
-const crudNoteHotelRouter = require("./routes/crudNoteHotel.routes.js");
-app.use("/note", crudNoteHotelRouter);
+const crudUserRouter = require("./routes/user/crudUser.routes.js");
+app.use("/users", crudUserRouter);
 
-const crudVisiteRouter = require("./routes/crudVisite.routes.js");
-app.use("/visite", crudVisiteRouter);
-//get liste visites pour le jour de plannif
-//get edt visites
-//placer visite dans emploi du temps
-
-const crudUserRouter = require("./routes/crudUser.routes.js");
-app.use("/user", crudUserRouter);
+/*const featureNoterHotelRouter = require('./routes/feature\.noterhotel/noterHotel.routes.js')
+app.use('/noter', featureNoterHotelRouter)*/
 
 //lancer le serv
 const serv_port = "27017"; //process.env.SERV_PORT

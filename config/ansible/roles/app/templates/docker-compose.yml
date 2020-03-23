@@ -1,19 +1,17 @@
-# PHRH
-
 version: "3"
 services:
   client:
     container_name: phrh-client
     restart: always
-    image: blyndusk/phrh-client:${PHRH_CLIENT_VERSION}
+    image: "{{ phrh_client_image }}:{{ phrh_client_tag }}"
     ports:
-      - ${PHRH_CLIENT_PORTS}
+      - "{{ phrh_client_port }}:80"
   server:
     container_name: phrh-server
     restart: always
-    image: blyndusk/phrh-server:${PHRH_SERVER_VERSION}
+    image: "{{ phrh_server_image }}:{{ phrh_server_tag }}"
     ports:
-      - ${PHRH_SERVER_PORTS}
+      - "{{ phrh_server_port }}:3000"
     links:
       - "db"
   db:
@@ -22,4 +20,4 @@ services:
     volumes:
       - ./data/db:/data/db
     ports:
-      - ${PHRH_DB_PORTS}
+      - "{{ phrh_db_port }}:27017"
