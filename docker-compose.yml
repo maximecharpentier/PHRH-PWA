@@ -7,13 +7,13 @@ services:
     restart: always
     image: blyndusk/phrh-client:${PHRH_CLIENT_VERSION}
     ports:
-      - ${PHRH_CLIENT_PORTS}
+      - ${PHRH_CLIENT_PORTS}:80
   server:
     container_name: phrh-server
     restart: always
     image: blyndusk/phrh-server:${PHRH_SERVER_VERSION}
     ports:
-      - ${PHRH_SERVER_PORTS}
+      - ${PHRH_SERVER_PORTS}:3000
     links:
       - "db"
   db:
@@ -22,4 +22,4 @@ services:
     volumes:
       - ./data/db:/data/db
     ports:
-      - ${PHRH_DB_PORTS}
+      - ${PHRH_DB_PORTS}:27017
