@@ -1,0 +1,31 @@
+name: Deploy
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged
+
+    steps:
+      - name: checkout
+        if: github.event.pull_request.merged
+        uses: actions/checkout@v1
+        with:
+          ref: master
+
+      - name: deploy
+        uses: dawidd6/action-ansible-playbook
+        working-directory: ./config/ansible
+        with:
+          playbook: app.yml
+          key: ${{ secrets.PHRH_PRIVATE_KEY }}
+          options: |
+            --inventory inventory.ini
+            --user ubuntu
+            --tags "deploy"
+            --verbose
