@@ -12,6 +12,8 @@
     - [3. Swagger](#3-swagger)
       - [Pourquoi nous l'utilisons](#pourquoi-nous-lutilisons-2)
       - [Comment nous l'utilisons](#comment-nous-lutilisons-2)
+  - [Lancer serveur](#lancer-server)
+  - [Routes](#routes)
 
 ## Responsable
 
@@ -58,3 +60,77 @@ Nous utilisons `Swagger` car/pour:
 #### Comment nous l'utilisons
 
 En cours d'étude
+
+## Lancer serveur (v1)
+  - lancer mongo sur votre machine
+  - [a la racine] executer npm start server
+
+## Routes doc (temporary)
+**feature Gestion couverture terrain: CRUD Hotel :**
+  - **_/hotels_** : get All
+    - @method : GET
+
+  - **_/hotels/get/:id_** : get hotel by id
+    - @method : GET
+    - @param : (string) :id : id Hotel
+
+  - **_/hotels/add_** : ajouter un hotel
+    - @method : POST
+    - @param : (object JSON) : objet JSON conforme au model Hotel
+
+  - **_/hotels/edit/:id_** : editer l'hotel ayant l'id :id
+    - @method : POST
+    - @param : (string) :id : id Hotel
+    - @param : (object JSON) : {prop1 : newValue, prop2 : newValue ...}, "propX" doit etre conforme au model Hotel
+
+  - **_/hotels/delete/:id_** : supprimer l'hotel ayant l'id :id
+    - @method : DELETE
+    - @param : (string) :id : id Hotel
+
+**feature Gestion couverture terrain: Associer equipier :**
+  (INC)
+
+**feature Plannification visite: Plannifier visite (avec algo suggestion) :**
+  (INC)
+
+**feature Gestion utilisateur : CRUD User :**
+  - **_/users_** : get All
+    - @method : GET
+
+  - **_/users/get/:id_** : get user by id
+    - @method : GET
+    - @param : (string) :id : id User
+
+  - **_/users/add_** : ajouter un user
+    - @method : POST
+    - @param : (object JSON) : objet JSON conforme au model User
+
+  - **_/users/edit/:id_** : editer l'user ayant l'id :id
+    - @method : POST
+    - @param : (string) :id : id User
+    - @param : (object JSON) : {prop1 : newValue, prop2 : newValue ...}, "propX" doit etre conforme au model User
+
+  - **_/users/delete/:id_** : supprimer l'user ayant l'id :id
+    - @method : DELETE
+    - @param : (string) :id : id User
+
+**feature CRUD Urgence :**
+  - **_/urgences_** : get All
+    - @method : GET
+
+  - **_/urgences/get/:id_** : get urgence by id
+    - @method : GET
+    - @param : (string) :id : id Urgence
+
+  - **_/urgences/add_** : ajouter un urgence
+    - @method : POST
+    - @param : (object JSON) : objet JSON conforme au model Urgence
+
+  - **_/urgences/edit/:id_** : editer l'urgence ayant l'id :id
+    - @method : POST
+    - @param : (string) :id : id Urgence
+    - @param : (object JSON) : {prop1 : newValue, prop2 : newValue ...}, "propX" doit etre conforme au model Urgence
+
+  - **_/urgences/delete/:id_** : supprimer l'urgence ayant l'id :id
+    - @method : DELETE
+    - @param : (string) :id : id Urgence

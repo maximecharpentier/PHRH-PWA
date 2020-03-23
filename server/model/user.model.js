@@ -10,7 +10,12 @@ const Schema = mongoose.Schema;
     /*bcrypt = require('bcrypt'),
     SALT_WORK_FACTOR = 10;*/
 
-const utilisateurSchema = new Schema({
+const fonction_administrateur = 'Superviseur'
+const functions = ['Médiateur', 'Intervenant terrain', 'Mediateur SAS', fonction_administrateur]
+const allowed_plage_h = [null, 'Matin', 'Journée', 'Soir']
+
+
+const userSchema = new Schema({
     nom : {
         type: String, 
         required: true, 
@@ -32,7 +37,7 @@ const utilisateurSchema = new Schema({
     fonction : {
         type: String,
         required: true, 
-        enum: ['Médiateur', 'Intervenant terrain', 'Mediateur SAS', 'Gestionnaire'],
+        enum: functions,
         required: true
     },
     secteur : {
@@ -43,9 +48,11 @@ const utilisateurSchema = new Schema({
     },
     plage_h : {
         type: String,
-        enum: ['Matin', 'Journée', 'Soir'],
-        required: true
-
+        enum: allowed_plage_h,
+        required: [ 
+            function() { return this.fonction !== fonction_administrateur },
+            'plage_h is required if fonction is administrateur value'
+        ]
     },
     infos_equipe : {
         type: String, 
@@ -64,17 +71,18 @@ const utilisateurSchema = new Schema({
 })
 
 //definir la methode insertIfNotExist
-utilisateurSchema.statics.insertIfNotExist = async function(user) {
-    const docs = await this.find({user : user.nom}).exec()
+userSchema.statics.insertIfNotExist = async function(user) {
+    const docs = await this.find({nom : user.nom}).exec()
     if (!docs.length){
         return await user.save()
     }
     else{
-        throw new Error('Utilisateur <<'+ user.nom +'>> existe deja', null);
+        //throw new Error('Utilisateur <<'+ user.nom +'>> existe deja', null);
+        console.log('Utilisateur <<'+ user.nom +'>> existe deja')
     }
 }
 
 
-const User = mongoose.model('Utilisateur', utilisateurSchema)
+const User = mongoose.model('Utilisateur', userSchema)
 
 module.exports = User
