@@ -20,15 +20,16 @@ mongoose.connect(
     } 
 )
 //ouvrir & deleguer la gestion de la connection a nodemon
-mongoose.connection
-    .once('open', () => console.log('PHRH Database connection established'))
-    .on('error', error => console.log('Error connecting to Database:', error))
+mongoose.connection.once(
+    'open', () => {
+        console.log('PHRH database connection established')
+    }
+)
 
 //insert base values
 const baseValueInsertor = require('./helpers/BaseValueInsertor.helper')
 baseValueInsertor.insertProtoBaseValues(
     require('./datas/data.json'),
-    deleteOldValues = false,
     (msg) => {console.log(msg)}, 
     (err) => {console.error(err)}
 )
@@ -49,5 +50,5 @@ app.use('/noter', featureNoterHotelRouter)*/
 //lancer le serv
 const serv_port = "27017" //process.env.SERV_PORT
 app.listen(serv_port, function() {
-    console.log("Express server runing PORT: " + serv_port)
+    console.log("server runing PORT: " + serv_port)
 })

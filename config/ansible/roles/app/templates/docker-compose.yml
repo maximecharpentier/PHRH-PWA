@@ -1,0 +1,23 @@
+version: "3"
+services:
+  client:
+    container_name: phrh-client
+    restart: always
+    image: "{{ phrh_client_image }}:{{ phrh_client_tag }}"
+    ports:
+      - "{{ phrh_client_port }}:80"
+  server:
+    container_name: phrh-server
+    restart: always
+    image: "{{ phrh_server_image }}:{{ phrh_server_tag }}"
+    ports:
+      - "{{ phrh_server_port }}:3000"
+    links:
+      - "db"
+  db:
+    container_name: phrh-db
+    image: mongo
+    volumes:
+      - ./data/db:/data/db
+    ports:
+      - "{{ phrh_db_port }}:27017"
