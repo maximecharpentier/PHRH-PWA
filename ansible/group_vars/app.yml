@@ -1,0 +1,10 @@
+phrh_client_image: "{{ docker_username }}/tp-client"
+phrh_client_tag: 0.12
+phrh_client_port: 8080
+
+phrh_server_image: "{{ docker_username }}/tp-server"
+phrh_server_tag: 0.2
+phrh_server_port: 3000
+phrh_server_host: db
+
+phrh_db_port: 27017

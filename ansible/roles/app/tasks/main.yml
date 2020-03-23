@@ -1,0 +1,49 @@
+
+- name: Create Application directory
+  file:
+    path: "{{ app_directory }}"
+    state: directory
+
+- name: Copy Server application
+  copy:
+    src: ../../../server
+    dest:  "{{ app_directory }}"
+
+- name: Copy Client Application
+  copy:
+    src: ../../../client
+    dest:  "{{ app_directory }}"
+
+- name: Login to Docker registry
+  docker_login:
+    username: "{{ application_docker_username }}"
+    password: "{{ application_docker_password }}"
+
+
+- name: Build and push docker image client
+  docker_image:
+    build:
+      path: /home/ubuntu/phrh/client
+    name: "{{ phrh_client_image }}"
+    tag: "{{ phrh_client_tag }}"
+    push: yes
+    source: build
+  notify: restart docker stack
+  tags: ["build", "redeploy"]
+  
+- name: Build and push docker image server
+  docker_image:
+    build:
+      path: /home/ubuntu/phrh/server
+    name: "{{ phrh_server_image }}"
+    tag: "{{ phrh_server_tag }}"
+    push: yes
+    source: build
+  notify: restart docker stack
+  tags: ["build", "redeploy"]
+  
+  - name: Copy docker-compose configuration file
+    template:
+      src: templates/docker-compose.yml
+      dest: "{{ app_directory }}/docker-compose.yml"
+    notify: restart docker stack

@@ -1,0 +1,5 @@
+
+- name: Install web service
+hosts: app
+roles:
+- { role: app, tags: ["app"] }

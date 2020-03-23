@@ -1,0 +1,3 @@
+docker_username: blyndusk
+docker_password: foobar
+app_directory: /home/ubuntu/phrh
