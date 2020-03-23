@@ -7,12 +7,13 @@ class ManageVisitors extends Component {
         visitors: [],
         showForm: false,
         editing: false,
-        newVisitor: { nom: "", prenom: "", secteur: "" },
+        newVisitor: { plage_h:null, equipier_id: null, vehicule_id: null },
+        aVisitor: {"_id":"5feferfferfr'efzr'dbferfecff1e24918bfe","nom":"hpmkb","prenom":"z02r4f","pwd":"ck8r5j","fonction":"Superviseur","secteur":"75","plage_h":null,"infos_equipe":"nce30q","equipier_id":null,"vehicule_id":null,"__v":0},
         editVisitor: {}
     }
 
     _refreshVisitors = () => {
-        axios.get('http://35.180.37.72:3001/users/').then((response) => {
+        axios.get('http://localhost:27017/users/').then((response) => {
             this.setState({
                 visitors: response.data
             })
@@ -25,19 +26,20 @@ class ManageVisitors extends Component {
 
     addVisitor = (e) => {
         e.preventDefault();
-        if (e.target.nom.value !== "" && e.target.prenom.value !== "" && e.target.secteur.value !== "") {
-            axios.post('http://35.180.37.72:3001/users/', this.state.newVisitor).then((response) => {
-                let { visitors } = this.state;
-                visitors.concat(response.data)
-                this.setState({
-                    visitors, newVisitor: {
-                        nom: "", prenom: "", secteur: ""
-                    }
-                })
+        const { nom, prenom, secteur, pwd, plage_h, fonction, infos_equipe } = e.target;
+        // console.log(this.state.newVisitor, this.state.aVisitor)
+        // if (nom.value !== "" && prenom.value !== "" && secteur.value !== "" && pwd.value !== "" && fonction.value !== "" && infos_equipe.value !== "") {
+            axios.post('http://localhost:27017/users/add', this.state.newVisitor).then((response) => {
+                console.log(response.data)
+                // this.setState({
+                //      newVisitor: {
+                //         nom: "", prenom: "", secteur: ""
+                //     }
+                // })
                 this._refreshVisitors()
             })
-            this.toggleForm();
-        }
+            // this.toggleForm();
+        // }
     }
 
     editUser = (user) => {
@@ -49,7 +51,7 @@ class ManageVisitors extends Component {
     }
 
     deleteUser = (id) => {
-        axios.delete('http://35.180.37.72:3001/users/' + id).then((response) => {
+        axios.delete('http://localhost:27017/users/delete/' + id).then((response) => {
             console.log(response.data)
             this._refreshVisitors()
         })
@@ -59,19 +61,29 @@ class ManageVisitors extends Component {
         this.setState({
             showForm: !this.state.showForm,
         })
-        if(this.state.editing){
+        if (this.state.editing) {
             this.setState({
                 editing: false
             })
         }
     }
 
+    handleChange = (e) => {
+        const { name, value } = e.target;
+        this.setState(prevState => ({
+            newVisitor: {
+                ...prevState.newVisitor,
+                [name]: value
+            }
+        }))
+    }
+
 
 
     render() {
-        const { showForm, visitors, newVisitor, editing , editVisitor} = this.state;
-        let allUsers = visitors.map((user, id) => {
-            return <Card key={id} user={user} editUser={() => this.editUser(user)} deleteUser={() => this.deleteUser(user.id)} />
+        const { showForm, visitors, newVisitor, editing, editVisitor } = this.state;
+        let allUsers = visitors.map((user) => {
+            return <Card key={user._id} user={user} editUser={() => this.editUser(user)} deleteUser={() => this.deleteUser(user._id)} />
         })
 
         return (
@@ -81,18 +93,13 @@ class ManageVisitors extends Component {
                         <div className="backgroundBody"></div>
                         <div className="addForm">
                             <form onSubmit={this.addVisitor}>
-                                <input type="text" placeholder="nom" name="nom" value={editing ? editVisitor.nom : newVisitor.nom} onChange={(e) => {
-                                    newVisitor.nom = e.target.value
-                                    this.setState({ newVisitor })
-                                }} />
-                                <input type="text" placeholder="prenom" name="prenom" value={editing ? editVisitor.prenom : newVisitor.prenom} onChange={(e) => {
-                                    newVisitor.prenom = e.target.value
-                                    this.setState({ newVisitor })
-                                }} />
-                                <input type="text" placeholder="secteur" name="secteur" value={editing ? editVisitor.secteur : newVisitor.secteur} onChange={(e) => {
-                                    newVisitor.secteur = e.target.value
-                                    this.setState({ newVisitor })
-                                }} />
+                                <input type="text" placeholder="nom" name="nom" value={editing ? editVisitor.nom : newVisitor.nom} onChange={(e) => this.handleChange(e)} />
+                                <input type="text" placeholder="prenom" name="prenom" value={editing ? editVisitor.prenom : newVisitor.prenom} onChange={(e) => this.handleChange(e)} />
+                                <input type="text" placeholder="secteur" name="secteur" value={editing ? editVisitor.secteur : newVisitor.secteur} onChange={(e) => this.handleChange(e)} />
+                                <input type="text" placeholder="fonction" name="fonction" value={editing ? editVisitor.fonction : newVisitor.fonction} onChange={(e) => this.handleChange(e)} />
+                                <input type="text" placeholder="infos_equipe" name="infos_equipe" value={editing ? editVisitor.infos_equipe : newVisitor.infos_equipe} onChange={(e) => this.handleChange(e)} />
+                                <input type="text" placeholder="pwd" name="pwd" value={editing ? editVisitor.pwd : newVisitor.pwd} onChange={(e) => this.handleChange(e)} />
+                                {/* <input type="text" placeholder="plage_h" name="plage_h" value={editing ? editVisitor.plage_h : newVisitor.plage_h} onChange={(e) => this.handleChange(e)} /> */}
                                 <button type="submit">{editing ? "Modifier" : "Ajouter"}</button>
                                 <span onClick={this.toggleForm}>X</span>
                             </form>
