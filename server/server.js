@@ -1,75 +1,54 @@
-const express = require("express");
-const cors = require("cors");
-const mongoose = require("mongoose");
-require("dotenv").config();
+const express = require('express')
+const cors = require('cors')
+const mongoose = require('mongoose')
+require('dotenv').config()
 
-const app = express();
+const app = express()
 //brancher cors
-app.use(cors());
+app.use(cors())
 //brancher le parseur d'HttpRequest
-app.use(express.json());
+app.use(express.json())
 
 //connection a la base mongo
-const uri = `mongodb://${process.env.PHRH_SERVER_HOST}:27017/PHRH`;
-
-var connectWithRetry = function() {
-  return mongoose.connect(
-    uri,
+const uri = "mongodb://localhost:27017/PHRH"
+mongoose.connect(
+    uri, 
     {
-      useNewUrlParser: true,
-      useCreateIndex: true,
-      useUnifiedTopology: true
-    },
-    function(err) {
-      if (err) {
-        console.error(
-          "Failed to connect to mongo on startup - retrying in 5 sec",
-          err
-        );
-        setTimeout(connectWithRetry, 5000);
-      }
-    }
-  );
-};
-connectWithRetry();
+        useNewUrlParser: true, 
+        useCreateIndex: true, 
+        useUnifiedTopology: true 
+    } 
+)
 //ouvrir & deleguer la gestion de la connection a nodemon
-mongoose.connection.once("open", () => {
-  console.log("PHRH database connection established");
-});
+mongoose.connection.once(
+    'open', () => {
+        console.log('PHRH database connection established')
+    }
+)
 
 //insert base values
-const baseValueInsertor = require("./helpers/BaseValueInsertor.helper");
+const baseValueInsertor = require('./helpers/BaseValueInsertor.helper')
 baseValueInsertor.insertProtoBaseValues(
-  require("./datas/data.json"),
-  msg => {
-    console.log(msg);
-  },
-  err => {
-    console.error(err);
-  }
-);
+    require('./datas/data.json'),
+    (msg) => {console.log(msg)}, 
+    (err) => {console.error(err)}
+)
 
 //Route to end points
-const crudHotelRouter = require("./routes/hotel/crudHotel.routes.js");
-app.use("/hotel", crudHotelRouter);
+const crudHotelRouter = require('./routes/hotel/crudHotel.routes.js')
+app.use('/hotels', crudHotelRouter)
 
-const crudUrgenceRouter = require("./routes/urgence/crudUrgence.routes.js");
-app.use("/urgence", crudUrgenceRouter);
+const crudUrgenceRouter = require('./routes/urgence/crudUrgence.routes.js')
+app.use('/urgences', crudUrgenceRouter)
 
-const crudNoteHotelRouter = require("./routes/crudNoteHotel.routes.js");
-app.use("/note", crudNoteHotelRouter);
+const crudUserRouter = require('./routes/user/crudUser.routes.js')
+app.use('/users', crudUserRouter)
 
-const crudVisiteRouter = require("./routes/crudVisite.routes.js");
-app.use("/visite", crudVisiteRouter);
-//get liste visites pour le jour de plannif
-//get edt visites
-//placer visite dans emploi du temps
-
-const crudUserRouter = require("./routes/crudUser.routes.js");
-app.use("/user", crudUserRouter);
+/*const featureNoterHotelRouter = require('./routes/feature\.noterhotel/noterHotel.routes.js')
+app.use('/noter', featureNoterHotelRouter)*/
 
 //lancer le serv
-const serv_port = "27017"; //process.env.SERV_PORT
+const serv_port = "27017" //process.env.SERV_PORT
 app.listen(serv_port, function() {
-  console.log("server runing PORT: " + serv_port);
-});
+    console.log("server runing PORT: " + serv_port)
+})

@@ -4,21 +4,6 @@ const Hotel = require('./hotel.model');
 
 const Schema = mongoose.Schema;
 
-const priorisationSchema = new Schema({
-    type: {
-        type: String, 
-        required: true,
-        trim: true,
-        maxlength: 35
-    },
-    message: {
-        type: String, 
-        required: true,
-        trim: true,
-        maxlength: 3600
-    }
-})
-
 const visiteSchema = new Schema({
     hotel_id: {
         type: Schema.Types.ObjectId, 
@@ -46,22 +31,19 @@ const visiteSchema = new Schema({
         required: true
 
     },
-    Priorisations : {
-        type: [priorisationSchema]
-    }
 })
 
 //definir la methode insertIfNotExist
 visiteSchema.statics.insertIfNotExist = async function(visite) {
-    //const docs = await this.find({date_visite: visite.date_visite, hotel_id : visite.hotel_id}).exec()
-    //if (!docs.length){
+    const docs = await this.find({date_visite: visite.date_visite, hotel_id : visite.hotel_id}).exec()
+    if (!docs.length){
         return await visite.save()
-    /*}
+    }
     else{
-        throw new Error('Visite <<X>> existe deja', null);
-    }*/
+        //throw new Error('Visite <<X>> existe deja', null);
+        console.log('Visite <<X>> existe deja')
+    }
 }
-
 
 const Visite = mongoose.model('Visite', visiteSchema)
 
