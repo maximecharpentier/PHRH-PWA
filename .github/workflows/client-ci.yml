@@ -1,11 +1,13 @@
-name: Main Workflow
+name: Client CI
 on: 
   push:
     branches:
       - develop
+  pull_request:
+    branches:
       - master
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     env:
       working-directory: ./client
