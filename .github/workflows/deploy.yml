@@ -28,3 +28,5 @@ jobs:
             --user ubuntu
             --tags "deploy"
             --verbose
+      - name: test
+        run: curl http://35.180.35.120:27017/hotels
