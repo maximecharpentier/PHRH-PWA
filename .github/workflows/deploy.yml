@@ -19,7 +19,7 @@ jobs:
           ref: master
 
       - name: deploy
-        uses: dawidd6/action-ansible-playbook
+        uses: dawidd6/action-ansible-playbook@master
         with:
           playbook: ./config/ansible/app.yml
           key: ${{ secrets.PHRH_PRIVATE_KEY }}
