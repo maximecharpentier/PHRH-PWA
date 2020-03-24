@@ -22,10 +22,10 @@ jobs:
         uses: dawidd6/action-ansible-playbook
         working-directory: ./config/ansible
         with:
-          playbook: app.yml
+          playbook: ./config/ansible/app.yml
           key: ${{ secrets.PHRH_PRIVATE_KEY }}
           options: |
-            --inventory inventory.ini
+            --inventory ./config/ansible/inventory.ini
             --user ubuntu
             --tags "deploy"
             --verbose

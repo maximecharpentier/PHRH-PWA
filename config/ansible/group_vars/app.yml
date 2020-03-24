@@ -11,7 +11,7 @@ phrh_client_tag: 0.14
 phrh_client_port: 8080
 
 phrh_server_image: "{{ docker_username }}/phrh-server"
-phrh_server_tag: 0.4
+phrh_server_tag: 0.5
 phrh_server_port: 3000
 phrh_server_host: db
 
