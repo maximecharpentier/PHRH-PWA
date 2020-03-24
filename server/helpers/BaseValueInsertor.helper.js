@@ -94,7 +94,7 @@ class BaseValueInsertor {
               "<<User " + (index + 1) + "/" + dbtest.users.length + " inséré>>"
             );
           } else {
-            cberror(err);
+            cberror("erreur d\'insertion de l'utilisateur : ");
           }
         }
         if (user.fonction === "Intervenant terrain") {
@@ -114,31 +114,34 @@ class BaseValueInsertor {
             userIntervenant
           );
           if (userIntervenantDB) {
+
+            //confimer insertion
             cbconfirm(
               "<<User " + (index + 1) + "/" + dbtest.users.length + " inséré>>"
             );
+
+            //Inserer Assoc Visites / user
+            for (const [index, visite_id] of visites_ids.entries()) {
+              const assoc = new Assoc_user_visite({
+                user_id: userIntervenantDB._id,
+                visite_id: visite_id,
+                date: null
+              });
+              const assocDB = await Assoc_user_visite.insertIfNotExist(assoc);
+              if (assocDB) {
+                cbconfirm(
+                  "<<Association " +
+                    (index + 1) +
+                    "/" +
+                    visites_ids.length +
+                    " inséré>>"
+                );
+              } else {
+                cberror("erreur d\'insertion de l'association de la Visite avec l'User");
+              }
+            }  
           } else {
-            cberror(err);
-          }
-          //Inserer Assoc Visites / user
-          for (const [index, visite_id] of visites_ids.entries()) {
-            const assoc = new Assoc_user_visite({
-              user_id: userIntervenantDB._id,
-              visite_id: visite_id,
-              date: null
-            });
-            const assocDB = await Assoc_user_visite.insertIfNotExist(assoc);
-            if (assocDB) {
-              cbconfirm(
-                "<<Association " +
-                  (index + 1) +
-                  "/" +
-                  visites_ids.length +
-                  " inséré>>"
-              );
-            } else {
-              cberror(err);
-            }
+            cberror("erreur d\'insertion de l'utilisateur");
           }
         }
       }
