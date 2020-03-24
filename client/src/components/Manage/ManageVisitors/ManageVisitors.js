@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Card from '../Card/Card'
+import Close from '../../../assets/close'
 
 class ManageVisitors extends Component {
     state = {
         visitors: [],
         showForm: false,
         editing: false,
-        newVisitor: { plage_h:null, equipier_id: null, vehicule_id: null },
-        aVisitor: {"_id":"5feferfferfr'efzr'dbferfecff1e24918bfe","nom":"hpmkb","prenom":"z02r4f","pwd":"ck8r5j","fonction":"Superviseur","secteur":"75","plage_h":null,"infos_equipe":"nce30q","equipier_id":null,"vehicule_id":null,"__v":0},
+        newVisitor: { fonction: "Superviseur", plage_h: null },
         editVisitor: {}
     }
 
@@ -20,26 +20,27 @@ class ManageVisitors extends Component {
         })
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this._refreshVisitors()
     }
 
     addVisitor = (e) => {
         e.preventDefault();
-        const { nom, prenom, secteur, pwd, plage_h, fonction, infos_equipe } = e.target;
-        // console.log(this.state.newVisitor, this.state.aVisitor)
-        // if (nom.value !== "" && prenom.value !== "" && secteur.value !== "" && pwd.value !== "" && fonction.value !== "" && infos_equipe.value !== "") {
-            axios.post('http://localhost:27017/users/add', this.state.newVisitor).then((response) => {
+        const { nom, prenom, secteur, pwd, infos_equipe } = e.target;
+        if (nom.value !== "" && prenom.value !== "" && secteur.value !== "" && pwd.value !== "" && infos_equipe.value !== "") {
+            axios.post('http://localhost:27017/users/add/', this.state.newVisitor).then((response) => {
                 console.log(response.data)
-                // this.setState({
-                //      newVisitor: {
-                //         nom: "", prenom: "", secteur: ""
-                //     }
-                // })
+                this.setState({
+                    newVisitor: {
+                        fonction: "Superviseur", plage_h: null, nom: "", prenom: "", secteur: "", pwd: "", infos_equipe: ""
+                    }
+                })
                 this._refreshVisitors()
-            })
-            // this.toggleForm();
-        // }
+                this.toggleForm();
+            }).catch(error => {
+                console.log(error.response)
+            });
+        }
     }
 
     editUser = (user) => {
@@ -57,28 +58,41 @@ class ManageVisitors extends Component {
         })
     }
 
+    updateUser = (e, id) => {
+        e.preventDefault();
+        axios.post('http://localhost:27017/users/edit/' + id, this.state.editVisitor).then((response) => {
+            console.log(response.data)
+            this._refreshVisitors()
+            this.toggleForm();
+        }).catch(error => {
+            console.log(error.response)
+        });
+    }
+
     toggleForm = () => {
         this.setState({
             showForm: !this.state.showForm,
         })
-        if (this.state.editing) {
-            this.setState({
-                editing: false
-            })
-        }
+        { this.state.editing && this.setState({ editing: false }) }
     }
+
 
     handleChange = (e) => {
         const { name, value } = e.target;
-        this.setState(prevState => ({
-            newVisitor: {
-                ...prevState.newVisitor,
-                [name]: value
-            }
-        }))
+        {
+            this.state.editing ? this.setState(prevState => ({
+                editVisitor: {
+                    ...prevState.editVisitor,
+                    [name]: value
+                }
+            })) : this.setState(prevState => ({
+                newVisitor: {
+                    ...prevState.newVisitor,
+                    [name]: value
+                }
+            }))
+        }
     }
-
-
 
     render() {
         const { showForm, visitors, newVisitor, editing, editVisitor } = this.state;
@@ -91,17 +105,21 @@ class ManageVisitors extends Component {
                 {showForm &&
                     <>
                         <div className="backgroundBody"></div>
-                        <div className="addForm">
-                            <form onSubmit={this.addVisitor}>
-                                <input type="text" placeholder="nom" name="nom" value={editing ? editVisitor.nom : newVisitor.nom} onChange={(e) => this.handleChange(e)} />
-                                <input type="text" placeholder="prenom" name="prenom" value={editing ? editVisitor.prenom : newVisitor.prenom} onChange={(e) => this.handleChange(e)} />
-                                <input type="text" placeholder="secteur" name="secteur" value={editing ? editVisitor.secteur : newVisitor.secteur} onChange={(e) => this.handleChange(e)} />
-                                <input type="text" placeholder="fonction" name="fonction" value={editing ? editVisitor.fonction : newVisitor.fonction} onChange={(e) => this.handleChange(e)} />
-                                <input type="text" placeholder="infos_equipe" name="infos_equipe" value={editing ? editVisitor.infos_equipe : newVisitor.infos_equipe} onChange={(e) => this.handleChange(e)} />
-                                <input type="text" placeholder="pwd" name="pwd" value={editing ? editVisitor.pwd : newVisitor.pwd} onChange={(e) => this.handleChange(e)} />
-                                {/* <input type="text" placeholder="plage_h" name="plage_h" value={editing ? editVisitor.plage_h : newVisitor.plage_h} onChange={(e) => this.handleChange(e)} /> */}
-                                <button type="submit">{editing ? "Modifier" : "Ajouter"}</button>
-                                <span onClick={this.toggleForm}>X</span>
+                        
+
+                        <div className="popin-form">
+                            <div className="popin-header">
+                                <h2>{editing ? "Modifier" : "Ajouter"} un visiteur</h2>
+                                <span onClick={this.toggleForm}><Close /></span>
+                            </div>
+                            <form onSubmit={editing ? (e) => this.updateUser(e, editVisitor._id) : this.addVisitor}>
+                                <input type="text" placeholder="nom" name="nom" value={editing ? editVisitor.nom : newVisitor.nom || ''} onChange={(e) => this.handleChange(e)} />
+                                <input type="text" placeholder="prenom" name="prenom" value={editing ? editVisitor.prenom : newVisitor.prenom || ''} onChange={(e) => this.handleChange(e)} />
+                                <input type="text" placeholder="secteur" name="secteur" value={editing ? editVisitor.secteur : newVisitor.secteur || ''} onChange={(e) => this.handleChange(e)} />
+                                <input type="text" placeholder="infos_equipe" name="infos_equipe" value={editing ? editVisitor.infos_equipe : newVisitor.infos_equipe || ''} onChange={(e) => this.handleChange(e)} />
+                                <input type="text" placeholder="pwd" name="pwd" value={editing ? editVisitor.pwd : newVisitor.pwd || ''} onChange={(e) => this.handleChange(e)} />
+                                <button onClick={this.toggleForm}>Annuler</button>
+                                <button type="submit">Valider</button>
                             </form>
                         </div>
                     </>

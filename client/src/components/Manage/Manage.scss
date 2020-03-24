@@ -31,7 +31,7 @@ section {
     right: 0;
     left: 0;
   }
-  .addForm{
+  .popin-form{
     position: absolute;
     z-index: 20;
     top: 8%;  
@@ -40,6 +40,22 @@ section {
     width: 500px;
     height: 500px;
     background-color: #FFFFFF;
+    .popin-header{
+      position: relative;
+      background: #EFF2FB;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      h2 {
+        font-weight: 500;
+      }
+      span{
+        cursor: pointer;
+        position: absolute;
+        right: 10px;
+      }
+    }
   }
   .flex-container{
     display: flex;
@@ -63,7 +79,7 @@ section {
           width: calc(100% / 4);
           text-align: center;
           transition: ease 0.5s;
-          &:hover {
+          &:hover, &.active {
             background-color: #eff2fb;
           }
           &.active {
