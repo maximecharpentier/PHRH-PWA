@@ -20,7 +20,6 @@ jobs:
 
       - name: deploy
         uses: dawidd6/action-ansible-playbook
-        working-directory: ./config/ansible
         with:
           playbook: ./config/ansible/app.yml
           key: ${{ secrets.PHRH_PRIVATE_KEY }}
