@@ -60,10 +60,6 @@ const userSchema = new Schema({
         trim: true,
         maxlength: 50
     },
-    equipier_id : {
-        type: Schema.Types.ObjectId, 
-        ref: 'User', 
-    },
     vehicule_id : {
         type: Schema.Types.ObjectId, 
         ref: 'Vehicule', 

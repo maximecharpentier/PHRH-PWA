@@ -704,6 +704,26 @@
             42
          ],
          "vehicule_id":null
+      },
+      {
+         "nom":"titi",
+         "prenom":"titi",
+         "pwd":"ck8r5j",
+         "fonction":"Intervenant terrain",
+         "secteur":"75",
+         "plage_h":"Soir",
+         "infos_equipe":"nce30q",
+         "vehicule_id":null
+      },
+      {
+         "nom":"toto",
+         "prenom":"toto",
+         "pwd":"ck8r5j",
+         "fonction":"Intervenant terrain",
+         "secteur":"75",
+         "plage_h":"Soir",
+         "infos_equipe":"nce30q",
+         "vehicule_id":null
       }
    ],
    "visits":[

@@ -31,7 +31,8 @@ assoc_user_visiteSchema.statics.insertIfNotExist = async function(assoc) {
         return await assoc.save()
     }
     else{
-        throw new Error('Association <<'+ assoc.user_id +'>> existe deja', null);
+        //throw new Error('Association <<'+ assoc.user_id +'>> existe deja', null);
+        console.log('Association avec la visite existe deja')
     }
 }
 
