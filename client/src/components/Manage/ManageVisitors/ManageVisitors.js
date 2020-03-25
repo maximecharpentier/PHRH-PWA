@@ -1,19 +1,25 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+
 import Card from '../Card/Card'
+import Input from '../Input/Input'
+
+import API from '../../../api/api'
+
 import Close from '../../../assets/close'
+
 
 class ManageVisitors extends Component {
     state = {
         visitors: [],
         showForm: false,
         editing: false,
-        newVisitor: { fonction: "Superviseur", plage_h: null },
+        errorEmptyFields: false,
+        newVisitor: { fonction: "Superviseur", plage_h: null, pwd: "null" },
         editVisitor: {}
     }
 
     _refreshVisitors = () => {
-        axios.get('http://localhost:27017/users/').then((response) => {
+        API.get('users/').then((response) => {
             this.setState({
                 visitors: response.data
             })
@@ -22,17 +28,22 @@ class ManageVisitors extends Component {
 
     componentDidMount() {
         this._refreshVisitors()
+
+    }
+
+    componentDidUpdate() {
+        { !this.state.showForm ? document.body.style.overflow = 'auto' : document.body.style.overflow = 'hidden' }
     }
 
     addVisitor = (e) => {
         e.preventDefault();
-        const { nom, prenom, secteur, pwd, infos_equipe } = e.target;
-        if (nom.value !== "" && prenom.value !== "" && secteur.value !== "" && pwd.value !== "" && infos_equipe.value !== "") {
-            axios.post('http://localhost:27017/users/add/', this.state.newVisitor).then((response) => {
+        const { nom, prenom, secteur, infos_equipe } = e.target;
+        if (nom.value !== "" && prenom.value !== "" && secteur.value !== "" && infos_equipe.value !== "") {
+            API.post('users/add/', this.state.newVisitor).then((response) => {
                 console.log(response.data)
                 this.setState({
                     newVisitor: {
-                        fonction: "Superviseur", plage_h: null, nom: "", prenom: "", secteur: "", pwd: "", infos_equipe: ""
+                        fonction: "Superviseur", plage_h: null, pwd: "null", nom: "", prenom: "", secteur: "", infos_equipe: ""
                     }
                 })
                 this._refreshVisitors()
@@ -40,6 +51,10 @@ class ManageVisitors extends Component {
             }).catch(error => {
                 console.log(error.response)
             });
+        } else {
+            this.setState({
+                errorEmptyFields: true
+            })
         }
     }
 
@@ -52,15 +67,15 @@ class ManageVisitors extends Component {
     }
 
     deleteUser = (id) => {
-        axios.delete('http://localhost:27017/users/delete/' + id).then((response) => {
-            console.log(response.data)
+        API.delete('users/delete/' + id).then((response) => {
+            console.log(response.data, id)
             this._refreshVisitors()
         })
     }
 
     updateUser = (e, id) => {
         e.preventDefault();
-        axios.post('http://localhost:27017/users/edit/' + id, this.state.editVisitor).then((response) => {
+        API.post('users/edit/' + id, this.state.editVisitor).then((response) => {
             console.log(response.data)
             this._refreshVisitors()
             this.toggleForm();
@@ -71,7 +86,7 @@ class ManageVisitors extends Component {
 
     toggleForm = () => {
         this.setState({
-            showForm: !this.state.showForm,
+            showForm: !this.state.showForm
         })
         { this.state.editing && this.setState({ editing: false }) }
     }
@@ -105,21 +120,27 @@ class ManageVisitors extends Component {
                 {showForm &&
                     <>
                         <div className="backgroundBody"></div>
-                        
-
                         <div className="popin-form">
                             <div className="popin-header">
                                 <h2>{editing ? "Modifier" : "Ajouter"} un visiteur</h2>
                                 <span onClick={this.toggleForm}><Close /></span>
                             </div>
                             <form onSubmit={editing ? (e) => this.updateUser(e, editVisitor._id) : this.addVisitor}>
-                                <input type="text" placeholder="nom" name="nom" value={editing ? editVisitor.nom : newVisitor.nom || ''} onChange={(e) => this.handleChange(e)} />
-                                <input type="text" placeholder="prenom" name="prenom" value={editing ? editVisitor.prenom : newVisitor.prenom || ''} onChange={(e) => this.handleChange(e)} />
-                                <input type="text" placeholder="secteur" name="secteur" value={editing ? editVisitor.secteur : newVisitor.secteur || ''} onChange={(e) => this.handleChange(e)} />
-                                <input type="text" placeholder="infos_equipe" name="infos_equipe" value={editing ? editVisitor.infos_equipe : newVisitor.infos_equipe || ''} onChange={(e) => this.handleChange(e)} />
-                                <input type="text" placeholder="pwd" name="pwd" value={editing ? editVisitor.pwd : newVisitor.pwd || ''} onChange={(e) => this.handleChange(e)} />
-                                <button onClick={this.toggleForm}>Annuler</button>
-                                <button type="submit">Valider</button>
+
+                                <section className="popin-form-container">
+
+                                    <Input name="nom" type="text" value={editing ? editVisitor.nom : newVisitor.nom || ''} handleChange={(e) => this.handleChange(e)} />
+                                    <Input name="prenom" type="text" value={editing ? editVisitor.prenom : newVisitor.prenom || ''} handleChange={(e) => this.handleChange(e)} />
+                                    <Input name="secteur" type="text" value={editing ? editVisitor.secteur : newVisitor.secteur || ''} handleChange={(e) => this.handleChange(e)} />
+                                    <Input name="infos_equipe" type="text" value={editing ? editVisitor.infos_equipe : newVisitor.infos_equipe || ''} handleChange={(e) => this.handleChange(e)} />
+
+                                </section>
+
+                                <div className="popin-form-btn-container">
+                                    <button onClick={this.toggleForm}>Annuler</button>
+                                    <button type="submit">Valider</button>
+                                </div>
+
                             </form>
                         </div>
                     </>
@@ -128,7 +149,10 @@ class ManageVisitors extends Component {
                     <p>{visitors.length} visiteurs</p>
                     <button onClick={this.toggleForm}>Ajouter un visiteur</button>
                 </div>
-                {allUsers}
+                <section className="planificator-card-container">
+                    {allUsers}
+                </section>
+
             </div>
         );
     }

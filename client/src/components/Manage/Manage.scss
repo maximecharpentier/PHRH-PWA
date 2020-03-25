@@ -1,3 +1,13 @@
+@mixin button {
+  font-size: 14px;
+  border-radius: 5px;
+  color: white;
+  width: 160px;
+  font-weight: 600;
+  background: #031772;
+  height: 40px;
+}
+
 section {
   display: block;
   width: 100%;
@@ -20,47 +30,6 @@ section {
       }
     }
   }
-  .backgroundBody{
-    position: absolute;
-    z-index: 20;
-    width: 100%;
-    height: 100%;
-    background-color: #000000a6;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-  }
-  .popin-form{
-    position: absolute;
-    z-index: 20;
-    top: 8%;  
-    left: 50%;
-    transform: translateX(-50%);
-    width: 500px;
-    height: 500px;
-    background-color: #FFFFFF;
-    .popin-header{
-      position: relative;
-      background: #EFF2FB;
-      height: 40px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      h2 {
-        font-weight: 500;
-      }
-      span{
-        cursor: pointer;
-        position: absolute;
-        right: 10px;
-      }
-    }
-  }
-  .flex-container{
-    display: flex;
-    justify-content: space-between;
-  }
   & > div {
     width: calc(100% - 100px);
     margin: 0 auto;
@@ -79,7 +48,8 @@ section {
           width: calc(100% / 4);
           text-align: center;
           transition: ease 0.5s;
-          &:hover, &.active {
+          &:hover,
+          &.active {
             background-color: #eff2fb;
           }
           &.active {
@@ -87,6 +57,153 @@ section {
           }
         }
       }
+    }
+  }
+  .backgroundBody {
+    position: fixed;
+    z-index: 20;
+    width: 100%;
+    height: 100%;
+    background-color: #000000a6;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+  }
+  .popin-form {
+    position: fixed;
+    z-index: 20;
+    top: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    height: auto;
+    background-color: #ffffff;
+    .popin-header {
+      position: relative;
+      background: #eff2fb;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      h2 {
+        font-weight: 500;
+      }
+      span {
+        cursor: pointer;
+        position: absolute;
+        right: 10px;
+      }
+    }
+
+    &-container {
+      width: 80%;
+      margin: auto;
+      padding: 30px 0;
+    }
+    &-btn-container {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      height: 90px;
+      border-top: 1px solid #eff2fb;
+      width: 100%;
+      button {
+        @include button;
+        &:first-child {
+          color: #4357ea;
+          border: 1px solid #4357ea;
+          background-color: white;
+        }
+      }
+    }
+  }
+  .flex-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    button {
+      @include button;
+    }
+  }
+  .planificator-card-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 30px;
+    .planificator-card {
+      position: relative;
+      display: block;
+      width: calc(100% / 4 - 43px);
+      height: auto;
+      padding: 25px 10px;
+      background: #eff2fb;
+      border-radius: 4px;
+      margin: 0px 30px 15px 0;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.35);
+      &:nth-child(4n + 4) {
+        margin-right: 0;
+      }
+      & > p:first-child {
+        display: inline-block;
+        font-size: 18px;
+        font-weight: 700;
+      }
+      & > span {
+        cursor: pointer;
+        float: right;
+      }
+      p,
+      div:not(.planificator-card-menu) {
+        margin-bottom: 25px;
+      }
+      & > p:last-child {
+        margin-bottom: 0;
+      }
+      &-menu {
+        position: absolute;
+        top: 40px;
+        right: 5px;
+        background-color: #ffffff;
+        width: 55%;
+        margin: 0;
+        padding-left: 10px;
+        border-radius: 4px;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.35);
+        opacity: 0;
+        transition: 0.2s ease-in-out;
+        p {
+          cursor: pointer;
+          padding: 14px 0;
+          margin: 0;
+          border-bottom: 1px solid #eff2fb;
+          &:last-child {
+            border-bottom: none;
+          }
+        }
+        &.show {
+          opacity: 1;
+        }
+      }
+      &-line {
+        width: 100%;
+        height: 1px;
+        background: #031772;
+      }
+    }
+  }
+}
+
+span,
+p {
+  text-transform: capitalize;
+}
+
+@media screen and (max-width: 1024px) {
+  .planificator-card {
+    width: calc(100% / 3 - 45px) !important;
+    margin-right: 35px !important;
+    &:nth-child(3n + 3) {
+      margin-right: 0 !important;
     }
   }
 }
