@@ -1,0 +1,32 @@
+name: Deploy
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged
+
+    steps:
+      - name: checkout
+        if: github.event.pull_request.merged
+        uses: actions/checkout@v1
+        with:
+          ref: master
+
+      - name: deploy
+        uses: dawidd6/action-ansible-playbook@master
+        with:
+          playbook: ./config/ansible/app.yml
+          key: ${{ secrets.PHRH_PRIVATE_KEY }}
+          options: |
+            --inventory ./config/ansible/inventory.ini
+            --user ubuntu
+            --tags "deploy"
+            --verbose
+      - name: test
+        run: curl http://35.180.35.120:27017/hotels

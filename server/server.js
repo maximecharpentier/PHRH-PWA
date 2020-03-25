@@ -1,53 +1,69 @@
-const express = require('express')
-const cors = require('cors')
-const mongoose = require('mongoose')
-require('dotenv').config()
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
+require("dotenv").config();
 
-const app = express()
+const app = express();
 //brancher cors
-app.use(cors())
+app.use(cors());
 //brancher le parseur d'HttpRequest
-app.use(express.json())
+app.use(express.json());
 
 //connection a la base mongo
-const uri = "mongodb://localhost:27017/PHRH"
-mongoose.connect(
-    uri, 
+const uri = `mongodb://${process.env.SERVER_HOST}:27017/PHRH`;
+
+var connectWithRetry = function() {
+  return mongoose.connect(
+    uri,
     {
-        useNewUrlParser: true, 
-        useCreateIndex: true, 
-        useUnifiedTopology: true 
-    } 
-)
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useUnifiedTopology: true
+    },
+    function(err) {
+      if (err) {
+        console.error(
+          "Failed to connect to mongo on startup - retrying in 5 sec",
+          err
+        );
+        setTimeout(connectWithRetry, 5000);
+      }
+    }
+  );
+};
+connectWithRetry();
 //ouvrir & deleguer la gestion de la connection a nodemon
-mongoose.connection
-    .once('open', () => console.log('PHRH Database connection established'))
-    .on('error', error => console.log('Error connecting to Database:', error))
+mongoose.connection.once("open", () => {
+  console.log("PHRH database connection established");
+});
 
 //insert base values
-const baseValueInsertor = require('./helpers/BaseValueInsertor.helper')
+const baseValueInsertor = require("./helpers/BaseValueInsertor.helper");
 baseValueInsertor.insertProtoBaseValues(
-    require('./datas/data.json'),
-    deleteOldValues = false,
-    (msg) => {console.log(msg)}, 
-    (err) => {console.error(err)}
-)
+  require("./datas/data.json"),
+  msg => {
+    console.log(msg);
+  },
+  err => {
+    console.error(err);
+  }
+);
 
 //Route to end points
-const crudHotelRouter = require('./routes/hotel/crudHotel.routes.js')
-app.use('/hotels', crudHotelRouter)
+const crudHotelRouter = require("./routes/hotel/crudHotel.routes.js");
+app.use("/hotels", crudHotelRouter);
 
-const crudUrgenceRouter = require('./routes/urgence/crudUrgence.routes.js')
-app.use('/urgences', crudUrgenceRouter)
+const crudUrgenceRouter = require("./routes/urgence/crudUrgence.routes.js");
+app.use("/urgences", crudUrgenceRouter);
 
-const crudUserRouter = require('./routes/user/crudUser.routes.js')
-app.use('/users', crudUserRouter)
+const crudUserRouter = require("./routes/user/crudUser.routes.js");
+app.use("/users", crudUserRouter);
 
 /*const featureNoterHotelRouter = require('./routes/feature\.noterhotel/noterHotel.routes.js')
 app.use('/noter', featureNoterHotelRouter)*/
 
 //lancer le serv
-const serv_port = "27017" //process.env.SERV_PORT
+const serv_port = "27017"; //process.env.SERV_PORT
 app.listen(serv_port, function() {
-    console.log("Express server runing PORT: " + serv_port)
-})
+  console.log("server runing PORT: " + serv_port);
+});
