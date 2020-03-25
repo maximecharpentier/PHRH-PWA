@@ -87,8 +87,33 @@ En cours d'étude
     - @method : DELETE
     - @param : (string) :id : id Hotel
 
-**feature Gestion couverture terrain: Associer equipier :**
-  (INC)
+**feature Gestion couverture terrain: Creer equipes :**
+  - **_/gestion/equipes_** : get All
+    - @method : GET
+    - @param : filterObject : #toDefine
+    - @return : mixed array/string : array of Equipe Object / error message
+
+  - **_/gestion/get/:iduser_** : get equipe by id
+    - @method : GET
+    - @param : id User Object
+    - @return : Equipe Object
+
+  - **_/gestion/equipes/users_** : afficher les utilisateurs non (encore) associés en equipe
+    - @method : GET
+    - @param : void
+    - @param : float : note
+    - @return : array(array(User{_id, nom, prenom})) : tableau d'Users non associé ds une equipe
+
+  - **_/creer/:idusera/:iduserb_** : associer User A avec User B
+    - @method : POST
+    - @param : string : id user A
+    - @param : string : id user B
+    - @return : string : message/error
+
+  - **_/users/delete/:id_** : effacer equipe
+    - @method : DELETE
+    - @param : string : id equipe
+    - @return : string : message/error
 
 **feature Plannification visite: Plannifier visite (avec algo suggestion) :**
   (INC)
