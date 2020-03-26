@@ -111,7 +111,7 @@ router.route('/creer/:idusera/:iduserb').post((req, res) => {
         if(assocsDB) {
             //on efface d'office les equipes qui comportent l'un ou l'autre
             for(assocDB of assocsDB) {
-                Equipe.findOneAndDelete(assocDB._id)
+                Equipe.findByIdAndDelete(assocDB._id)
             }
             //on créé l'équipe
             const equipe = new Equipe({
@@ -133,7 +133,7 @@ router.route('/creer/:idusera/:iduserb').post((req, res) => {
  * @return : (string) : error/confirm message
  */
 router.route('/delete/:id').delete((req, res) => {
-    Equipe.findOneAndDelete(req.params.id)
+    Equipe.findByIdAndDelete(req.params.id)
         .then(() => { res.status(200).json('Equipe supprimée')})
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })

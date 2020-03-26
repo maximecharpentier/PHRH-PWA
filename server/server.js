@@ -47,7 +47,7 @@ baseValueInsertor.insertProtoBaseValues(
   err => {
     console.error(err);
   },
-  resetDBValues = true
+  resetDBValues = false
 );
 
 //Route to end points
