@@ -2,20 +2,22 @@ import React, { Component } from 'react';
 
 import Card from '../Card/Card'
 import Input from '../Input/Input'
+import Form from '../Form/Form'
+import Modal from '../Modal/Modal'
 
 import API from '../../../api/api'
-
-import Close from '../../../assets/close'
 
 
 class ManageVisitors extends Component {
     state = {
         visitors: [],
-        showForm: false,
-        editing: false,
-        errorEmptyFields: false,
         newVisitor: { fonction: "Superviseur", plage_h: null, pwd: "null" },
-        editVisitor: {}
+        editVisitor: {},
+        editing: false,
+        showForm: false,
+        deleteConfirm: false,
+        errorEmptyFieldsMessage: "",
+        successMessage: "",
     }
 
     _refreshVisitors = () => {
@@ -48,12 +50,13 @@ class ManageVisitors extends Component {
                 })
                 this._refreshVisitors()
                 this.toggleForm();
+                this.showSuccessMessage("L'utilisateur à bien été ajouter")
             }).catch(error => {
                 console.log(error.response)
             });
         } else {
             this.setState({
-                errorEmptyFields: true
+                errorEmptyFieldsMessage: "L'un des champs n'est pas remplie"
             })
         }
     }
@@ -66,22 +69,38 @@ class ManageVisitors extends Component {
         })
     }
 
-    deleteUser = (id) => {
-        API.delete('users/delete/' + id).then((response) => {
-            console.log(response.data, id)
-            this._refreshVisitors()
-        })
-    }
-
     updateUser = (e, id) => {
         e.preventDefault();
         API.post('users/edit/' + id, this.state.editVisitor).then((response) => {
             console.log(response.data)
             this._refreshVisitors()
             this.toggleForm();
+            this.showSuccessMessage("L'utilisateur à bien été modifier")
         }).catch(error => {
             console.log(error.response)
         });
+    }
+
+    getIdForDelete = (id) =>{
+        this.setState({ idVisitorClicked: id })
+        this.toggleDeleteConfirmation()
+    }
+
+    toggleDeleteConfirmation = () => {
+        this.setState({
+            deleteConfirm: !this.state.deleteConfirm,
+        })
+    }
+
+
+    deleteUser = (e) => {
+        e.preventDefault()
+        API.delete('users/delete/' + this.state.idVisitorClicked).then((response) => {
+            console.log(response.data)
+            this.toggleDeleteConfirmation()
+            this._refreshVisitors()
+            this.showSuccessMessage("L'utilisateur à bien été supprimer")
+        })
     }
 
     toggleForm = () => {
@@ -91,6 +110,16 @@ class ManageVisitors extends Component {
         { this.state.editing && this.setState({ editing: false }) }
     }
 
+    showSuccessMessage = (message) => {
+        this.setState({
+            successMessage: message
+        })
+        setTimeout(() => {
+            this.setState({
+                successMessage: ''
+            })
+        }, 3000)
+    }
 
     handleChange = (e) => {
         const { name, value } = e.target;
@@ -110,48 +139,39 @@ class ManageVisitors extends Component {
     }
 
     render() {
-        const { showForm, visitors, newVisitor, editing, editVisitor } = this.state;
+        const { showForm, visitors, newVisitor, editing, editVisitor, deleteConfirm, successMessage } = this.state;
         let allUsers = visitors.map((user) => {
-            return <Card key={user._id} user={user} editUser={() => this.editUser(user)} deleteUser={() => this.deleteUser(user._id)} />
+            return <Card key={user._id} user={user} editUser={() => this.editUser(user)} deleteUser={() => this.getIdForDelete(user._id)} />
         })
 
         return (
-            <div className="planificateur-container">
-                {showForm &&
-                    <>
-                        <div className="backgroundBody"></div>
-                        <div className="popin-form">
-                            <div className="popin-header">
-                                <h2>{editing ? "Modifier" : "Ajouter"} un visiteur</h2>
-                                <span onClick={this.toggleForm}><Close /></span>
-                            </div>
-                            <form onSubmit={editing ? (e) => this.updateUser(e, editVisitor._id) : this.addVisitor}>
-
-                                <section className="popin-form-container">
-
-                                    <Input name="nom" type="text" value={editing ? editVisitor.nom : newVisitor.nom || ''} handleChange={(e) => this.handleChange(e)} />
-                                    <Input name="prenom" type="text" value={editing ? editVisitor.prenom : newVisitor.prenom || ''} handleChange={(e) => this.handleChange(e)} />
-                                    <Input name="secteur" type="text" value={editing ? editVisitor.secteur : newVisitor.secteur || ''} handleChange={(e) => this.handleChange(e)} />
-                                    <Input name="infos_equipe" type="text" value={editing ? editVisitor.infos_equipe : newVisitor.infos_equipe || ''} handleChange={(e) => this.handleChange(e)} />
-
-                                </section>
-
-                                <div className="popin-form-btn-container">
-                                    <button onClick={this.toggleForm}>Annuler</button>
-                                    <button type="submit">Valider</button>
-                                </div>
-
-                            </form>
-                        </div>
-                    </>
-                }
+            <div className="visitor-container">
                 <div className="flex-container">
                     <p>{visitors.length} visiteurs</p>
                     <button onClick={this.toggleForm}>Ajouter un visiteur</button>
                 </div>
-                <section className="planificator-card-container">
+                {successMessage !== "" && <div className="success-message">{successMessage}</div>}
+                <section className="visitor-card-container">
                     {allUsers}
                 </section>
+
+                {showForm &&
+                    <Modal title={editing ? "Modifier un visiteur" : "Ajouter un visiteur"} handleClick={this.toggleForm}>
+                        <Form btnSubmit="Valider" handleSubmit={editing ? (e) => this.updateUser(e, editVisitor._id) : this.addVisitor} handleClick={this.toggleForm}>
+                            <Input name="nom" type="text" value={editing ? editVisitor.nom : newVisitor.nom || ''} handleChange={(e) => this.handleChange(e)} />
+                            <Input name="prenom" type="text" value={editing ? editVisitor.prenom : newVisitor.prenom || ''} handleChange={(e) => this.handleChange(e)} />
+                            <Input name="secteur" type="text" value={editing ? editVisitor.secteur : newVisitor.secteur || ''} handleChange={(e) => this.handleChange(e)} />
+                            <Input name="infos_equipe" type="text" value={editing ? editVisitor.infos_equipe : newVisitor.infos_equipe || ''} handleChange={(e) => this.handleChange(e)} />
+                        </Form>
+                    </Modal>
+                }
+                {deleteConfirm &&
+                    <Modal handleClick={this.toggleDeleteConfirmation}>
+                        <Form btnSubmit="Supprimer" handleSubmit={(e) => this.deleteUser(e)} handleClick={this.toggleDeleteConfirmation}>
+                            <p>Êtes-vous sûre de vouloir supprimer ?</p>
+                        </Form>
+                    </Modal>
+                }
 
             </div>
         );
