@@ -4,7 +4,11 @@ const Hotel = require('../../model/hotel.model');
 
 /*
  * @route : get all
- * @param : filterObject : #toDefine
+ * @method : GET
+ * @param (optionnal) : filter Object : #toDefine
+ * @return : mixed 
+ *      (array[ (Object JSON) ]) : tableau d'object model Hotel
+ *      (string) : error message
  */
 router.route('/').get((req, res) => {    
     //let mongoFilter = []
@@ -32,7 +36,11 @@ router.route('/').get((req, res) => {
 
 /*
  * @route : get
- * @param : id Hotel Object
+ * @method : GET
+ * @param : (string) : id Hotel
+ * @return : mixed 
+ *      (Object JSON) : object model Hotel
+ *      (string) : error message
  */
 router.route('/get/:id').get((req, res) => {
     //get hotel from DB
@@ -43,7 +51,9 @@ router.route('/get/:id').get((req, res) => {
 
 /*
  * @route : add
- * @param : Hotel Object (voir schema)
+ * @method : POST
+ * @param : (Object JSON) : object Hotel conforme au schema (voir schema)
+ * @return : (string) : error/confirm message
  */
 router.route('/add').post((req, res) => {
     //creer model Hotel
@@ -54,7 +64,7 @@ router.route('/add').post((req, res) => {
         ville :                 req.body.ville, 
         nb_chambres_utilise :   req.body.nb_chambres_utilise, 
         nb_visites_periode :    req.body.nb_visites_periode, 
-        last_time_visited :     Date.parse(req.body.last_time_visited),
+        last_time_visited :     new Date(req.body.last_time_visited),
     })
 
     //save
@@ -65,7 +75,15 @@ router.route('/add').post((req, res) => {
 
 /*
  * @route : edit
- * @param : id Hotel
+ * @method : POST
+ * @param : (string) : id Hotel
+ * @param : (object JSON) : {field1 : newValue, field2 : newValue ...}, 
+ *      "fieldX" : (string) nom champ conforme au naming du model Hotel
+ *      "newValue" : mixed 
+ *          (string) / (integer) / (integer/string : UTC timestamp) pour les types date
+ * @return : mixed 
+ *      (array) : tableau d'objet model Hotel
+ *      (string) : error message
  */
 router.route('/edit/:id').post((req, res) => {
     //create 
@@ -75,7 +93,18 @@ router.route('/edit/:id').post((req, res) => {
         'last_time_visited']
     const setObject = {}
     propList.forEach(prop => {
-        if(prop in req.body) setObject[prop] = req.body[prop]
+        if(prop in req.body) {
+            switch (prop) {
+                case 'last_time_visited':
+                    setObject[prop] = req.body[prop] ? new Date(Number(req.body[prop])) : null
+                    break;
+                case 'cp':
+                    setObject[prop] = req.body[prop] ? Number(req.body[prop]) : null
+                    break;
+                default:
+                    setObject[prop] = req.body[prop]
+            }
+        }
     })
 
     Hotel.findByIdAndUpdate(
@@ -89,10 +118,12 @@ router.route('/edit/:id').post((req, res) => {
 
 /*
  * @route : delete
- * @param : id Hotel
+ * @method : DELETE
+ * @param : (string) : id Hotel
+ * @return : (string) : error/confirm message
  */
 router.route('/delete/:id').delete((req, res) => {
-    Hotel.findOneAndDelete(req.params.id)
+    Hotel.findByIdAndDelete(req.params.id)
         .then(() => { res.status(200).json('Hotel supprimé')})
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })

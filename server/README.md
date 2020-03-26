@@ -12,8 +12,8 @@
     - [3. Swagger](#3-swagger)
       - [Pourquoi nous l'utilisons](#pourquoi-nous-lutilisons-2)
       - [Comment nous l'utilisons](#comment-nous-lutilisons-2)
-  - [Lancer serveur](#lancer-server)
-  - [Routes](#routes)
+  - [Lancer serveur (v1)](#lancer-serveur-v1)
+  - [Routes doc (temporary)](#routes-doc-temporary)
 
 ## Responsable
 
@@ -69,26 +69,66 @@ En cours d'étude
 **feature Gestion couverture terrain: CRUD Hotel :**
   - **_/hotels_** : get All
     - @method : GET
+    - @param (optionnal) : filter Object : #toDefine
+    - @return : mixed 
+        - (array[ (Object JSON) ]) : tableau d'object model Hotel
+        - (string) : error message
 
-  - **_/hotels/get/:id_** : get hotel by id
+  - **_/hotels/get/:id_** : get hotel by id :id
     - @method : GET
-    - @param : (string) :id : id Hotel
+    - @param : (string) : id Hotel
+    - @return : mixed 
+        - (Object JSON) : object model Hotel
+        - (string) : error message
 
   - **_/hotels/add_** : ajouter un hotel
     - @method : POST
-    - @param : (object JSON) : objet JSON conforme au model Hotel
+    - @param : (Object JSON) : object Hotel conforme au schema (voir schema)
+    - @return : (string) : error/confirm message
 
   - **_/hotels/edit/:id_** : editer l'hotel ayant l'id :id
     - @method : POST
-    - @param : (string) :id : id Hotel
-    - @param : (object JSON) : {prop1 : newValue, prop2 : newValue ...}, "propX" doit etre conforme au model Hotel
+    - @param : (string) : id Hotel
+    - @param : (object JSON) : {field1 : newValue, field2 : newValue ...}, 
+          "fieldX" : (string) nom champ conforme au naming du model Hotel
+        "newValue" : mixed 
+            (string) / (integer) / (integer/string : UTC timestamp) pour les types date
 
   - **_/hotels/delete/:id_** : supprimer l'hotel ayant l'id :id
     - @method : DELETE
-    - @param : (string) :id : id Hotel
+    - @param : (string) : id Hotel
+    - @return : (string) : error/confirm message
 
-**feature Gestion couverture terrain: Associer equipier :**
-  (INC)
+**feature Gestion couverture terrain: Creer equipes :**
+  - **_/gestion/equipes_** : get All
+    - @method : GET
+    - @param (optionnal) : filter Object : #toDefine
+    - @return : mixed 
+        - (array[ (Object JSON) ]) : tableau d'object model Equipe (= Assoc_user_user)
+        - (string) : error message
+
+  - **_/gestion/get/:iduser_** : get equipe by id
+    - @method : GET
+    - @param : (string) : id Equipe
+    - @return : mixed 
+        - (Object JSON) : object model Equipe (= Assoc_user_user)
+        - (string) : error message
+
+  - **_/gestion/equipes/users_** : afficher les utilisateurs non (encore) associés en equipe
+    - @method : GET
+    - @param : void
+    - @return : (array[ (JSON Object{_id, nom, prenom}) ]) : tableau d'Users non associé ds une equipe
+
+  - **_/creer/:idusera/:iduserb_** : associer User A avec User B
+    - @method : POST
+    - @param : (string) : id User A
+    - @param : (string) : id User B
+    - @return : (string) : error/confirm message
+
+  - **_/users/delete/:id_** : effacer equipe
+    - @method : DELETE
+    - @param : (string) : id Equipe
+    - @return : (string) : error/confirm message
 
 **feature Plannification visite: Plannifier visite (avec algo suggestion) :**
   (INC)
@@ -96,41 +136,65 @@ En cours d'étude
 **feature Gestion utilisateur : CRUD User :**
   - **_/users_** : get All
     - @method : GET
+    - @param (optionnal) : filter Object : #toDefine
+    - @return : mixed 
+        - (array[ (Object JSON) ]) : tableau d'object model User
+        - (string) : error message
 
   - **_/users/get/:id_** : get user by id
     - @method : GET
-    - @param : (string) :id : id User
+    - @param : (string) : id User
+    - @return : mixed 
+        - (Object JSON) : object model User
+        - (string) : error message
 
   - **_/users/add_** : ajouter un user
     - @method : POST
-    - @param : (object JSON) : objet JSON conforme au model User
+    - @param : (Object JSON) : object User conforme au schema (voir schema)
+    - @return : (string) : error/confirm message
 
   - **_/users/edit/:id_** : editer l'user ayant l'id :id
     - @method : POST
-    - @param : (string) :id : id User
-    - @param : (object JSON) : {prop1 : newValue, prop2 : newValue ...}, "propX" doit etre conforme au model User
+    - @param : (string) : id User
+    - @param : (object JSON) : {field1 : newValue, field2 : newValue ...}, 
+          "fieldX" : (string) nom champ conforme au naming du model Hotel
+          "newValue" : mixed 
+              (string) / (integer) / (integer/string : UTC timestamp) pour les types date
 
   - **_/users/delete/:id_** : supprimer l'user ayant l'id :id
     - @method : DELETE
-    - @param : (string) :id : id User
+    - @param : (string) : id User
+    - @return : (string) : error/confirm message
 
 **feature CRUD Urgence :**
   - **_/urgences_** : get All
     - @method : GET
+    - @param (optionnal) : filter Object : #toDefine
+    - @return : mixed 
+        - (array[ (Object JSON) ]) : tableau d'object model Urgence
+        - (string) : error message
 
-  - **_/urgences/get/:id_** : get urgence by id
-    - @method : GET
-    - @param : (string) :id : id Urgence
+  - **_/urgences/get/:id_** : get urgence ayant l'id :id
+     - @method : GET
+    - @param : (string) : id Urgence
+    - @return : mixed 
+        - (Object JSON) : object model Urgence
+        - (string) : error message
 
   - **_/urgences/add_** : ajouter un urgence
     - @method : POST
-    - @param : (object JSON) : objet JSON conforme au model Urgence
+    - @param : (Object JSON) : object Urgence conforme au schema (voir schema)
+    - @return : (string) : error/confirm message
 
   - **_/urgences/edit/:id_** : editer l'urgence ayant l'id :id
     - @method : POST
-    - @param : (string) :id : id Urgence
-    - @param : (object JSON) : {prop1 : newValue, prop2 : newValue ...}, "propX" doit etre conforme au model Urgence
+    - @param : (string) : id Urgence
+    - @param : (object JSON) : {field1 : newValue, field2 : newValue ...}, 
+          "fieldX" : (string) nom champ conforme au naming du model Urgence
+          "newValue" : mixed 
+              (string) / (integer) / (integer/string : UTC timestamp) pour les types date
 
   - **_/urgences/delete/:id_** : supprimer l'urgence ayant l'id :id
     - @method : DELETE
-    - @param : (string) :id : id Urgence
+    - @param : (string) : id Urgence
+    - @return : (string) : error/confirm message

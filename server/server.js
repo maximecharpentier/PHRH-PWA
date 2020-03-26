@@ -46,7 +46,12 @@ baseValueInsertor.insertProtoBaseValues(
   },
   err => {
     console.error(err);
+<<<<<<< HEAD
   }
+=======
+  },
+  resetDBValues = false
+>>>>>>> 0ba2ded26c4940dbb9d5df6e50f4b506926d81e7
 );
 
 //Route to end points
@@ -58,6 +63,9 @@ app.use("/urgences", crudUrgenceRouter);
 
 const crudUserRouter = require("./routes/user/crudUser.routes.js");
 app.use("/users", crudUserRouter);
+
+const manageEquipesRouter = require("./routes/feature.gestioncouverture/manageEquipe.routes.js");
+app.use("/gestion/equipes", manageEquipesRouter);
 
 /*const featureNoterHotelRouter = require('./routes/feature\.noterhotel/noterHotel.routes.js')
 app.use('/noter', featureNoterHotelRouter)*/

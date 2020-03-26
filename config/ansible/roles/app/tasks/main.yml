@@ -45,3 +45,4 @@
     src: templates/docker-compose.yml
     dest: "{{ app_directory }}/docker-compose.yml"
   notify: restart docker stack
+  tags: ["compose"]

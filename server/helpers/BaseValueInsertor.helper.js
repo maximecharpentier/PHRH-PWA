@@ -3,22 +3,27 @@ const Visite = require("../model/visite.model");
 const User = require("../model/user.model");
 const Anomalie = require("./../model/anomalie.model");
 const Assoc_user_visite = require("./../model/assoc_user_visite.model");
+const Assoc_user_user = require("./../model/assoc_user_user.model");
 const Priorisation = require("./../model/priorisation.model");
 const Tache = require("./../model/tache.model");
 const Urgence = require("./../model/urgence.model");
 const Vehicule = require("./../model/vehicule.model");
 
 class BaseValueInsertor {
-  static async insertProtoBaseValues(dbtest, cbconfirm, cberror) {
+  static async insertProtoBaseValues(dbtest, cbconfirm, cberror, deleteOldValues) {
     //Clean DATABASE avant insertion
-    /*await Hotel.deleteMany({})
-        await Visite.deleteMany({})
-        await Anomalie.deleteMany({})
-        await Assoc_user_visite.deleteMany({})
-        await Priorisation.deleteMany({})
-        await Tache.deleteMany({})
-        await Urgence.deleteMany({})
-        await Vehicule.deleteMany({})*/
+    if(deleteOldValues) {
+      await Hotel.deleteMany({})
+      await Visite.deleteMany({})
+      await User.deleteMany({})
+      await Anomalie.deleteMany({})
+      await Assoc_user_visite.deleteMany({})
+      await Assoc_user_user.deleteMany({})
+      await Priorisation.deleteMany({})
+      await Tache.deleteMany({})
+      await Urgence.deleteMany({})
+      await Vehicule.deleteMany({})
+    }
 
     //Insert base values HOTEL & VISITES
     for (const [index, hotel] of dbtest.hotels.entries()) {
@@ -48,7 +53,7 @@ class BaseValueInsertor {
           if (visite.hotel_id === hotel.id_temp) {
             const visiteObj = new Visite({
               hotel_id: HotelDB._id,
-              date_visite: visite.date_visite,
+              date_visite: Date.parse(visite.date_visite),
               note: visite.note,
               ville: visite.ville,
               duree: visite.duree,
@@ -69,14 +74,14 @@ class BaseValueInsertor {
       }
     }
 
-    //Insert base values USER
+    //Begin : Inserer Users (User) ans related Entities (Assoc_user_user, Assoc_user_visite)
     const visitesDB = await Visite.find({});
+    const usersIntervenant_ids = []
     if (visitesDB) {
       const visites_ids = visitesDB.map(visite => visite._id);
-      //Insertion des users
       for (const [index, user] of dbtest.users.entries()) {
-        //inserer users
-        if (user.fonction === "Gestionnaire") {
+        //Begin : Inserer User "Gestionnaire"
+        if (user.fonction === "Superviseur") {
           const userPlannif = new User({
             nom: user.nom,
             prenom: user.prenom,
@@ -84,8 +89,7 @@ class BaseValueInsertor {
             fonction: user.fonction,
             secteur: user.secteur,
             plage_h: user.plage_h,
-            infos_equipe: user.infos_equipe,
-            equipier_id: user.equipier_id,
+            jour_bureau: user.jour_bureau,
             vehicule_id: user.vehicule_id
           });
           const userPlannifDB = await User.insertIfNotExist(userPlannif);
@@ -93,12 +97,11 @@ class BaseValueInsertor {
             cbconfirm(
               "<<User " + (index + 1) + "/" + dbtest.users.length + " inséré>>"
             );
-          } else {
-            cberror("erreur d\'insertion de l'utilisateur : ");
           }
         }
+        //End : Inserer User "Gestionnaire"
+        //Begin : Inserer User "Intervenant"
         if (user.fonction === "Intervenant terrain") {
-          //Inserer User
           const userIntervenant = new User({
             nom: user.nom,
             prenom: user.prenom,
@@ -106,21 +109,23 @@ class BaseValueInsertor {
             fonction: user.fonction,
             secteur: user.secteur,
             plage_h: user.plage_h,
-            infos_equipe: user.infos_equipe,
-            equipier_id: user.equipier_id,
+            jour_bureau: user.jour_bureau,
             vehicule_id: user.vehicule_id
           });
           const userIntervenantDB = await User.insertIfNotExist(
             userIntervenant
           );
           if (userIntervenantDB) {
+            console.log('KO')
+            //noter id pour après
+            usersIntervenant_ids.push(userIntervenantDB._id)
 
             //confimer insertion
             cbconfirm(
               "<<User " + (index + 1) + "/" + dbtest.users.length + " inséré>>"
             );
 
-            //Inserer Assoc Visites / user
+            //Begin - Inserer Assoc Visites / user
             for (const [index, visite_id] of visites_ids.entries()) {
               const assoc = new Assoc_user_visite({
                 user_id: userIntervenantDB._id,
@@ -135,45 +140,30 @@ class BaseValueInsertor {
                     "/" +
                     visites_ids.length +
                     " inséré>>"
-                );
-              } else {
-                cberror("erreur d\'insertion de l'association de la Visite avec l'User");
+                )
               }
-            }  
-          } else {
-            cberror("erreur d\'insertion de l'utilisateur");
+            }
+            //End - Inserer Assoc Visites / user
           }
         }
+        //End : Inserer User "Intervenant"
       }
-
-      //Creation des equipes
-      const visiteurs = await User.find({ fonction: "Intervenant terrain" }); //pour clef etrangère
-      const visiteur1_id = visiteurs[0]._id;
-      const visiteur2_id = visiteurs[1]._id;
-      //inserer User 1 -> User 2
-      User.findOneAndUpdate(
-        { id: visiteur1_id },
-        {
-          $set: {
-            equipier_id: visiteur2_id
-          }
+      //Begin : Inserer equipes
+      if(usersIntervenant_ids.length > 0) {
+        const assoc_user_user = new Assoc_user_user({
+          user_a_id: usersIntervenant_ids[0],
+          user_b_id: usersIntervenant_ids[1],
+        });
+        const assoc_user_userDB = await Assoc_user_user.insertIfNotExist(assoc_user_user);
+        if (assoc_user_userDB) {
+          cbconfirm("<<Equipe 1 créée>>")
+        } else {
+          cberror("erreur d\'insertion de l'equipe 1")
         }
-      )
-        .then(cbconfirm("visiteur 1 associé en équipe"))
-        .catch(err => cberror(err));
-
-      //inserer User 2 -> User 1
-      User.findOneAndUpdate(
-        { id: visiteur2_id },
-        {
-          $set: {
-            equipier_id: visiteur1_id
-          }
-        }
-      )
-        .then(cbconfirm("visiteur 2 associé en équipe"))
-        .catch(err => cberror(err));
+        //End : Inserer equipes
+      }
     }
+    //End : Inserer Users ans related Entities
   }
 }
 

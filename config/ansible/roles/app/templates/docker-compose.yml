@@ -13,9 +13,9 @@ services:
     ports:
       - "{{ phrh_server_port }}:3000"
     links:
-      - "db"
-  db:
-    container_name: phrh-db
+      - "mongo"
+  mongo:
+    container_name: phrh-mongo
     image: mongo
     volumes:
       - ./data/db:/data/db

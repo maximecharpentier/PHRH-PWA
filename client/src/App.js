@@ -14,7 +14,7 @@ import Login from "./pages/Login";
 
 const App = () => {
   axios
-    .get("http://db:27017/hotel/all")
+    .get("http://35.180.35.120:8081/hotels")
     .then(res => console.log(res))
     .catch(err => console.log(err));
   return (
