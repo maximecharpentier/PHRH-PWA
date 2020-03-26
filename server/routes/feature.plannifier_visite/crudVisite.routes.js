@@ -7,7 +7,7 @@ const Visite = require('../../model/visite.model');
  * @method : GET
  * @param (optionnal) : filter Object : #toDefine
  * @return : mixed 
- *      (array[ (Object JSON) ]) : tableau d'object model Visite pour un User ou un Hotel
+ *      (array[ (Object JSON) ]) : tableau d'object model Visite pour un User ou un Visite
  *      (string) : error message
  */
 router.route('/:identite').get((req, res) => {
@@ -21,7 +21,7 @@ router.route('/:identite').get((req, res) => {
     //creer les objets visites et retourner
 
     //cas 2 :
-    //chercher les Visites avec id Hotel = :identite
+    //chercher les Visites avec id Visite = :identite
     //retourner
 
     //let mongoFilter = []
@@ -42,7 +42,7 @@ router.route('/:identite').get((req, res) => {
     }
     */
     //reprendre ici et construire le system de filtre dynamic
-    Hotel.find(filterObj/*{ville: { $in: '.*b*'}}*/)
+    Visite.find(filterObj/*{ville: { $in: '.*b*'}}*/)
         .then(visites => res.status(200).json(visites))            
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
@@ -50,9 +50,9 @@ router.route('/:identite').get((req, res) => {
 /*
  * @route : get
  * @method : GET
- * @param : (string) : id Hotel
+ * @param : (string) : id Visite
  * @return : mixed 
- *      (Object JSON) : object model Hotel
+ *      (Object JSON) : object model Visite
  *      (string) : error message
  */
 router.route('/get/:id').get((req, res) => {
@@ -65,12 +65,12 @@ router.route('/get/:id').get((req, res) => {
 /*
  * @route : add
  * @method : POST
- * @param : (Object JSON) : object Hotel conforme au schema (voir schema)
+ * @param : (Object JSON) : object Visite conforme au schema (voir schema)
  * @return : (string) : error/confirm message
  */
 router.route('/add').post((req, res) => {
-    //creer model Hotel
-    const visite = new Hotel({
+    //creer model Visite
+    const visite = new Visite({
         nom :           req.body.nom, 
         adresse :       req.body.adresse, 
         cp :            Number(req.body.cp), 
@@ -82,20 +82,20 @@ router.route('/add').post((req, res) => {
 
     //save
     visite.save()
-        .then(() => res.status(200).json('Hotel ajouté'))
+        .then(() => res.status(200).json('Visite ajouté'))
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
 /*
  * @route : edit
  * @method : POST
- * @param : (string) : id Hotel
+ * @param : (string) : id Visite
  * @param : (object JSON) : {field1 : newValue, field2 : newValue ...}, 
- *      "fieldX" : (string) nom champ conforme au naming du model Hotel
+ *      "fieldX" : (string) nom champ conforme au naming du model Visite
  *      "newValue" : mixed 
  *          (string) / (integer) / (integer/string : UTC timestamp) pour les types date
  * @return : mixed 
- *      (array) : tableau d'objet model Hotel
+ *      (array) : tableau d'objet model Visite
  *      (string) : error message
  */
 router.route('/edit/:id').post((req, res) => {
@@ -120,24 +120,24 @@ router.route('/edit/:id').post((req, res) => {
         }
     })
 
-    Hotel.findByIdAndUpdate(
+    Visite.findByIdAndUpdate(
         { _id: req.params.id }, 
         { $set: setObject }, 
         //{ new: true }
         )
-        .then(visite => res.status(200).json('Hotel édité avec succès'))
+        .then(visite => res.status(200).json('Visite édité avec succès'))
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
 /*
  * @route : delete
  * @method : DELETE
- * @param : (string) : id Hotel
+ * @param : (string) : id Visite
  * @return : (string) : error/confirm message
  */
 router.route('/delete/:id').delete((req, res) => {
-    Hotel.findByIdAndDelete(req.params.id)
-        .then(() => { res.status(200).json('Hotel supprimé')})
+    Visite.findByIdAndDelete(req.params.id)
+        .then(() => { res.status(200).json('Visite supprimé')})
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
