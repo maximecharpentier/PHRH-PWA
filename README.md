@@ -3,6 +3,8 @@
 
 ------
 
+------
+
 <p>
   <a href="https://github.com/blyndusk/PHRH-PWA/actions" target="_blank">
     <img src="https://github.com/blyndusk/PHRH-PWA/workflows/Main%20Workflow/badge.svg?branch=master" alt="GitHub Actions"/>
