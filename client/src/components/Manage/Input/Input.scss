@@ -1,0 +1,28 @@
+.input-container {
+  display: inline-block;
+  width: calc(100% / 2 - 25px);
+  margin: 25px 0;
+  &:nth-child(odd) {
+    margin-right: 15px;
+  }
+  &:nth-child(even) {
+    margin-left: 15px;
+  }
+  label,
+  input {
+    display: block;
+    font-size: 14px;
+    text-transform: capitalize;
+  }
+  label {
+    margin-bottom: 10px;
+  }
+  input {
+    outline: none;
+    width: 100%;
+    height: 30px;
+    border: 1px solid #111215;
+    border-radius: 4px;
+    padding-left: 10px;
+  }
+}

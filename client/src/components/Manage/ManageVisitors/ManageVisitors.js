@@ -1,42 +1,63 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+
 import Card from '../Card/Card'
+import Input from '../Input/Input'
+import Form from '../Form/Form'
+import Modal from '../Modal/Modal'
+
+import API from '../../../api/api'
+
 
 class ManageVisitors extends Component {
     state = {
         visitors: [],
-        showForm: false,
+        newVisitor: { fonction: "Superviseur", plage_h: null, pwd: "null" },
+        editVisitor: {},
         editing: false,
-        newVisitor: { nom: "", prenom: "", secteur: "" },
-        editVisitor: {}
+        showForm: false,
+        deleteConfirm: false,
+        errorEmptyFieldsMessage: "",
+        successMessage: "",
     }
 
     _refreshVisitors = () => {
-        axios.get('http://35.180.37.72:3001/users/').then((response) => {
+        API.get('users/').then((response) => {
             this.setState({
                 visitors: response.data
             })
         })
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this._refreshVisitors()
+
+    }
+
+    componentDidUpdate() {
+        { !this.state.showForm ? document.body.style.overflow = 'auto' : document.body.style.overflow = 'hidden' }
     }
 
     addVisitor = (e) => {
         e.preventDefault();
-        if (e.target.nom.value !== "" && e.target.prenom.value !== "" && e.target.secteur.value !== "") {
-            axios.post('http://35.180.37.72:3001/users/', this.state.newVisitor).then((response) => {
-                let { visitors } = this.state;
-                visitors.concat(response.data)
+        const { nom, prenom, secteur, infos_equipe } = e.target;
+        if (nom.value !== "" && prenom.value !== "" && secteur.value !== "" && infos_equipe.value !== "") {
+            API.post('users/add/', this.state.newVisitor).then((response) => {
+                console.log(response.data)
                 this.setState({
-                    visitors, newVisitor: {
-                        nom: "", prenom: "", secteur: ""
+                    newVisitor: {
+                        fonction: "Superviseur", plage_h: null, pwd: "null", nom: "", prenom: "", secteur: "", infos_equipe: ""
                     }
                 })
                 this._refreshVisitors()
+                this.toggleForm();
+                this.showSuccessMessage("L'utilisateur à bien été ajouter")
+            }).catch(error => {
+                console.log(error.response)
+            });
+        } else {
+            this.setState({
+                errorEmptyFieldsMessage: "L'un des champs n'est pas remplie"
             })
-            this.toggleForm();
         }
     }
 
@@ -48,62 +69,110 @@ class ManageVisitors extends Component {
         })
     }
 
-    deleteUser = (id) => {
-        axios.delete('http://35.180.37.72:3001/users/' + id).then((response) => {
+    updateUser = (e, id) => {
+        e.preventDefault();
+        API.post('users/edit/' + id, this.state.editVisitor).then((response) => {
             console.log(response.data)
             this._refreshVisitors()
+            this.toggleForm();
+            this.showSuccessMessage("L'utilisateur à bien été modifier")
+        }).catch(error => {
+            console.log(error.response)
+        });
+    }
+
+    getIdForDelete = (id) =>{
+        this.setState({ idVisitorClicked: id })
+        this.toggleDeleteConfirmation()
+    }
+
+    toggleDeleteConfirmation = () => {
+        this.setState({
+            deleteConfirm: !this.state.deleteConfirm,
+        })
+    }
+
+
+    deleteUser = (e) => {
+        e.preventDefault()
+        API.delete('users/delete/' + this.state.idVisitorClicked).then((response) => {
+            console.log(response.data)
+            this.toggleDeleteConfirmation()
+            this._refreshVisitors()
+            this.showSuccessMessage("L'utilisateur à bien été supprimer")
         })
     }
 
     toggleForm = () => {
         this.setState({
-            showForm: !this.state.showForm,
+            showForm: !this.state.showForm
         })
-        if(this.state.editing){
+        { this.state.editing && this.setState({ editing: false }) }
+    }
+
+    showSuccessMessage = (message) => {
+        this.setState({
+            successMessage: message
+        })
+        setTimeout(() => {
             this.setState({
-                editing: false
+                successMessage: ''
             })
+        }, 3000)
+    }
+
+    handleChange = (e) => {
+        const { name, value } = e.target;
+        {
+            this.state.editing ? this.setState(prevState => ({
+                editVisitor: {
+                    ...prevState.editVisitor,
+                    [name]: value
+                }
+            })) : this.setState(prevState => ({
+                newVisitor: {
+                    ...prevState.newVisitor,
+                    [name]: value
+                }
+            }))
         }
     }
 
-
-
     render() {
-        const { showForm, visitors, newVisitor, editing , editVisitor} = this.state;
-        let allUsers = visitors.map((user, id) => {
-            return <Card key={id} user={user} editUser={() => this.editUser(user)} deleteUser={() => this.deleteUser(user.id)} />
+        const { showForm, visitors, newVisitor, editing, editVisitor, deleteConfirm, successMessage } = this.state;
+        let allUsers = visitors.map((user) => {
+            return <Card key={user._id} user={user} editUser={() => this.editUser(user)} deleteUser={() => this.getIdForDelete(user._id)} />
         })
 
         return (
-            <div className="planificateur-container">
-                {showForm &&
-                    <>
-                        <div className="backgroundBody"></div>
-                        <div className="addForm">
-                            <form onSubmit={this.addVisitor}>
-                                <input type="text" placeholder="nom" name="nom" value={editing ? editVisitor.nom : newVisitor.nom} onChange={(e) => {
-                                    newVisitor.nom = e.target.value
-                                    this.setState({ newVisitor })
-                                }} />
-                                <input type="text" placeholder="prenom" name="prenom" value={editing ? editVisitor.prenom : newVisitor.prenom} onChange={(e) => {
-                                    newVisitor.prenom = e.target.value
-                                    this.setState({ newVisitor })
-                                }} />
-                                <input type="text" placeholder="secteur" name="secteur" value={editing ? editVisitor.secteur : newVisitor.secteur} onChange={(e) => {
-                                    newVisitor.secteur = e.target.value
-                                    this.setState({ newVisitor })
-                                }} />
-                                <button type="submit">{editing ? "Modifier" : "Ajouter"}</button>
-                                <span onClick={this.toggleForm}>X</span>
-                            </form>
-                        </div>
-                    </>
-                }
+            <div className="visitor-container">
                 <div className="flex-container">
                     <p>{visitors.length} visiteurs</p>
                     <button onClick={this.toggleForm}>Ajouter un visiteur</button>
                 </div>
-                {allUsers}
+                {successMessage !== "" && <div className="success-message">{successMessage}</div>}
+                <section className="visitor-card-container">
+                    {allUsers}
+                </section>
+
+                {showForm &&
+                    <Modal title={editing ? "Modifier un visiteur" : "Ajouter un visiteur"} handleClick={this.toggleForm}>
+                        <Form btnSubmit="Valider" handleSubmit={editing ? (e) => this.updateUser(e, editVisitor._id) : this.addVisitor} handleClick={this.toggleForm}>
+                            <Input name="nom" type="text" value={editing ? editVisitor.nom : newVisitor.nom || ''} handleChange={(e) => this.handleChange(e)} />
+                            <Input name="prenom" type="text" value={editing ? editVisitor.prenom : newVisitor.prenom || ''} handleChange={(e) => this.handleChange(e)} />
+                            <Input name="secteur" type="text" value={editing ? editVisitor.secteur : newVisitor.secteur || ''} handleChange={(e) => this.handleChange(e)} />
+                            <Input name="infos_equipe" type="text" value={editing ? editVisitor.infos_equipe : newVisitor.infos_equipe || ''} handleChange={(e) => this.handleChange(e)} />
+                        </Form>
+                    </Modal>
+                }
+                {deleteConfirm &&
+                    <Modal handleClick={this.toggleDeleteConfirmation}>
+                        <Form btnSubmit="Supprimer" handleSubmit={(e) => this.deleteUser(e)} handleClick={this.toggleDeleteConfirmation}>
+                            <p>Êtes-vous sûre de vouloir supprimer ?</p>
+                        </Form>
+                    </Modal>
+                }
+
             </div>
         );
     }
