@@ -116,7 +116,6 @@ class BaseValueInsertor {
             userIntervenant
           );
           if (userIntervenantDB) {
-            console.log('KO')
             //noter id pour après
             usersIntervenant_ids.push(userIntervenantDB._id)
 
