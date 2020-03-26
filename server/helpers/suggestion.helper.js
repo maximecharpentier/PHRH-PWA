@@ -84,7 +84,6 @@ class BaseValueInsertor {
             fonction: user.fonction,
             secteur: user.secteur,
             plage_h: user.plage_h,
-            infos_equipe: user.infos_equipe,
             equipier_id: user.equipier_id,
             vehicule_id: user.vehicule_id
           });
@@ -106,8 +105,6 @@ class BaseValueInsertor {
             fonction: user.fonction,
             secteur: user.secteur,
             plage_h: user.plage_h,
-            infos_equipe: user.infos_equipe,
-            equipier_id: user.equipier_id,
             vehicule_id: user.vehicule_id
           });
           const userIntervenantDB = await User.insertIfNotExist(

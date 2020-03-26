@@ -4,7 +4,11 @@ const Urgence = require('../../model/urgence.model');
 
 /*
  * @route : get all
- * @param : void
+ * @method : GET
+ * @param (optionnal) : filter Object : #toDefine
+ * @return : mixed 
+ *      (array[ (Object JSON) ]) : tableau d'object model Urgence
+ *      (string) : error message
  */
 router.route('/').get((req, res) => {
     Urgence.find({})
@@ -14,7 +18,11 @@ router.route('/').get((req, res) => {
 
 /*
  * @route : get
- * @param : id Urgence
+ * @method : GET
+ * @param : (string) : id Urgence
+ * @return : mixed 
+ *      (Object JSON) : object model Urgence
+ *      (string) : error message
  */
 router.route('/get/:id').get((req, res) => {
     //get urgence from DB
@@ -25,7 +33,9 @@ router.route('/get/:id').get((req, res) => {
 
 /*
  * @route : add
- * @param : Hotel Object (voir schema)
+ * @method : POST
+ * @param : (Object JSON) : object Urgence conforme au schema (voir schema)
+ * @return : (string) : error/confirm message
  */
 router.route('/add').post((req, res) => {
     //creer model Hotel
@@ -43,7 +53,15 @@ router.route('/add').post((req, res) => {
 
 /*
  * @route : edit
- * @param : id Urgence
+ * @method : POST
+ * @param : (string) : id Urgence
+ * @param : (object JSON) : {field1 : newValue, field2 : newValue ...}, 
+ *      "fieldX" : (string) nom champ conforme au naming du model Urgence
+ *      "newValue" : mixed 
+ *          (string) / (integer) / (integer/string : UTC timestamp) pour les types date
+ * @return : mixed 
+ *      (array) : tableau d'objet model Urgence
+ *      (string) : error message
  */
 router.route('/edit/:id').post((req, res) => {   
     Urgence.findById(req.params.id) 
@@ -62,10 +80,12 @@ router.route('/edit/:id').post((req, res) => {
 
 /*
  * @route : delete
- * @param : id Hotel
+ * @method : DELETE
+ * @param : (string) : id Urgence
+ * @return : (string) : error/confirm message
  */
 router.route('/delete/:id').delete((req, res) => {
-    Urgence.findOneAndRemove(req.params.id)
+    Urgence.findByIdAndDelete(req.params.id)
         .then(() => { res.json('Urgence supprimée')})
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })

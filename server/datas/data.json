@@ -547,8 +547,7 @@
          "fonction":"Intervenant terrain",
          "secteur":"75",
          "plage_h":"Matin",
-         "infos_equipe":"4y719b",
-         "equipier_id":null,
+         "jour_bureau": null,
          "visites_id":[
             1,
             2,
@@ -602,8 +601,7 @@
          "fonction":"Intervenant terrain",
          "secteur":"75",
          "plage_h":"Matin",
-         "infos_equipe":"fy5j3",
-         "equipier_id":null,
+         "jour_bureau": null,
          "visites_id":[
             1,
             2,
@@ -712,7 +710,7 @@
          "fonction":"Intervenant terrain",
          "secteur":"75",
          "plage_h":"Soir",
-         "infos_equipe":"nce30q",
+         "jour_bureau": null,
          "vehicule_id":null
       },
       {
@@ -722,7 +720,7 @@
          "fonction":"Intervenant terrain",
          "secteur":"75",
          "plage_h":"Soir",
-         "infos_equipe":"nce30q",
+         "jour_bureau": null,
          "vehicule_id":null
       }
    ],

@@ -53,7 +53,7 @@ class BaseValueInsertor {
           if (visite.hotel_id === hotel.id_temp) {
             const visiteObj = new Visite({
               hotel_id: HotelDB._id,
-              date_visite: visite.date_visite,
+              date_visite: Date.parse(visite.date_visite),
               note: visite.note,
               ville: visite.ville,
               duree: visite.duree,
@@ -89,8 +89,7 @@ class BaseValueInsertor {
             fonction: user.fonction,
             secteur: user.secteur,
             plage_h: user.plage_h,
-            infos_equipe: user.infos_equipe,
-            equipier_id: user.equipier_id,
+            jour_bureau: user.jour_bureau,
             vehicule_id: user.vehicule_id
           });
           const userPlannifDB = await User.insertIfNotExist(userPlannif);
@@ -110,14 +109,14 @@ class BaseValueInsertor {
             fonction: user.fonction,
             secteur: user.secteur,
             plage_h: user.plage_h,
-            infos_equipe: user.infos_equipe,
-            equipier_id: user.equipier_id,
+            jour_bureau: user.jour_bureau,
             vehicule_id: user.vehicule_id
           });
           const userIntervenantDB = await User.insertIfNotExist(
             userIntervenant
           );
           if (userIntervenantDB) {
+            console.log('KO')
             //noter id pour après
             usersIntervenant_ids.push(userIntervenantDB._id)
 
