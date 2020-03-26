@@ -7,8 +7,10 @@ const Equipe = require('../../model/assoc_user_user.model');
 /*
  * @route : get all
  * @method : GET
- * @param : filterObject : #toDefine
- * @return : mixed array/string : array of Equipe Object / error message
+ * @param (optionnal) : filter Object : #toDefine
+ * @return : mixed 
+ *      (array[ (Object JSON) ]) : tableau d'object model Equipe
+ *      (string) : error message
  */
 router.route('/').get((req, res) => {    
     //let mongoFilter = []
@@ -35,10 +37,12 @@ router.route('/').get((req, res) => {
 })
 
 /*
- * @route : get
+ * @route : get l'equipe de l'user
  * @method : GET
- * @param : id User Object
- * @return : Equipe Object
+ * @param : (string) : id User
+ * @return : mixed 
+ *      (Object JSON) : object model Equipe 
+ *      (string) : error message
  */
 router.route('/get/:iduser').get((req, res) => {
     //get hotel from DB
@@ -56,8 +60,7 @@ router.route('/get/:iduser').get((req, res) => {
  * @route : get users pour association
  * @method : GET
  * @param : void
- * @param : float : note
- * @return : array(array(User{_id, nom, prenom})) : tableau d'Users non associé ds une equipe
+ * @return : (array[ (JSON Object{_id, nom, prenom}) ]) : tableau d'Users non associé ds une equipe
  */
 router.route('/users').get(async (req, res) => {
     //get users
@@ -89,9 +92,9 @@ router.route('/users').get(async (req, res) => {
 /*
  * @route : associer User A avec B
  * @method : POST
- * @param : string : id user A
- * @param : string : id user B
- * @return : string : message/error
+ * @param : (string) : id user A
+ * @param : (string) : id user B
+ * @return : (string) : error/confirm message
  */
 router.route('/creer/:idusera/:iduserb').post((req, res) => {
     //checker si un des id est ds une equipe
@@ -124,10 +127,10 @@ router.route('/creer/:idusera/:iduserb').post((req, res) => {
 })
 
 /*
- * @route : effacer equipe
+ * @route : delete
  * @method : DELETE
- * @param : string : id equipe
- * @return : string : message/error
+ * @param : (string) : id Equipe
+ * @return : (string) : error/confirm message
  */
 router.route('/delete/:id').delete((req, res) => {
     Equipe.findOneAndDelete(req.params.id)

@@ -14,7 +14,6 @@ const fonction_administrateur = 'Superviseur'
 const functions = ['Médiateur', 'Intervenant terrain', 'Mediateur SAS', fonction_administrateur]
 const allowed_plage_h = [null, 'Matin', 'Journée', 'Soir']
 
-
 const userSchema = new Schema({
     nom : {
         type: String, 
@@ -38,7 +37,6 @@ const userSchema = new Schema({
         type: String,
         required: true, 
         enum: functions,
-        required: true
     },
     secteur : {
         type: String, 
@@ -54,11 +52,9 @@ const userSchema = new Schema({
             'plage_h is required if fonction is administrateur value'
         ]
     },
-    infos_equipe : {
-        type: String, 
-        required: true, 
-        trim: true,
-        maxlength: 50
+    jour_bureau : {
+        type : Date,
+        default: null
     },
     vehicule_id : {
         type: Schema.Types.ObjectId, 
