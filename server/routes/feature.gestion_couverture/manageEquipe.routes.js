@@ -15,21 +15,6 @@ const Equipe = require('../../model/assoc_user_user.model');
 router.route('/').get((req, res) => {    
     //let mongoFilter = []
     let filterObj = {}
-    /*
-    if(req.body.filters) {
-        req.body.filters.map(filter => {
-            //create filter from request
-            //old filterObj[filter.field] = { $regex: '.*' + filter.value + '*', $options: 'i' }
-            filterObj[filter.field] = { $in: '.*' + filter.value + '*'}
-            //filterObj['test'] = "ok"
-
-            //populate aray filters
-            //mongoFilter.push(
-            //    {filterObj}
-            //)
-        })
-    }
-    */
     //reprendre ici et construire le system de filtre dynamic
     Equipe.find(filterObj/*{ville: { $in: '.*b*'}}*/)
         .then(equipes => res.status(200).json(equipes))            
@@ -66,7 +51,8 @@ router.route('/users').get(async (req, res) => {
     //get users
     User.find({ fonction: { $nin: ['Superviseur'] }}, '_id nom prenom')
         //ici on passe par une fonction async pour pouvoir peupler 'users' 
-        //pck si on le peuple ds le .then AssocUserUser.find
+        //pck si on le peuple ds le .then de AssocUserUser.find alors 
+        //const "users" n'est pas remplie
         .then(async usersDB => {
             //tableau des usuer n'appartenant à aucune equipe
             const users = []
