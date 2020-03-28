@@ -1,0 +1,39 @@
+@import "../../../../styles/mixins.scss";
+
+.overlay {
+  position: fixed;
+  z-index: 20;
+  width: 100%;
+  height: 100%;
+  background-color: #000000a6;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+.popin {
+  position: fixed;
+  z-index: 20;
+  top: 15vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: auto;
+  background-color: #ffffff;
+  .popin-header {
+    position: relative;
+    background: #eff2fb;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    h2 {
+      font-weight: 500;
+    }
+    span {
+      cursor: pointer;
+      position: absolute;
+      right: 10px;
+    }
+  }
+}

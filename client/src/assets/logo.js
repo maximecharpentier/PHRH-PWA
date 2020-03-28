@@ -1,5 +1,4 @@
 import React from 'react';
-import { BrowserRouter as Route, Link, } from 'react-router-dom';
 
 const Logo = () => (
   <svg width="177" height="24" viewBox="0 0 177 24" fill="none" xmlns="http://www.w3.org/2000/svg">

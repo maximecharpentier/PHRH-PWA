@@ -3,9 +3,9 @@ import './Form.scss'
 
 const Form = ({children, handleSubmit, handleClick, btnSubmit}) => {
     return (
-        <form onSubmit={handleSubmit}>
+        <form className="popin-form" onSubmit={handleSubmit}>
 
-            <section className="popin-form-container">
+            <section className="popin-form-content">
                 {children}
             </section>
 

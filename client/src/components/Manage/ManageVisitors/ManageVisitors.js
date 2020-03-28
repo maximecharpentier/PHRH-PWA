@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 
-import Card from '../Card/Card'
-import Input from '../Input/Input'
-import Form from '../Form/Form'
-import Modal from '../Modal/Modal'
+import Card from '../Common/Card/Card'
+import Input from '../Common/Input/Input'
+import Form from '../Common/Form/Form'
+import Modal from '../Common/Modal/Modal'
+import Nav from '../Common/Nav/Nav'
+
 
 import API from '../../../api/api'
-
 
 class ManageVisitors extends Component {
     state = {
@@ -15,7 +16,8 @@ class ManageVisitors extends Component {
         editVisitor: {},
         editing: false,
         showForm: false,
-        deleteConfirm: false,
+        showDeleteConfirm: false,
+        showMore: false,
         errorEmptyFieldsMessage: "",
         successMessage: "",
     }
@@ -30,11 +32,10 @@ class ManageVisitors extends Component {
 
     componentDidMount() {
         this._refreshVisitors()
-
     }
 
     componentDidUpdate() {
-        { !this.state.showForm ? document.body.style.overflow = 'auto' : document.body.style.overflow = 'hidden' }
+        !this.state.showForm ? document.body.style.overflow = 'auto' : document.body.style.overflow = 'hidden'
     }
 
     addVisitor = (e) => {
@@ -81,17 +82,16 @@ class ManageVisitors extends Component {
         });
     }
 
-    getIdForDelete = (id) =>{
+    getIdForDelete = (id) => {
         this.setState({ idVisitorClicked: id })
         this.toggleDeleteConfirmation()
     }
 
     toggleDeleteConfirmation = () => {
         this.setState({
-            deleteConfirm: !this.state.deleteConfirm,
+            showDeleteConfirm: !this.state.showDeleteConfirm,
         })
     }
-
 
     deleteUser = (e) => {
         e.preventDefault()
@@ -107,7 +107,13 @@ class ManageVisitors extends Component {
         this.setState({
             showForm: !this.state.showForm
         })
-        { this.state.editing && this.setState({ editing: false }) }
+        this.state.editing && this.setState({ editing: false })
+    }
+
+    toggleShowMore = () => {
+        this.setState({
+            showMore: !this.state.showMore
+        })
     }
 
     showSuccessMessage = (message) => {
@@ -123,34 +129,35 @@ class ManageVisitors extends Component {
 
     handleChange = (e) => {
         const { name, value } = e.target;
-        {
-            this.state.editing ? this.setState(prevState => ({
-                editVisitor: {
-                    ...prevState.editVisitor,
-                    [name]: value
-                }
-            })) : this.setState(prevState => ({
-                newVisitor: {
-                    ...prevState.newVisitor,
-                    [name]: value
-                }
-            }))
-        }
+
+        this.state.editing ? this.setState(prevState => ({
+            editVisitor: {
+                ...prevState.editVisitor,
+                [name]: value
+            }
+        })) : this.setState(prevState => ({
+            newVisitor: {
+                ...prevState.newVisitor,
+                [name]: value
+            }
+        }))
+
     }
 
     render() {
-        const { showForm, visitors, newVisitor, editing, editVisitor, deleteConfirm, successMessage } = this.state;
+        const { showForm, showMore, visitors, newVisitor, editing, editVisitor, showDeleteConfirm, successMessage } = this.state;
+
         let allUsers = visitors.map((user) => {
             return <Card key={user._id} user={user} editUser={() => this.editUser(user)} deleteUser={() => this.getIdForDelete(user._id)} />
         })
 
         return (
             <div className="visitor-container">
-                <div className="flex-container">
-                    <p>{visitors.length} visiteurs</p>
-                    <button onClick={this.toggleForm}>Ajouter un visiteur</button>
-                </div>
+
+                <Nav items={visitors} addForm={this.toggleForm} name="visiteur" />
+
                 {successMessage !== "" && <div className="success-message">{successMessage}</div>}
+                
                 <section className="visitor-card-container">
                     {allUsers}
                 </section>
@@ -165,10 +172,16 @@ class ManageVisitors extends Component {
                         </Form>
                     </Modal>
                 }
-                {deleteConfirm &&
+                {showDeleteConfirm &&
                     <Modal handleClick={this.toggleDeleteConfirmation}>
                         <Form btnSubmit="Supprimer" handleSubmit={(e) => this.deleteUser(e)} handleClick={this.toggleDeleteConfirmation}>
                             <p>Êtes-vous sûre de vouloir supprimer ?</p>
+                        </Form>
+                    </Modal>
+                }
+                {showMore &&
+                    <Modal handleClick={this.toggleShowMore}>
+                        <Form>
                         </Form>
                     </Modal>
                 }

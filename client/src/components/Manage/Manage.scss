@@ -1,3 +1,4 @@
+@import "../../styles/variables.scss";
 @import "../../styles/mixins.scss";
 
 section {
@@ -30,10 +31,10 @@ section {
       }
     }
   }
-  & > div {
+  div.manage-container {
     width: calc(100% - 100px);
     margin: 0 auto;
-    nav {
+    nav.manage-nav {
       ul {
         display: flex;
         justify-content: space-between;
@@ -67,74 +68,6 @@ section {
       @include button;
     }
   }
-
-  .visitor-card {
-    position: relative;
-    display: block;
-    width: calc(100% / 4 - 43px);
-    height: auto;
-    padding: 25px 10px;
-    background: #eff2fb;
-    border-radius: 4px;
-    margin: 0px 30px 15px 0;
-    &-container {
-      display: flex;
-      flex-wrap: wrap;
-      margin-top: 30px;
-    }
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.35);
-    &:nth-child(4n + 4) {
-      margin-right: 0;
-    }
-    & > p:first-child {
-      display: inline-block;
-      font-size: 18px;
-      font-weight: 700;
-    }
-    & > span {
-      cursor: pointer;
-      float: right;
-    }
-    p,
-    div:not(.visitor-card-menu) {
-      margin-bottom: 25px;
-    }
-    & > p:last-child {
-      margin-bottom: 0;
-    }
-    &-menu {
-      position: absolute;
-      top: 40px;
-      right: 5px;
-      background-color: #ffffff;
-      width: 55%;
-      margin: 0;
-      padding-left: 10px;
-      border-radius: 4px;
-      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.35);
-      transition: all 0.2s ease-in-out 0s;
-      opacity: 0;
-      visibility: hidden;
-      p {
-        cursor: pointer;
-        padding: 14px 0;
-        margin: 0;
-        border-bottom: 1px solid #eff2fb;
-        &:last-child {
-          border-bottom: none;
-        }
-      }
-      &.show {
-        opacity: 1;
-        visibility: visible;
-      }
-    }
-    &-line {
-      width: 100%;
-      height: 1px;
-      background: #031772;
-    }
-  }
 }
 
 span,
@@ -142,8 +75,14 @@ p {
   text-transform: capitalize;
 }
 
+.text-overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap !important;
+}
+
 @media screen and (max-width: 1024px) {
-  .planificator-card {
+  .visitor-card {
     width: calc(100% / 3 - 45px) !important;
     margin-right: 35px !important;
     &:nth-child(3n + 3) {

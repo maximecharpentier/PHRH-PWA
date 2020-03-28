@@ -29,12 +29,12 @@ class Manage extends Component {
     render() {
         const { showVisitors, showHotels, showEmergencies, showTeams } = this.state;
         return (
-            <section>
-                <header>
+            <section className="manage">
+                <header className="manage-header">
                     <h2>Gestions des <br /> ressources <span>.</span></h2>
                 </header>
-                <div>
-                    <nav>
+                <div className="manage-container">
+                    <nav className="manage-nav">
                         <ul>
                             <li className={showVisitors ? "active" : ""} onClick={this.showVisitors}>Visiteurs</li>
                             <li className={showHotels ? "active" : ""} onClick={this.showHotels}>Hôtels</li>
