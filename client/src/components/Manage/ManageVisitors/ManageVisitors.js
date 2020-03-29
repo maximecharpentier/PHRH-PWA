@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
 
-import Card from '../Common/Card/Card'
-import Input from '../Common/Input/Input'
-import Form from '../Common/Form/Form'
-import Modal from '../Common/Modal/Modal'
-import Nav from '../Common/Nav/Nav'
+import Card from '../Common/Card/Card';
+import Input from '../Common/Input/Input';
+import Form from '../Common/Form/Form';
+import Modal from '../Common/Modal/Modal';
+import Nav from '../Common/Nav/Nav';
 
-
-import API from '../../../api/api'
+import API from '../../../api/api';
 
 class ManageVisitors extends Component {
     state = {
         visitors: [],
         newVisitor: { fonction: "Superviseur", plage_h: null, pwd: "null" },
-        editVisitor: {},
+        userInfos: {},
         editing: false,
         showForm: false,
         showDeleteConfirm: false,
@@ -62,17 +61,23 @@ class ManageVisitors extends Component {
         }
     }
 
-    editUser = (user) => {
+    getUserInfo = (user, editUser) => {
+        editUser ? 
         this.setState({
-            editVisitor: user,
+            userInfos: user,
             editing: true,
             showForm: !this.state.showForm,
+        })
+        :
+        this.setState({
+            userInfos: user,
+            showMore: !this.state.showMore,
         })
     }
 
     updateUser = (e, id) => {
         e.preventDefault();
-        API.post('users/edit/' + id, this.state.editVisitor).then((response) => {
+        API.post('users/edit/' + id, this.state.userInfos).then((response) => {
             console.log(response.data)
             this._refreshVisitors()
             this.toggleForm();
@@ -131,8 +136,8 @@ class ManageVisitors extends Component {
         const { name, value } = e.target;
 
         this.state.editing ? this.setState(prevState => ({
-            editVisitor: {
-                ...prevState.editVisitor,
+            userInfos: {
+                ...prevState.userInfos,
                 [name]: value
             }
         })) : this.setState(prevState => ({
@@ -145,10 +150,10 @@ class ManageVisitors extends Component {
     }
 
     render() {
-        const { showForm, showMore, visitors, newVisitor, editing, editVisitor, showDeleteConfirm, successMessage } = this.state;
+        const { showForm, showMore, visitors, newVisitor, editing, userInfos, showDeleteConfirm, successMessage } = this.state;
 
         let allUsers = visitors.map((user) => {
-            return <Card key={user._id} user={user} editUser={() => this.editUser(user)} deleteUser={() => this.getIdForDelete(user._id)} />
+            return <Card key={user._id} user={user} editUser={() => this.getUserInfo(user, true)} showMore={() => this.getUserInfo(user)} deleteUser={() => this.getIdForDelete(user._id)} />
         })
 
         return (
@@ -157,18 +162,18 @@ class ManageVisitors extends Component {
                 <Nav items={visitors} addForm={this.toggleForm} name="visiteur" />
 
                 {successMessage !== "" && <div className="success-message">{successMessage}</div>}
-                
-                <section className="visitor-card-container">
+
+                <section className="card-container">
                     {allUsers}
                 </section>
 
                 {showForm &&
                     <Modal title={editing ? "Modifier un visiteur" : "Ajouter un visiteur"} handleClick={this.toggleForm}>
-                        <Form btnSubmit="Valider" handleSubmit={editing ? (e) => this.updateUser(e, editVisitor._id) : this.addVisitor} handleClick={this.toggleForm}>
-                            <Input name="nom" type="text" value={editing ? editVisitor.nom : newVisitor.nom || ''} handleChange={(e) => this.handleChange(e)} />
-                            <Input name="prenom" type="text" value={editing ? editVisitor.prenom : newVisitor.prenom || ''} handleChange={(e) => this.handleChange(e)} />
-                            <Input name="secteur" type="text" value={editing ? editVisitor.secteur : newVisitor.secteur || ''} handleChange={(e) => this.handleChange(e)} />
-                            <Input name="infos_equipe" type="text" value={editing ? editVisitor.infos_equipe : newVisitor.infos_equipe || ''} handleChange={(e) => this.handleChange(e)} />
+                        <Form btnSubmit="Valider" handleSubmit={editing ? (e) => this.updateUser(e, userInfos._id) : this.addVisitor} handleClick={this.toggleForm}>
+                            <Input name="nom" type="text" value={editing ? userInfos.nom : newVisitor.nom || ''} handleChange={(e) => this.handleChange(e)} />
+                            <Input name="prenom" type="text" value={editing ? userInfos.prenom : newVisitor.prenom || ''} handleChange={(e) => this.handleChange(e)} />
+                            <Input name="secteur" type="text" value={editing ? userInfos.secteur : newVisitor.secteur || ''} handleChange={(e) => this.handleChange(e)} />
+                            <Input name="infos_equipe" type="text" value={editing ? userInfos.infos_equipe : newVisitor.infos_equipe || ''} handleChange={(e) => this.handleChange(e)} />
                         </Form>
                     </Modal>
                 }
@@ -180,8 +185,18 @@ class ManageVisitors extends Component {
                     </Modal>
                 }
                 {showMore &&
-                    <Modal handleClick={this.toggleShowMore}>
-                        <Form>
+                    <Modal title={userInfos.prenom + " " + userInfos.nom} handleClick={this.toggleShowMore}>
+                        <Form showMore>
+                            <div className="flex-container">
+                                <div>
+                                <p>Adresse</p>
+                                <p>{userInfos.secteur}</p>
+                                </div>
+                                <div>
+                                <p>Fonction</p>
+                                <p>{userInfos.fonction}</p>
+                                </div>
+                            </div>
                         </Form>
                     </Modal>
                 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import './Form.scss'
 
-const Form = ({children, handleSubmit, handleClick, btnSubmit}) => {
+const Form = ({ children, handleSubmit, handleClick, btnSubmit, showMore }) => {
     return (
         <form className="popin-form" onSubmit={handleSubmit}>
 
@@ -9,10 +9,12 @@ const Form = ({children, handleSubmit, handleClick, btnSubmit}) => {
                 {children}
             </section>
 
-            <div className="popin-form-btn-container">
-                <button onClick={handleClick}>Annuler</button>
-                <button type="submit">{btnSubmit}</button>
-            </div>
+            {!showMore &&
+                <div className="popin-form-btn-container">
+                    <button onClick={handleClick}>Annuler</button>
+                    <button type="submit">{btnSubmit}</button>
+                </div>
+            }
 
         </form>
     )
