@@ -3,11 +3,20 @@ import "./TimeRange.scss"
 
 class TimeRange extends Component {
 
-    state = {}
+    state = {
+        title: "Plage horaire",
+        hours: "9h - 16h30"
+    }
 
     render() {
+
+        const { title, hours } = this.state
+
         return (
-            <div className="TimeRange"></div>
+            <div className="TimeRange">
+                <h2 className="TimeRange__title">{title}</h2>
+                <p className="TimeRange__hours">{hours}</p>
+            </div>
         )
     }
 

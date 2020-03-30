@@ -18,7 +18,7 @@ class TeamSelector extends Component {
         const { title, isActive, value } = this.state
 
         return (
-            <div className={`TeamSelector ${isActive && "TeamSelector--active"}`}>
+            <div className={`TeamSelector ${isActive ? "TeamSelector--active" : ""}`}>
                 <h3 className="TeamSelector__title">{title}</h3>
                 <div className="TeamSelector__container">
                     <p className="TeamSelector__current" onClick={this.handleToggle}>
