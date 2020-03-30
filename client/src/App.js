@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "./components/Navbar/Navbar.js";
 import Footer from "./components/Footer/Footer.js";
 import Manage from "./components/Manage/Manage";
-import Dashboard from "./components/Dashboard/Dashboard";
+import Dashboard from "./components/Planner/Planner";
 // import EdtContextProvider from './contexts/edt.context';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./styles/master.scss";

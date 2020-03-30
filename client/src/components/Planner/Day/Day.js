@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Route, Link, } from 'react-router-dom';
-import './Day.scss';
+import React, { Component } from "react";
+import { BrowserRouter as Route, Link, } from "react-router-dom";
+import "./Day.scss";
 
 class Day extends Component {
     state = {}

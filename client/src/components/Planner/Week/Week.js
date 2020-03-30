@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
-import Day from '../Day/Day'
-import './Week.scss';
+import React, { Component } from "react"
+import Day from "../Day/Day"
+import "./Week.scss";
 
 
 class Week extends Component {

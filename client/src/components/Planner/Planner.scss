@@ -1,0 +1,23 @@
+.Planner {
+    box-sizing: border-box;
+    width: 100vw;
+    &__header {
+        display: flex;
+        height: 116px;
+        width: 100%;
+    }
+    &__title {
+        background: #EFF2FB;
+        color: #111215;
+        font-size: 24px;
+        font-weight: 500;
+        line-height: 36px;
+        margin-right: 67px;
+        padding: 28px 0px 0px 73px;
+        width: 20%;
+        &:after {
+            color: #EFAC2C;
+            content: '.';
+        }
+    }
+}

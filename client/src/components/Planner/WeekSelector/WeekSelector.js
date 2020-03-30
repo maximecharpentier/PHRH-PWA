@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import './WeekSelection.scss';
+import './WeekSelector.scss';
 
 class WeekSelection extends Component {
     constructor(props) {
