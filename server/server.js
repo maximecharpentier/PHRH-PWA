@@ -11,14 +11,14 @@ app.use(express.json());
 
 //connection a la base mongo
 const uri = `mongodb://${process.env.SERVER_HOST}:27017/PHRH`;
-
+//loop connect command (pour deploiement)
 var connectWithRetry = function() {
   return mongoose.connect(
     uri,
     {
       useNewUrlParser: true,
       useCreateIndex: true,
-      useUnifiedTopology: true
+      useUnifiedTopology: false
     },
     function(err) {
       if (err) {
@@ -51,17 +51,20 @@ baseValueInsertor.insertProtoBaseValues(
 );
 
 //Route to end points
-const crudHotelRouter = require("./routes/hotel/crudHotel.routes.js");
+const crudHotelRouter = require("./routes/feature.gestion_couverture/crudHotel.routes.js");
 app.use("/hotels", crudHotelRouter);
 
-const crudUrgenceRouter = require("./routes/urgence/crudUrgence.routes.js");
+const crudUrgenceRouter = require("./routes/feature.gestion_urgence/crudUrgence.routes.js");
 app.use("/urgences", crudUrgenceRouter);
 
-const crudUserRouter = require("./routes/user/crudUser.routes.js");
+const crudUserRouter = require("./routes/feature.gestion_utilisateur/crudUser.routes.js");
 app.use("/users", crudUserRouter);
 
-const manageEquipesRouter = require("./routes/feature.gestioncouverture/manageEquipe.routes.js");
+const manageEquipesRouter = require("./routes/feature.gestion_couverture/manageEquipe.routes.js");
 app.use("/gestion/equipes", manageEquipesRouter);
+
+const plannnifierVisitesRouter = require("./routes/feature.plannifier_visite/crudVisite.routes.js");
+app.use("/gestion/visites", plannnifierVisitesRouter);
 
 /*const featureNoterHotelRouter = require('./routes/feature\.noterhotel/noterHotel.routes.js')
 app.use('/noter', featureNoterHotelRouter)*/

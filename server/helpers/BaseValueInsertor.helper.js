@@ -53,7 +53,7 @@ class BaseValueInsertor {
           if (visite.hotel_id === hotel.id_temp) {
             const visiteObj = new Visite({
               hotel_id: HotelDB._id,
-              date_visite: Date.parse(visite.date_visite),
+              date_visite: new Date(visite.date_visite),
               note: visite.note,
               ville: visite.ville,
               duree: visite.duree,
@@ -116,7 +116,6 @@ class BaseValueInsertor {
             userIntervenant
           );
           if (userIntervenantDB) {
-            console.log('KO')
             //noter id pour après
             usersIntervenant_ids.push(userIntervenantDB._id)
 
