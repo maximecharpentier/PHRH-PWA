@@ -131,7 +131,54 @@ En cours d'étude
     - @return : (string) : error/confirm message
 
 **feature Plannification visite: Plannifier visite (avec algo suggestion) :**
-  (INC)
+  - **_/gestion/visites_** : get all visites
+    - @method : GET
+    - @param : void
+    - @return : mixed 
+        - (array[ (Object JSON) ]) : tableau d'object model Visite
+        - (string) : error message
+
+  - **_/gestion/visites/get/forhotel/:idhotel_** : get all visites pour un Hotel
+    - @method : GET
+    - @param : (string) : id Hotel
+    - @return : mixed 
+        - (Object JSON) : tableau d'object model Visite pour un Hotel
+        - (string) : error message
+
+  - **_/gestion/visites/get/foruser/:iduser_** : get all visites pour un User
+    - @method : GET
+    - @param : (string) : id User
+    - @return : mixed 
+        - (Object JSON) : tableau d'object model Visite pour un User
+        - (string) : error message
+
+  - **_/gestion/visites/get/:id_** : get visite by id
+    - @method : GET
+    - @param : (string) : id Visite
+    - @return : mixed 
+        - (Object JSON) : object model Visite
+        - (string) : error message
+
+  - **_/gestion/visites/plannifier/_** : plannifier une visite (equivalent à add)
+    - @method : POST
+    - @param : (Object JSON) : object Visite conforme au schema (voir schema)
+    - @return : (string) : error/confirm message
+    
+  - **_/gestion/visites/edit/:id_** : plannifier une visite (equivalent à add)
+    - @method : POST
+    - @param : (string) : id Visite
+    - @param : (object JSON) : {field1 : newValue, field2 : newValue ...}, 
+        "fieldX" : (string) nom champ conforme au naming du model Visite
+        "newValue" : mixed 
+            (string) / (int) / UTC timestamp (int/string)) pour les types date
+    - @return : mixed 
+        (array) : tableau d'objet model Visite
+        (string) : error message
+
+  - **_/estion/visites/delete/:id_** : supprimer la visite ayant l'id :id
+    - @method : DELETE
+    - @param : (string) : id Hotel
+    - @return : (string) : error/confirm message 
 
 **feature Gestion utilisateur : CRUD User :**
   - **_/users_** : get All
