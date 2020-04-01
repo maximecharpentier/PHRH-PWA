@@ -11,7 +11,7 @@ import API from '../../../api/api';
 class ManageVisitors extends Component {
     state = {
         visitors: [],
-        newVisitor: { fonction: "Superviseur", plage_h: null, pwd: "null" },
+        newVisitor: { fonction: "Superviseur", plage_h: null, pwd: "null", jour_bureau: "lundi" },
         userInfos: {},
         editing: false,
         showForm: false,
@@ -45,7 +45,7 @@ class ManageVisitors extends Component {
                 console.log(response.data)
                 this.setState({
                     newVisitor: {
-                        fonction: "Superviseur", plage_h: null, pwd: "null", nom: "", prenom: "", secteur: "", infos_equipe: ""
+                        fonction: "Superviseur", plage_h: null, pwd: "null", nom: "", prenom: "", secteur: "", infos_equipe: "", jour_bureau: "lundi"
                     }
                 })
                 this._refreshVisitors()
@@ -133,7 +133,7 @@ class ManageVisitors extends Component {
     }
 
     handleChange = (e) => {
-        const { name, value } = e.target;
+        const { name, value, type } = e.target;
 
         this.state.editing ? this.setState(prevState => ({
             userInfos: {
@@ -151,6 +151,14 @@ class ManageVisitors extends Component {
 
     render() {
         const { showForm, showMore, visitors, newVisitor, editing, userInfos, showDeleteConfirm, successMessage } = this.state;
+
+        const optionsOfficeDay = [
+            { value: 'lundi', label: 'Lundi' },
+            { value: 'mardi', label: 'Mardi' },
+            { value: 'mercredi', label: 'Mercredi' },
+            { value: 'jeudi', label: 'Jeudi' },
+            { value: 'vendredi', label: 'Vendredi' }
+          ]
 
         let allUsers = visitors.map((user) => {
             return <Card key={user._id} user={user} editUser={() => this.getUserInfo(user, true)} showMore={() => this.getUserInfo(user)} deleteUser={() => this.getIdForDelete(user._id)} />
@@ -174,6 +182,7 @@ class ManageVisitors extends Component {
                             <Input name="prenom" type="text" value={editing ? userInfos.prenom : newVisitor.prenom || ''} handleChange={(e) => this.handleChange(e)} />
                             <Input name="secteur" type="text" value={editing ? userInfos.secteur : newVisitor.secteur || ''} handleChange={(e) => this.handleChange(e)} />
                             <Input name="infos_equipe" type="text" value={editing ? userInfos.infos_equipe : newVisitor.infos_equipe || ''} handleChange={(e) => this.handleChange(e)} />
+                            <Input name="jour_bureau" type="select" value={editing ? userInfos.jour_bureau : newVisitor.jour_bureau || ''} options={optionsOfficeDay} handleChange={(e) => this.handleChange(e)} />
                         </Form>
                     </Modal>
                 }

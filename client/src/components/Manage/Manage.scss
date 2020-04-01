@@ -48,6 +48,9 @@ section {
           width: calc(100% / 4);
           text-align: center;
           transition: ease 0.5s;
+          &:not(:last-child) {
+            border-right: none;
+          }
           &:hover,
           &.active {
             background-color: $main-background-border-color;
@@ -79,7 +82,16 @@ h2, p, li{
 }
 
 .text-overflow {
+  max-width: 70%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap !important;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.right {
+  float: right;
 }

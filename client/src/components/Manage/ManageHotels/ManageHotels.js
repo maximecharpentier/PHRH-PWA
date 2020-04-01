@@ -86,26 +86,26 @@ class ManageHotels extends Component {
     //     });
     // }
 
-    // getIdForDelete = (id) => {
-    //     this.setState({ idVisitorClicked: id })
-    //     this.toggleDeleteConfirmation()
-    // }
+    getIdForDelete = (id) => {
+        this.setState({ idVisitorClicked: id })
+        this.toggleDeleteConfirmation()
+    }
 
-    // toggleDeleteConfirmation = () => {
-    //     this.setState({
-    //         showDeleteConfirm: !this.state.showDeleteConfirm,
-    //     })
-    // }
+    toggleDeleteConfirmation = () => {
+        this.setState({
+            showDeleteConfirm: !this.state.showDeleteConfirm,
+        })
+    }
 
-    // deleteUser = (e) => {
-    //     e.preventDefault()
-    //     API.delete('users/delete/' + this.state.idVisitorClicked).then((response) => {
-    //         console.log(response.data)
-    //         this.toggleDeleteConfirmation()
-    //         this._refreshVisitors()
-    //         this.showSuccessMessage("L'utilisateur à bien été supprimer")
-    //     })
-    // }
+    deleteUser = (e) => {
+        e.preventDefault()
+        API.delete('hotels/delete/' + this.state.idVisitorClicked).then((response) => {
+            console.log(response.data)
+            this.toggleDeleteConfirmation()
+            this._refreshVisitors()
+            this.showSuccessMessage("L'utilisateur à bien été supprimer")
+        })
+    }
 
     toggleForm = () => {
         this.setState({
@@ -175,14 +175,14 @@ class ManageHotels extends Component {
                             <Input name="infos_equipe" type="text" value={editing ? userInfos.infos_equipe : newVisitor.infos_equipe || ''} handleChange={(e) => this.handleChange(e)} />
                         </Form>
                     </Modal>
-                }
+                } */}
                 {showDeleteConfirm &&
                     <Modal handleClick={this.toggleDeleteConfirmation}>
                         <Form btnSubmit="Supprimer" handleSubmit={(e) => this.deleteUser(e)} handleClick={this.toggleDeleteConfirmation}>
                             <p>Êtes-vous sûre de vouloir supprimer ?</p>
                         </Form>
                     </Modal>
-                } */}
+                }
 
             </div>
         );

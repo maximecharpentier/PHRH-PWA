@@ -19,7 +19,7 @@ const Card = ({ user, editUser, deleteUser, showMore, hotel, editHotel, deleteHo
             <div className="card">
                 <p className="text-overflow">{hotel.nom}</p> <span onClick={() => setShowMenu(!showMenu)}><ItemMenu /></span>
                 <div ref={menuRef} className={showMenu ? "card-menu show" : "card-menu"}> <p onClick={editHotel}>Modifier</p> <p onClick={deleteHotel}>Supprimer</p></div>
-                <div className="flex-container"><p>{hotel.adresse}</p> <p>{hotel.cp}</p></div>
+                <p className="text-overflow inline-block">{hotel.adresse}</p> <p className="inline-block right">{hotel.cp}</p>
                 <div className="card-line" />
                 <p>{hotel.nb_chambres_utilise}</p>
             </div>
@@ -29,7 +29,7 @@ const Card = ({ user, editUser, deleteUser, showMore, hotel, editHotel, deleteHo
                 <div ref={menuRef} className={showMenu ? "card-menu show" : "card-menu"}> <p onClick={editUser}>Modifier</p> <p onClick={deleteUser}>Supprimer</p> <p onClick={showMore}>En savoir plus</p></div>
                 <p>{user.secteur}</p>
                 <div className="card-line" />
-                <p>{user.fonction}</p>
+                <div className="flex-container"><p className="text-overflow">{user.fonction}</p> <p>{user.jour_bureau}</p></div>
             </div>
     )
 
