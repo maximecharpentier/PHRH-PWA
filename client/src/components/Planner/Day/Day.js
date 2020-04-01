@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Route, Link, } from "react-router-dom";
+import Hotel from "./../Hotel/Hotel"
 import "./Day.scss";
 
 class Day extends Component {
@@ -11,8 +11,19 @@ class Day extends Component {
                     <p className="Day__label">{this.props.label}</p>
                     <p className="Day__date">{this.props.date}</p>
                 </div>
-                <div className="Day__tasks">
-                <button className="Day__button"><span>Planifier le</span><span>{this.props.label} {this.props.date} {this.props.month}</span></button>
+                <div className="Day__list">
+                    <Hotel />
+                    <Hotel />
+                    <Hotel />
+                    <Hotel />
+                    <Hotel />
+                    <Hotel />
+                    <Hotel />
+                    <Hotel />
+                    <Hotel />
+                    <Hotel />
+                    <Hotel />
+                    <Hotel />
                 </div>
             </div>
          );

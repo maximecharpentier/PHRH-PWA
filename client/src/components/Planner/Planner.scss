@@ -23,4 +23,10 @@
             content: '.';
         }
     }
+    &__container {
+        display: flex;
+        padding: 17px 73px 0px 73px;
+        width: 100%;
+        box-sizing: border-box;
+    }
 }

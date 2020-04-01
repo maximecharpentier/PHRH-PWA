@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import Week from './Week/Week';
-import TeamSelector from './TeamSelector/TeamSelector';
-import TimeRange from './TimeRange/TimeRange';
-import WeekSelector from './WeekSelector/WeekSelector';
+import TeamSelector from "./TeamSelector/TeamSelector";
+import TimeRange from "./TimeRange/TimeRange";
+import WeekSelector from "./WeekSelector/WeekSelector";
+import Week from "./Week/Week";
+import HotelList from "./HotelsList/HotelsList"
 
-import './Planner.scss';
+import "./Planner.scss";
 
 class Planner extends Component {
     state = {
@@ -77,6 +78,7 @@ class Planner extends Component {
                 </div>
 
                 <div className="Planner__container">
+                    <HotelList />
                     <Week
                         currentWeek={this.state.currentWeek}
                         nextWeek={this.state.nextWeek}

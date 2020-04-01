@@ -2,7 +2,6 @@ import React, { Component } from "react"
 import Day from "../Day/Day"
 import "./Week.scss";
 
-
 class Week extends Component {
     constructor(props) {
         super(props);
@@ -10,33 +9,28 @@ class Week extends Component {
     state = [
         {
             id: 1,
-            label: 'Lundi',
-            date: '17',
-            month: 'Février'
+            label: 'Lun.',
+            date: ''
         },
         {
             id: 2,
-            label: 'Mardi',
-            date: '18',
-            month: 'Février'
+            label: 'Mar.',
+            date: ''
         },
         {
             id: 3,
-            label: 'Mercredi',
-            date: '19',
-            month: 'Février'
+            label: 'Mer.',
+            date: ''
         },
         {
             id: 4,
-            label: 'Jeudi',
-            date: '20',
-            month: 'Février'
+            label: 'Jeu.',
+            date: ''
         },
         {
             id: 5,
-            label: 'Vendredi',
-            date: '21',
-            month: 'Février'
+            label: 'Ven.',
+            date: ''
         }
     ]
 
@@ -47,63 +41,16 @@ class Week extends Component {
         } else {
             return "00"
         }
-    } 
-    getMonthFr = () => {
-        const dates = this.props.isNextWeek ? this.props.nextWeek : this.props.currentWeek;
-        if (dates.length) {
-            const month = dates[0].match(/-[0-1][0-9]-/g)[0].replace(/-/g, '')
-            
-            switch (month) {
-                case '01':
-                    return 'Janvier'
-                case '02':
-                    return 'Février'
-            
-                case '03':
-                    return 'Mars'
-            
-                case '04':
-                    return 'Avril'
-                
-                case '05':
-                    return 'Mai'
-
-                case '06':
-                    return 'Juin'
-                
-                case '07':
-                    return 'Juillet'
-                
-                case '08':
-                    return 'Août'
-                
-                case '09':
-                    return 'Septembre'
-                    
-                case '10':
-                    return 'Octobre'
-                        
-                case '11':
-                    return 'Novembre'
-
-                case '12':
-                    return 'Décembre'
-                            
-
-                default:
-                    break;
-            }
-        }
     }
+    
     renderDays = () => {
         const days = this.state;
         return days.map((item, id) =>
             <Day
-                id={item.id}
                 key={id}
+                id={item.id}
                 label={item.label}
                 date={this.getDay(this.props.isNextWeek ? this.props.nextWeek[id] : this.props.currentWeek[id])}
-                month={this.getMonthFr()}
                 visits={ id === 1 ? this.context.journees : null}
             />
 

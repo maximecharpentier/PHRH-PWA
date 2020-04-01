@@ -1,0 +1,94 @@
+.Hotel {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 59px;
+    border: 1px solid #031772;
+    box-shadow: 0px 1px 2px rgba(3, 23, 114, 0.15);
+    border-radius: 2px;
+    padding: 4px 8px;
+    justify-content: space-between;
+    box-sizing: border-box;
+    color: #111215;
+    cursor: pointer;
+    &:not(:last-child) {
+        margin-bottom: 7px;
+    }
+    &__container {
+        display: flex;
+        justify-content: space-between;
+    }
+    &__name {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 24px;
+        width: calc(100% - 40px);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    &__score {
+        font-size: 16px;
+        line-height: 24px;
+    }
+    &__adress,
+    &__button {
+        display: none;
+    }
+    &__date {
+        font-size: 14px;
+        line-height: 21px;
+    }
+    &__room {
+        font-size: 14px;
+        line-height: 21px;
+    }
+}
+
+.Day .Hotel {
+    padding: 4px;
+    border-radius: 4px;
+    box-shadow: 0px 1px 2px rgba(106, 108, 115, 0.35);
+    background: rgba(239, 242, 251, 0.35);
+    border: none;
+    justify-content: flex-start;
+    transition: .2s ease;
+    &:not(:last-child) {
+        margin-bottom: 4px;
+    }
+    &:hover {
+        box-shadow: 0px 2px 6px rgba(106, 108, 115, 0.35);
+    }
+    &__name {
+        font-size: 12px;
+        line-height: 18px;
+        width: calc(100% - 20px);
+    }
+    &__adress {
+        display: block;
+        font-size: 12px;
+        line-height: 18px;
+        width: calc(100% - 20px);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    &__button {
+        display: block;
+        cursor: pointer;
+        svg {
+            fill: #031772;
+            width: 13px;
+            height: 13px;
+        }
+    }
+    &__score {
+        display: none;
+    }
+    &__date {
+        display: none;
+    }
+    &__room {
+        display: none;
+    }
+}
