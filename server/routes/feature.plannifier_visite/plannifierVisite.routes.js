@@ -2,6 +2,7 @@ const router = require('express').Router();
 
 const ObjectId = require('mongoose').Types.ObjectId;
 const Visite = require('../../model/visite.model');
+const Urgence = require('../../model/urgence.model');
 const User = require('../../model/user.model');
 const Hotel = require('../../model/hotel.model');
 const Assoc_user_visite = require('../../model/assoc_user_visite.model');
@@ -17,8 +18,23 @@ const Assoc_user_visite = require('../../model/assoc_user_visite.model');
 router.route('/suggestions').get((req, res) => {
     //pour un binome ?
     //extraire les urgences -> U
+        //get urgence : pour un secteur corresondant au binome ou TOUTES ?
+        //SELECT Urgences
+        //FROM Urgence
+        //WHERE Urgences.hotel_id IN 
+            //SELECT hotel_id
+            //FROM Hotel
+            //WHERE extract_secteur_from_cp(Hotel.cp) == User.secteur
+
     //extraire les priorisations -> P
+        //à venir
+
     //classer hotel par note -> H (50 premiers)
+        //SELECT Hotel
+        //FROM Hotel
+        //WHERE extract_secteur_from_cp(Hotel.cp) == User.secteur
+        //GROUP BY Hotel.note ASC
+        
     //classer par score interne -> HS
     //si fonction d'une adresse A
         //classer HS en fonction de l'adresse la plus proche A HS.addr

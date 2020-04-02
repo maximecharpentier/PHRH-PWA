@@ -71,6 +71,9 @@ class BaseValueInsertor {
             }
           }
         }
+
+        //Set Hotel base value
+        
       }
     }
 

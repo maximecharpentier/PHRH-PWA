@@ -27,6 +27,12 @@ const hotelSchema = new Schema({
         trim: true,
         maxlength: 25
     },
+    note : {
+        type: Number, 
+        required: false,
+        trim: true,
+        maxlength: 4
+    },
     nb_chambres_utilise : {
         type: Number, 
         required: true,
