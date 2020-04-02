@@ -111,6 +111,7 @@ router.route('/get/:id').get((req, res) => {
  * @return : (string) : error/confirm message
  */
 router.route('/plannifier').post((req, res) => {
+    //#SAME AS PLANNIFIER dans plannifierVisite
     //creer model Visite
     const visite = new Visite({
         nom :           req.body.nom, 
