@@ -34,8 +34,34 @@ router.route('/suggestions').get((req, res) => {
         //FROM Hotel
         //WHERE extract_secteur_from_cp(Hotel.cp) == User.secteur
         //GROUP BY Hotel.note ASC
-        
+    
+    //#REPRDNRE ICI
     //classer par score interne -> HS
+        //creer table view
+        /*table ScoreView [
+            Hotel : entité
+            score_interne : int
+            Urgence : entité
+            Priorisations : [entités] //a venir
+        ]*/
+
+        //extraire Hotels avec Urgences
+            //creer ScoreView
+                /*
+                    Hotel,
+                    score_interne = 100
+                    Urgence
+                    Priorisation //a venir
+                */
+
+        //extraire Hotels
+            //definir note de base : 1/note Hotel
+            //augmenter la note si anomalies :  //a venir
+            //augmenter la note si priorisations :  //a venir
+            //augmenter la note si nb_visite_periode <3 : 
+
+    //#
+
     //si fonction d'une adresse A
         //classer HS en fonction de l'adresse la plus proche A HS.addr
     //retourner U + P + HS(.addr)
