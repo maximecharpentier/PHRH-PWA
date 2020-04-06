@@ -31,6 +31,11 @@ const visiteSchema = new Schema({
         required: true
 
     },
+    visite_effectue : {
+        type: String,
+        required: true,
+        default: false
+    }
 })
 
 //definir la methode insertIfNotExist

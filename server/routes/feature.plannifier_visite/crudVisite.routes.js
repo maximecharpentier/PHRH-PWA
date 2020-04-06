@@ -145,7 +145,7 @@ router.route('/edit/:id').post((req, res) => {
     //create 
     const propList = [
         'hotel_id',     'date_visite',  'note',
-        'duree',        'type']
+        'duree',        'type',         'visite_effectue']
     const setObject = {}
     propList.forEach(prop => {
         if(prop in req.body) {
@@ -168,6 +168,13 @@ router.route('/edit/:id').post((req, res) => {
         { $set: setObject }, 
         //{ new: true }
         )
+
+    //Si visites periode < 3 (periode = depuis le un an)
+        //creer priorisation
+            /*
+                type : "visites manquantes"
+                message : ""
+            */
         .then(visite => res.status(200).json('Visite édité avec succès'))
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
