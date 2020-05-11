@@ -5,8 +5,12 @@ section {
   display: block;
   width: 100%;
   div.success-message {
-    padding: 10px 20px;
-    margin-top: 30px;
+    position: fixed;
+    z-index: 30;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 30px 50px;
     border: 1px solid #c3e6cb;
     border-radius: 0.25rem;
     color: #155724;
@@ -17,13 +21,13 @@ section {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
     height: 110px;
-    width: calc(100% / 3);
+    width: 340px;
     margin-bottom: 40px;
     h2 {
       font-size: 20px;
       font-weight: bold;
+      margin-left: 70px;
       span {
         color: $span-text-color;
         font-size: 25px;
@@ -31,7 +35,7 @@ section {
     }
   }
   div.manage-container {
-    width: calc(100% - 100px);
+    width: calc(100% - 140px);
     margin: 0 auto;
     nav.manage-nav {
       ul {

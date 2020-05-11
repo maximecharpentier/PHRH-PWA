@@ -8,11 +8,11 @@ import Nav from '../Common/Nav/Nav';
 
 import API from '../../../api/api';
 
-class ManageVisitors extends Component {
+class Teams extends Component {
     state = {
-        visitors: [],
-        newVisitor: { fonction: "Superviseur", plage_h: null, pwd: "null", jour_bureau: "lundi" },
-        userInfos: {},
+        teams: [],
+        newTeam: { fonction: "Superviseur", plage_h: null, pwd: "null", jour_bureau: "1995-12-17T03:24:00" },
+        teamInfos: {},
         editing: false,
         showForm: false,
         showDeleteConfirm: false,
@@ -21,36 +21,37 @@ class ManageVisitors extends Component {
         successMessage: "",
     }
 
-    _refreshVisitors = () => {
+    _refreshTeams = () => {
         API.get('users/').then((response) => {
             this.setState({
-                visitors: response.data
+                teams: response.data
             })
         })
-    }
 
+    }
     componentDidMount() {
-        this._refreshVisitors()
+        this._refreshTeams()
     }
 
     componentDidUpdate() {
         !this.state.showForm ? document.body.style.overflow = 'auto' : document.body.style.overflow = 'hidden'
+        // console.log(this.state.teams.filter(visitor => visitor.nom.toLowerCase().includes("nino")))
     }
 
     addVisitor = (e) => {
         e.preventDefault();
         const { nom, prenom, secteur, infos_equipe } = e.target;
         if (nom.value !== "" && prenom.value !== "" && secteur.value !== "" && infos_equipe.value !== "") {
-            API.post('users/add/', this.state.newVisitor).then((response) => {
+            API.post('users/add/', this.state.newTeam).then((response) => {
                 console.log(response.data)
                 this.setState({
-                    newVisitor: {
+                    newTeam: {
                         fonction: "Superviseur", plage_h: null, pwd: "null", nom: "", prenom: "", secteur: "", infos_equipe: "", jour_bureau: "lundi"
                     }
                 })
-                this._refreshVisitors()
+                this._refreshTeams()
                 this.toggleForm();
-                this.showSuccessMessage("L'utilisateur à bien été ajouter")
+                this.showSuccessMessage("L'utilisateur est ajouter")
             }).catch(error => {
                 console.log(error.response)
             });
@@ -62,26 +63,26 @@ class ManageVisitors extends Component {
     }
 
     getUserInfo = (user, editUser) => {
-        editUser ? 
-        this.setState({
-            userInfos: user,
-            editing: true,
-            showForm: !this.state.showForm,
-        })
-        :
-        this.setState({
-            userInfos: user,
-            showMore: !this.state.showMore,
-        })
+        editUser ?
+            this.setState({
+                teamInfos: user,
+                editing: true,
+                showForm: !this.state.showForm,
+            })
+            :
+            this.setState({
+                teamInfos: user,
+                showMore: !this.state.showMore,
+            })
     }
 
     updateUser = (e, id) => {
         e.preventDefault();
-        API.post('users/edit/' + id, this.state.userInfos).then((response) => {
+        API.post('users/edit/' + id, this.state.teamInfos).then((response) => {
             console.log(response.data)
-            this._refreshVisitors()
+            this._refreshTeams()
             this.toggleForm();
-            this.showSuccessMessage("L'utilisateur à bien été modifier")
+            this.showSuccessMessage("L'utilisateur est modifier")
         }).catch(error => {
             console.log(error.response)
         });
@@ -103,8 +104,8 @@ class ManageVisitors extends Component {
         API.delete('users/delete/' + this.state.idVisitorClicked).then((response) => {
             console.log(response.data)
             this.toggleDeleteConfirmation()
-            this._refreshVisitors()
-            this.showSuccessMessage("L'utilisateur à bien été supprimer")
+            this._refreshTeams()
+            this.showSuccessMessage("L'utilisateur est supprimer")
         })
     }
 
@@ -129,20 +130,20 @@ class ManageVisitors extends Component {
             this.setState({
                 successMessage: ''
             })
-        }, 3000)
+        }, 800)
     }
 
     handleChange = (e) => {
-        const { name, value, type } = e.target;
+        const { name, value } = e.target;
 
         this.state.editing ? this.setState(prevState => ({
-            userInfos: {
-                ...prevState.userInfos,
+            teamInfos: {
+                ...prevState.teamInfos,
                 [name]: value
             }
         })) : this.setState(prevState => ({
-            newVisitor: {
-                ...prevState.newVisitor,
+            newTeam: {
+                ...prevState.newTeam,
                 [name]: value
             }
         }))
@@ -150,39 +151,44 @@ class ManageVisitors extends Component {
     }
 
     render() {
-        const { showForm, showMore, visitors, newVisitor, editing, userInfos, showDeleteConfirm, successMessage } = this.state;
+        const { showForm, showMore, teams, newTeam, editing, teamInfos, showDeleteConfirm, successMessage } = this.state;
 
-        const optionsOfficeDay = [
-            { value: 'lundi', label: 'Lundi' },
-            { value: 'mardi', label: 'Mardi' },
-            { value: 'mercredi', label: 'Mercredi' },
-            { value: 'jeudi', label: 'Jeudi' },
-            { value: 'vendredi', label: 'Vendredi' }
-          ]
+        // const optionsOfficeDay = [
+        //     { value: 'lundi', label: 'Lundi' },
+        //     { value: 'mardi', label: 'Mardi' },
+        //     { value: 'mercredi', label: 'Mercredi' },
+        //     { value: 'jeudi', label: 'Jeudi' },
+        //     { value: 'vendredi', label: 'Vendredi' }
+        //   ]
 
-        let allUsers = visitors.map((user) => {
+        let allUsers = teams.map((user) => {
             return <Card key={user._id} user={user} editUser={() => this.getUserInfo(user, true)} showMore={() => this.getUserInfo(user)} deleteUser={() => this.getIdForDelete(user._id)} />
         })
 
         return (
             <div className="visitor-container">
 
-                <Nav items={visitors} addForm={this.toggleForm} name="visiteur" />
+                <Nav items={teams} addForm={this.toggleForm} name="visiteur" />
 
-                {successMessage !== "" && <div className="success-message">{successMessage}</div>}
+                {successMessage !== "" &&
+                    <>
+                        <div className="overlay overlay-light"></div>
+                        <div className="success-message">{successMessage}</div>
+                    </>
+                }
 
                 <section className="card-container">
                     {allUsers}
                 </section>
 
                 {showForm &&
-                    <Modal title={editing ? "Modifier un visiteur" : "Ajouter un visiteur"} handleClick={this.toggleForm}>
-                        <Form btnSubmit="Valider" handleSubmit={editing ? (e) => this.updateUser(e, userInfos._id) : this.addVisitor} handleClick={this.toggleForm}>
-                            <Input name="nom" type="text" value={editing ? userInfos.nom : newVisitor.nom || ''} handleChange={(e) => this.handleChange(e)} />
-                            <Input name="prenom" type="text" value={editing ? userInfos.prenom : newVisitor.prenom || ''} handleChange={(e) => this.handleChange(e)} />
-                            <Input name="secteur" type="text" value={editing ? userInfos.secteur : newVisitor.secteur || ''} handleChange={(e) => this.handleChange(e)} />
-                            <Input name="infos_equipe" type="text" value={editing ? userInfos.infos_equipe : newVisitor.infos_equipe || ''} handleChange={(e) => this.handleChange(e)} />
-                            <Input name="jour_bureau" type="select" value={editing ? userInfos.jour_bureau : newVisitor.jour_bureau || ''} options={optionsOfficeDay} handleChange={(e) => this.handleChange(e)} />
+                    <Modal title={editing ? "Modifier un visiteur" : "Ajouter un visiteur"} handleClick={this.toggleForm} successMessage={successMessage}>
+                        <Form btnSubmit="Valider" handleSubmit={editing ? (e) => this.updateUser(e, teamInfos._id) : this.addVisitor} handleClick={this.toggleForm}>
+                            <Input name="nom" type="text" value={editing ? teamInfos.nom : newTeam.nom || ''} handleChange={(e) => this.handleChange(e)} />
+                            <Input name="prenom" type="text" value={editing ? teamInfos.prenom : newTeam.prenom || ''} handleChange={(e) => this.handleChange(e)} />
+                            <Input name="secteur" type="text" value={editing ? teamInfos.secteur : newTeam.secteur || ''} handleChange={(e) => this.handleChange(e)} />
+                            <Input name="infos_equipe" type="text" value={editing ? teamInfos.infos_equipe : newTeam.infos_equipe || ''} handleChange={(e) => this.handleChange(e)} />
+                            {/* <Input name="jour_bureau" type="select" value={editing ? teamInfos.jour_bureau : newTeam.jour_bureau || ''} options={optionsOfficeDay} handleChange={(e) => this.handleChange(e)} /> */}
                         </Form>
                     </Modal>
                 }
@@ -194,16 +200,16 @@ class ManageVisitors extends Component {
                     </Modal>
                 }
                 {showMore &&
-                    <Modal title={userInfos.prenom + " " + userInfos.nom} handleClick={this.toggleShowMore}>
+                    <Modal title={teamInfos.prenom + " " + teamInfos.nom} handleClick={this.toggleShowMore}>
                         <Form showMore>
                             <div className="flex-container">
                                 <div>
-                                <p>Adresse</p>
-                                <p>{userInfos.secteur}</p>
+                                    <p>Adresse</p>
+                                    <p>{teamInfos.secteur}</p>
                                 </div>
                                 <div>
-                                <p>Fonction</p>
-                                <p>{userInfos.fonction}</p>
+                                    <p>Fonction</p>
+                                    <p>{teamInfos.fonction}</p>
                                 </div>
                             </div>
                         </Form>
@@ -214,6 +220,5 @@ class ManageVisitors extends Component {
         );
     }
 }
-
-
-export default ManageVisitors;
+ 
+export default Teams;

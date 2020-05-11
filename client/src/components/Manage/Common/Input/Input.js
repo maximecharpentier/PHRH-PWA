@@ -1,7 +1,5 @@
 import React from 'react';
 import './Input.scss'
-import Select from 'react-select'
-
 
 const Input = props => {
     return (

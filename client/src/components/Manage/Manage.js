@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import ManageVisitors from './ManageVisitors/ManageVisitors';
-import ManageHotels from './ManageHotels/ManageHotels';
-import ManageEmergencies from './ManageEmergencies/ManageEmergencies';
-import ManageTeams from './ManageTeams/ManageTeams';
+import Visitors from './Visitors/Visitors';
+import Hotels from './Hotels/Hotels';
+import Emergencies from './Emergencies/Emergencies';
+import Teams from './Teams/Teams';
 import './Manage.scss';
 
 class Manage extends Component {
@@ -42,7 +42,7 @@ class Manage extends Component {
                             <li className={showTeams ? "active" : ""} onClick={this.showTeams}>Équipes</li>
                         </ul>
                     </nav>
-                    {showHotels ? <ManageHotels /> : showEmergencies ? <ManageEmergencies /> : showTeams ? <ManageTeams /> : <ManageVisitors />}
+                    {showHotels ? <Hotels /> : showEmergencies ? <Emergencies /> : showTeams ? <Teams /> : <Visitors />}
                 </div>
             </section>
         );
