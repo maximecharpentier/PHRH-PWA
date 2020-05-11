@@ -25,18 +25,17 @@ router.route('/suggestions').get((req, res) => {
         //quand une priorisation est ajouté : on recalcul le score pour l'hotel
         //creer une fonction cron qui chaque jour calcul si un hotel n'a pas été visité au moins trois fois en un an et met une priorisation
     
-    //#REPRDNRE ICI
     //première fois :
-    //classer par score interne -> HS
-        //pour chaque Hotels
-        //creer table view
-        /*table ScoreView [
-            Hotel : entité
-            score_interne : int
-            Urgence : entité
-            Priorisations : [entités] //a venir
-            Contre-visite = bool
-        ]*/
+        //classer par score interne
+            //pour chaque Hotels
+            //creer table view
+            /*table ScoreView [
+                Hotel : entité
+                score_interne : int
+                Urgence : entité
+                Priorisations : [entités] //a venir
+                Contre-visite = bool
+            ]*/
 
         //Methode : 
         //3 "catégories" de classement : Urgences, Contre visites, visites normales (avec priorisation)
@@ -49,12 +48,66 @@ router.route('/suggestions').get((req, res) => {
 
         //1) extraire Hotels avec "Urgences" : score 1
             //QUESTION : pour un secteur corresondant au binome ou TOUTES ?
+            //--v1 sans prendre en compte l'agreg de mongo
             //SELECT Urgences
             //FROM Urgence
             //WHERE Urgences.hotel_id IN 
                 //SELECT hotel_id
                 //FROM Hotel
                 //WHERE extract_secteur_from_cp(Hotel.cp) == User.secteur
+            //v2 avec agreg
+            //SELECT Hotel, Urgence
+            //FROM Urgence JOIN Hotel ON Urgence.hotel_id = Hotel._id
+            //WHERE isEqualSecteurCP(User.secteur, Hotel.cp) == TRUE
+            /* V1 : marche pas retourne tout les 
+                hotels Hotel.aggregate([
+                {
+                    $lookup : {
+                        from : "Urgence",
+                        localField : "_id",
+                        foreignField : "hotel_id",
+                        as : "Urgence"
+                        },
+                    },
+                    //{$match: {}},
+                    //{$group: {}}
+            ])*/
+            /* V2 : retourne tt les urgences (probablement)
+                Urgence.aggregate([
+                {
+                    "$addFields": { "userId": { "$toString": "$_id" }}},
+                    $lookup : {
+                        from : "Hotel",
+                        localField : "hotel_id",
+                        foreignField : "id",
+                        as : "Hotel"
+                        },
+                    },
+                    {$match: {"myArray":{$ne:[]}}},
+                    //{$match: {}},
+                    //{$group: {}}
+            ])
+            */
+           /* V3 debut utilisation populate : retourne tjr tt les urgences
+           //Transformer
+            Urgence.find().populate({
+                "path": "Hotel",
+                //"match": { "cp": { $regex: /^75., $options: 'i' }} //reprendre ici et trouver moyen de mettre une fonction custom pour verifier legalité de hotel "cp" et user "secteur"
+            })
+            */
+            Urgence.find().populate({
+                "path" : 'hotel_id',
+                "match": { "cp": { $regex: /^75.*/, $options: 'i' }}
+            })
+            .exec(function(err,entries) {
+                // Now client side filter un-matched results
+                /*entries = entries.filter(function(entry) {
+                    return entry.student != null;
+                });*/
+                // Anything not populated by the query condition is now removed
+                res.status(200).json(entries)
+            })
+            //.then(hotelsXurgences => res.status(200).json(hotelsXurgences)) //PB je get tout les hotels
             //creer ScoreView
                 /*
                     Hotel,
@@ -78,7 +131,7 @@ router.route('/suggestions').get((req, res) => {
         //3) extraire les Hotels avec "visites normales" : score calculé
             //definir note de base : 1/note Hotel
             //augmenter la note si anomalies : //a venir
-            //augmenter la note si priorisations : si 
+            //augmenter la note si priorisations : //a venir 
             //augmenter la note si nb_visite_periode < 3 :
             //creer ScoreView
                 /*
@@ -93,12 +146,16 @@ router.route('/suggestions').get((req, res) => {
             //si fonction d'une adresse A
                 //get Hotels de ScoreView avec score_interne ASC et adresse a moins de Xmin a pieds -> pb de seuil
 
-    //#FIN
+    //autres fois
+        //si fonction d'une adresse A
+            //get Hotels de ScoreView avec score_interne ASC et adresse a moins de Xmin a pieds -> pb de seuil
 
+    //#FIN
     //get all visites
-    Visite.find()
+    /*Visite.find()
         .then(visites => res.status(200).json(visites))
         .catch(err => res.status(400).json('Erreurs: ' + err))
+        */
 })
 
 /*

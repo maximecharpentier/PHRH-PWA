@@ -66,6 +66,8 @@ app.use("/gestion/equipes", manageEquipesRouter);
 const plannnifierVisitesRouter = require("./routes/feature.plannifier_visite/crudVisite.routes.js");
 app.use("/gestion/visites", plannnifierVisitesRouter);
 
+const suggestionsVisitesRouter = require("./routes/feature.plannifier_visite/plannifierVisite.routes.js");
+app.use("/gestion/visites", suggestionsVisitesRouter);
 /*const featureNoterHotelRouter = require('./routes/feature\.noterhotel/noterHotel.routes.js')
 app.use('/noter', featureNoterHotelRouter)*/
 
