@@ -167,6 +167,11 @@ class BaseValueInsertor {
     }
     //End : Inserer Users ans related Entities
   }
+
+  static async insertRealBaseValues(dbtest, cbconfirm, cberror, deleteOldValues) {
+    //recreer fichier json type data.json
+    //relancer insertProtoBaseValues(dbtest, cbconfirm, cberror, deleteOldValues)
+  }
 }
 
 module.exports = BaseValueInsertor;

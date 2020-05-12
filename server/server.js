@@ -39,7 +39,7 @@ mongoose.connection.once("open", () => {
 
 //insert base values
 const baseValueInsertor = require("./helpers/BaseValueInsertor.helper");
-baseValueInsertor.insertProtoBaseValues(
+baseValueInsertor.insertRealBaseValues(
   require("./datas/data.json"),
   msg => {
     console.log(msg);
