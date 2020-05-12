@@ -66,7 +66,7 @@ router.route('/add').post((req, res) => {
         fonction :  req.body.fonction, 
         secteur :   req.body.secteur, 
         plage_h :   req.body.plage_h, 
-        equipier_id : req.body.equipier_id,
+        jour_bureau : req.body.jour_bureau ? new Date(Number(req.body.jour_bureau)) : null,
         vehicule_id : req.body.vehicule_id,
     })
 
