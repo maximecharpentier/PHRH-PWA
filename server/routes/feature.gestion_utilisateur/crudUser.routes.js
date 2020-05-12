@@ -2,6 +2,8 @@ const router = require('express').Router();
 
 const User = require('../../model/user.model');
 
+const Helper = require('../feature.gestion_couverture/helpers/feature_gestion_couverture.helper');
+
 /*
  * @route : get all
  * @method : GET
@@ -123,7 +125,17 @@ router.route('/edit/:id').post((req, res) => {
  */
 router.route('/delete/:id').delete((req, res) => {
     User.findByIdAndDelete(req.params.id)
-        .then(() => { res.status(200).json('User supprimé')})
+        .then(() => {
+            if(req.body.deleteEquipe == 'true') {
+                //Supprimer l'equipe
+                Helper.deleteEquipeFromUserId(req.params.id)
+                    .then(() => {res.status(200).json('User supprimé & equipe liée')})
+                    .catch(() => {err => res.status(400).json('Erreurs: ' + err)})
+            }
+            else{
+                res.status(200).json('User supprimé')
+            }
+        })            
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
