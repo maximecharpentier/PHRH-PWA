@@ -2,6 +2,7 @@
 
 - [API](#api)
   - [Responsable](#responsable)
+  - [Schemas](#schemas) 
   - [Choix techniques](#choix-techniques)
     - [1. Express](#1-express)
       - [Pourquoi nous l'utilisons](#pourquoi-nous-lutilisons)
@@ -18,6 +19,10 @@
 ## Responsable
 
 - Pierre-Alexis KRSTIC
+
+## Schemas
+- MCD : https://drive.google.com/open?id=1UMMQUOhA-LHNeCp8qDGUCWP6EIRUp916
+- Uses Cases : https://drive.google.com/open?id=1tM9b8GaIkdVRMG6M4u-KDcKa3gEFmw25
 
 ## Choix techniques
 
