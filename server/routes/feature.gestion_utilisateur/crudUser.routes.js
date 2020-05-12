@@ -120,7 +120,8 @@ router.route('/edit/:id').post((req, res) => {
 /*
  * @route : delete
  * @method : DELETE
- * @param : (string) : id User
+ * @param : GET (string) : id User
+ * @param : POST (object JSON) : { deleteEquipe = (string) true/false }
  * @return : (string) : error/confirm message
  */
 router.route('/delete/:id').delete((req, res) => {
