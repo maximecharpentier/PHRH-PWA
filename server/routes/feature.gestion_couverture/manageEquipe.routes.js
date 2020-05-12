@@ -61,8 +61,8 @@ router.route('/users').get(async (req, res) => {
                 var userDB_id = new ObjectId(userDB._id)
                 const assocDB = await Equipe.find({ 
                     $or: [
-                        {'user_a_id': userDB_id}, 
-                        {'user_b_id': userDB_id}
+                        {'user_a_id': userDB._id}, 
+                        {'user_b_id': userDB._id}
                     ] 
                 })
                 //si le joueur n'appartient a aucune equipe
