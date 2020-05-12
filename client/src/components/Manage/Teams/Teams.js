@@ -22,7 +22,7 @@ class Teams extends Component {
     }
 
     _refreshTeams = () => {
-        API.get('users/').then((response) => {
+        API.get('gestion/equipes/').then((response) => {
             this.setState({
                 teams: response.data
             })
@@ -42,7 +42,7 @@ class Teams extends Component {
         e.preventDefault();
         const { nom, prenom, secteur, infos_equipe } = e.target;
         if (nom.value !== "" && prenom.value !== "" && secteur.value !== "" && infos_equipe.value !== "") {
-            API.post('users/add/', this.state.newTeam).then((response) => {
+            API.post('teams/add/', this.state.newTeam).then((response) => {
                 console.log(response.data)
                 this.setState({
                     newTeam: {
@@ -62,52 +62,52 @@ class Teams extends Component {
         }
     }
 
-    getUserInfo = (user, editUser) => {
-        editUser ?
+    getTeamInfo = (team, editTeam) => {
+        editTeam ?
             this.setState({
-                teamInfos: user,
+                teamInfos: team,
                 editing: true,
                 showForm: !this.state.showForm,
             })
             :
             this.setState({
-                teamInfos: user,
+                teamInfos: team,
                 showMore: !this.state.showMore,
             })
     }
 
-    updateUser = (e, id) => {
-        e.preventDefault();
-        API.post('users/edit/' + id, this.state.teamInfos).then((response) => {
-            console.log(response.data)
-            this._refreshTeams()
-            this.toggleForm();
-            this.showSuccessMessage("L'utilisateur est modifier")
-        }).catch(error => {
-            console.log(error.response)
-        });
-    }
+    // updateteam = (e, id) => {
+    //     e.preventDefault();
+    //     API.post('teams/edit/' + id, this.state.teamInfos).then((response) => {
+    //         console.log(response.data)
+    //         this._refreshTeams()
+    //         this.toggleForm();
+    //         this.showSuccessMessage("L'utilisateur est modifier")
+    //     }).catch(error => {
+    //         console.log(error.response)
+    //     });
+    // }
 
-    getIdForDelete = (id) => {
-        this.setState({ idVisitorClicked: id })
-        this.toggleDeleteConfirmation()
-    }
+    // getIdForDelete = (id) => {
+    //     this.setState({ idVisitorClicked: id })
+    //     this.toggleDeleteConfirmation()
+    // }
 
-    toggleDeleteConfirmation = () => {
-        this.setState({
-            showDeleteConfirm: !this.state.showDeleteConfirm,
-        })
-    }
+    // toggleDeleteConfirmation = () => {
+    //     this.setState({
+    //         showDeleteConfirm: !this.state.showDeleteConfirm,
+    //     })
+    // }
 
-    deleteUser = (e) => {
-        e.preventDefault()
-        API.delete('users/delete/' + this.state.idVisitorClicked).then((response) => {
-            console.log(response.data)
-            this.toggleDeleteConfirmation()
-            this._refreshTeams()
-            this.showSuccessMessage("L'utilisateur est supprimer")
-        })
-    }
+    // deleteTeam = (e) => {
+    //     e.preventDefault()
+    //     API.delete('teams/delete/' + this.state.idVisitorClicked).then((response) => {
+    //         console.log(response.data)
+    //         this.toggleDeleteConfirmation()
+    //         this._refreshTeams()
+    //         this.showSuccessMessage("L'utilisateur est supprimer")
+    //     })
+    // }
 
     toggleForm = () => {
         this.setState({
@@ -151,71 +151,45 @@ class Teams extends Component {
     }
 
     render() {
-        const { showForm, showMore, teams, newTeam, editing, teamInfos, showDeleteConfirm, successMessage } = this.state;
+        const { showForm, teams, newTeam, editing, teamInfos, showDeleteConfirm, successMessage } = this.state;
 
-        // const optionsOfficeDay = [
-        //     { value: 'lundi', label: 'Lundi' },
-        //     { value: 'mardi', label: 'Mardi' },
-        //     { value: 'mercredi', label: 'Mercredi' },
-        //     { value: 'jeudi', label: 'Jeudi' },
-        //     { value: 'vendredi', label: 'Vendredi' }
-        //   ]
-
-        let allUsers = teams.map((user) => {
-            return <Card key={user._id} user={user} editUser={() => this.getUserInfo(user, true)} showMore={() => this.getUserInfo(user)} deleteUser={() => this.getIdForDelete(user._id)} />
+        let allTeams = teams.map((team) => {
+            return <Card key={team._id} team={team} editTeam={() => this.getTeamInfo(team, true)} showMore={() => this.getTeamInfo(team)} deleteTeam={() => this.getIdForDelete(team._id)} />
         })
 
         return (
             <div className="visitor-container">
 
-                <Nav items={teams} addForm={this.toggleForm} name="visiteur" />
+                <Nav items={teams} addForm={this.toggleForm} name="binôme" />
 
-                {successMessage !== "" &&
+                {/* {successMessage !== "" &&
                     <>
                         <div className="overlay overlay-light"></div>
                         <div className="success-message">{successMessage}</div>
                     </>
-                }
+                } */}
 
                 <section className="card-container">
-                    {allUsers}
+                    {allTeams}
                 </section>
 
-                {showForm &&
+                {/* {showForm &&
                     <Modal title={editing ? "Modifier un visiteur" : "Ajouter un visiteur"} handleClick={this.toggleForm} successMessage={successMessage}>
-                        <Form btnSubmit="Valider" handleSubmit={editing ? (e) => this.updateUser(e, teamInfos._id) : this.addVisitor} handleClick={this.toggleForm}>
+                        <Form btnSubmit="Valider" handleSubmit={editing ? (e) => this.updateteam(e, teamInfos._id) : this.addVisitor} handleClick={this.toggleForm}>
                             <Input name="nom" type="text" value={editing ? teamInfos.nom : newTeam.nom || ''} handleChange={(e) => this.handleChange(e)} />
                             <Input name="prenom" type="text" value={editing ? teamInfos.prenom : newTeam.prenom || ''} handleChange={(e) => this.handleChange(e)} />
                             <Input name="secteur" type="text" value={editing ? teamInfos.secteur : newTeam.secteur || ''} handleChange={(e) => this.handleChange(e)} />
                             <Input name="infos_equipe" type="text" value={editing ? teamInfos.infos_equipe : newTeam.infos_equipe || ''} handleChange={(e) => this.handleChange(e)} />
-                            {/* <Input name="jour_bureau" type="select" value={editing ? teamInfos.jour_bureau : newTeam.jour_bureau || ''} options={optionsOfficeDay} handleChange={(e) => this.handleChange(e)} /> */}
                         </Form>
                     </Modal>
-                }
-                {showDeleteConfirm &&
+                } */}
+                {/* {showDeleteConfirm &&
                     <Modal handleClick={this.toggleDeleteConfirmation}>
-                        <Form btnSubmit="Supprimer" handleSubmit={(e) => this.deleteUser(e)} handleClick={this.toggleDeleteConfirmation}>
+                        <Form btnSubmit="Supprimer" handleSubmit={(e) => this.deleteTeam(e)} handleClick={this.toggleDeleteConfirmation}>
                             <p>Êtes-vous sûre de vouloir supprimer ?</p>
                         </Form>
                     </Modal>
-                }
-                {showMore &&
-                    <Modal title={teamInfos.prenom + " " + teamInfos.nom} handleClick={this.toggleShowMore}>
-                        <Form showMore>
-                            <div className="flex-container">
-                                <div>
-                                    <p>Adresse</p>
-                                    <p>{teamInfos.secteur}</p>
-                                </div>
-                                <div>
-                                    <p>Fonction</p>
-                                    <p>{teamInfos.fonction}</p>
-                                </div>
-                            </div>
-                        </Form>
-                    </Modal>
-                }
-
+                } */}
             </div>
         );
     }

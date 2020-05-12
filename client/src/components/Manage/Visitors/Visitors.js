@@ -11,7 +11,7 @@ import API from '../../../api/api';
 class Visitors extends Component {
     state = {
         visitors: [],
-        newVisitor: { fonction: "Superviseur", plage_h: null, pwd: "null", jour_bureau: "1995-12-17T03:24:00" },
+        newVisitor: { fonction: "Superviseur", plage_h: null, pwd: "null", jour_bureau: null, vehicule_id: null},
         userInfos: {},
         editing: false,
         showForm: false,

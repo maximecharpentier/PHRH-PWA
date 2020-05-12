@@ -38,8 +38,8 @@ class Manage extends Component {
                         <ul>
                             <li className={showVisitors ? "active" : ""} onClick={this.showVisitors}>Visiteurs</li>
                             <li className={showHotels ? "active" : ""} onClick={this.showHotels}>Hôtels</li>
-                            <li className={showEmergencies ? "active" : ""} onClick={this.showEmergencies}>Urgences</li>
                             <li className={showTeams ? "active" : ""} onClick={this.showTeams}>Équipes</li>
+                            <li className={showEmergencies ? "active" : ""} onClick={this.showEmergencies}>Urgences</li>
                         </ul>
                     </nav>
                     {showHotels ? <Hotels /> : showEmergencies ? <Emergencies /> : showTeams ? <Teams /> : <Visitors />}
