@@ -216,6 +216,7 @@ En cours d'étude
   - **_/users/delete/:id_** : supprimer l'user ayant l'id :id
     - @method : DELETE
     - @param : (string) : id User
+    - @param : POST (object JSON) : { deleteEquipe = (string) true/false }
     - @return : (string) : error/confirm message
 
 **feature CRUD Urgence :**
