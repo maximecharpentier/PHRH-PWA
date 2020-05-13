@@ -37,6 +37,11 @@ const userSchema = new Schema({
         required: true, 
         enum: functions,
     },
+    adresse : {
+        type: String,
+        required: true, 
+        enum: functions,
+    },
     secteur : {
         type: String, 
         required: true, 

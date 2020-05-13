@@ -29,6 +29,7 @@ class BaseValueInsertor {
     for (const [index, hotel] of dbtest.hotels.entries()) {
       //inserer Hotel
       const hotelObj = new Hotel({
+        uid_internal: hotel.uid_internal ? hotel.uid_internal : null,
         nom: hotel.nom,
         adresse: hotel.adresse,
         cp: hotel.cp,
@@ -90,6 +91,7 @@ class BaseValueInsertor {
             prenom: user.prenom,
             pwd: user.pwd,
             fonction: user.fonction,
+            adresse: user.adresse,
             secteur: user.secteur,
             jour_bureau: user.jour_bureau,
             vehicule_id: user.vehicule_id
@@ -109,6 +111,7 @@ class BaseValueInsertor {
             prenom: user.prenom,
             pwd: user.pwd,
             fonction: user.fonction,
+            adresse: user.adresse,
             secteur: user.secteur,
             jour_bureau: user.jour_bureau,
             vehicule_id: user.vehicule_id
@@ -171,6 +174,13 @@ class BaseValueInsertor {
   static async insertRealBaseValues(dbtest, cbconfirm, cberror, deleteOldValues) {
     //recreer fichier json type data.json a partir de mapping
       //lire mapping avec algo
+        //algo :
+          //inserer hotels
+          //inserer users
+          //inserer visites
+            //inserer assoc hotel_visite
+            //inserer assoc_user_visite
+          //inserer vehicules
       //peupler tableau json de la meme structure que data.json
     //relancer insertProtoBaseValues(dbtest, cbconfirm, cberror, deleteOldValues)
   }

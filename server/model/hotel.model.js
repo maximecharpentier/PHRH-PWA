@@ -3,6 +3,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const hotelSchema = new Schema({
+    uid_internal : {
+        type: Number, 
+        required: false,
+        trim: true,
+    },
     nom: {
         type: String, 
         required: true,

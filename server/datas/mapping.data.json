@@ -1,14 +1,101 @@
 {
-    "hotels": [
-        
-    ],
-    "users": [
+    "hotels": {
+        "uid_internal" : {
+            "file" : "Liste des hotels.xlsx",
+            "col" : "A",
+            "lig" : null
+        },
+        "nom" : {
+            "file" : "Liste des hotels.xlsx",
+            "col" : "B",
+            "lig" : null
+        },
+        "adresse" : {
+            "file" : "Liste des hotels.xlsx",
+            "col" : "C",
+            "lig" : null
+        },
+        "cp" : {
+            "file" : "Liste des hotels.xlsx",
+            "col" : "D",
+            "lig" : null
+        },
+        "ville" : {
+            "file" : "Liste des hotels.xlsx",
+            "col" : "E",
+            "lig" : null
+        },
+        "note" : {
+            "file" : "Liste des hotels.xlsx",
+            "col" : "",
+            "lig" : null
+        },
+        "nb_chambres_utilise" : {
+            "file" : "liste hôtel avec les chambres occupées a hier.xlsx",
+            "col" : "G",
+            "lig" : null,
+            "join" : {
+                "file" : "Liste des hotels.xlsx",
+                "col" : "A",
+                "lig" : null,
+                "on" : "uid_internal"
+            }
+        }
+    },
+    "users": {
+        "nom" : {
+            "file" : "Adresses Terrain.xlsx",
+            "col" : "A",
+            "lig" : null
+        },
+        "prenom" : {
+            "file" : "Adresses Terrain.xlsx",
+            "col" : "B",
+            "lig" : null
+        },
+        "pwd" : "demodemo",
+        "fonction" : {
+            "file" : "Adresses Terrain.xlsx",
+            "col" : "C",
+            "lig" : null
+        },
+        "adresse" : {
+            "file" : "Adresses Terrain.xlsx",
+            "col" : "E",
+            "lig" : null
+        },
+        "secteur" : {
+            "file" : "Adresses Terrain.xlsx",
+            "col" : "D",
+            "lig" : null
+        },
+        "jour_bureau" : null,
+        "vehicule_id" : null
+    },
+    "visits": {
+        "hotel_id" : {
+            "file" : "note_visites_hotels.xlsx",
+            "col" : "B",
+            "lig" : null,
+            "join" : {
+                "file" : null,
+                "table": "Hotel",
+                "col" : "A",
+                "lig" : null,
+                "on" : "uid_internal"
+            }
+        },
+        "date_visite" : {
+            "file" : "note_visites_hotels.xlsx",
+            "col" : "D",
+            "lig" : null,
+            "function_parse_name" : "getTimeStampFromDateDDMMAAA"
+        },
+        "note" : {
+            
+        }
+    },
+    "vehicules": {
 
-    ],
-    "visits": [
-
-    ],
-    "vehicules": [
-
-    ]
+    }
 }
