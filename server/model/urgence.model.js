@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Hotel = require("./hotel.model");
+const Equipe = require("./assoc_user_user.model");
 
 const Schema = mongoose.Schema;
 
@@ -8,6 +9,10 @@ const urgenceSchema = new Schema({
         type: Schema.Types.ObjectId, 
         ref: 'Hotel',
         required: true
+    },
+    equipe_id : {
+        type: Schema.Types.ObjectId,
+        ref: 'Equipe'
     },
     resume: {
         type: String, 
@@ -20,7 +25,7 @@ const urgenceSchema = new Schema({
         required: true,
         trim: true,
         maxlength: 3600
-    }
+    },
 })
 
 const Urgence = mongoose.model('Urgence', urgenceSchema)
