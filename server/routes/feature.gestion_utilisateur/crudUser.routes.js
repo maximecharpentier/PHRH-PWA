@@ -2,6 +2,8 @@ const router = require('express').Router();
 
 const User = require('../../model/user.model');
 
+const Helper = require('../feature.gestion_couverture/helpers/feature_gestion_couverture.helper');
+
 /*
  * @route : get all
  * @method : GET
@@ -64,7 +66,7 @@ router.route('/add').post((req, res) => {
         fonction :  req.body.fonction, 
         secteur :   req.body.secteur, 
         plage_h :   req.body.plage_h, 
-        equipier_id : req.body.equipier_id,
+        jour_bureau : req.body.jour_bureau ? new Date(Number(req.body.jour_bureau)) : null,
         vehicule_id : req.body.vehicule_id,
     })
 
@@ -118,12 +120,23 @@ router.route('/edit/:id').post((req, res) => {
 /*
  * @route : delete
  * @method : DELETE
- * @param : (string) : id User
+ * @param : GET (string) : id User
+ * @param : POST (object JSON) : { deleteEquipe = (string) true/false }
  * @return : (string) : error/confirm message
  */
 router.route('/delete/:id').delete((req, res) => {
     User.findByIdAndDelete(req.params.id)
-        .then(() => { res.status(200).json('User supprimé')})
+        .then(() => {
+            if(req.body.deleteEquipe == 'true') {
+                //Supprimer l'equipe
+                Helper.deleteEquipeFromUserId(req.params.id)
+                    .then(() => {res.status(200).json('User supprimé & equipe liée')})
+                    .catch(() => {err => res.status(400).json('Erreurs: ' + err)})
+            }
+            else{
+                res.status(200).json('User supprimé')
+            }
+        })            
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 

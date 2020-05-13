@@ -47,7 +47,7 @@ baseValueInsertor.insertRealBaseValues(
   err => {
     console.error(err);
   },
-  resetDBValues = false
+  resetDBValues = (process.env.RESET_DB === 'true')
 );
 
 //Route to end points
