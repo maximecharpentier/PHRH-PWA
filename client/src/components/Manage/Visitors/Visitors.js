@@ -11,7 +11,7 @@ import API from '../../../api/api';
 class Visitors extends Component {
     state = {
         visitors: [],
-        newVisitor: { fonction: "Superviseur", plage_h: null, pwd: "null", jour_bureau: null, vehicule_id: null},
+        newVisitor: { fonction: "Intervenant terrain", plage_h: "Matin", pwd: "null", jour_bureau: null, vehicule_id: null },
         userInfos: {},
         editing: false,
         showForm: false,
@@ -19,6 +19,7 @@ class Visitors extends Component {
         showMore: false,
         errorEmptyFieldsMessage: "",
         successMessage: "",
+        currentWeek: []
     }
 
     _refreshVisitors = () => {
@@ -29,9 +30,16 @@ class Visitors extends Component {
         })
 
     }
+
+    UNSAFE_componentWillMount(){
+        this.getCurrentWeek()
+    }
+
     componentDidMount() {
         this._refreshVisitors()
     }
+
+   
 
     componentDidUpdate() {
         !this.state.showForm ? document.body.style.overflow = 'auto' : document.body.style.overflow = 'hidden'
@@ -43,10 +51,9 @@ class Visitors extends Component {
         const { nom, prenom, secteur, infos_equipe } = e.target;
         if (nom.value !== "" && prenom.value !== "" && secteur.value !== "" && infos_equipe.value !== "") {
             API.post('users/add/', this.state.newVisitor).then((response) => {
-                console.log(response.data)
                 this.setState({
                     newVisitor: {
-                        fonction: "Superviseur", plage_h: null, pwd: "null", nom: "", prenom: "", secteur: "", infos_equipe: "", jour_bureau: "lundi"
+                        fonction: "Intervenant terrain", plage_h: "Matin", pwd: "null", nom: "", prenom: "", secteur: "", infos_equipe: "", jour_bureau: this.state.currentWeek[0].jourNombre
                     }
                 })
                 this._refreshVisitors()
@@ -113,7 +120,7 @@ class Visitors extends Component {
         this.setState({
             showForm: !this.state.showForm
         })
-        this.state.editing && this.setState({ editing: false })
+        this.state.editing && this.setState({ editing: false }) 
     }
 
     toggleShowMore = () => {
@@ -133,6 +140,31 @@ class Visitors extends Component {
         }, 800)
     }
 
+
+    getCurrentWeek = () => {
+        let currentDay = new Date()
+        let currentWeek = []
+
+        for (let i = 1; i <= 5; i++) {
+            let firstDayOfTheWeek = currentDay.getDate() - currentDay.getDay() + i
+            let newDay = {jourNombre: new Date(currentDay.setDate(firstDayOfTheWeek)).getTime()}
+            currentWeek.push(newDay)
+        }
+
+        currentWeek[0].jour = "Lundi";
+        currentWeek[1].jour = "Mardi";
+        currentWeek[2].jour = "Mercredi";
+        currentWeek[3].jour = "Jeudi";
+        currentWeek[4].jour = "Vendredi";
+
+        this.setState({
+            currentWeek
+        })
+
+    }
+
+
+
     handleChange = (e) => {
         const { name, value } = e.target;
 
@@ -151,15 +183,7 @@ class Visitors extends Component {
     }
 
     render() {
-        const { showForm, showMore, visitors, newVisitor, editing, userInfos, showDeleteConfirm, successMessage } = this.state;
-
-        // const optionsOfficeDay = [
-        //     { value: 'lundi', label: 'Lundi' },
-        //     { value: 'mardi', label: 'Mardi' },
-        //     { value: 'mercredi', label: 'Mercredi' },
-        //     { value: 'jeudi', label: 'Jeudi' },
-        //     { value: 'vendredi', label: 'Vendredi' }
-        //   ]
+        const { showForm, showMore, visitors, newVisitor, editing, userInfos, showDeleteConfirm, successMessage, currentWeek } = this.state;
 
         let allUsers = visitors.map((user) => {
             return <Card key={user._id} user={user} editUser={() => this.getUserInfo(user, true)} showMore={() => this.getUserInfo(user)} deleteUser={() => this.getIdForDelete(user._id)} />
@@ -188,7 +212,7 @@ class Visitors extends Component {
                             <Input name="prenom" type="text" value={editing ? userInfos.prenom : newVisitor.prenom || ''} handleChange={(e) => this.handleChange(e)} />
                             <Input name="secteur" type="text" value={editing ? userInfos.secteur : newVisitor.secteur || ''} handleChange={(e) => this.handleChange(e)} />
                             <Input name="infos_equipe" type="text" value={editing ? userInfos.infos_equipe : newVisitor.infos_equipe || ''} handleChange={(e) => this.handleChange(e)} />
-                            {/* <Input name="jour_bureau" type="select" value={editing ? userInfos.jour_bureau : newVisitor.jour_bureau || ''} options={optionsOfficeDay} handleChange={(e) => this.handleChange(e)} /> */}
+                            <Input name="jour_bureau" type="select" value={editing ? userInfos.jour_bureau : newVisitor.jour_bureau || ''} options={currentWeek} handleChange={(e) => this.handleChange(e)} />
                         </Form>
                     </Modal>
                 }

@@ -10,6 +10,23 @@ const Card = ({ user, editUser, deleteUser, hotel, editHotel, deleteHotel, team,
         !menuRef.current.contains(e.target) && setShowMenu(false);
     };
 
+    const getDay = day => {
+        switch (day) {
+            case 1:
+                return 'Lundi'
+            case 2:
+                return 'Mardi'
+            case 3:
+                return 'Mercredi'
+            case 4:
+                return 'Jeudi'
+            case 5:
+                return 'Vendredi'
+            default:
+                break;
+        }
+    };
+
     useEffect(() => {
         document.body.addEventListener('mousedown', handleClickOutside);
         return () => document.body.removeEventListener('mousedown', handleClickOutside);
@@ -22,7 +39,7 @@ const Card = ({ user, editUser, deleteUser, hotel, editHotel, deleteHotel, team,
                 <div ref={menuRef} className={showMenu ? "card-menu show" : "card-menu"}> <p onClick={editHotel}>Modifier</p> <p onClick={deleteHotel}>Supprimer</p></div>
                 <p className="text-overflow inline-block">{hotel.adresse}</p> <p className="inline-block right">{hotel.cp}</p>
                 <div className="card-line" />
-                <p className="inline-block">{hotel.nb_chambres_utilise}</p> <p className="inline-block">{hotel.adresse}</p>
+                <p className="inline-block">{hotel.nb_chambres_utilise}</p>
             </div>
 
             : user ?
@@ -32,7 +49,7 @@ const Card = ({ user, editUser, deleteUser, hotel, editHotel, deleteHotel, team,
                 <div ref={menuRef} className={showMenu ? "card-menu show" : "card-menu"}> <p onClick={editUser}>Modifier</p> <p onClick={deleteUser}>Supprimer</p> <p onClick={showMore}>En savoir plus</p></div>
                 <p>{user.secteur}</p>
                 <div className="card-line" />
-                <div className="flex-container"><p className="text-overflow">{user.fonction}</p> <p>{user.jour_bureau}</p></div>
+                <div className="flex-container"><p className="text-overflow">{user.fonction}</p> <p>{user.jour_bureau && getDay(new Date(user.jour_bureau).getDay())}</p></div>
             </div>
 
             : team ?

@@ -67,7 +67,7 @@
       width: 100%;
       height: 1px;
       background: #031772;
-      & ~ p {
+      & ~ p, & ~ div p {
         margin-bottom: 0;
       }
     }

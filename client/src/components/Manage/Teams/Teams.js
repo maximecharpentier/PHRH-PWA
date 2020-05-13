@@ -11,7 +11,8 @@ import API from '../../../api/api';
 class Teams extends Component {
     state = {
         teams: [],
-        newTeam: { fonction: "Superviseur", plage_h: null, pwd: "null", jour_bureau: "1995-12-17T03:24:00" },
+        usersWithoutTeam:[],
+        newTeam: {},
         teamInfos: {},
         editing: false,
         showForm: false,
@@ -27,10 +28,19 @@ class Teams extends Component {
                 teams: response.data
             })
         })
-
     }
+
+    getUsersWithoutTeam = () => {
+        API.get('gestion/equipes/users').then((response) => {
+            this.setState({
+                usersWithoutTeam: response.data
+            })
+        })
+    }
+
     componentDidMount() {
         this._refreshTeams()
+        this.getUsersWithoutTeam()
     }
 
     componentDidUpdate() {
@@ -38,7 +48,7 @@ class Teams extends Component {
         // console.log(this.state.teams.filter(visitor => visitor.nom.toLowerCase().includes("nino")))
     }
 
-    addVisitor = (e) => {
+    addTeam = (e) => {
         e.preventDefault();
         const { nom, prenom, secteur, infos_equipe } = e.target;
         if (nom.value !== "" && prenom.value !== "" && secteur.value !== "" && infos_equipe.value !== "") {
@@ -46,7 +56,7 @@ class Teams extends Component {
                 console.log(response.data)
                 this.setState({
                     newTeam: {
-                        fonction: "Superviseur", plage_h: null, pwd: "null", nom: "", prenom: "", secteur: "", infos_equipe: "", jour_bureau: "lundi"
+                        fonction: "Intervenant terrain", plage_h: null, pwd: "null", nom: "", prenom: "", secteur: "", infos_equipe: "", jour_bureau: "lundi"
                     }
                 })
                 this._refreshTeams()
@@ -151,7 +161,7 @@ class Teams extends Component {
     }
 
     render() {
-        const { showForm, teams, newTeam, editing, teamInfos, showDeleteConfirm, successMessage } = this.state;
+        const { showForm, teams, newTeam, editing, teamInfos, showDeleteConfirm, successMessage, usersWithoutTeam } = this.state;
 
         let allTeams = teams.map((team) => {
             return <Card key={team._id} team={team} editTeam={() => this.getTeamInfo(team, true)} showMore={() => this.getTeamInfo(team)} deleteTeam={() => this.getIdForDelete(team._id)} />
@@ -173,16 +183,15 @@ class Teams extends Component {
                     {allTeams}
                 </section>
 
-                {/* {showForm &&
-                    <Modal title={editing ? "Modifier un visiteur" : "Ajouter un visiteur"} handleClick={this.toggleForm} successMessage={successMessage}>
-                        <Form btnSubmit="Valider" handleSubmit={editing ? (e) => this.updateteam(e, teamInfos._id) : this.addVisitor} handleClick={this.toggleForm}>
-                            <Input name="nom" type="text" value={editing ? teamInfos.nom : newTeam.nom || ''} handleChange={(e) => this.handleChange(e)} />
-                            <Input name="prenom" type="text" value={editing ? teamInfos.prenom : newTeam.prenom || ''} handleChange={(e) => this.handleChange(e)} />
-                            <Input name="secteur" type="text" value={editing ? teamInfos.secteur : newTeam.secteur || ''} handleChange={(e) => this.handleChange(e)} />
-                            <Input name="infos_equipe" type="text" value={editing ? teamInfos.infos_equipe : newTeam.infos_equipe || ''} handleChange={(e) => this.handleChange(e)} />
+                {showForm &&
+                    <Modal title={editing ? "Modifier une equipe" : "Ajouter une equipe"} handleClick={this.toggleForm} successMessage={successMessage}>
+                        <Form btnSubmit="Valider" handleSubmit={editing ? (e) => this.updateTeam(e, teamInfos._id) : this.addTeam} handleClick={this.toggleForm}>
+                            <Input label="Premier membre" name="user_a_id" type="select" team value={editing ? teamInfos.user_a_id : newTeam.user_a_id || ''} options={usersWithoutTeam} handleChange={(e) => this.handleChange(e)} />
+                            <Input label="Deuxième membre" name="user_b_id" type="select" team value={editing ? teamInfos.user_b_id : newTeam.user_b_id || ''} firstInputValue={editing ? teamInfos.user_a_id : newTeam.user_a_id || ''} options={usersWithoutTeam} handleChange={(e) => this.handleChange(e)} />
+                            {/* <Input label="Secteur" name="secteur" type="select" team value={editing ? teamInfos.user_b_id : newTeam.user_b_id || ''} firstInputValue={editing ? teamInfos.user_a_id : newTeam.user_a_id || ''} options={usersWithoutTeam} handleChange={(e) => this.handleChange(e)} /> */}
                         </Form>
                     </Modal>
-                } */}
+                }
                 {/* {showDeleteConfirm &&
                     <Modal handleClick={this.toggleDeleteConfirmation}>
                         <Form btnSubmit="Supprimer" handleSubmit={(e) => this.deleteTeam(e)} handleClick={this.toggleDeleteConfirmation}>
