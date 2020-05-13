@@ -65,7 +65,6 @@ router.route('/add').post((req, res) => {
         pwd :       req.body.pwd, 
         fonction :  req.body.fonction, 
         secteur :   req.body.secteur, 
-        plage_h :   req.body.plage_h, 
         jour_bureau : req.body.jour_bureau ? new Date(Number(req.body.jour_bureau)) : null,
         vehicule_id : req.body.vehicule_id,
     })
@@ -92,7 +91,7 @@ router.route('/edit/:id').post((req, res) => {
     //create 
     const propList = [
         'nom',          'prenom',       'pwd',
-        'fonction',     'secteur',      'plage_h',
+        'fonction',     'secteur',
         'vehicule_id', 'jour_bureau'
     ]
     const setObject = {}

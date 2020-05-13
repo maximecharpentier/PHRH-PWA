@@ -12,7 +12,6 @@ const Schema = mongoose.Schema;
 
 const fonction_administrateur = 'Superviseur'
 const functions = ['Médiateur', 'Intervenant terrain', 'Mediateur SAS', fonction_administrateur]
-const allowed_plage_h = [null, 'Matin', 'Journée', 'Soir']
 
 const userSchema = new Schema({
     nom : {
@@ -43,14 +42,6 @@ const userSchema = new Schema({
         required: true, 
         trim: true,
         maxlength: 5
-    },
-    plage_h : {
-        type: String,
-        enum: allowed_plage_h,
-        required: [ 
-            function() { return this.fonction !== fonction_administrateur },
-            'plage_h is required if fonction is administrateur value'
-        ]
     },
     jour_bureau : {
         type : Date,
