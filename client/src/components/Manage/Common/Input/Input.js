@@ -2,18 +2,19 @@ import React from 'react';
 import './Input.scss'
 
 const Input = props => {
-
+    
     return (
         <div className="input-container">
             <label htmlFor={props.name}>{props.label}</label>
             {
                 props.type === "select" ?
-                    <select disabled={props.firstInputValue ===  "" ? true : null} name={props.name} value={props.value} onChange={props.handleChange}  >
+                    <select disabled={props.firstInputValue && props.firstInputValue ===  "" ? true : null} name={props.name} value={props.value} onChange={props.handleChange}  >
                         <option value="" disabled>Selectionner un visiteur</option>
                         {props.options.map((option, id) =>
-                            props.team ? 
-                          <option disabled={props.firstInputValue ===  option._id ? true : null} key={id} value={option._id}>{`${option.nom} / ${option.secteur}`}</option>
-                          :
+                            props.users ? 
+                          <option disabled={props.firstInputValue ===  option._id ? true : null} key={id} value={option._id}>{`${option.nom} / ${option.secteur}`}</option> :
+                           props.secteur || props.timeSlots ?
+                          <option key={id} value={option}>{option}</option> :
                           <option key={id} value={option.jourNombre}>{option.jour}</option>
                         )}
                     </select> :

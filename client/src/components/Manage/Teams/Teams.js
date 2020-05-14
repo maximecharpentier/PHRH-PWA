@@ -12,12 +12,14 @@ class Teams extends Component {
     state = {
         teams: [],
         usersWithoutTeam:[],
+        allSector: ["75", "93", "92/94", "78/95", "77/91"],
+        timeSlots: ['Matin', 'Journée', 'Soir'],
         newTeam: {},
+        hehe: {plage_h: "Journée", secteur_binome: "75"},
         teamInfos: {},
         editing: false,
         showForm: false,
         showDeleteConfirm: false,
-        showMore: false,
         errorEmptyFieldsMessage: "",
         successMessage: "",
     }
@@ -45,23 +47,28 @@ class Teams extends Component {
 
     componentDidUpdate() {
         !this.state.showForm ? document.body.style.overflow = 'auto' : document.body.style.overflow = 'hidden'
-        // console.log(this.state.teams.filter(visitor => visitor.nom.toLowerCase().includes("nino")))
     }
 
     addTeam = (e) => {
         e.preventDefault();
-        const { nom, prenom, secteur, infos_equipe } = e.target;
-        if (nom.value !== "" && prenom.value !== "" && secteur.value !== "" && infos_equipe.value !== "") {
-            API.post('teams/add/', this.state.newTeam).then((response) => {
+        
+        const { user_a_id, user_b_id, secteur_binome, plage_h } = e.target;
+        if (user_a_id.value !== "" && user_b_id.value !== "" && secteur_binome.value !== "" && plage_h.value !== "") {
+            // const sliced = Object.keys(this.state.newTeam).slice(2, 4).reduce((result, key) => {
+            //     result[key] = this.state.newTeam[key];
+            //     return result;
+            // }, {});
+            // console.log(sliced)
+            API.post('/creer/5ebc648504476abde48e40b7/5ebc648504476abde48e40e3/', {plage_h: "Matin", secteur_binome: "91"}).then((response) => {
                 console.log(response.data)
                 this.setState({
                     newTeam: {
-                        fonction: "Intervenant terrain", plage_h: null, pwd: "null", nom: "", prenom: "", secteur: "", infos_equipe: "", jour_bureau: "lundi"
+                        user_a_id:"",user_b_id:"", plage_h:null, secteur_binome:""
                     }
                 })
                 this._refreshTeams()
                 this.toggleForm();
-                this.showSuccessMessage("L'utilisateur est ajouter")
+                this.showSuccessMessage("L'equipe est ajouter")
             }).catch(error => {
                 console.log(error.response)
             });
@@ -144,7 +151,25 @@ class Teams extends Component {
     }
 
     handleChange = (e) => {
+        
+
         const { name, value } = e.target;
+
+        const move = (array, oldIndex, newIndex) => {
+            if (newIndex >= array.length) {
+                newIndex = array.length - 1;
+            }
+            array.splice(newIndex, 0, array.splice(oldIndex, 1)[0]);
+            return array;
+        }
+
+        if (name === "user_a_id") {
+            let firstUserSecteur = this.state.usersWithoutTeam.filter(user => user._id === value)[0].secteur;
+            this.setState({
+                allSector: move(this.state.allSector, this.state.allSector.indexOf(firstUserSecteur), 0)
+            })
+            
+        } 
 
         this.state.editing ? this.setState(prevState => ({
             teamInfos: {
@@ -161,7 +186,7 @@ class Teams extends Component {
     }
 
     render() {
-        const { showForm, teams, newTeam, editing, teamInfos, showDeleteConfirm, successMessage, usersWithoutTeam } = this.state;
+        const { showForm, teams, newTeam, editing, teamInfos, showDeleteConfirm, successMessage, usersWithoutTeam, allSector, timeSlots } = this.state;
 
         let allTeams = teams.map((team) => {
             return <Card key={team._id} team={team} editTeam={() => this.getTeamInfo(team, true)} showMore={() => this.getTeamInfo(team)} deleteTeam={() => this.getIdForDelete(team._id)} />
@@ -186,9 +211,11 @@ class Teams extends Component {
                 {showForm &&
                     <Modal title={editing ? "Modifier une equipe" : "Ajouter une equipe"} handleClick={this.toggleForm} successMessage={successMessage}>
                         <Form btnSubmit="Valider" handleSubmit={editing ? (e) => this.updateTeam(e, teamInfos._id) : this.addTeam} handleClick={this.toggleForm}>
-                            <Input label="Premier membre" name="user_a_id" type="select" team value={editing ? teamInfos.user_a_id : newTeam.user_a_id || ''} options={usersWithoutTeam} handleChange={(e) => this.handleChange(e)} />
-                            <Input label="Deuxième membre" name="user_b_id" type="select" team value={editing ? teamInfos.user_b_id : newTeam.user_b_id || ''} firstInputValue={editing ? teamInfos.user_a_id : newTeam.user_a_id || ''} options={usersWithoutTeam} handleChange={(e) => this.handleChange(e)} />
-                            {/* <Input label="Secteur" name="secteur" type="select" team value={editing ? teamInfos.user_b_id : newTeam.user_b_id || ''} firstInputValue={editing ? teamInfos.user_a_id : newTeam.user_a_id || ''} options={usersWithoutTeam} handleChange={(e) => this.handleChange(e)} /> */}
+                            <Input label="Premier membre" name="user_a_id" type="select" users value={editing ? teamInfos.user_a_id : newTeam.user_a_id || ''} options={usersWithoutTeam} handleChange={(e) => this.handleChange(e)} />
+                            <Input label="Deuxième membre" name="user_b_id" type="select" users value={editing ? teamInfos.user_b_id : newTeam.user_b_id || ''} firstInputValue={editing ? teamInfos.user_a_id : newTeam.user_a_id || ''} options={usersWithoutTeam} handleChange={(e) => this.handleChange(e)} />
+                            <Input label="Plage horaire du binôme" name="plage_h" type="select" value={editing ? teamInfos.plage_h : newTeam.plage_h || ''} timeSlots options={timeSlots} handleChange={(e) => this.handleChange(e)} />
+                            <Input label="Secteur du binôme" name="secteur_binome" type="select" value={editing ? teamInfos.secteur_binome : newTeam.secteur_binome || ''} secteur options={allSector} handleChange={(e) => this.handleChange(e)} />
+                            
                         </Form>
                     </Modal>
                 }

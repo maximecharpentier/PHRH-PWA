@@ -11,7 +11,7 @@ import API from '../../../api/api';
 class Visitors extends Component {
     state = {
         visitors: [],
-        newVisitor: { fonction: "Intervenant terrain", plage_h: "Matin", pwd: "null", jour_bureau: null, vehicule_id: null },
+        newVisitor: { fonction: "Intervenant terrain", pwd: "null", jour_bureau: null, vehicule_id: null },
         userInfos: {},
         editing: false,
         showForm: false,
@@ -53,7 +53,7 @@ class Visitors extends Component {
             API.post('users/add/', this.state.newVisitor).then((response) => {
                 this.setState({
                     newVisitor: {
-                        fonction: "Intervenant terrain", plage_h: "Matin", pwd: "null", nom: "", prenom: "", secteur: "", infos_equipe: "", jour_bureau: this.state.currentWeek[0].jourNombre
+                        fonction: "Intervenant terrain", pwd: "null", nom: "", prenom: "", secteur: "", infos_equipe: "", jour_bureau: this.state.currentWeek[0].jourNombre
                     }
                 })
                 this._refreshVisitors()
