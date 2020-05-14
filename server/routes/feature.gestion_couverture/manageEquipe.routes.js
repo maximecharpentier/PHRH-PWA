@@ -102,8 +102,8 @@ router.route('/creer/:idusera/:iduserb').post((req, res) => {
             const equipe = new Equipe({
                 user_a_id: req.params.idusera,
                 user_b_id: req.params.iduserb,
-                plage_h: req.params.plage_h,
-                secteur_binome: req.params.secteur_binome
+                plage_h: req.body.plage_h,
+                secteur_binome: req.body.secteur_binome
             })
             equipe.save()
                 .then(equipeDB => res.status(200).json('Equipe créée'))
