@@ -730,301 +730,347 @@
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":81,
          "duree":36,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":1,
          "date_visite":"2020-03-20T11:42:06.537Z",
          "note":82,
          "duree":2,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":1,
          "date_visite":"2020-04-20T11:42:06.537Z",
          "note":82,
          "duree":13,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":2,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":79,
          "duree":32,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":2,
          "date_visite":"2020-03-20T11:42:06.537Z",
          "note":79,
          "duree":8,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":2,
          "date_visite":"2020-04-20T11:42:06.537Z",
          "note":74,
          "duree":48,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":3,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":81,
          "duree":18,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":3,
          "date_visite":"2020-03-20T11:42:06.537Z",
          "note":81,
          "duree":13,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":3,
          "date_visite":"2020-04-20T11:42:06.537Z",
          "note":78,
          "duree":48,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":4,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":71,
          "duree":48,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":4,
          "date_visite":"2020-03-20T11:42:06.537Z",
          "note":80,
          "duree":9,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":4,
          "date_visite":"2020-04-20T11:42:06.537Z",
          "note":71,
          "duree":48,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":5,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":79,
          "duree":13,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":5,
          "date_visite":"2020-03-20T11:42:06.537Z",
          "note":84,
          "duree":49,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":5,
          "date_visite":"2020-04-20T11:42:06.537Z",
          "note":82,
          "duree":20,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":6,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":80,
          "duree":49,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":6,
          "date_visite":"2020-03-20T11:42:06.537Z",
          "note":76,
          "duree":17,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":6,
          "date_visite":"2020-04-20T11:42:06.537Z",
          "note":75,
          "duree":5,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":7,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":64,
          "duree":22,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":7,
          "date_visite":"2020-03-20T11:42:06.537Z",
          "note":63,
          "duree":59,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":8,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":59,
          "duree":22,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":8,
          "date_visite":"2020-03-20T11:42:06.537Z",
          "note":52,
          "duree":16,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":9,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":51,
          "duree":40,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":9,
          "date_visite":"2020-03-20T11:42:06.537Z",
          "note":56,
          "duree":23,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":10,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":55,
          "duree":3,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":10,
          "date_visite":"2020-03-20T11:42:06.537Z",
          "note":59,
          "duree":50,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":11,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":65,
          "duree":44,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":11,
          "date_visite":"2020-03-20T11:42:06.537Z",
          "note":61,
          "duree":29,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":12,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":59,
          "duree":44,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":12,
          "date_visite":"2020-03-20T11:42:06.537Z",
          "note":57,
          "duree":58,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":13,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":56,
          "duree":38,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":14,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":59,
          "duree":14,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":15,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":60,
          "duree":11,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":16,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":51,
          "duree":13,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":17,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":64,
          "duree":28,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":18,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":62,
          "duree":52,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":19,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":16,
          "duree":44,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":20,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":30,
          "duree":14,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":21,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":33,
          "duree":37,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":22,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":15,
          "duree":12,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":23,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":24,
          "duree":2,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":24,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":31,
          "duree":19,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       },
       {
          "hotel_id":25,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":48,
          "duree":28,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true
       }
+   ],
+   "vehicules":[
+
    ]
 }

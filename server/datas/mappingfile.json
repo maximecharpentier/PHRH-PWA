@@ -1,0 +1,117 @@
+{
+    "hotels": {
+        "uid_internal" : {
+            "file" : "Liste des hotels.xlsx",
+            "col" : "A"
+        },
+        "nom" : {
+            "file" : "Liste des hotels.xlsx",
+            "col" : "B"
+        },
+        "adresse" : {
+            "file" : "Liste des hotels.xlsx",
+            "col" : "C"
+        },
+        "cp" : {
+            "file" : "Liste des hotels.xlsx",
+            "col" : "D"
+        },
+        "ville" : {
+            "file" : "Liste des hotels.xlsx",
+            "col" : "E"
+        },
+        "nb_chambres_utilise" : {
+            "file" : "Liste des hotels.xlsx",
+            "col" : "A",
+            "join" : {
+                "file" : "liste hôtel avec les chambres occupées a hier.xlsx",
+                "on" : "B",
+                "get" : "G"
+            }
+        },
+        "nb_visites_periode" : null,
+        "last_time_visited" : null
+    },
+    "users": {
+        "nom" : {
+            "file" : "Adresses Terrain.xlsx",
+            "col" : "A"
+        },
+        "prenom" : {
+            "file" : "Adresses Terrain.xlsx",
+            "col" : "B"
+        },
+        "pwd" : "demodemo",
+        "fonction" : {
+            "file" : "Adresses Terrain.xlsx",
+            "col" : "C"
+        },
+        "adresse" : {
+            "file" : "Adresses Terrain.xlsx",
+            "col" : "E"
+        },
+        "secteur" : {
+            "file" : "Adresses Terrain.xlsx",
+            "col" : "D"
+        },
+        "jour_bureau" : {
+            "default" : null
+        },
+        "vehicule_id" : {
+            "default" : null
+        }
+    },
+    "visits": {
+        "hotel_id" : {
+            "file" : "note_visites_hotels.xlsx",
+            "col" : "B",
+            "join" : {
+                "file" : "BD",
+                "table" : "Hotel",
+                "on" : "uid_internal",
+                "get" : "_id"
+            }
+        },
+        "date_visite" : {
+            "file" : "note_visites_hotels.xlsx",
+            "col" : "D",
+            "function_parse_name" : "parseTimeStampFromDateDDMMAAA"
+        },
+        "note" : {
+            "file" : "note_visites_hotels.xlsx",
+            "col" : "D",
+            "function_parse_name" : "parseTimeStampFromDateDDMMAAA"
+        },
+        "duree" : {
+            "default" : null
+        },
+        "type" : {
+            "default" : "Visite"
+        },
+        "visite_effectue" : {
+            "default" : true
+        }
+    },
+    "vehicules": {
+        "immatriculation" : {
+            "file" : "voiture.xlsx",
+            "col" : "A"
+        },
+        "type" : {
+            "file" : "voiture.xlsx",
+            "col" : "B"
+        },
+        "adresse_parking" : {
+            "file" : "voiture.xlsx",
+            "col" : "C"
+        },
+        "cp" : {
+            "file" : "voiture.xlsx",
+            "col" : "D"
+        },
+        "ville" : {
+            "file" : "voiture.xlsx",
+            "col" : "E"
+        }
+    }
+}
