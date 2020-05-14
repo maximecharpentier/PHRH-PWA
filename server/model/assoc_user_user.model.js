@@ -4,6 +4,8 @@ const User = require("./user.model");
 
 const Schema = mongoose.Schema;
 
+const allowed_plage_h = [null, 'Matin', 'Journée', 'Soir']
+
 const assoc_user_userSchema = new Schema({
     user_a_id : {
         type: Schema.Types.ObjectId, 
@@ -14,7 +16,21 @@ const assoc_user_userSchema = new Schema({
         type: Schema.Types.ObjectId, 
         ref: 'User',
         required: true
-    }
+    },
+    plage_h : {
+        type: String,
+        enum: allowed_plage_h,
+        /*required: [ 
+            function() { return this.fonction !== fonction_administrateur },
+            'plage_h is required if fonction is administrateur value'
+        ]*/
+    },
+    secteur_binome : {
+        type: String, 
+        required: false, 
+        trim: true,
+        maxlength: 5
+    },
 })
 
 //definir la methode insertIfNotExist
