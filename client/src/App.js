@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "./components/Navbar/Navbar.js";
 import Footer from "./components/Footer/Footer.js";
 import Manage from "./components/Manage/Manage";
+import Profile from "./components/Profile/Profile.js";
 import Dashboard from "./components/Dashboard/Dashboard";
 // import EdtContextProvider from './contexts/edt.context';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -28,6 +29,7 @@ const App = () => {
           <Route exact path="/" component={Dashboard} />
           <Route path="/login" component={Login} />
           <Route path="/manage" component={Manage} />
+          <Route path="/profile" component={Profile} />
         </Switch>
       </Router>
       <Footer />

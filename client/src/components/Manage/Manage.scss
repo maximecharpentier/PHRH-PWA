@@ -137,11 +137,6 @@ section {
   }
 }
 
-span,
-p {
-  text-transform: capitalize;
-}
-
 @media screen and (max-width: 1024px) {
   .planificator-card {
     width: calc(100% / 3 - 45px) !important;
