@@ -21,8 +21,8 @@ export default withFormik({
     // Handles our submission
     handleSubmit: (values, { setSubmitting }) => {
     // This is where you could send the submitted values to the backend
-    // console.log('Submitted Email:', values.email)
-    // console.log('Submitted Password:', values.password)
+    console.log('Submitted Email:', values.email)
+    console.log('Submitted Password:', values.password)
     // Simulates the delay of a real request
     setTimeout(() => setSubmitting(false), 3 * 1000)
   },

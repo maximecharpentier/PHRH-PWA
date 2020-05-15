@@ -16,7 +16,7 @@ export default class Login extends PureComponent {
               <label>Email</label>
             </div>
             <Field type="text" name="email" placeholder="pierre@example.com" />
-            <ErrorMessage id="error" style={ StyledErrorMessage } name="email" />
+            {/* <ErrorMessage id="error" style={ StyledErrorMessage } name="email" /> */}
           </div>
           <div className="App-Login_Form_Field">
             <div className="App-Login_Form_Label">
@@ -24,7 +24,7 @@ export default class Login extends PureComponent {
               <p className="App-Login_Form_Forgot">Mot de passe oublié ?</p>
             </div>
             <Field type="password" name="password" placeholder="Mot de passe" />
-            <ErrorMessage name="password" />
+            {/* <ErrorMessage name="password" /> */}
           </div>
           <button className="App-Login_Form_Button" type="submit">Se connecter</button>
         </Form>
