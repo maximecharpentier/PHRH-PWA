@@ -1,3 +1,4 @@
+const XLSXHelper = require('./module_xlsx.helper');
 const Hotel = require("./../model/hotel.model");
 const Visite = require("../model/visite.model");
 const User = require("../model/user.model");
@@ -171,37 +172,73 @@ class BaseValueInsertor {
     //End : Inserer Users ans related Entities
   }
 
+  //recreer tableau type data a partir de mapping pour appeler insertProtoBaseValues(datas)
   static async insertRealBaseValues(mappingfile, cbconfirm, cberror, deleteOldValues) {
     //cette partie sert a parcourir les fichiers de reference pour peupler les entité, 
-    //ensuite la fonction de recuperation de la valeur en fonciton du mapping elle ouvre 
+    //ensuite la fonction de recuperation de la valeur en fonciton du mapping, elle, ouvre 
     //les fichiers dont elle a besoin ou la BD cas echéant
-    const datas = {}
 
+    //init datas structure to insert les entite de base
+    const datas = {}
+    datas['hotels'] = null
+    datas['users'] = null
+    datas['visits'] = null
+    datas['vehicules'] = null
+
+    //init tool pour lire fichiers xlsx
+    const itfFileReader = new XLSXHelper()
+
+    //init vars pour algorithme
+    let fileReader = null //contient le fichier de reference
+    let sheetName = null //contient le nom de la sheet en cours de lecture
+    let sheet = null //contient la worksheet du fichier de reference en cours de lecture
+
+    let beginLine = 0
+    
     //recreer tableau type data.json a partir de mapping
     //lire mapping avec algo
+
     /*
      * INSERTION ENTITE DE BASE
      */
-    //inserer hotels
-    fileReader = null //set sur "Liste des hotels.xlsx"
-    beginLAt = 1 //sauter la première ligne
-    recursReadRefDocHotel = (fileReader) => {
+    //
+    itfFileReader.readFile('./datas/sources PHRH/Liste des hotels.xlsx')//set sur "Liste des hotels.xlsx"
+    sheetName =     itfFileReader.getFirstSheetName()
+    sheet =         itfFileReader.getSheetFromSheetName(sheetName)
+    itfFileReader.setCurrentSheet(sheet)
+    beginLine =     1 //sauter la première ligne
+    
+    //fonction recursive pour lire les propriété de l'entité associées depuis le mapping 
+    //jusqu'a rencontrer une ligne vide sur le fichier de reference
+    async function recursReadRefDocHotel(currentLine){
       //si ligne vide : return
-      //sinon
-        //creer user model
-        for (const [index, propUser] of mappingfile.users.entries()) {
-          //hotelObject.propUser = await setValueFromMapping(fileReader, currentLine, propUser)
-        }
-        //datas.hotels.push(hotelObject) //icic peux merder a tester
-        //fileReader prend l + 1
-        //cbconfirm(Hotel pret pour insertion)
-        //recursReadRefDocUser = (fileReader)
+      if(!itfFileReader.getCellValue(`A${currentLine}`) == '') {
+        return
+      }//semble inutile car le reader ne prend que les cases */
+
+      //creer et peupler hotel model
+      let hotel = {}
+      for (const [index, propHotel] of Object.entries(mappingfile.hotels)) {
+        //hotelObject.propUser = await setValueFromMapping(fileReader, currentLine, propUser)
+        hotel[propHotel] = await BaseValueInsertor.setValueFromMapping(sheet, currentLine, propHotel)
+      }
+      //mettre l'entité dans le tableau
+      datas.hotels.push(hotel) //icic peux merder a tester
+
+      //fileReader prend l + 1
+      const nextLine = currentLine++
+      //cbconfirm(Hotel pret pour insertion)
+
+      //rappel pour ligne suivante
+      recursReadRefDocHotel(nextLine)
     }
+    recursReadRefDocHotel(beginLine)
+    console.log(datas)
 
     //inserer users
     fileReader = null //set sur "Adresses Terrain.xlsx"
-    beginLAt = 1 //sauter la première ligne
-    recursReadRefDocUser = (fileReader) => {
+    beginLine = 1 //sauter la première ligne
+    function recursReadRefDocUser(fileReader) {
       //si ligne vide : return
       //sinon
         //creer user model
@@ -215,6 +252,7 @@ class BaseValueInsertor {
     }
     
     //inserer visites
+    
     
     //inserer vehicules
 
@@ -238,7 +276,7 @@ class BaseValueInsertor {
    * @params : propName : propriété de l'entité en cours de traitement
    * @params : currentLine : ligne du fichier
    */
-  async setValueFromMapping(fileReader, currentLine, propName) {
+  static async setValueFromMapping(refDocfileReader, currentLine, propName) {
     const cellToRead = null
     let propValue;
     for(const [key, mapInfo] in propName) {
@@ -246,8 +284,13 @@ class BaseValueInsertor {
         case "file" :
           if(mapInfo !== "BD") {
             //set file reader correctement
-            //si le file de la prop est différent
-              //charger l'autre fileReader
+            itfFileReader.readFile('./datas/sources PHRH/'.mapInfo)//set sur "Liste des hotels.xlsx" #CONTINUE ALGO ET VERIFIER AVEC CONSOLE.LOG LIGNE 236
+            sheetName =     itfFileReader.getFirstSheetName()
+            sheet =         itfFileReader.getSheetFromSheetName(sheetName)
+            itfFileReader.setCurrentSheet(sheet)
+          }
+          if(mapInfo !== "" /* refDocfileReader.name */) {
+            console.log('Erreur le file de niveau 1 doit matcher le ref doc') 
           }
           break
 

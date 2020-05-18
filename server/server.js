@@ -18,7 +18,7 @@ var connectWithRetry = function() {
     {
       useNewUrlParser: true,
       useCreateIndex: true,
-      useUnifiedTopology: false
+      useUnifiedTopology: true
     },
     function(err) {
       if (err) {
@@ -39,9 +39,10 @@ mongoose.connection.once("open", () => {
 
 //insert base values
 const baseValueInsertor = require("./helpers/BaseValueInsertor.helper");
-baseValueInsertor.insertProtoBaseValues(
-  //require("./datas/mappingfile.json"),
-  require("./datas/data.json"),
+//baseValueInsertor.insertProtoBaseValues(
+baseValueInsertor.insertRealBaseValues(
+  require("./datas/mappingfile.json"),
+  //require("./datas/data.json"),
   msg => {
     console.log(msg);
   },
