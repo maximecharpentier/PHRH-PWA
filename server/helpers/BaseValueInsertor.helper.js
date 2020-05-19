@@ -9,6 +9,7 @@ const Priorisation = require("./../model/priorisation.model");
 const Tache = require("./../model/tache.model");
 const Urgence = require("./../model/urgence.model");
 const Vehicule = require("./../model/vehicule.model");
+const ModelFactory = require("./../model/model.factory");
 
 class BaseValueInsertor {
   static async insertProtoBaseValues(dbtest, cbconfirm, cberror, deleteOldValues) {
@@ -205,6 +206,7 @@ class BaseValueInsertor {
     itfFileReader.readFile('./datas/sources PHRH/Liste des hotels.xlsx')//set sur "Liste des hotels.xlsx"
     sheetName =     itfFileReader.getFirstSheetName()
     sheet =         itfFileReader.getSheetFromSheetName(sheetName)
+
     itfFileReader.setCurrentSheet(sheet)
     beginLine =     1 //sauter la première ligne
     
@@ -220,7 +222,7 @@ class BaseValueInsertor {
       let hotel = {}
       for (const [index, propHotel] of Object.entries(mappingfile.hotels)) {
         //hotelObject.propUser = await setValueFromMapping(fileReader, currentLine, propUser)
-        hotel[propHotel] = await BaseValueInsertor.setValueFromMapping(sheet, currentLine, propHotel)
+        hotel[propHotel] = await BaseValueInsertor.setValueFromMapping(itfFileReader, currentLine, propHotel)
       }
       //mettre l'entité dans le tableau
       datas.hotels.push(hotel) //icic peux merder a tester
@@ -276,45 +278,50 @@ class BaseValueInsertor {
    * @params : propName : propriété de l'entité en cours de traitement
    * @params : currentLine : ligne du fichier
    */
-  static async setValueFromMapping(refDocfileReader, currentLine, propName) {
+  static async setValueFromMapping(refSheetFileReader, currentLine, propName) {
     const cellToRead = null
     let propValue;
     for(const [key, mapInfo] in propName) {
       switch(key) {
         case "file" :
           if(mapInfo !== "BD") {
-            //set file reader correctement
-            itfFileReader.readFile('./datas/sources PHRH/'.mapInfo)//set sur "Liste des hotels.xlsx" #CONTINUE ALGO ET VERIFIER AVEC CONSOLE.LOG LIGNE 236
-            sheetName =     itfFileReader.getFirstSheetName()
-            sheet =         itfFileReader.getSheetFromSheetName(sheetName)
-            itfFileReader.setCurrentSheet(sheet)
+            //set file reader contenant la prop a lire
+            //ATTENTION : la prop "file" de l'attribut de l'entité à set correspond tjr au doc de référence
           }
-          if(mapInfo !== "" /* refDocfileReader.name */) {
+          if(mapInfo !== refSheetFileReader.getFirstSheetName()) { //ATTENTION la sheet en cours de lecture est toujours la première sheet (proto)
             console.log('Erreur le file de niveau 1 doit matcher le ref doc') 
           }
           break
 
         case "col" :
           //cellToRead = cellule(currentLine, col) (1)
+          cellToRead = mapInfo.currentLine
           break
 
         case "join" :
           //si la cellule est bien set sinon erreur
           if(cellToRead) {
-            //get depuis l'exterieur : fichier a la cellule correspondate | BD pour l'entité correspondate
+            //get depuis l'exterieur, deux possibilités en fonction de la prop "file" du "join" : 
+              //- depuis un fichier à la cellule correspondate
+              //- depuis la BD
             if(mapInfo === "BD") {
               //init vars
-              const EntityName =    propName[key]['table']
-              const joinProp =      propName[key]['on']
+              //pour la jointure
+              const joinProp =      propName[key]['on'] //propriété de jointure sur l'objet BD
+              const joinPropValue = itfFileReader.getCellValue(cellToRead) //la valeur de jointure = la valeur de la cellule du fichier "file" (au dessus de "join") (a confition que le "fil" soit egal au fichier)
+              //pour recuperer le propriété de l'objet qui nous interresse
               const propNameToGet = propName[key]['get']
 
               //get la valeur de jointure depuis la feuille courante
-              const joinPropValue = 0 //cellToRead.value
-              const EntityDB = await EntityName.findOne({[joinProp] : joinPropValue })
+              const EntityDB = await ModelFactory
+                                .get(propName[key]['table'])
+                                .findOne({joinProp : joinPropValue })
+
               propValue = EntityDB[propNameToGet]
               break;
             }
             else{
+              //#REPRENDRE ICI ET 1) Regler erreur quand lance server (erreur chelou) 2) continuer a tester ligne 238
               //init vars
               const file = null// set file reader du doc à jointer
               const joinValue = 0 //cellToRead.value

@@ -13,6 +13,7 @@ class module_xlsx {
 
   setCurrentSheet(sheet) {
     this.currentSheet = sheet
+    console.log("sheet to get name prop : ". this.currentSheet)
   }
 
   getFirstSheetName() {
