@@ -29,8 +29,12 @@
                 "get" : "G"
             }
         },
-        "nb_visites_periode" : null,
-        "last_time_visited" : null
+        "nb_visites_periode" : {
+            "default" : null
+        },
+        "last_time_visited" : {
+            "default" : null
+        }
     },
     "users": {
         "nom" : {

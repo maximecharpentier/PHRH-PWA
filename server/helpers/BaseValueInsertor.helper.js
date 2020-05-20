@@ -1,3 +1,5 @@
+const path = require('path');
+const XLSX = require('xlsx');
 const XLSXHelper = require('./module_xlsx.helper');
 const Hotel = require("./../model/hotel.model");
 const Visite = require("../model/visite.model");
@@ -181,19 +183,16 @@ class BaseValueInsertor {
 
     //init datas structure to insert les entite de base
     const datas = {}
-    datas['hotels'] = null
-    datas['users'] = null
-    datas['visits'] = null
-    datas['vehicules'] = null
-
-    //init tool pour lire fichiers xlsx
-    const itfFileReader = new XLSXHelper()
+    datas['hotels'] = []
+    datas['users'] = []
+    datas['visits'] = []
+    datas['vehicules'] = []
 
     //init vars pour algorithme
-    let fileReader = null //contient le fichier de reference
-    let sheetName = null //contient le nom de la sheet en cours de lecture
-    let sheet = null //contient la worksheet du fichier de reference en cours de lecture
-
+    const refDocHotelAbsPath = path.resolve('./datas/sources PHRH/Liste des hotels.xlsx')
+    const refDocUserAbsPath = path.resolve('./datas/sources PHRH/Adresses Terrain.xlsx')
+    const refDocVisiteAbsPath = path.resolve('./datas/sources PHRH/note_visites_hotels.xlsx')
+    const refDocVehiculeAbsPath = path.resolve('./datas/sources PHRH/voiture.xlsx')
     let beginLine = 0
     
     //recreer tableau type data.json a partir de mapping
@@ -202,56 +201,48 @@ class BaseValueInsertor {
     /*
      * INSERTION ENTITE DE BASE
      */
-    //
-    itfFileReader.readFile('./datas/sources PHRH/Liste des hotels.xlsx')//set sur "Liste des hotels.xlsx"
-    sheetName =     itfFileReader.getFirstSheetName()
-    sheet =         itfFileReader.getSheetFromSheetName(sheetName)
-
-    itfFileReader.setCurrentSheet(sheet)
-    beginLine =     1 //sauter la première ligne
-    
+    //INSERT HOTEL
     //fonction recursive pour lire les propriété de l'entité associées depuis le mapping 
     //jusqu'a rencontrer une ligne vide sur le fichier de reference
-    async function recursReadRefDocHotel(currentLine){
-      //si ligne vide : return
-      if(!itfFileReader.getCellValue(`A${currentLine}`) == '') {
+    async function recursReadRefDocHotel(refDocHotelFileReader, currentLine) {
+      //condition d'arret : si ligne vide : return
+      if(!refDocHotelFileReader.getCellValue(`A${currentLine}`) 
+        ) {
         return
-      }//semble inutile car le reader ne prend que les cases */
-
+      }
+      if(currentLine == 10) {
+        console.log('10 atteint')
+        return
+      }
       //creer et peupler hotel model
       let hotel = {}
-      for (const [index, propHotel] of Object.entries(mappingfile.hotels)) {
+      for (const [propHotel, mapObject] of Object.entries(mappingfile.hotels)) {
         //hotelObject.propUser = await setValueFromMapping(fileReader, currentLine, propUser)
-        hotel[propHotel] = await BaseValueInsertor.setValueFromMapping(itfFileReader, currentLine, propHotel)
+        hotel[propHotel] = await BaseValueInsertor.setValueFromMapping(refDocHotelFileReader, currentLine, mapObject)
+        //console.log(propHotel)
       }
       //mettre l'entité dans le tableau
       datas.hotels.push(hotel) //icic peux merder a tester
 
       //fileReader prend l + 1
-      const nextLine = currentLine++
+      currentLine++
+
       //cbconfirm(Hotel pret pour insertion)
 
       //rappel pour ligne suivante
-      recursReadRefDocHotel(nextLine)
+      recursReadRefDocHotel(refDocHotelFileReader, currentLine)
     }
-    recursReadRefDocHotel(beginLine)
+    //init tool pour lire fichiers xlsx
+    const refDocHotelFileReader = new XLSXHelper(refDocHotelAbsPath)
+    //set file reader avec le fichier de référence
+    refDocHotelFileReader.setFirstSheetAsCurrentSheet()
+    //commencer le sauter la première ligne
+    beginLine = 2 
+    recursReadRefDocHotel(refDocHotelFileReader, beginLine)
     console.log(datas)
 
     //inserer users
-    fileReader = null //set sur "Adresses Terrain.xlsx"
-    beginLine = 1 //sauter la première ligne
-    function recursReadRefDocUser(fileReader) {
-      //si ligne vide : return
-      //sinon
-        //creer user model
-        for (const [index, propUser] of mappingfile.users.entries()) {
-          //userObject.propUser = await setValueFromMapping(fileReader, currentLine, propUser)
-        }
-        //datas.hotels.push(userObject) //icic peux merder a tester
-        //fileReader prend l + 1
-        //cbconfirm(Hotel pret pour insertion)
-        //recursReadRefDocUser = (fileReader)
-    }
+    
     
     //inserer visites
     
@@ -275,76 +266,85 @@ class BaseValueInsertor {
   }
 
   /* @desc permet de lire une ligne du fichier de mapping afin de recuperer la bonne valeur a inserer pour l'entité courante du model
+   * @params : refSheetFileReader : objet module_xlsx, helper de manipulation de l'outil de lecture du fichier
    * @params : propName : propriété de l'entité en cours de traitement
    * @params : currentLine : ligne du fichier
    */
-  static async setValueFromMapping(refSheetFileReader, currentLine, propName) {
-    const cellToRead = null
+  static async setValueFromMapping(itfFileReader, currentLine, mapObject) {
+    let cellToRead = null
     let propValue;
-    for(const [key, mapInfo] in propName) {
+    for(const key in mapObject) {
+      let mapInfo = mapObject[key]
       switch(key) {
         case "file" :
+          console.log("enter 'file'")
           if(mapInfo !== "BD") {
             //set file reader contenant la prop a lire
             //ATTENTION : la prop "file" de l'attribut de l'entité à set correspond tjr au doc de référence
           }
-          if(mapInfo !== refSheetFileReader.getFirstSheetName()) { //ATTENTION la sheet en cours de lecture est toujours la première sheet (proto)
+          if(mapInfo !== itfFileReader.getFileName()) { //ATTENTION la sheet en cours de lecture est toujours la première sheet (proto)
             console.log('Erreur le file de niveau 1 doit matcher le ref doc') 
           }
-          break
 
         case "col" :
+          console.log("enter 'col'")
           //cellToRead = cellule(currentLine, col) (1)
-          cellToRead = mapInfo.currentLine
-          break
+          cellToRead = mapInfo + currentLine
 
         case "join" :
+          console.log("enter 'join'")
           //si la cellule est bien set sinon erreur
           if(cellToRead) {
             //get depuis l'exterieur, deux possibilités en fonction de la prop "file" du "join" : 
               //- depuis un fichier à la cellule correspondate
               //- depuis la BD
+              const joinPropValue = itfFileReader.getCellValue(cellToRead) //la valeur de jointure = la valeur de la cellule du fichier "file" (au dessus de "join") (a confition que le "fil" soit egal au fichier)
             if(mapInfo === "BD") {
               //init vars
               //pour la jointure
-              const joinProp =      propName[key]['on'] //propriété de jointure sur l'objet BD
-              const joinPropValue = itfFileReader.getCellValue(cellToRead) //la valeur de jointure = la valeur de la cellule du fichier "file" (au dessus de "join") (a confition que le "fil" soit egal au fichier)
+              const joinProp =      mapObject[key]['on'] //propriété de jointure sur l'objet BD
+              const objectFilter =  {}
+              //creer objet filtre
+              objectFilter[joinProp] = joinPropValue
+              //get l'entité voulue depuis la BD
+              const EntityDB = await ModelFactory.get(mapObject[key]['table']).findOne(objectFilter)
               //pour recuperer le propriété de l'objet qui nous interresse
-              const propNameToGet = propName[key]['get']
-
-              //get la valeur de jointure depuis la feuille courante
-              const EntityDB = await ModelFactory
-                                .get(propName[key]['table'])
-                                .findOne({joinProp : joinPropValue })
-
+              const propNameToGet = mapObject[key]['get']
               propValue = EntityDB[propNameToGet]
-              break;
             }
             else{
-              //#REPRENDRE ICI ET 1) Regler erreur quand lance server (erreur chelou) 2) continuer a tester ligne 238
+              console.log('ok')
               //init vars
-              const file = null// set file reader du doc à jointer
-              const joinValue = 0 //cellToRead.value
-              //parcourir fichier a joindre "f" a la recherche du on pour tt les lignes "l" de "on" == joinValue
-                //si trouvé
-                  //propValue = f(l, "on")
+              //set absolute filepath of the file
+              const fileAbsPath = path.resolve('./datas/sources PHRH/' + mapInfo)
+              //init tool pour lire fichiers xlsx
+              const iftJoinedFileReader = new XLSXHelper(fileAbsPath)
+              //set file reader avec le fichier a joindre
+              iftJoinedFileReader.setFirstSheetAsCurrentSheet()
+              //get la valeur voulue depuis le fichier joint
+              //parcourir fichier a joindre a la recherche de la ligne contenant la propriété de jointure "on" = joinPropValue
+              let line = iftJoinedFileReader.filterLine(mapObject[key]['on'], joinPropValue)
+              //si trouvé
+              if(line) {
+                //coordonnées de la cellule ou la valeur cherchée se trouve
+                let coordCell = mapObject[key]['get'] + line
+                propValue = iftJoinedFileReader.getCellValue(coordCell)
+              }
             }
           }
           else{
             console.log('cellule non set')
           }
-          break
 
         case "default" :
           propValue = mapInfo
-          break
 
         case "function_parse_name" :
-          propValue = mapInfo(/*read cell (1)*/)
-          break
+          console.log("enter 'function_parse_name'")
+          propValue = this.mapInfo(itfFileReader.getCellValue(coordCell))
 
         default :
-          break
+          console.log('propriété de mapping inconnue')
       }
 
       //fileReader retourne a la currentLine
