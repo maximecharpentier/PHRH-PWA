@@ -38,7 +38,8 @@ mongoose.connection.once("open", () => {
 });
 
 //insert base values
-const baseValueInsertor = require("./helpers/BaseValueInsertor.helper");
+const BaseValueInsertor = require("./helpers/BaseValueInsertor.helper");
+let baseValueInsertor = new BaseValueInsertor()
 //baseValueInsertor.insertProtoBaseValues(
 baseValueInsertor.insertRealBaseValues(
   require("./datas/mappingfile.json"),

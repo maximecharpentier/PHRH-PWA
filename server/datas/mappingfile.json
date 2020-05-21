@@ -1,5 +1,5 @@
 {
-    "hotels": {
+    "hotel": {
         "uid_internal" : {
             "file" : "Liste des hotels.xlsx",
             "col" : "A"
@@ -36,7 +36,7 @@
             "default" : null
         }
     },
-    "users": {
+    "user": {
         "nom" : {
             "file" : "Adresses Terrain.xlsx",
             "col" : "A"
@@ -65,7 +65,7 @@
             "default" : null
         }
     },
-    "visits": {
+    "visite": {
         "hotel_id" : {
             "file" : "note_visites_hotels.xlsx",
             "col" : "B",
@@ -96,7 +96,7 @@
             "default" : true
         }
     },
-    "vehicules": {
+    "vehicule": {
         "immatriculation" : {
             "file" : "voiture.xlsx",
             "col" : "A"

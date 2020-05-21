@@ -59,9 +59,24 @@ class module_xlsx {
   }
 
   filterLine(col, valueToFind) {
+    const line = 1
+    let isNotFound = true
     //pour chaque col+ligne
-      //if egal //#REPRENDRE ICI
+    while (isNotFound) {
+      if(this.getCellValue(col+line) === null) break
+      if(this.getCellValue(col+line) == valueToFind) isNotFound = false
+      line++
+    }
+
+    if(!isNotFound) {
+      return line
+    }
+    else{
+      return this.LINE_NOT_FOUND
+    }
   }
 }
+
+module_xlsx.LINE_NOT_FOUND = 1
 
 module.exports = module_xlsx;

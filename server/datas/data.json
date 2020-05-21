@@ -724,7 +724,7 @@
          "vehicule_id":null
       }
    ],
-   "visits":[
+   "visites":[
       {
          "hotel_id":1,
          "date_visite":"2020-02-20T11:42:06.537Z",
