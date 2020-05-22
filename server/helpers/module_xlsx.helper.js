@@ -9,6 +9,11 @@ class module_xlsx {
     this.currentSheet = null
   }
 
+  getNbLines() {
+    const range = XLSX.utils.decode_range(this.currentSheet['!ref'])
+    return range.e.r
+  }
+
   getFirstSheetName() {
     return this.fileReader.SheetNames[0]
   }
@@ -59,7 +64,7 @@ class module_xlsx {
   }
 
   filterLine(col, valueToFind) {
-    const line = 1
+    let line = 1
     let isNotFound = true
     //pour chaque col+ligne
     while (isNotFound) {
@@ -75,8 +80,25 @@ class module_xlsx {
       return this.LINE_NOT_FOUND
     }
   }
+
+  async forEachLine(beginLine, stop_at, f) {
+    if(!f){
+      return this.CALL_BACK_MANQUANT
+    }
+    else{
+      let line = beginLine
+      const length = stop_at ? stop_at : (this.getNbLines() + 1)
+      for(line = beginLine; line <= length; line ++){
+        console.log(line)
+        f(line)
+      }
+    }
+  }
 }
 
 module_xlsx.LINE_NOT_FOUND = 1
+module_xlsx.BEGIN_COL_LETTER = 'A'
+module_xlsx.END_OF_FILE = 'EOF'
+module_xlsx.CALL_BACK_MANQUANT = 'La fonction de call back est manquante'
 
 module.exports = module_xlsx;

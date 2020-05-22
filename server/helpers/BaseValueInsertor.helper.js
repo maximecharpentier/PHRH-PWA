@@ -15,11 +15,12 @@ const ModelFactory = require("./../model/model.factory");
 
 class BaseValueInsertor {
 
-  constructor() {
-    this.datasToInsert = {}
+  constructor(mappingFile, objectDatas) {
+    this.datasToInsert = objectDatas
+    this.mappingFile = mappingFile
   }
 
-  async insertProtoBaseValues(dbtest, cbconfirm, cberror, deleteOldValues) {
+  async insertProtoBaseValues(cbconfirm, cberror, deleteOldValues) {
     //Clean DATABASE avant insertion
     if(deleteOldValues) {
       await Hotel.deleteMany({})
@@ -35,7 +36,7 @@ class BaseValueInsertor {
     }
 
     //Insert base values HOTEL & VISITES
-    for (const [index, hotel] of dbtest.hotels.entries()) {
+    for (const [index, hotel] of this.datasToInsert.hotels.entries()) {
       //inserer Hotel
       const hotelObj = new Hotel({
         uid_internal: hotel.uid_internal ? hotel.uid_internal : null,
@@ -55,10 +56,10 @@ class BaseValueInsertor {
       if (HotelDB) {
         //confirmation Hotel
         cbconfirm(
-          "<<Hotel " + (index + 1) + "/" + dbtest.hotels.length + " inséré>>"
+          "<<Hotel " + (index + 1) + "/" + this.datasToInsert.hotels.length + " inséré>>"
         );
         //Inserer visites associées
-        for (const [index, visite] of dbtest.visites.entries()) {
+        for (const [index, visite] of this.datasToInsert.visites.entries()) {
           //Insere Visites associés a l'Hotel tout juste inséré
           if (visite.hotel_id === hotel.id_temp) {
             const visiteObj = new Visite({
@@ -75,7 +76,7 @@ class BaseValueInsertor {
                 "<<Visite " +
                   (index + 1) +
                   "/" +
-                  dbtest.visits.length +
+                  this.datasToInsert.visits.length +
                   " inséré>>"
               );
             }
@@ -92,7 +93,7 @@ class BaseValueInsertor {
     const usersIntervenant_ids = []
     if (visitesDB) {
       const visites_ids = visitesDB.map(visite => visite._id);
-      for (const [index, user] of dbtest.users.entries()) {
+      for (const [index, user] of this.datasToInsert.users.entries()) {
         //Begin : Inserer User "Gestionnaire"
         if (user.fonction === "Superviseur") {
           const userPlannif = new User({
@@ -108,7 +109,7 @@ class BaseValueInsertor {
           const userPlannifDB = await User.insertIfNotExist(userPlannif);
           if (userPlannifDB) {
             cbconfirm(
-              "<<User " + (index + 1) + "/" + dbtest.users.length + " inséré>>"
+              "<<User " + (index + 1) + "/" + this.datasToInsert.users.length + " inséré>>"
             );
           }
         }
@@ -134,7 +135,7 @@ class BaseValueInsertor {
 
             //confimer insertion
             cbconfirm(
-              "<<User " + (index + 1) + "/" + dbtest.users.length + " inséré>>"
+              "<<User " + (index + 1) + "/" + this.datasToInsert.users.length + " inséré>>"
             );
 
             //Begin - Inserer Assoc Visites / user
@@ -180,14 +181,16 @@ class BaseValueInsertor {
     //End : Inserer Users ans related Entities
   }
 
+  async insertRealBaseValues(cbconfirm, cberror, deleteOldValues) {
+    this.buildDatasToInsert()
+    //this.insertProtoBaseValues(cbconfirm, cberror, deleteOldValues)
+  }
+
   //recreer tableau type data a partir de mapping pour appeler insertProtoBaseValues(datas)
-  async insertRealBaseValues(mappingfile, cbconfirm, cberror, deleteOldValues) {
+  async buildDatasToInsert() {
     //cette partie sert a parcourir les fichiers de reference pour peupler les entité, 
     //ensuite la fonction de recuperation de la valeur en fonciton du mapping, elle, ouvre 
     //les fichiers dont elle a besoin ou la BD cas echéant
-
-    //init mapping file var
-    const mappingFile = require('./../datas/mappingfile.json')
 
     //init datas structure to insert les entite de base
     this.datasToInsert['hotels'] =    []
@@ -201,22 +204,26 @@ class BaseValueInsertor {
     const refDocVisiteAbsPath =   path.resolve('./datas/sources/note_visites_hotels.xlsx')
     const refDocVehiculeAbsPath = path.resolve('./datas/sources/voiture.xlsx')
     let beginLine = 0
-    
-    //recreer tableau type data.json a partir de mapping
-    //lire mapping avec algo
 
     /*
-     * INSERTION ENTITE DE BASE
+     * INSERTION ENTITE DE BASE : HOTELS
      */
-    //INSERT HOTEL
     //init tool pour lire fichiers xlsx
     const refDocHotelFileReader = new XLSXHelper(refDocHotelAbsPath)
     //set file reader avec le fichier de référence
     refDocHotelFileReader.setFirstSheetAsCurrentSheet()
     //commencer le sauter la première ligne
     beginLine = 2 
-    this.recursFillEntityFromMapping(refDocHotelFileReader, beginLine, 'hotel', mappingFile)
-    console.log(this.datasToInsert)
+    //entity name
+    let entityName = 'hotel'
+    //parcourir le fichier de référence
+    refDocHotelFileReader.forEachLine(beginLine, 3, async (line) => {
+      let hotel = await this.fillEntityFromMapping(refDocHotelFileReader, line, entityName)
+      this.datasToInsert[entityName + 's'].push(hotel)
+    })
+    //console.log(this.datasToInsert)
+
+    refDocHotelFileReader.forEachLine()
 
     //inserer users
     
@@ -239,7 +246,7 @@ class BaseValueInsertor {
     //inserer evals sur hotel
                     
     //peupler tableau json de la meme structure que data.json
-    //relancer insertProtoBaseValues(dbtest, cbconfirm, cberror, deleteOldValues)
+    //relancer insertProtoBaseValues(this.datasToInsert, cbconfirm, cberror, deleteOldValues)
   }
 
   //fonction recursive pour lire les propriété de l'entité associées depuis le mapping 
@@ -249,35 +256,19 @@ class BaseValueInsertor {
    * @param : entityName : nom de l'entité a extraire
    * @param : ligne courante : pour le parcours du fichier de reference, ligne en cours d'analyse
    */
-  async recursFillEntityFromMapping(refDocFileReader, currentLine, entityName, mappingFile) {
-    const result = []
-    //condition d'arret : si ligne vide dans le ref doc : return
-    if(!refDocFileReader.getCellValue(`A${currentLine}`) 
-      ) {
-      return
-    }
-    if(currentLine == 10) {
-      console.log('10 atteint')
-      return
-    }
+  async fillEntityFromMapping(refDocFileReader, currentLine, entityName) {
     //creer et peupler hotel model
     let entity = {}
-    for (const [propEntity, mapObject] of Object.entries(mappingFile[entityName])) {
+    for (const [propEntity, mapObject] of Object.entries(this.mappingFile[entityName])) {
       //hotelObject.propUser = await setValueFromMapping(fileReader, currentLine, propUser)
-      entity[propEntity] = await this.setValueFromMapping(refDocFileReader, currentLine, mapObject)
-      console.log(propEntity + " : " + entity[propEntity])
-      //console.log(propHotel)
+      entity[propEntity] = await this.setAttrFromMapping(refDocFileReader, currentLine, mapObject)
     }
-    //mettre l'entité dans le tableau
-    this.datasToInsert[entityName + "s"].push(entity) //icic peux merder a tester
-
     //fileReader prend l + 1
     currentLine++
-
     //cbconfirm(Hotel pret pour insertion)
-
     //rappel pour ligne suivante
-    this.recursFillEntityFromMapping(refDocFileReader, currentLine, entityName, mappingFile)
+    console.log(entity)
+    return entity
   }
 
   /* @desc permet de lire une ligne du fichier de mapping afin de recuperer la bonne valeur a inserer pour l'entité courante du model
@@ -285,40 +276,49 @@ class BaseValueInsertor {
    * @param : propName : propriété de l'entité en cours de traitement
    * @param : currentLine : ligne du fichier
    */
-  async setValueFromMapping(itfFileReader, currentLine, mapObject){
-    let cellToRead
-    let propValue
+  async setAttrFromMapping(refDocFileReader, currentLine, mapObject){
+    let cellToRead //celle to read est la cellule qui contient l'info : soi t ds le doc joint, soit dans le doc de reference
+    let propValue //propValue est la valeur lue par le fileReader a l'adresse de cellToRead
     //parcours du mapObject pour recuperer la valeur a assigner a la propriété courante de entityName
     for(const key in mapObject) {
       let mapInfo = mapObject[key]
       switch(key) {
         case "file" :
+          console.log('entrée file')
           if(mapInfo !== "BD") {
             //set file reader contenant la prop a lire
             //ATTENTION : la prop "file" de l'attribut de l'entité à set correspond tjr au doc de référence
           }
-          if(mapInfo !== itfFileReader.getFileName()) { //ATTENTION la sheet en cours de lecture est toujours la première sheet (proto)
+          if(mapInfo !== refDocFileReader.getFileName()) { //ATTENTION la sheet en cours de lecture est toujours la première sheet (proto)
             console.log('Erreur le file de niveau 1 doit matcher le ref doc') 
           }
+          break
 
         case "col" :
+          console.log('entrée col')
           //cellToRead = cellule(currentLine, col) (1)
           cellToRead = mapInfo + currentLine
+          //si la clé join est présente alors la valeur proviens d'ailleur que le doc de ref
+          //sinon la valeur est dans le fichier de référence
+          if(!mapObject["join"]) {
+            propValue = refDocFileReader.getCellValue(cellToRead)
+          }
+          break
 
         case "join" :
-          console.log(mapObject) //#REPRENDRE ICI ET CORRIGER BUS
+          console.log('entrée join')
           //si la cellule est bien set sinon erreur
           if(cellToRead) {
             //get depuis l'exterieur, deux possibilités en fonction de la prop "file" du "join" : 
               //- depuis un fichier à la cellule correspondate
               //- depuis la BD
             //init vars
-            const joinPropValue = itfFileReader.getCellValue(cellToRead) //la valeur de jointure = la valeur de la cellule du fichier "file" (au dessus de "join") (a confition que le "fil" soit egal au fichier)
+            const joinPropValue = refDocFileReader.getCellValue(cellToRead) //la valeur de jointure = la valeur de la cellule du fichier "file" (au dessus de "join") (a confition que le "fil" soit egal au fichier)
             //#repdnre ici aussi et init vars pour une meilleur lecture
             if(mapInfo['file'] === "BD") {
               //realiser la jointure et recuoerer la valeur
-              const joinProp =      mapInfo['on'] //propriété de jointure sur l'objet BD
-              const objectFilter =  {}
+              const joinProp = mapInfo['on'] //propriété de jointure sur l'objet BD
+              const objectFilter = {}
               objectFilter[joinProp] = joinPropValue //creer objet filtre
               const EntityDB = await ModelFactory.get(mapInfo['table']).findOne(objectFilter) //get l'entité voulue depuis la BD
               const propNameToGet = mapInfo['get'] //pour recuperer le propriété de l'objet qui nous interresse
@@ -342,17 +342,24 @@ class BaseValueInsertor {
           else{
             console.log('cellule non set')
           }
+          break
 
         case "default" :
+          console.log('entrée default')
           propValue = mapInfo
+          break
 
         case "function_parse_name" :
+          console.log('entrée function_parse_name')
           switch(mapInfo) {
             case "parseTimeStampFromDateDDMMAAA" :
               propValue = this.parseTimeStampFromDateDDMMAAA(propValue)
+              break
           }
+          break
       }
     }
+    //console.log(propValue)
     return propValue
   }
 
