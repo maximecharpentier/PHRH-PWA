@@ -11,6 +11,7 @@ const Vehicule = require("./../model/vehicule.model");
 
 class modelFactory {
     static get(tableName) {
+        console.log(tableName)
         tableName = tableName.ucFirst()
         switch(tableName) {
             case "Hotel" :

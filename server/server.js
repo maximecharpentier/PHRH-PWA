@@ -32,26 +32,34 @@ var connectWithRetry = function() {
   );
 };
 connectWithRetry();
+
+//lancer le serv
+const serv_port = "27017"; //process.env.SERV_PORT
+app.listen(serv_port, function() {
+  console.log("server runing PORT: " + serv_port);
+});
+
 //ouvrir & deleguer la gestion de la connection a nodemon
 mongoose.connection.once("open", () => {
   console.log("PHRH database connection established");
-});
 
-//insert base values
-const BaseValueInsertor = require("./helpers/BaseValueInsertor.helper");
-const mappingFileForRealData = require('./datas/mappingfile.json');
-const datas = {} //require('./datas/data.json');
-let baseValueInsertor = new BaseValueInsertor(mappingFileForRealData, datas)
-//baseValueInsertor.insertProtoBaseValues(
-baseValueInsertor.insertRealBaseValues(
-  msg => {
-    console.log(msg);
-  },
-  err => {
-    console.error(err);
-  },
-  resetDBValues = (process.env.RESET_DB === 'true')
-);
+  //Quand la connection est ouverte
+  //insert base values
+  const BaseValueInsertor = require("./helpers/BaseValueInsertor.helper");
+  const mappingFileForRealData = require('./datas/mappingfile.json');
+  const datas = {} //require('./datas/data.json');
+  let baseValueInsertor = new BaseValueInsertor(mappingFileForRealData, datas)
+  //baseValueInsertor.insertProtoBaseValues(
+  baseValueInsertor.insertRealBaseValues(
+    msg => {
+      console.log(msg);
+    },
+    err => {
+      console.error(err);
+    },
+    resetDBValues = (process.env.RESET_DB === 'true')
+  );
+});
 
 //Route to end points
 const crudHotelRouter = require("./routes/feature.gestion_couverture/crudHotel.routes.js");
@@ -73,9 +81,3 @@ const suggestionsVisitesRouter = require("./routes/feature.plannifier_visite/pla
 app.use("/gestion/visites", suggestionsVisitesRouter);
 /*const featureNoterHotelRouter = require('./routes/feature\.noterhotel/noterHotel.routes.js')
 app.use('/noter', featureNoterHotelRouter)*/
-
-//lancer le serv
-const serv_port = "27017"; //process.env.SERV_PORT
-app.listen(serv_port, function() {
-  console.log("server runing PORT: " + serv_port);
-});

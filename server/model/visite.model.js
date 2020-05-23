@@ -5,6 +5,11 @@ const Hotel = require('./hotel.model');
 const Schema = mongoose.Schema;
 
 const visiteSchema = new Schema({
+    uid_internal : {
+        type: Number, 
+        required: false,
+        trim: true,
+    },
     hotel_id: {
         type: Schema.Types.ObjectId, 
         ref: 'Hotel', 

@@ -1,5 +1,9 @@
 {
     "hotel": {
+        "id_temp" : {
+            "file" : "Liste des hotels.xlsx",
+            "col" : "A"
+        },
         "uid_internal" : {
             "file" : "Liste des hotels.xlsx",
             "col" : "A"
@@ -25,7 +29,7 @@
             "col" : "A",
             "join" : {
                 "file" : "liste hôtel avec les chambres occupées a hier.xlsx",
-                "on" : "B",
+                "on" : "A",
                 "get" : "G"
             }
         },
@@ -45,7 +49,9 @@
             "file" : "Adresses Terrain.xlsx",
             "col" : "B"
         },
-        "pwd" : "demodemo",
+        "pwd" : {
+            "default" : "demodemo"
+        },
         "fonction" : {
             "file" : "Adresses Terrain.xlsx",
             "col" : "C"
@@ -66,14 +72,17 @@
         }
     },
     "visite": {
+        "uid_internal" : {
+            "file" : "note_visites_hotels.xlsx",
+            "col" : "A"
+        },
         "hotel_id" : {
             "file" : "note_visites_hotels.xlsx",
             "col" : "B",
             "join" : {
-                "file" : "BD",
-                "table" : "Hotel",
-                "on" : "uid_internal",
-                "get" : "_id"
+                "file" : "Liste des hotels.xlsx",
+                "on" : "A",
+                "get" : "A"
             }
         },
         "date_visite" : {
@@ -98,23 +107,23 @@
     },
     "vehicule": {
         "immatriculation" : {
-            "file" : "voiture.xlsx",
+            "file" : "voitures.xlsx",
             "col" : "A"
         },
         "type" : {
-            "file" : "voiture.xlsx",
+            "file" : "voitures.xlsx",
             "col" : "B"
         },
         "adresse_parking" : {
-            "file" : "voiture.xlsx",
+            "file" : "voitures.xlsx",
             "col" : "C"
         },
         "cp" : {
-            "file" : "voiture.xlsx",
+            "file" : "voitures.xlsx",
             "col" : "D"
         },
         "ville" : {
-            "file" : "voiture.xlsx",
+            "file" : "voitures.xlsx",
             "col" : "E"
         }
     }
