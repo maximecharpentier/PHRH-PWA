@@ -63,7 +63,7 @@ class module_xlsx {
     }
   }
 
-  async filterLine(col, valueToFind) {
+  /*async filterLine(col, valueToFind) {
     //pour chaque col+ligne retourner la ligne ou la valeur a été trouvée
     const lineFound = await this.forEachLine(1, null, (line) => {
       if(this.getCellValue(col+line) == valueToFind) {
@@ -77,7 +77,7 @@ class module_xlsx {
     if(lineFound) return lineFound
     //sinon retourner ligne non trouvée
     else return this.LINE_NOT_FOUND
-  }
+  }*/
 
   async forEachLine(beginLine, stop_at, f) {
     if(!f){

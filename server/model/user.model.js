@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
-/*Schema = mongoose.Schema,
-    bcrypt = require('bcrypt'),
-    SALT_WORK_FACTOR = 10;*/
+
+//const XLSXHelper = require('./module_xlsx.helper');
 
 const Visite = require("./visite.model");
 const Vehicule = require("./vehicule.model");
@@ -10,8 +9,13 @@ const Schema = mongoose.Schema;
     /*bcrypt = require('bcrypt'),
     SALT_WORK_FACTOR = 10;*/
 
-const fonction_administrateur = 'Superviseur'
-const functions = ['Médiateur', 'Intervenant terrain', 'Mediateur SAS', fonction_administrateur]
+/*const fonction_administrateur = 'Superviseur'
+const functions = () => {
+    cpnst mappingFile = 
+    const refDocUserAbsPath =     path.resolve('./datas/sources/Adresses Terrain.xlsx')
+    const fileReader = XLSXHelper()
+    ['Médiateur', 'Intervenant terrain', 'Mediateur SAS', fonction_administrateur]
+}*/
 
 const userSchema = new Schema({
     nom : {
@@ -35,7 +39,9 @@ const userSchema = new Schema({
     fonction : {
         type: String,
         required: true, 
-        enum: functions,
+        trim: true,
+        maxlength: 25
+        //enum: functions, //tmp : ici pas d'enum car cela cause une sensibilité trop élevé pour l'import, il faudrai adapter le code
     },
     adresse : {
         type: String,
@@ -73,3 +79,5 @@ userSchema.statics.insertIfNotExist = async function(user) {
 const User = mongoose.model('Utilisateur', userSchema)
 
 module.exports = User
+//exports.AvailableFunctions = functions
+//exports.SuperviseurFunctionName = fonction_administrateur

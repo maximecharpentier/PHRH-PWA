@@ -57,7 +57,8 @@ mongoose.connection.once("open", () => {
     err => {
       console.error(err);
     },
-    resetDBValues = (process.env.RESET_DB === 'true')
+    resetDBValues = (process.env.RESET_DB === 'true'),
+    insertTestAssocEntities = false //tmp : utiliser ce paramètre quand on insert les data de test
   );
 });
 

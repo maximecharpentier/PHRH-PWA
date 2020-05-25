@@ -1,5 +1,4 @@
 const path = require('path');
-const XLSX = require('xlsx');
 const XLSXHelper = require('./module_xlsx.helper');
 const Hotel = require("./../model/hotel.model");
 const Visite = require("../model/visite.model");
@@ -18,9 +17,18 @@ class BaseValueInsertor {
   constructor(mappingFile, objectDatas) {
     this.datasToInsert = objectDatas
     this.mappingFile = mappingFile
+    this.absPathSources = './datas/sources/'
   }
 
-  async insertProtoBaseValues(cbconfirm, cberror, deleteOldValues) {
+
+  /* @desc : fonction d'insertion du fichier de données json dans la base mongoDB
+   * @param : cbconfirm : call back : cb success
+   * @param : cberror : call back : cb erreur
+   * @param : deleteOldValues : bool : reset la base de donnée
+   * @param : insertTestAssocEntities : bool : inserer des associations : équipes
+   * @return : void
+   */
+  async insertProtoBaseValues(cbconfirm, cberror, deleteOldValues, insertTestAssocEntities) {
     //Clean DATABASE avant insertion
     if(deleteOldValues) {
       await Hotel.deleteMany({})
@@ -46,10 +54,12 @@ class BaseValueInsertor {
         ville: hotel.ville,
         nb_chambres_utilise: hotel.nb_chambres_utilise,
         nb_visites_periode: hotel.nb_visites_periode,
-        last_time_visited: null,
-        urgences: hotel.urgences,
-        anomalies: hotel.anomalies,
-        taches: hotel.taches
+        last_time_visited: hotel.nb_visites_periode ? hotel.nb_visites_periode : null,
+        /////#Outdated : traiter a part
+        urgences: hotel.urgences ? hotel.urgences : null,
+        anomalies: hotel.anomalies ? hotel.anomalies : null,
+        taches: hotel.taches ? hotel.taches : null
+        /////
       });
 
       const HotelDB = await Hotel.insertIfNotExist(hotelObj);
@@ -61,7 +71,7 @@ class BaseValueInsertor {
         //Inserer visites associées
         for (const [index, visite] of this.datasToInsert.visites.entries()) {
           //Insere Visites associés a l'Hotel tout juste inséré
-          if (visite.hotel_id === hotel.id_temp) {
+          if (visite.hotel_id === hotel.uid_internal) {
             const visiteObj = new Visite({
               uid_internal: visite.uid_internal,
               hotel_id: HotelDB._id,
@@ -69,7 +79,8 @@ class BaseValueInsertor {
               note: visite.note,
               ville: visite.ville,
               duree: visite.duree,
-              type: visite.type
+              type: visite.type,
+              visite_effectue: visite.visite_effectue ? visite.visite_effectue : true
             });
             const VisiteDB = await Visite.insertIfNotExist(visiteObj);
             if (VisiteDB) {
@@ -77,7 +88,7 @@ class BaseValueInsertor {
                 "<<Visite " +
                   (index + 1) +
                   "/" +
-                  this.datasToInsert.visits.length +
+                  this.datasToInsert.visites.length +
                   " inséré>>"
               );
             }
@@ -85,7 +96,6 @@ class BaseValueInsertor {
         }
 
         //Set Hotel base value
-        
       }
     }
 
@@ -115,8 +125,8 @@ class BaseValueInsertor {
           }
         }
         //End : Inserer User "Gestionnaire"
-        //Begin : Inserer User "Intervenant"
-        if (user.fonction === "Intervenant terrain") {
+        //Begin : Inserer User "Intervenant terrain"
+        else {
           const userIntervenant = new User({
             nom: user.nom,
             prenom: user.prenom,
@@ -125,7 +135,7 @@ class BaseValueInsertor {
             adresse: user.adresse,
             secteur: user.secteur,
             jour_bureau: user.jour_bureau,
-            vehicule_id: user.vehicule_id
+            vehicule_id: user.vehicule_id,
           });
           const userIntervenantDB = await User.insertIfNotExist(
             userIntervenant
@@ -138,53 +148,61 @@ class BaseValueInsertor {
             cbconfirm(
               "<<User " + (index + 1) + "/" + this.datasToInsert.users.length + " inséré>>"
             );
-
-            //Begin - Inserer Assoc Visites / user
-            for (const [index, visite_id] of visites_ids.entries()) {
-              const assoc = new Assoc_user_visite({
-                user_id: userIntervenantDB._id,
-                visite_id: visite_id,
-                date: null
-              });
-              const assocDB = await Assoc_user_visite.insertIfNotExist(assoc);
-              if (assocDB) {
-                cbconfirm(
-                  "<<Association " +
-                    (index + 1) +
-                    "/" +
-                    visites_ids.length +
-                    " inséré>>"
-                )
+            //#ICI a definir : une methode qui lit le tableau visites_ids dataToInsert.users, qui fait correspondre le contenu avec les visites en BD et crée l'association assoc_user_visite
+            /////////// tmp : insertion de relations de test
+            if(insertTestAssocEntities) {
+              //Begin - Inserer Assoc Visites / user
+              for (const [index, visite_id] of visites_ids.entries()) {
+                const assoc = new Assoc_user_visite({
+                  user_id: userIntervenantDB._id,
+                  visite_id: visite_id,
+                  date: null
+                });
+                const assocDB = await Assoc_user_visite.insertIfNotExist(assoc);
+                if (assocDB) {
+                  cbconfirm(
+                    "<<Association " +
+                      (index + 1) +
+                      "/" +
+                      visites_ids.length +
+                      " inséré>>"
+                  )
+                }
               }
+              //End - Inserer Assoc Visites / user
             }
-            //End - Inserer Assoc Visites / user
+            ///////////
           }
         }
         //End : Inserer User "Intervenant"
       }
-      //Begin : Inserer equipes
-      if(usersIntervenant_ids.length > 0) {
-        const assoc_user_user = new Assoc_user_user({
-          user_a_id: usersIntervenant_ids[0],
-          user_b_id: usersIntervenant_ids[1],
-          plage_h: 'Matin',
-          secteur_binome: '91'
-        });
-        const assoc_user_userDB = await Assoc_user_user.insertIfNotExist(assoc_user_user);
-        if (assoc_user_userDB) {
-          cbconfirm("<<Equipe 1 créée>>")
-        } else {
-          cberror("erreur d\'insertion de l'equipe 1")
+      /////////// tmp : insertion de relations de test
+      if(insertTestAssocEntities) {
+        //Begin : Inserer equipes
+        if(usersIntervenant_ids.length() > 0) {
+          const assoc_user_user = new Assoc_user_user({
+            user_a_id: usersIntervenant_ids[0],
+            user_b_id: usersIntervenant_ids[1],
+            plage_h: 'Matin',
+            secteur_binome: '91'
+          });
+          const assoc_user_userDB = await Assoc_user_user.insertIfNotExist(assoc_user_user);
+          if (assoc_user_userDB) {
+            cbconfirm("<<Equipe 1 créée>>")
+          } else {
+            cberror("erreur d\'insertion de l'equipe 1")
+          }
+          //End : Inserer equipes
         }
-        //End : Inserer equipes
       }
+      ///////////
     }
     //End : Inserer Users ans related Entities
   }
 
   async insertRealBaseValues(cbconfirm, cberror, deleteOldValues) {
-    this.buildDatasToInsert()
-    //this.insertProtoBaseValues(cbconfirm, cberror, deleteOldValues)
+    await this.buildDatasToInsert()
+    this.insertProtoBaseValues(cbconfirm, cberror, deleteOldValues)
   }
 
   //recreer tableau type data a partir de mapping pour appeler insertProtoBaseValues(datas)
@@ -194,54 +212,60 @@ class BaseValueInsertor {
     //les fichiers dont elle a besoin ou la BD cas echéant
 
     //init datas structure to insert les entite de base
-    this.datasToInsert['hotels'] =    []
-    this.datasToInsert['users'] =     []
-    this.datasToInsert['visites'] =   []
-    this.datasToInsert['vehicules'] = []
-
-    //init vars pour algorithme
-    const refDocHotelAbsPath =    path.resolve('./datas/sources/Liste des hotels.xlsx')
-    const refDocUserAbsPath =     path.resolve('./datas/sources/Adresses Terrain.xlsx')
-    const refDocVisiteAbsPath =   path.resolve('./datas/sources/note_visites_hotels.xlsx')
-    const refDocVehiculeAbsPath = path.resolve('./datas/sources/voitures.xlsx')
-    let beginLine = 0
+    this.datasToInsert.hotels =    []
+    this.datasToInsert.users =     []
+    this.datasToInsert.visites =   []
+    this.datasToInsert.vehicules = []
 
     /*
-     * INSERTION ENTITE DE BASE : HOTELS
+     * Construction de l'objet data conformément a data.sample
      */
-    //this.datasToInsert['hotels'] = await this.importBaseEntites('hotel', refDocHotelAbsPath, 2)
-    //this.datasToInsert['users'] = await this.importBaseEntites('user', refDocUserAbsPath, 2)
-    //this.datasToInsert['vehicules'] = await this.importBaseEntites('vehicule', refDocVehiculeAbsPath, 2)
-    this.datasToInsert['visites'] = await this.importBaseEntites('visite', refDocVisiteAbsPath, 2)
-
-    console.log(this.datasToInsert)
+    //this.datasToInsert.hotels = await this.importEntities('hotel', 2)
+    this.datasToInsert.users = await this.importEntities('user', 2)
+    //this.datasToInsert.vehicules = await this.importEntities('vehicule', 2)
+    //this.datasToInsert.visites = await this.importEntities('visite', 2)
 
     /*
-     * INSERTION ASSOCIATIONS
-     */
-    //inserer assoc hotel_visite
-    //inserer assoc_user_visite
-
-    /*
-     * UPDATE SPECIAL VALUES OF ENTITES
+     * UPDATE SPECIAL VALUES (aggregates) OF ENTITES
      */
     //inserer agreggats sur hotels "nb_visites_periode" & "last_time_visited" & "note"
-    //inserer evals sur hotel
-                    
-    //peupler tableau json de la meme structure que data.json
-    //relancer insertProtoBaseValues(this.datasToInsert, cbconfirm, cberror, deleteOldValues)
+    this.datasToInsert['visites'].forEach(visite => {
+      let uid_hotel = visite.hotel_id
+      this.datasToInsert['hotels'].forEach(hotel => {
+        if(hotel.uid_internal == uid_hotel) {
+          //nb_visites_periode
+          hotel.nb_visites_periode++
+          //last_time_visited
+          hotel.last_time_visited = visite.date_visite
+          //note
+          hotel = visite.note
+        }
+      })
+    })
+    //inserer un utilisateur administrateur
+    const userCopy = this.datasToInsert.users[0]
+    const userAdmin = userCopy
+    console.log(userAdmin)
+    userAdmin.fonction = 'Superviseur'
+    userAdmin.nom = 'admin'
+    userAdmin.prenom = 'admin'
+    userAdmin.pwd = 'admin'
+    this.datasToInsert.users[this.datasToInsert.users.length +1] = userAdmin
+    console.log(this.datasToInsert.users[0])
+    //console.log(this.datasToInsert.users[0])
+    //console.log(admin) //ne doit pas etre pareil que user 0
+    //console.log(this.datasToInsert.users)
   }
 
-  //
   /* @desc : fonction pour importer une entité de base dans le tableai dataToInsert 
    * @param entityName       :(string)  : nom de l'entité
    * @param refDocAbsPath    :(string)  : path de fichier absolue vers le fichier de référence pour le parcours
    * @param beginLineRefDoc  :(integer) : ligne a partir de laquelle commencer la lecture du ref doc (numéroté a partir de 1) (=2 : revient a sauter la première ligne)
    * @return baseEntityArray :(array)   : tableau d'objet d'entité de base (Hotel, User, Visite & Vehicule) exportés depuis les fichiers sources pour insertion dans BD
    */
-  async importBaseEntites(entityName, refDocAbsPath, beginLineRefDoc) {
+  async importEntities(entityName, beginLineRefDoc) {
     /////Affichage avancement
-    let prevPercent = 0
+    let prev10Percent = 0
     /////Affichage avancement
 
     const baseEntityArray = []
@@ -249,14 +273,15 @@ class BaseValueInsertor {
     * INSERTION ENTITE DE BASE
     */
     //init tool pour lire fichiers xlsx
+    const refDocAbsPath = path.resolve(this.absPathSources + this.mappingFile[entityName].ref_file_name)
     const refDocFileReader = new XLSXHelper(refDocAbsPath)
     //set file reader avec le fichier de référence
     refDocFileReader.setFirstSheetAsCurrentSheet()    
     //parcourir le fichier de référence
-    console.log("Construction du tableau d\'" + entityName + " en cours ...")
+    console.log("Construction du tableau d\'entités '" + entityName + "' en cours ...")
     
     /////Affichage avancement
-    prevPercent = 0
+    prev10Percent = 0
     /////Affichage avancement
 
     let parcoursState = await refDocFileReader.forEachLine(
@@ -266,9 +291,10 @@ class BaseValueInsertor {
 
         ///////Affichage avancement
         let avancement = line * 100 / refDocFileReader.getNbLines()
-        if(Math.trunc(avancement) % 10 !== prevPercent) {
-          console.log(Math.trunc(avancement) + "%")
-          prevPercent = Math.trunc(avancement) % 10
+        let value = Math.floor(avancement/10)
+        if(value > prev10Percent && value <=10) {
+          console.log(value * 10 + "%")
+          prev10Percent = value
         } 
         ///////Affichage avancement
 
@@ -277,17 +303,15 @@ class BaseValueInsertor {
       }
     )
     if(parcoursState === refDocFileReader.END_OF_FILE) {
-      console.log("tableau d\'" + entityName + " peuplé")
+      console.log("tableau d\'entités '" + entityName + "' peuplé")
     }
     else{
-      console.log("erreur de construction du tableau d\'" + entityName)
+      console.log("erreur de construction du tableau d'entités \'" + entityName + "'")
     }
 
     return baseEntityArray
   }
 
-  //fonction recursive pour lire les propriété de l'entité associées depuis le mapping 
-    //jusqu'a rencontrer une ligne vide sur le fichier de reference
   /* @desc : fonction recurssive qui depuis un fichier de reference va creer peupler l'entité grace au fichier de mapping et inserer l'entité dans le tableau final pour insertion
    * @param : refDocFileReader : classe outil du module du file reader choisit (ici module xlsx)
    * @param : entityName : nom de l'entité a extraire
@@ -297,6 +321,7 @@ class BaseValueInsertor {
     //creer et peupler hotel model
     let entity = {entityName}
     for (const [propEntity, mapObject] of Object.entries(this.mappingFile[entityName])) {
+      if(propEntity == 'ref_file_name') continue
       //hotelObject.propUser = await setValueFromMapping(fileReader, currentLine, propUser)
       entity[propEntity] = await this.setAttrFromMapping(refDocFileReader, currentLine, mapObject)
     }
@@ -319,12 +344,6 @@ class BaseValueInsertor {
     for(const key in mapObject) {
       let mapInfo = mapObject[key]
       switch(key) {
-        case "file" :
-          if(mapInfo !== refDocFileReader.getFileName()) { //ATTENTION la sheet en cours de lecture est toujours la première sheet (proto)
-            console.log('Erreur le file de niveau 1 doit matcher le ref doc') 
-          }
-          break
-
         case "col" :
           //cellToRead = cellule(currentLine, col) (1)
           cellToRead = mapInfo + currentLine
@@ -402,12 +421,13 @@ class BaseValueInsertor {
     return propValue
   }
 
+  /* 
+   * 
+   * 
+   */
   parseTimeStampFromDateDDMMAAA(rawDate) {
     //convertir date du fichier en date JS correct
-    const d = XLSXHelper.getJSDateFromExcellDate(rawDate)
-    console.log(rawDate)
-    console.log(d)
-    return d.getTime()
+    return XLSXHelper.getJSDateFromExcellDate(rawDate)
   }
 }
 

@@ -1,31 +1,25 @@
 {
     "hotel": {
-        "id_temp" : {
-            "file" : "Liste des hotels.xlsx",
-            "col" : "A"
-        },
+        "ref_file_name" : "Liste des hotels.xlsx",
         "uid_internal" : {
-            "file" : "Liste des hotels.xlsx",
             "col" : "A"
         },
         "nom" : {
-            "file" : "Liste des hotels.xlsx",
             "col" : "B"
         },
         "adresse" : {
-            "file" : "Liste des hotels.xlsx",
             "col" : "C"
         },
         "cp" : {
-            "file" : "Liste des hotels.xlsx",
             "col" : "D"
         },
         "ville" : {
-            "file" : "Liste des hotels.xlsx",
             "col" : "E"
         },
+        "note" : {
+            "default" : null
+        },
         "nb_chambres_utilise" : {
-            "file" : "Liste des hotels.xlsx",
             "col" : "A",
             "join" : {
                 "file" : "liste hôtel avec les chambres occupées a hier.xlsx",
@@ -34,34 +28,39 @@
             }
         },
         "nb_visites_periode" : {
-            "default" : null
+            "default" : 0
         },
         "last_time_visited" : {
             "default" : null
+        },
+        "urgences" : {
+            "default" : []
+        },
+        "anomalies" : {
+            "default" : []
+        },
+        "taches" : {
+            "default" : []
         }
     },
     "user": {
+        "ref_file_name" : "Adresses Terrain.xlsx",
         "nom" : {
-            "file" : "Adresses Terrain.xlsx",
             "col" : "A"
         },
         "prenom" : {
-            "file" : "Adresses Terrain.xlsx",
             "col" : "B"
         },
         "pwd" : {
             "default" : "demodemo"
         },
         "fonction" : {
-            "file" : "Adresses Terrain.xlsx",
             "col" : "C"
         },
         "adresse" : {
-            "file" : "Adresses Terrain.xlsx",
             "col" : "E"
         },
         "secteur" : {
-            "file" : "Adresses Terrain.xlsx",
             "col" : "D"
         },
         "jour_bureau" : {
@@ -69,15 +68,19 @@
         },
         "vehicule_id" : {
             "default" : null
+        },
+        "visites_id" : {
+            "default" : []
         }
     },
     "visite": {
+
+        "ref_file_name" : "note_visites_hotels.xlsx",
+        
         "uid_internal" : {
-            "file" : "note_visites_hotels.xlsx",
             "col" : "A"
         },
         "hotel_id" : {
-            "file" : "note_visites_hotels.xlsx",
             "col" : "B",
             "join" : {
                 "file" : "Liste des hotels.xlsx",
@@ -86,14 +89,11 @@
             }
         },
         "date_visite" : {
-            "file" : "note_visites_hotels.xlsx",
             "col" : "D",
             "function_parse_name" : "parseTimeStampFromDateDDMMAAA"
         },
         "note" : {
-            "file" : "note_visites_hotels.xlsx",
-            "col" : "D",
-            "function_parse_name" : "parseTimeStampFromDateDDMMAAA"
+            "col" : "E"
         },
         "duree" : {
             "default" : null
@@ -106,24 +106,22 @@
         }
     },
     "vehicule": {
+
+        "ref_file_name" : "voitures.xlsx",
+
         "immatriculation" : {
-            "file" : "voitures.xlsx",
             "col" : "A"
         },
         "type" : {
-            "file" : "voitures.xlsx",
             "col" : "B"
         },
         "adresse_parking" : {
-            "file" : "voitures.xlsx",
             "col" : "C"
         },
         "cp" : {
-            "file" : "voitures.xlsx",
             "col" : "D"
         },
         "ville" : {
-            "file" : "voitures.xlsx",
             "col" : "E"
         }
     }
