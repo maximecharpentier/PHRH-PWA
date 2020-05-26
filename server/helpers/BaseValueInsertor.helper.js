@@ -14,10 +14,13 @@ const ModelFactory = require("./../model/model.factory");
 
 class BaseValueInsertor {
 
+  /* @param : mappingFile : object : tableau de mapping permettant d'associer à une propriété d'une entité sa position dans les documents sources
+   * @param : objectDatas : (optionnal) object : objet contenant les données à inserer (voir data.sample.json)
+   */
   constructor(mappingFile, objectDatas) {
-    this.datasToInsert = objectDatas
-    this.mappingFile = mappingFile
-    this.absPathSources = './datas/sources/'
+    this.datasToInsert = objectDatas //dataToInsert contient la donée a inserer
+    this.mappingFile = mappingFile   //mappingFile contient le fichier de mapping pour constituer datasToInsert a partir de fichiers sources externes
+    this.pathSources = './datas/sources/' //emplacement des données sources pour le mapping
   }
 
 
@@ -220,10 +223,10 @@ class BaseValueInsertor {
     /*
      * Construction de l'objet data conformément a data.sample
      */
-    //this.datasToInsert.hotels = await this.importEntities('hotel', 2)
+    this.datasToInsert.hotels = await this.importEntities('hotel', 2)
     this.datasToInsert.users = await this.importEntities('user', 2)
-    //this.datasToInsert.vehicules = await this.importEntities('vehicule', 2)
-    //this.datasToInsert.visites = await this.importEntities('visite', 2)
+    this.datasToInsert.vehicules = await this.importEntities('vehicule', 2)
+    this.datasToInsert.visites = await this.importEntities('visite', 2)
 
     /*
      * UPDATE SPECIAL VALUES (aggregates) OF ENTITES
@@ -242,19 +245,20 @@ class BaseValueInsertor {
         }
       })
     })
+    
+    /*
+     * ADD OTHER INFOS
+     */
     //inserer un utilisateur administrateur
-    const userCopy = this.datasToInsert.users[0]
-    const userAdmin = userCopy
-    console.log(userAdmin)
+    const refDocAbsPath = path.resolve(this.pathSources + this.mappingFile['user'].ref_file_name)
+    const refDocFileReader = new XLSXHelper(refDocAbsPath)
+    refDocFileReader.setFirstSheetAsCurrentSheet()
+    const userAdmin = await this.fillEntityFromMapping(refDocFileReader, 3, 'user') //tmp : "3" ligne choisie arbitrairement
     userAdmin.fonction = 'Superviseur'
     userAdmin.nom = 'admin'
     userAdmin.prenom = 'admin'
     userAdmin.pwd = 'admin'
-    this.datasToInsert.users[this.datasToInsert.users.length +1] = userAdmin
-    console.log(this.datasToInsert.users[0])
-    //console.log(this.datasToInsert.users[0])
-    //console.log(admin) //ne doit pas etre pareil que user 0
-    //console.log(this.datasToInsert.users)
+    this.datasToInsert.users.push(userAdmin)
   }
 
   /* @desc : fonction pour importer une entité de base dans le tableai dataToInsert 
@@ -270,10 +274,10 @@ class BaseValueInsertor {
 
     const baseEntityArray = []
     /*
-    * INSERTION ENTITE DE BASE
-    */
+     * INSERTION ENTITE DE BASE
+     */
     //init tool pour lire fichiers xlsx
-    const refDocAbsPath = path.resolve(this.absPathSources + this.mappingFile[entityName].ref_file_name)
+    const refDocAbsPath = path.resolve(this.pathSources + this.mappingFile[entityName].ref_file_name)
     const refDocFileReader = new XLSXHelper(refDocAbsPath)
     //set file reader avec le fichier de référence
     refDocFileReader.setFirstSheetAsCurrentSheet()    
