@@ -14,15 +14,31 @@ const ModelFactory = require("./../model/model.factory");
 
 class BaseValueInsertor {
 
-  /* @param : mappingFile : object : tableau de mapping permettant d'associer à une propriété d'une entité sa position dans les documents sources
+  /* @param : mappingFile : object : contient le fichier json de mapping pour constituer le tableau de données a inserer, a partir de fichiers sources externes
    * @param : objectDatas : (optionnal) object : objet contenant les données à inserer (voir data.sample.json)
    */
   constructor(mappingFile, objectDatas) {
-    this.datasToInsert = objectDatas //dataToInsert contient la donée a inserer
-    this.mappingFile = mappingFile   //mappingFile contient le fichier de mapping pour constituer datasToInsert a partir de fichiers sources externes
-    this.pathSources = './datas/sources/' //emplacement des données sources pour le mapping
+    this.datasToInsert =  objectDatas ? objectDatas : {} 
+    this.mappingFile =    mappingFile ? mappingFile : {} 
+    this.pathSources =    './datas/sources/' //emplacement des données sources pour le mapping
   }
 
+  /* @desc : command de netpyage de la base de donnée
+   * @retur : void
+   */
+  static async resetDB() {
+    await Hotel.deleteMany({})
+    await Visite.deleteMany({})
+    await User.deleteMany({})
+    await Anomalie.deleteMany({})
+    await Assoc_user_visite.deleteMany({})
+    await Assoc_user_user.deleteMany({})
+    await Priorisation.deleteMany({})
+    await Tache.deleteMany({})
+    await Urgence.deleteMany({})
+    await Vehicule.deleteMany({})
+    console.log('Base de données éffacée')
+  }
 
   /* @desc : fonction d'insertion du fichier de données json dans la base mongoDB
    * @param : cbconfirm : call back : cb success
@@ -31,21 +47,7 @@ class BaseValueInsertor {
    * @param : insertTestAssocEntities : bool : inserer des associations : équipes
    * @return : void
    */
-  async insertProtoBaseValues(cbconfirm, cberror, deleteOldValues, insertTestAssocEntities) {
-    //Clean DATABASE avant insertion
-    if(deleteOldValues) {
-      await Hotel.deleteMany({})
-      await Visite.deleteMany({})
-      await User.deleteMany({})
-      await Anomalie.deleteMany({})
-      await Assoc_user_visite.deleteMany({})
-      await Assoc_user_user.deleteMany({})
-      await Priorisation.deleteMany({})
-      await Tache.deleteMany({})
-      await Urgence.deleteMany({})
-      await Vehicule.deleteMany({})
-    }
-
+  async insertData(cbconfirm, cberror, insertTestAssocEntities) {
     //Insert base values HOTEL & VISITES
     for (const [index, hotel] of this.datasToInsert.hotels.entries()) {
       //inserer Hotel
@@ -182,7 +184,7 @@ class BaseValueInsertor {
       /////////// tmp : insertion de relations de test
       if(insertTestAssocEntities) {
         //Begin : Inserer equipes
-        if(usersIntervenant_ids.length() > 0) {
+        if(usersIntervenant_ids.length > 0) {
           const assoc_user_user = new Assoc_user_user({
             user_a_id: usersIntervenant_ids[0],
             user_b_id: usersIntervenant_ids[1],
@@ -204,12 +206,12 @@ class BaseValueInsertor {
     console.log("l\'insetion est terminée")
   }
 
-  async insertRealBaseValues(cbconfirm, cberror, deleteOldValues) {
+  async importData(cbconfirm, cberror, deleteOldValues) {
     await this.buildDatasToInsert()
-    this.insertProtoBaseValues(cbconfirm, cberror, deleteOldValues)
+    this.insertData(cbconfirm, cberror, deleteOldValues)
   }
 
-  //recreer tableau type data a partir de mapping pour appeler insertProtoBaseValues(datas)
+  //recreer tableau type data a partir de mapping pour appeler insertData(datas)
   async buildDatasToInsert() {
     //cette partie sert a parcourir les fichiers de reference pour peupler les entité, 
     //ensuite la fonction de recuperation de la valeur en fonciton du mapping, elle, ouvre 
