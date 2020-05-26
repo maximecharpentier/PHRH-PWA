@@ -201,6 +201,7 @@ class BaseValueInsertor {
       ///////////
     }
     //End : Inserer Users ans related Entities
+    console.log("l\'insetion est terminée")
   }
 
   async insertRealBaseValues(cbconfirm, cberror, deleteOldValues) {
