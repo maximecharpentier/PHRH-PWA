@@ -18,7 +18,7 @@ var connectWithRetry = function() {
     {
       useNewUrlParser: true,
       useCreateIndex: true,
-      useUnifiedTopology: false
+      useUnifiedTopology: true
     },
     function(err) {
       if (err) {
@@ -32,23 +32,35 @@ var connectWithRetry = function() {
   );
 };
 connectWithRetry();
+
+//lancer le serv
+const serv_port = "27017"; //process.env.SERV_PORT
+app.listen(serv_port, function() {
+  console.log("server runing PORT: " + serv_port);
+});
+
 //ouvrir & deleguer la gestion de la connection a nodemon
 mongoose.connection.once("open", () => {
   console.log("PHRH database connection established");
-});
 
-//insert base values
-const baseValueInsertor = require("./helpers/BaseValueInsertor.helper");
-baseValueInsertor.insertProtoBaseValues(
-  require("./datas/data.json"),
-  msg => {
-    console.log(msg);
-  },
-  err => {
-    console.error(err);
-  },
-  resetDBValues = (process.env.RESET_DB === 'true')
-);
+  //Quand la connection est ouverte
+  //insert base values
+  const BaseValueInsertor = require("./helpers/BaseValueInsertor.helper");
+  const mappingFileForRealData = require('./datas/mappingfile.json');
+  const datas = {} //require('./datas/data.json');
+  let baseValueInsertor = new BaseValueInsertor(mappingFileForRealData, datas)
+  //baseValueInsertor.insertProtoBaseValues(
+  baseValueInsertor.insertRealBaseValues(
+    msg => {
+      console.log(msg);
+    },
+    err => {
+      console.error(err);
+    },
+    resetDBValues = (process.env.RESET_DB === 'true'),
+    insertTestAssocEntities = false //tmp : utiliser ce paramètre quand on insert les data de test
+  );
+});
 
 //Route to end points
 const crudHotelRouter = require("./routes/feature.gestion_couverture/crudHotel.routes.js");
@@ -66,11 +78,7 @@ app.use("/gestion/equipes", manageEquipesRouter);
 const plannnifierVisitesRouter = require("./routes/feature.plannifier_visite/crudVisite.routes.js");
 app.use("/gestion/visites", plannnifierVisitesRouter);
 
+const suggestionsVisitesRouter = require("./routes/feature.plannifier_visite/plannifierVisite.routes.js");
+app.use("/gestion/visites", suggestionsVisitesRouter);
 /*const featureNoterHotelRouter = require('./routes/feature\.noterhotel/noterHotel.routes.js')
 app.use('/noter', featureNoterHotelRouter)*/
-
-//lancer le serv
-const serv_port = "27017"; //process.env.SERV_PORT
-app.listen(serv_port, function() {
-  console.log("server runing PORT: " + serv_port);
-});
