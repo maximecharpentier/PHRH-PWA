@@ -8,15 +8,24 @@ export default class Login extends PureComponent {
       <div className="App-Login">
         <Form className="App-Login_Form">
           <div className="App-Login_Form_Header">
-            <p>Connexion</p>
+            <h2>Connexion</h2>
+            <p>Pour continuer, connectez-vous.</p>
           </div>
-          <label>Nom d'utilisateur</label>
-          <Field type="text" name="username" placeholder="Nom d'utilisateur" />
-          <ErrorMessage style={ StyledErrorMessage } name="email" />
-          <label>Mot de passe</label>
-          <Field type="text" name="password" placeholder="Mot de passe" />
-          <ErrorMessage name="password" />
-          <p className="App-Login_Form_Forgot">Mot de passe oublié ?</p>
+          <div className="App-Login_Form_Field">
+            <div className="App-Login_Form_Label">
+              <label>Email</label>
+            </div>
+            <Field type="text" name="email" placeholder="pierre@example.com" />
+            <ErrorMessage id="error" style={ StyledErrorMessage } name="email" />
+          </div>
+          <div className="App-Login_Form_Field">
+            <div className="App-Login_Form_Label">
+              <label>Mot de passe</label>
+              <p className="App-Login_Form_Forgot">Mot de passe oublié ?</p>
+            </div>
+            <Field type="password" name="password" placeholder="Mot de passe" />
+            <ErrorMessage name="password" />
+          </div>
           <button className="App-Login_Form_Button" type="submit">Se connecter</button>
         </Form>
       </div>
@@ -25,5 +34,6 @@ export default class Login extends PureComponent {
 }
 
 const StyledErrorMessage = styled.p`
+    margin-top: 15px;
     color: red;
 `

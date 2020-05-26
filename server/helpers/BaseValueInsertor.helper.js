@@ -91,7 +91,6 @@ class BaseValueInsertor {
             pwd: user.pwd,
             fonction: user.fonction,
             secteur: user.secteur,
-            plage_h: user.plage_h,
             jour_bureau: user.jour_bureau,
             vehicule_id: user.vehicule_id
           });
@@ -111,7 +110,6 @@ class BaseValueInsertor {
             pwd: user.pwd,
             fonction: user.fonction,
             secteur: user.secteur,
-            plage_h: user.plage_h,
             jour_bureau: user.jour_bureau,
             vehicule_id: user.vehicule_id
           });
@@ -155,6 +153,8 @@ class BaseValueInsertor {
         const assoc_user_user = new Assoc_user_user({
           user_a_id: usersIntervenant_ids[0],
           user_b_id: usersIntervenant_ids[1],
+          plage_h: 'Matin',
+          secteur_binome: '91'
         });
         const assoc_user_userDB = await Assoc_user_user.insertIfNotExist(assoc_user_user);
         if (assoc_user_userDB) {
@@ -166,6 +166,13 @@ class BaseValueInsertor {
       }
     }
     //End : Inserer Users ans related Entities
+  }
+
+  static async insertRealBaseValues(dbtest, cbconfirm, cberror, deleteOldValues) {
+    //recreer fichier json type data.json a partir de mapping
+      //lire mapping avec algo
+      //peupler tableau json de la meme structure que data.json
+    //relancer insertProtoBaseValues(dbtest, cbconfirm, cberror, deleteOldValues)
   }
 }
 
