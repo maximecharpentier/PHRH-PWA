@@ -15,7 +15,7 @@
       - [Comment nous l'utilisons](#comment-nous-lutilisons-2)
   - [Lancer serveur (v1)](#lancer-serveur-v1)
   - [Routes doc (temporary)](#routes-doc-temporary)
-  - [Insertion données réelles](#routes-doc-temporary)
+  - [Insertion données réelles](#insertions-données-reelles)
 
 ## Responsable
 
@@ -267,5 +267,5 @@ En cours d'étude
     - de supprimer vos données eventuelement par erreur en mettant **RESET_DB** à "false"
     - de relancer la procedure d'import pour rien en mettant **INSERT_TEST_DB** et/ou **INSERT_REAL_DB** à "false"
   7) Si vous voulez afficher votre base de données locale dans un GUI :
-    - telecharger : MongoDB Compass Comunity
+    - telecharger : MongoDB Compass Comunity : 
     - a l'ouverture connectez vous grace a l'url : mongodb://<SERVER_HOST>:27017/PHRH ou SERVER_HOST est defini dans .env (chez moi c'est "localhost")
