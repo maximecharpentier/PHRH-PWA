@@ -267,6 +267,6 @@ En cours d'étude
   7) Metez la configuration de votre **.env** de nouveau a jour pour eviter :
     - de supprimer vos données eventuelement par erreur en mettant **RESET_DB** à "false"
     - de relancer la procedure d'import pour rien en mettant **INSERT_TEST_DB** et/ou **INSERT_REAL_DB** à "false"
-  8) Si vous voulez afficher votre base de données locale dans un GUI :
-    - telecharger : MongoDB Compass Comunity : 
-    - a l'ouverture connectez vous grace a l'url : mongodb://<SERVER_HOST>:27017/PHRH ou SERVER_HOST est defini dans .env (chez moi c'est "localhost")
+  7) Si vous voulez afficher votre base de données locale dans un GUI :
+    - telecharger : MongoDB Compass Comunity : https://www.mongodb.com/download-center/compass (Version Community Edition Stabe)
+    - à l'ouverture connectez vous grace a l'url : mongodb://<SERVER_HOST>:27017/PHRH ou SERVER_HOST est defini dans .env (chez moi c'est "localhost")
