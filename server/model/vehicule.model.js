@@ -35,19 +35,15 @@ const vehiculeSchema = new Schema({
 })
 
 //definir la methode insertIfNotExist
-/*authSchema.statics.insertIfNotExist = function(auth, cb) {
-    this.find({name : auth.name}).exec(function(err, docs) {
-        if (!docs.length){
-            auth.save(function(err) {
-                cb(err, auth)
-            })
-        }
-        else{
-            cb('Auth <<'+ auth.nom +'>> existe deja', null);
-        }
-    })
-}*/
-
+vehiculeSchema.statics.insertIfNotExist = async function(vehicule) {
+    const docs = await this.find({vehicule : vehicule.immatriculation}).exec()
+    if (!docs.length){
+        return await vehicule.save()
+    }
+    else{
+        console.log('Vehicule <<'+ vehicule.immatriculation +'>> existe deja');
+    }
+}
 
 const Vehicule = mongoose.model('Vehicule', vehiculeSchema)
 

@@ -40,7 +40,7 @@ app.listen(serv_port, function() {
 });
 
 //ouvrir & deleguer la gestion de la connection a nodemon
-mongoose.connection.once("open", () => {
+mongoose.connection.once("open", async () => {
   console.log("PHRH database connection established");
 
   const BaseValueInsertor = require("./helpers/BaseValueInsertor.helper");
@@ -48,7 +48,8 @@ mongoose.connection.once("open", () => {
    * CLEAN DB
    */
   if(process.env.RESET_DB === 'true') {
-    BaseValueInsertor.resetDB()
+    await BaseValueInsertor.resetDB()
+    console.log('Base de données éffacée')
   }
   /*
    * INSERER DONNEES DE TEST
@@ -57,14 +58,14 @@ mongoose.connection.once("open", () => {
     console.log('Insertion des données DE TEST')
     let baseValueInsertor = new BaseValueInsertor(
       mappingFile = null, 
-      testDB = require('./datas/data.json')
+      testDB = require('./datas/test/data.json')
       )
     await baseValueInsertor.insertData(
       msg => { console.log(msg) },
       err => { console.error(err) },
       insertTestAssocEntities = true //tmp : utiliser ce paramètre quand on insert les data de test
     )
-    console.log('l\'Insertion des données DE TEST s\'est bien déroulée')
+    console.log('l\'Insertion des données DE TEST est terminée')
   }
 
   /*
@@ -73,7 +74,7 @@ mongoose.connection.once("open", () => {
   if(process.env.INSERT_REAL_DB === 'true') {
     console.log('Insertion des données REELLES')
     let baseValueInsertor = new BaseValueInsertor(
-      mappingFile = require('./datas/mappingfile.json'), 
+      mappingFile = require('./datas/sources/mappingfile.json'), 
       null
       )
     await baseValueInsertor.importData(
@@ -81,7 +82,7 @@ mongoose.connection.once("open", () => {
       err => { console.error(err) },
       insertTestAssocEntities = false //tmp : utiliser ce paramètre quand on insert les data de test
     )
-    console.log('l\'Insertion des données REELLES s\'est bien déroulée')
+    console.log('l\'Insertion des données REELLES est terminée')
   }
 });
 

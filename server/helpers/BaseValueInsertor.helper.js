@@ -37,7 +37,16 @@ class BaseValueInsertor {
     await Tache.deleteMany({})
     await Urgence.deleteMany({})
     await Vehicule.deleteMany({})
-    console.log('Base de données éffacée')
+  }
+
+  async importData(cbconfirm, cberror, deleteOldValues) {
+    const buildOk = await this.buildDatasToInsert()
+    if(buildOk !== this.BUILD_DATA_FAILED){
+      this.insertData(cbconfirm, cberror, deleteOldValues)
+    }
+    else{
+      console.log('le build des données à échoué, l\'insertion ne peux etre éfféctué')
+    }
   }
 
   /* @desc : fonction d'insertion du fichier de données json dans la base mongoDB
@@ -48,7 +57,7 @@ class BaseValueInsertor {
    * @return : void
    */
   async insertData(cbconfirm, cberror, insertTestAssocEntities) {
-    //Insert base values HOTEL & VISITES
+    //Begin : Inserer Hotels & Visites associées
     for (const [index, hotel] of this.datasToInsert.hotels.entries()) {
       //inserer Hotel
       const hotelObj = new Hotel({
@@ -66,14 +75,13 @@ class BaseValueInsertor {
         taches: hotel.taches ? hotel.taches : null
         /////
       });
-
       const HotelDB = await Hotel.insertIfNotExist(hotelObj);
       if (HotelDB) {
         //confirmation Hotel
         cbconfirm(
-          "<<Hotel " + (index + 1) + "/" + this.datasToInsert.hotels.length + " inséré>>"
+          "<< Hotel " + (index + 1) + "/" + this.datasToInsert.hotels.length + " inséré >>"
         );
-        //Inserer visites associées
+        //Begin : Inserer visites associées
         for (const [index, visite] of this.datasToInsert.visites.entries()) {
           //Insere Visites associés a l'Hotel tout juste inséré
           if (visite.hotel_id === hotel.uid_internal) {
@@ -90,19 +98,24 @@ class BaseValueInsertor {
             const VisiteDB = await Visite.insertIfNotExist(visiteObj);
             if (VisiteDB) {
               cbconfirm(
-                "<<Visite " +
+                "<< Visite " +
                   (index + 1) +
                   "/" +
                   this.datasToInsert.visites.length +
-                  " inséré>>"
+                  " inséré >>"
               );
             }
           }
         }
+        //End : Inserer visites associées
 
         //Set Hotel base value
       }
+      else{
+        cberror(HotelDB + " invalide")
+      }
     }
+    //End : Inserer Hotels & Visites associées
 
     //Begin : Inserer Users (User) ans related Entities (Assoc_user_user, Assoc_user_visite)
     const visitesDB = await Visite.find({});
@@ -125,7 +138,7 @@ class BaseValueInsertor {
           const userPlannifDB = await User.insertIfNotExist(userPlannif);
           if (userPlannifDB) {
             cbconfirm(
-              "<<User " + (index + 1) + "/" + this.datasToInsert.users.length + " inséré>>"
+              "<< User " + (index + 1) + "/" + this.datasToInsert.users.length + " inséré >>"
             );
           }
         }
@@ -151,7 +164,7 @@ class BaseValueInsertor {
 
             //confimer insertion
             cbconfirm(
-              "<<User " + (index + 1) + "/" + this.datasToInsert.users.length + " inséré>>"
+              "<< User " + (index + 1) + "/" + this.datasToInsert.users.length + " inséré >>"
             );
             //#ICI a definir : une methode qui lit le tableau visites_ids dataToInsert.users, qui fait correspondre le contenu avec les visites en BD et crée l'association assoc_user_visite
             /////////// tmp : insertion de relations de test
@@ -166,11 +179,11 @@ class BaseValueInsertor {
                 const assocDB = await Assoc_user_visite.insertIfNotExist(assoc);
                 if (assocDB) {
                   cbconfirm(
-                    "<<Association " +
+                    "<< Association " +
                       (index + 1) +
                       "/" +
                       visites_ids.length +
-                      " inséré>>"
+                      " inséré >>"
                   )
                 }
               }
@@ -193,7 +206,7 @@ class BaseValueInsertor {
           });
           const assoc_user_userDB = await Assoc_user_user.insertIfNotExist(assoc_user_user);
           if (assoc_user_userDB) {
-            cbconfirm("<<Equipe 1 créée>>")
+            cbconfirm("<< Equipe 1 créée >>")
           } else {
             cberror("erreur d\'insertion de l'equipe 1")
           }
@@ -203,12 +216,25 @@ class BaseValueInsertor {
       ///////////
     }
     //End : Inserer Users ans related Entities
-    console.log("l\'insetion est terminée")
-  }
 
-  async importData(cbconfirm, cberror, deleteOldValues) {
-    await this.buildDatasToInsert()
-    this.insertData(cbconfirm, cberror, deleteOldValues)
+    //Begin : Inserer Vehicules
+    for (const [index, vehicule] of this.datasToInsert.vehicules.entries()) {
+      const vehicule = new Vehicule({
+        immatriculation: vehicule.immatriculation,
+        type: vehicule.type,
+        adresse_parking: vehicule.adresse_parking,
+        cp: vehicule.cp,
+        ville: vehicule.ville
+      });
+      const vehiculeDB = await Vehicule.insertIfNotExist(vehicule);
+      if (vehiculeDB) {
+        cbconfirm(
+          "<< Vehicule " + (index + 1) + "/" + this.datasToInsert.vehicules.length + " inséré >>"
+        );
+      } 
+    }
+    //End : Inserer vehicules
+    console.log("l\'insetion est terminée")
   }
 
   //recreer tableau type data a partir de mapping pour appeler insertData(datas)
@@ -226,18 +252,54 @@ class BaseValueInsertor {
     /*
      * Construction de l'objet data conformément a data.sample
      */
-    this.datasToInsert.hotels = await this.importEntities('hotel', 2)
-    this.datasToInsert.users = await this.importEntities('user', 2)
-    this.datasToInsert.vehicules = await this.importEntities('vehicule', 2)
-    this.datasToInsert.visites = await this.importEntities('visite', 2)
+    //Entités : Hotel
+    const hotels = await this.importEntities('hotel', 2)
+    if(hotels !== this.IMPORT_FAILED) {
+      this.datasToInsert.hotels = hotels
+    }
+    else{
+      console.log('la construction du tableau d\'Hotel a échoué')
+      return this.BUILD_FAILED
+    }
+
+    //Entités : User
+    const users = await this.importEntities('user', 2)
+    if(users !== this.IMPORT_FAILED) {
+      this.datasToInsert.users = users
+    }
+    else{
+      console.log('la construction du tableau d\'Users a échoué')
+      return this.BUILD_FAILED
+    }
+
+    //Entités : Vehicule
+    const vehicules = await this.importEntities('vehicule', 2)
+    if(vehicules !== this.IMPORT_FAILED) {
+      this.datasToInsert.vehicules = vehicules
+    }
+    else{
+      console.log('la construction du tableau de Vehicules a échoué')
+      return this.BUILD_FAILED
+    }
+
+    //Entités : visites
+    const visites = await this.importEntities('visite', 2)
+    if(visites !== this.IMPORT_FAILED) {
+      this.datasToInsert.visites = visites
+    }
+    else{
+      console.log('la construction du tableau de Visites a échoué')
+      return this.BUILD_FAILED
+    }
 
     /*
      * UPDATE SPECIAL VALUES (aggregates) OF ENTITES
      */
     //inserer agreggats sur hotels "nb_visites_periode" & "last_time_visited" & "note"
-    this.datasToInsert['visites'].forEach(visite => {
+    this.datasToInsert.visites.forEach(visite => {
       let uid_hotel = visite.hotel_id
-      this.datasToInsert['hotels'].forEach(hotel => {
+
+      this.datasToInsert.hotels.forEach(hotel => {
         if(hotel.uid_internal == uid_hotel) {
           //nb_visites_periode
           hotel.nb_visites_periode++
@@ -262,13 +324,18 @@ class BaseValueInsertor {
     userAdmin.prenom = 'admin'
     userAdmin.pwd = 'admin'
     this.datasToInsert.users.push(userAdmin)
+
+    //si on arrive ici c'est que l'import s'est bien déroulé
+    return true
   }
 
   /* @desc : fonction pour importer une entité de base dans le tableai dataToInsert 
-   * @param entityName       :(string)  : nom de l'entité
-   * @param refDocAbsPath    :(string)  : path de fichier absolue vers le fichier de référence pour le parcours
-   * @param beginLineRefDoc  :(integer) : ligne a partir de laquelle commencer la lecture du ref doc (numéroté a partir de 1) (=2 : revient a sauter la première ligne)
-   * @return baseEntityArray :(array)   : tableau d'objet d'entité de base (Hotel, User, Visite & Vehicule) exportés depuis les fichiers sources pour insertion dans BD
+   * @param entityName       : (string)  : nom de l'entité
+   * @param refDocAbsPath    : (string)  : path de fichier absolue vers le fichier de référence pour le parcours
+   * @param beginLineRefDoc  : (integer) : ligne a partir de laquelle commencer la lecture du ref doc (numéroté a partir de 1) (=2 : revient a sauter la première ligne)
+   * @return mixed : 
+   *    baseEntityArray : (array) : tableau d'objet d'entité de base (Hotel, User, Visite & Vehicule) exportés depuis les fichiers sources pour insertion dans BD
+   *    (string) error message IMPORT_ENTITY_FAILED | BUILD_ENTITY_ARRAY_FAILED | GLOBAL_IMPORT_FAIL
    */
   async importEntities(entityName, beginLineRefDoc) {
     /////Affichage avancement
@@ -282,55 +349,86 @@ class BaseValueInsertor {
     //init tool pour lire fichiers xlsx
     const refDocAbsPath = path.resolve(this.pathSources + this.mappingFile[entityName].ref_file_name)
     const refDocFileReader = new XLSXHelper(refDocAbsPath)
-    //set file reader avec le fichier de référence
-    refDocFileReader.setFirstSheetAsCurrentSheet()    
-    //parcourir le fichier de référence
-    console.log("Construction du tableau d\'entités '" + entityName + "' en cours ...")
-    
-    /////Affichage avancement
-    prev10Percent = 0
-    /////Affichage avancement
+    if(!refDocFileReader.error) {
+      //set file reader avec le fichier de référence
+      refDocFileReader.setFirstSheetAsCurrentSheet()    
+      //parcourir le fichier de référence
+      console.log("Construction du tableau d\'entités '" + entityName + "' en cours ...")
+      
+      /////Affichage avancement
+      prev10Percent = 0
+      /////Affichage avancement
 
-    let parcoursState = await refDocFileReader.forEachLine(
-      beginLineRefDoc, 
-      null, 
-      async (line) => {
+      let parcoursState = await refDocFileReader.forEachLine(
+        beginLineRefDoc, 
+        null, 
+        async (line) => {
 
-        ///////Affichage avancement
-        let avancement = line * 100 / refDocFileReader.getNbLines()
-        let value = Math.floor(avancement/10)
-        if(value > prev10Percent && value <=10) {
-          console.log(value * 10 + "%")
-          prev10Percent = value
-        } 
-        ///////Affichage avancement
+          ///////Affichage avancement
+          let avancement = line * 100 / refDocFileReader.getNbLines()
+          let value = Math.floor(avancement/10)
+          if(value > prev10Percent && value <=10) {
+            console.log(value * 10 + "%")
+            prev10Percent = value
+          } 
+          ///////Affichage avancement
 
-        let baseEntity = await this.fillEntityFromMapping(refDocFileReader, line, entityName)
-        baseEntityArray.push(baseEntity)
+          let baseEntity = await this.fillEntityFromMapping(refDocFileReader, line, entityName)
+           //test si la propriété s'est set correctement
+          if(baseEntity === this.SET_PROP_FAILED) {
+            //return this.FILL_ENTITY_FAILED
+            return this.IMPORT_FAILED
+          }
+          if(baseEntity === this.SKIP_ENTITY) {
+            return refDocFileReader.SKIP_LINE
+          }
+          else{
+            baseEntityArray.push(baseEntity)
+          }
+        }
+      )
+      //test si le parcours s'est déroulé correctement
+      if(parcoursState === refDocFileReader.END_OF_FILE) {
+        console.log("tableau d\'entités '" + entityName + "' peuplé")
+        return baseEntityArray
       }
-    )
-    if(parcoursState === refDocFileReader.END_OF_FILE) {
-      console.log("tableau d\'entités '" + entityName + "' peuplé")
+      else{
+        console.log("erreur de construction du tableau d'entités \'" + entityName + "'")
+        //return this.BUILD_ENTITY_ARRAY_FAILED
+        return this.IMPORT_FAILED
+      }
+    } else {
+      console.log(refDocFileReader.error)
+      return this.IMPORT_FAILED
     }
-    else{
-      console.log("erreur de construction du tableau d'entités \'" + entityName + "'")
-    }
-
-    return baseEntityArray
   }
 
   /* @desc : fonction recurssive qui depuis un fichier de reference va creer peupler l'entité grace au fichier de mapping et inserer l'entité dans le tableau final pour insertion
    * @param : refDocFileReader : classe outil du module du file reader choisit (ici module xlsx)
    * @param : entityName : nom de l'entité a extraire
    * @param : ligne courante : pour le parcours du fichier de reference, ligne en cours d'analyse
+   * @return : mixed : (objet) EntityName / (string) erreur message FILL_ENTITY_FAILED
    */
   async fillEntityFromMapping(refDocFileReader, currentLine, entityName) {
     //creer et peupler hotel model
     let entity = {entityName}
     for (const [propEntity, mapObject] of Object.entries(this.mappingFile[entityName])) {
+      //seule propriété a ne pas check
       if(propEntity == 'ref_file_name') continue
-      //hotelObject.propUser = await setValueFromMapping(fileReader, currentLine, propUser)
-      entity[propEntity] = await this.setAttrFromMapping(refDocFileReader, currentLine, mapObject)
+
+      //set la valeur de l'atribut en fonction des infos de mapping
+      let propValue = await this.setAttrFromMapping(refDocFileReader, currentLine, mapObject)
+
+      //test si la propriété s'est set correctement
+      if(propValue === this.SET_PROP_FAILED) {
+        return this.FILL_ENTITY_FAILED
+      }
+      if(propValue === this.JOIN_FAILED) {
+        return this.SKIP_ENTITY
+      }
+      else{
+        entity[propEntity] = propValue
+      }
     }
     //fileReader prend l + 1
     currentLine++
@@ -339,14 +437,16 @@ class BaseValueInsertor {
     return entity
   }
 
-  /* @desc permet de lire une ligne du fichier de mapping afin de recuperer la bonne valeur a inserer pour l'entité courante du model
+  /* @desc permet de lire une ligne du fichier de mapping afin de recuperer la bonne valeur a inserer pour l'entité courante du fichier de référence
    * @param : refSheetFileReader : objet module_xlsx, helper de manipulation de l'outil de lecture du fichier
    * @param : propName : propriété de l'entité en cours de traitement
    * @param : currentLine : ligne du fichier
+   * @return : mixed : (mixed) valeur de l'attribut / (string) message d'erreur du reader
    */
   async setAttrFromMapping(refDocFileReader, currentLine, mapObject){
     let cellToRead //celle to read est la cellule qui contient l'info : soi t ds le doc joint, soit dans le doc de reference
     let propValue //propValue est la valeur lue par le fileReader a l'adresse de cellToRead
+
     //parcours du mapObject pour recuperer la valeur a assigner a la propriété courante de entityName
     for(const key in mapObject) {
       let mapInfo = mapObject[key]
@@ -366,29 +466,16 @@ class BaseValueInsertor {
           if(cellToRead) {
             //init vars
             const joinPropValue = refDocFileReader.getCellValue(cellToRead) //la valeur de jointure = la valeur de la cellule du fichier "file" (au dessus de "join") (a confition que le "fil" soit egal au fichier)
-
-            //get depuis l'exterieur, deux possibilités en fonction de la prop "file" du "join" : 
-            //- depuis la BD
-            if(mapInfo['file'] === "BD") {
-              //realiser la jointure et recuoerer la valeur
-              const joinProp = mapInfo['on'] //propriété de jointure sur l'objet BD
-              const objectFilter = {}
-              objectFilter[joinProp] = joinPropValue //creer objet filtre pour recherche dans le BD
-              const EntityDB = await ModelFactory.get(mapInfo['table']).findOne(objectFilter) //get l'entité voulue depuis la BD
-              const propNameToGet = mapInfo['get'] //pour recuperer le propriété de l'objet qui nous interresse
-              //value finale
-              propValue = EntityDB[propNameToGet]
-            }
+        
             //- depuis un fichier à la cellule correspondate
-            else{
-              //set le reader du fichier a joindre
-              const fileAbsPath = path.resolve('./datas/sources/' + mapInfo['file']) //set absolute filepath of the file
-              const iftJoinedFileReader = new XLSXHelper(fileAbsPath) //init tool pour lire fichiers xlsx
+            //set le reader du fichier a joindre
+            const fileAbsPath = path.resolve(this.pathSources + mapInfo['file']) //set absolute filepath of the file
+            const iftJoinedFileReader = new XLSXHelper(fileAbsPath) //init tool pour lire fichiers xlsx
+            //si pas d'erreur d'instanciation du reader
+            if(!iftJoinedFileReader.error) {
               iftJoinedFileReader.setFirstSheetAsCurrentSheet() //set file reader avec le fichier a joindre
-              //init vars
-              let linePropValue = iftJoinedFileReader.LINE_NOT_FOUND
               //parcourir fichier a joindre, a la recherche de la ligne contenant la propriété de jointure "on" = joinPropValue
-              linePropValue = await iftJoinedFileReader.forEachLine(
+              const linePropValue = await iftJoinedFileReader.forEachLine(
                 1, 
                 null, 
                 (line) => {
@@ -404,7 +491,24 @@ class BaseValueInsertor {
               if(linePropValue !== iftJoinedFileReader.LINE_NOT_FOUND) {
                 propValue = iftJoinedFileReader.getCellValue(mapInfo['get'] + linePropValue)
               }
+              //sinon informer que la jointure a retourné un resultat vide
+              else {
+                console.log('[skip visite] Jointure échouée, valeur < '
+                  + joinPropValue +
+                  ' > absente de < ' 
+                  + mapInfo['file'] + 
+                  ' > à la position < ' 
+                  + mapInfo['on'] + 
+                  ' > passage a la valeur suivante')
+                return this.JOIN_FAILED
+              }
             }
+            //si erreur d'instanciation du reader
+            else{
+              console.log(iftJoinedFileReader.error)
+              return this.SET_PROP_FAILED
+            }
+            
           }
           else{
             console.log('cellule non set')
@@ -430,12 +534,20 @@ class BaseValueInsertor {
 
   /* 
    * 
-   * 
    */
   parseTimeStampFromDateDDMMAAA(rawDate) {
     //convertir date du fichier en date JS correct
     return XLSXHelper.getJSDateFromExcellDate(rawDate)
   }
 }
+
+BaseValueInsertor.BUILD_FAILED = "la construction du tableau de données a inserer a échoué"
+BaseValueInsertor.SET_PROP_FAILED = "la propriété de l\'entité n\'a pas pu se set"
+BaseValueInsertor.JOIN_FAILED = "la jointure a échouée"
+BaseValueInsertor.FILL_ENTITY_FAILED = "l'entité n'a pas pu se set"
+BaseValueInsertor.IMPORT_ENTITY_FAILED = "l'entité ne peux etre importée"
+BaseValueInsertor.SKIP_ENTITY = "passer a l'entité suivante"
+BaseValueInsertor.BUILD_ENTITY_ARRAY_FAILED = "erreur de construction du tableau d'entités"
+BaseValueInsertor.IMPORT_FAILED = "l'importation des entités a échoué"
 
 module.exports = BaseValueInsertor;
