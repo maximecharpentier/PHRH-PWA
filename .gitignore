@@ -1,6 +1,5 @@
 .env
 data
-sources/*
 
 config/terraform/terraform.tfstate
 config/terraform/terraform.tfstate.backup
