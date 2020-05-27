@@ -254,7 +254,7 @@ En cours d'étude
     - @return : (string) : error/confirm message
 
 ## Insertions données réelles
-  1) Telecharger TOUT les fichiers excell du sossier **BACK/Données** de **PHRH** (voir drive, fichiers 
+  1) Telecharger TOUT les fichiers excell du dossier **Données** de **PHRH** (voir drive, fichiers 
     "partagés avec moi" sur le drive de votre compte HETIC)
   2) Placer ces fichiers dans ./server/data/**sources**
   3) Mettez a jour votre fichier **.env** avec les nouveau parametres (voir **.env.sample**)
@@ -268,5 +268,5 @@ En cours d'étude
     - de supprimer vos données eventuelement par erreur en mettant **RESET_DB** à "false"
     - de relancer la procedure d'import pour rien en mettant **INSERT_TEST_DB** et/ou **INSERT_REAL_DB** à "false"
   7) Si vous voulez afficher votre base de données locale dans un GUI :
-    - telecharger : MongoDB Compass Comunity : https://www.mongodb.com/download-center/compass (Version Community Edition Stabe)
+    - telecharger : MongoDB Compass Comunity : https://www.mongodb.com/download-center/compass (Version Community Edition Stable)
     - à l'ouverture connectez vous grace a l'url : mongodb://<SERVER_HOST>:27017/PHRH ou SERVER_HOST est defini dans .env (chez moi c'est "localhost")

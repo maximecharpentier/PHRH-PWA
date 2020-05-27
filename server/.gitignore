@@ -107,5 +107,4 @@ dist
 .vscode-test
 
 # other
-/sources*
 *.xlsx
