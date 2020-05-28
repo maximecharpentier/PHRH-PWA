@@ -57,7 +57,17 @@ const hotelSchema = new Schema({
 hotelSchema.statics.insertIfNotExist = async function (hotel) {
     const docs = await this.find({nom : hotel.nom}).exec()
     if (!docs.length){
-        return await hotel.save()
+        try {
+            const hotelDB = await hotel.save()
+            return hotelDB
+        } catch(err) {
+            console.log(
+                "Hotel invalide : " + '\n' + 
+                hotel + '\n' +
+                "Erreur : " + '\n' +
+                err
+            )
+        }
     }
     else{
         //throw new Error('Hotel <<'+ hotel.nom +'>> existe deja');

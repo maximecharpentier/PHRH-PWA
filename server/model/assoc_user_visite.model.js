@@ -28,7 +28,17 @@ const assoc_user_visiteSchema = new Schema({
 assoc_user_visiteSchema.statics.insertIfNotExist = async function(assoc) {
     const docs = await this.find({user_id : assoc.user_id, visite_id: assoc.visite_id}).exec()
     if (!docs.length){
-        return await assoc.save()
+        try {
+            const assocDB = await assoc.save()
+            return assocDB
+        } catch(err) {
+            console.log(
+                "Assoc User Visite invalide : " + '\n' + 
+                assoc + '\n' +
+                "Erreur : " + '\n' +
+                err
+            ) //#REPRENDRE A PARTIR DE CE CODE ET LE RECOPIER SQUR TOUT LES MODELS
+        }
     }
     else{
         //throw new Error('Association <<'+ assoc.user_id +'>> existe deja', null);

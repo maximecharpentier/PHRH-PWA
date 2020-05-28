@@ -47,7 +47,17 @@ const visiteSchema = new Schema({
 visiteSchema.statics.insertIfNotExist = async function(visite) {
     const docs = await this.find({date_visite: visite.date_visite, hotel_id : visite.hotel_id}).exec()
     if (!docs.length){
-        return await visite.save()
+        try {
+            const visiteDB = await visite.save()
+            return visiteDB
+        } catch(err) {
+            console.log(
+                "Visite invalide : " + '\n' + 
+                visite + '\n' +
+                "Erreur : " + '\n' +
+                err
+            )
+        }
     }
     else{
         //throw new Error('Visite <<X>> existe deja', null);

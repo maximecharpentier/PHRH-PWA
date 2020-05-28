@@ -1,12 +1,22 @@
 const XLSX = require('xlsx')
+const fs = require('fs');
 
 class module_xlsx {
 
-  constructor(path) {
-    let tmpArr = path.split('\\')
+  constructor(pathFileToRead) {
+    //get file name
+    let tmpArr = pathFileToRead.split('\\')
     this.fileName = tmpArr[tmpArr.length - 1]
-    this.fileReader = XLSX.readFile(path)
-    this.currentSheet = null
+
+    //charger reader
+    this.error = null
+    try {
+      this.fileReader = XLSX.readFile(pathFileToRead)
+    } catch (err) {
+      this.error = 'Erreur de lecture du fichier : ' + pathFileToRead
+      return
+    }
+    
   }
 
   getNbLines() {
@@ -88,6 +98,7 @@ class module_xlsx {
       let out = null //si la valeur out est set par la fonction de callback set alors c'est le signe que le parcours doit s'arrèter
       for(let line = beginLine; line <= length; line ++){
         out = await f(line)
+        if(out === this.SKIP_LINE) continue
         if(out) break //pour stoper le parcours quand f() le souhaite
       }
       //si la fonction de call back retourne un resultat alors retourner celui ci
@@ -111,8 +122,10 @@ class module_xlsx {
 }
 
 module_xlsx.LINE_NOT_FOUND = 'null'
+module_xlsx.ERR_CHARGEMENT_READER = 1
 module_xlsx.BEGIN_COL_LETTER = 'A'
 module_xlsx.END_OF_FILE = 'EOF'
 module_xlsx.CALL_BACK_MANQUANT = 'La fonction de call back est manquante'
+module_xlsx.SKIP_LINE = 'passer a la ligne suivante'
 
 module.exports = module_xlsx;
