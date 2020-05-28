@@ -67,7 +67,17 @@ const userSchema = new Schema({
 userSchema.statics.insertIfNotExist = async function(user) {
     const docs = await this.find({nom : user.nom}).exec()
     if (!docs.length){
-        return await user.save()
+        try {
+            const userDB = await user.save()
+            return userDB
+        } catch(err) {
+            console.log(
+                "User invalide : " + '\n' + 
+                user + '\n' +
+                "Erreur : " + '\n' +
+                err
+            )
+        }
     }
     else{
         //throw new Error('Utilisateur <<'+ user.nom +'>> existe deja', null);

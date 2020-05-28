@@ -219,14 +219,14 @@ class BaseValueInsertor {
 
     //Begin : Inserer Vehicules
     for (const [index, vehicule] of this.datasToInsert.vehicules.entries()) {
-      const vehicule = new Vehicule({
+      const vehiculeObj = new Vehicule({
         immatriculation: vehicule.immatriculation,
         type: vehicule.type,
         adresse_parking: vehicule.adresse_parking,
         cp: vehicule.cp,
         ville: vehicule.ville
       });
-      const vehiculeDB = await Vehicule.insertIfNotExist(vehicule);
+      const vehiculeDB = await Vehicule.insertIfNotExist(vehiculeObj);
       if (vehiculeDB) {
         cbconfirm(
           "<< Vehicule " + (index + 1) + "/" + this.datasToInsert.vehicules.length + " inséré >>"
@@ -234,7 +234,6 @@ class BaseValueInsertor {
       } 
     }
     //End : Inserer vehicules
-    console.log("l\'insetion est terminée")
   }
 
   //recreer tableau type data a partir de mapping pour appeler insertData(datas)
@@ -493,13 +492,13 @@ class BaseValueInsertor {
               }
               //sinon informer que la jointure a retourné un resultat vide
               else {
-                console.log('[skip visite] Jointure échouée, valeur < '
+                console.log('[skip visite] cause : jointure échouée, valeur < '
                   + joinPropValue +
                   ' > absente de < ' 
                   + mapInfo['file'] + 
                   ' > à la position < ' 
                   + mapInfo['on'] + 
-                  ' > passage a la valeur suivante')
+                  ' >')
                 return this.JOIN_FAILED
               }
             }

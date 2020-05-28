@@ -57,17 +57,16 @@ const hotelSchema = new Schema({
 hotelSchema.statics.insertIfNotExist = async function (hotel) {
     const docs = await this.find({nom : hotel.nom}).exec()
     if (!docs.length){
-        const hotelDB
         try {
             const hotelDB = await hotel.save()
             return hotelDB
         } catch(err) {
             console.log(
-                "Objet invalide : " + '\n' + 
+                "Hotel invalide : " + '\n' + 
                 hotel + '\n' +
                 "Erreur : " + '\n' +
                 err
-            ) //#REPRENDRE A PARTIR DE CE CODE ET LE RECOPIER SQUR TOUT LES MODELS
+            )
         }
     }
     else{

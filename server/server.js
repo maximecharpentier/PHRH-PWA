@@ -55,7 +55,7 @@ mongoose.connection.once("open", async () => {
    * INSERER DONNEES DE TEST
    */
   if(process.env.INSERT_TEST_DB === 'true') {
-    console.log('Insertion des données DE TEST')
+    console.log('Insertion des données DE TEST en cours ...')
     let baseValueInsertor = new BaseValueInsertor(
       mappingFile = null, 
       testDB = require('./datas/test/data.json')
@@ -72,7 +72,7 @@ mongoose.connection.once("open", async () => {
    * INSERER DONNEES REELLES
    */
   if(process.env.INSERT_REAL_DB === 'true') {
-    console.log('Insertion des données REELLES')
+    console.log('Insertion des données REELLES en cours ...')
     let baseValueInsertor = new BaseValueInsertor(
       mappingFile = require('./datas/sources/mappingfile.json'), 
       null
