@@ -107,5 +107,8 @@ app.use("/gestion/visites", plannnifierVisitesRouter);
 
 const suggestionsVisitesRouter = require("./routes/feature.plannifier_visite/plannifierVisite.routes.js");
 app.use("/gestion/visites", suggestionsVisitesRouter);
+
+const authRouter =  require("./routes/feature.authentification/auth.routes.js");
+app.use("/auth", authRouter);
 /*const featureNoterHotelRouter = require('./routes/feature\.noterhotel/noterHotel.routes.js')
 app.use('/noter', featureNoterHotelRouter)*/
