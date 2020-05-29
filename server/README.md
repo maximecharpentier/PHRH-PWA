@@ -254,7 +254,7 @@ En cours d'étude
     - @return : (string) : error/confirm message
 
 **feature Autenthification**
-  -**IDs Plannificateur/Superviseur/admin : {nom: admin, pwd: admin}**
+  - **IDs Plannificateur/Superviseur/admin : {nom: admin, pwd: admin}**
   - TMP : **_/auth/login_** : verifier existence user avec couple (nom, pwd)
     - @method : POST
     - @param : (Object JSON) : {nom: (string), pwd: (string) }
