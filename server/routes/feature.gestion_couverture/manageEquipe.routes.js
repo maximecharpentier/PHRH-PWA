@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const ObjectId = require('mongoose').Types.ObjectId;
+//old const ObjectId = require('mongoose').Types.ObjectId;
 const User = require('../../model/user.model');
 const Equipe = require('../../model/assoc_user_user.model');
 
@@ -58,11 +58,10 @@ router.route('/users').get(async (req, res) => {
             const users = []
             for(userDB of usersDB) {
                 //recherche des joueurs appartenant a une equipe
-                var userDB_id = new ObjectId(userDB._id)
                 const assocDB = await Equipe.find({ 
                     $or: [
-                        {'user_a_id': userDB_id}, 
-                        {'user_b_id': userDB_id}
+                        {'user_a_id': userDB._id}, 
+                        {'user_b_id': userDB._id}
                     ] 
                 })
                 //si le joueur n'appartient a aucune equipe
@@ -102,7 +101,9 @@ router.route('/creer/:idusera/:iduserb').post((req, res) => {
             //on créé l'équipe
             const equipe = new Equipe({
                 user_a_id: req.params.idusera,
-                user_b_id: req.params.iduserb
+                user_b_id: req.params.iduserb,
+                plage_h: req.body.plage_h,
+                secteur_binome: req.body.secteur_binome
             })
             equipe.save()
                 .then(equipeDB => res.status(200).json('Equipe créée'))
