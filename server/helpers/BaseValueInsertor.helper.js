@@ -234,6 +234,7 @@ class BaseValueInsertor {
       } 
     }
     //End : Inserer vehicules
+    console.log('Insertion des données terminées')
   }
 
   //recreer tableau type data a partir de mapping pour appeler insertData(datas)

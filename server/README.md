@@ -253,6 +253,15 @@ En cours d'étude
     - @param : (string) : id Urgence
     - @return : (string) : error/confirm message
 
+**feature Autenthification**
+  - **IDs Plannificateur/Superviseur/admin : {nom: admin, pwd: admin}**
+  - TMP : **_/auth/login_** : verifier existence user avec couple (nom, pwd)
+    - @method : POST
+    - @param : (Object JSON) : {nom: (string), pwd: (string) }
+    - @return : mixed 
+      - Object JSON : object model User
+      - (string) : error message
+
 ## Insertions données réelles
   1) Telecharger TOUT les fichiers excell du dossier **Données** de **PHRH** (voir drive, fichiers 
     "partagés avec moi" sur le drive de votre compte HETIC)
