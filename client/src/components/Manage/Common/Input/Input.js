@@ -13,7 +13,7 @@ const Input = props => {
                         {props.options.map((option, id) =>
                             props.users ? 
                           <option disabled={props.firstInputValue ===  option._id ? true : null} key={id} value={option._id}>{`${option.nom} / ${option.secteur}`}</option> :
-                           props.secteur || props.timeSlots ?
+                           props.secteur || props.timeSlots || props.fonction ?
                           <option key={id} value={option}>{option}</option> :
                           props.teamUrgency ? 
                             <option key={id} value={option._id}>{option.user_a_id}/ {option.user_b_id}</option>

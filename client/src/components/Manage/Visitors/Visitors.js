@@ -11,7 +11,7 @@ import {API} from '../../../api/api';
 class Visitors extends Component {
     state = {
         visitors: [],
-        newVisitor: { fonction: "Intervenant terrain", pwd: "null", jour_bureau: null, vehicule_id: null },
+        newVisitor: { pwd: "null" },
         userInfos: {},
         editing: false,
         showForm: false,
@@ -48,8 +48,8 @@ class Visitors extends Component {
 
     addVisitor = (e) => {
         e.preventDefault();
-        const { nom, prenom, secteur, infos_equipe } = e.target;
-        if (nom.value !== "" && prenom.value !== "" && secteur.value !== "" && infos_equipe.value !== "") {
+        const { nom, prenom, secteur, fonction, jour_bureau } = e.target;
+        if (nom.value !== "" && prenom.value !== "" && secteur.value !== "" && fonction.value !== "") {
             API.post('users/add/', this.state.newVisitor).then((response) => {
                 this.setState({
                     newVisitor: {
@@ -189,6 +189,8 @@ class Visitors extends Component {
             return <Card key={user._id} user={user} editUser={() => this.getUserInfo(user, true)} showMore={() => this.getUserInfo(user)} deleteUser={() => this.getIdForDelete(user._id)} />
         })
 
+        const fonctions = ['Médiateur', 'Intervenant terrain', 'Mediateur SAS', "Superviseur"]
+
         return (
             <div className="visitor-container">
 
@@ -208,11 +210,12 @@ class Visitors extends Component {
                 {showForm &&
                     <Modal title={editing ? "Modifier un visiteur" : "Ajouter un visiteur"} handleClick={this.toggleForm} successMessage={successMessage}>
                         <Form btnSubmit="Valider" handleSubmit={editing ? (e) => this.updateUser(e, userInfos._id) : this.addVisitor} handleClick={this.toggleForm}>
-                            <Input name="nom" type="text" value={editing ? userInfos.nom : newVisitor.nom || ''} handleChange={(e) => this.handleChange(e)} />
-                            <Input name="prenom" type="text" value={editing ? userInfos.prenom : newVisitor.prenom || ''} handleChange={(e) => this.handleChange(e)} />
-                            <Input name="secteur" type="text" value={editing ? userInfos.secteur : newVisitor.secteur || ''} handleChange={(e) => this.handleChange(e)} />
-                            <Input name="infos_equipe" type="text" value={editing ? userInfos.infos_equipe : newVisitor.infos_equipe || ''} handleChange={(e) => this.handleChange(e)} />
-                            <Input name="jour_bureau" type="select" value={editing ? userInfos.jour_bureau : newVisitor.jour_bureau || ''} options={currentWeek} handleChange={(e) => this.handleChange(e)} />
+                            <Input label="Nom" name="nom" type="text" value={editing ? userInfos.nom : newVisitor.nom || ''} handleChange={(e) => this.handleChange(e)} />
+                            <Input label="Prenom" name="prenom" type="text" value={editing ? userInfos.prenom : newVisitor.prenom || ''} handleChange={(e) => this.handleChange(e)} />
+                            <Input label="Secteur" name="secteur" type="text" value={editing ? userInfos.secteur : newVisitor.secteur || ''} handleChange={(e) => this.handleChange(e)} />
+                            {/* <Input label="Jour Bureau" name="jour_bureau" type="select" value={editing ? userInfos.jour_bureau : newVisitor.jour_bureau || ''} options={currentWeek} handleChange={(e) => this.handleChange(e)} /> */}
+                            <Input label="Fonction de la personne" name="fonction" type="select" fonction value={editing ? userInfos.fonction : newVisitor.fonction || ''} options={fonctions} handleChange={(e) => this.handleChange(e)} />
+
                         </Form>
                     </Modal>
                 }

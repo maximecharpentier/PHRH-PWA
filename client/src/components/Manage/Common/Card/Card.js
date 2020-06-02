@@ -9,9 +9,9 @@ const Card = ({ user, editUser, deleteUser, hotel, editHotel, deleteHotel, team,
     const [secondUser, setSecondUser] = useState({});
     const menuRef = useRef();
 
-    const handleClickOutside = e => {
-        !menuRef.current.contains(e.target) && setShowMenu(false);
-    };
+    // const handleClickOutside = e => {
+    //     !menuRef.current.contains(e.target) && setShowMenu(false);
+    // };
 
     const getDay = day => {
         switch (day) {
@@ -35,9 +35,9 @@ const Card = ({ user, editUser, deleteUser, hotel, editHotel, deleteHotel, team,
             getUser(team.user_a_id, setFirstUser)
             getUser(team.user_b_id, setSecondUser)
         }
-        document.body.addEventListener('mousedown', handleClickOutside);
-        return () => document.body.removeEventListener('mousedown', handleClickOutside);
-    }, [secondUser, firstUser, team]);
+        // document.body.addEventListener('mousedown', handleClickOutside);
+        // return () => document.body.removeEventListener('mousedown', handleClickOutside);
+    }, [team]);
 
 
     return (

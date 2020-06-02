@@ -5,20 +5,26 @@ import Input from '../Common/Input/Input';
 import Form from '../Common/Form/Form';
 import Modal from '../Common/Modal/Modal';
 import Nav from '../Common/Nav/Nav';
+import DatePicker, { registerLocale, setDefaultLocale } from "react-datepicker";
+// import "react-datepicker/dist/react-datepicker.css";
+// import fr from 'date-fns/locale/fr';
+// registerLocale("fr", fr)
 
-import {API} from '../../../api/api';
+import { API } from '../../../api/api';
 
 
 class Hotels extends Component {
     state = {
         hotels: [],
-        newHotel: {},
+        newHotel: {last_time_visited: new Date()},
         hotelInfos: {},
         editing: false,
         showForm: false,
         showDeleteConfirm: false,
         successMessage: "",
     }
+
+
 
     _refreshHotels = () => {
         API.get('hotels/').then((response) => {
@@ -39,7 +45,7 @@ class Hotels extends Component {
     addHotel = (e) => {
         e.preventDefault();
         const { nom, adresse, cp, ville, nb_chambres_utilise, nb_visites_periode, last_time_visited } = e.target;
-        if (nom.value !== "" && adresse.value !== "" && cp.value !== "" && ville.value !== "" && nb_chambres_utilise.value !== "" && nb_visites_periode.value !== "" && last_time_visited.value !== "") {
+        if (nom.value !== "" && adresse.value !== "" && cp.value !== "" && ville.value !== "" && nb_chambres_utilise.value !== "" && last_time_visited.value !== "") {
             API.post('hotels/add/', this.state.newHotel).then((response) => {
                 console.log(response.data)
                 this.setState({
@@ -61,17 +67,17 @@ class Hotels extends Component {
     }
 
     getHotelInfo = (user, editHotel) => {
-        editHotel ? 
-        this.setState({
-            hotelInfos: user,
-            editing: true,
-            showForm: !this.state.showForm,
-        })
-        :
-        this.setState({
-            hotelInfos: user,
-            showMore: !this.state.showMore,
-        })
+        editHotel ?
+            this.setState({
+                hotelInfos: user,
+                editing: true,
+                showForm: !this.state.showForm,
+            })
+            :
+            this.setState({
+                hotelInfos: user,
+                showMore: !this.state.showMore,
+            })
     }
 
     updateHotel = (e, id) => {
@@ -148,6 +154,22 @@ class Hotels extends Component {
 
     }
 
+    handleChangeDate = (e) => {
+
+        this.state.editing ? this.setState(prevState => ({
+            hotelInfos: {
+                ...prevState.hotelInfos,
+                last_time_visited: e
+            }
+        })) : this.setState(prevState => ({
+            newHotel: {
+                ...prevState.newHotel,
+                last_time_visited: e
+            }
+        }))
+
+    }
+
     render() {
         const { showForm, hotels, newHotel, editing, hotelInfos, showDeleteConfirm, successMessage } = this.state;
 
@@ -174,13 +196,13 @@ class Hotels extends Component {
                 {showForm &&
                     <Modal title={editing ? "Modifier un hotel" : "Ajouter un hotel"} handleClick={this.toggleForm}>
                         <Form btnSubmit="Valider" handleSubmit={editing ? (e) => this.updateHotel(e, hotelInfos._id) : this.addHotel} handleClick={this.toggleForm}>
-                            <Input name="nom" type="text" value={editing ? hotelInfos.nom : newHotel.nom || ''} handleChange={(e) => this.handleChange(e)} />
-                            <Input name="adresse" type="text" value={editing ? hotelInfos.adresse : newHotel.adresse || ''} handleChange={(e) => this.handleChange(e)} />
-                            <Input name="cp" type="text" value={editing ? hotelInfos.cp : newHotel.cp || ''} handleChange={(e) => this.handleChange(e)} />
-                            <Input name="ville" type="text" value={editing ? hotelInfos.ville : newHotel.ville || ''} handleChange={(e) => this.handleChange(e)} />
-                            <Input name="nb_chambres_utilise" type="text" value={editing ? hotelInfos.nb_chambres_utilise : newHotel.nb_chambres_utilise || ''} handleChange={(e) => this.handleChange(e)} />
-                            <Input name="nb_visites_periode" type="text" value={editing ? hotelInfos.nb_visites_periode : newHotel.nb_visites_periode || ''} handleChange={(e) => this.handleChange(e)} />
-                            <Input name="last_time_visited" type="text" value={editing ? hotelInfos.last_time_visited : newHotel.last_time_visited || ''} handleChange={(e) => this.handleChange(e)} />
+                            <Input label="Nom" name="nom" type="text" value={editing ? hotelInfos.nom : newHotel.nom || ''} handleChange={(e) => this.handleChange(e)} />
+                            <Input label="Adresse" name="adresse" type="text" value={editing ? hotelInfos.adresse : newHotel.adresse || ''} handleChange={(e) => this.handleChange(e)} />
+                            <Input label="Code postal" name="cp" type="text" value={editing ? hotelInfos.cp : newHotel.cp || ''} handleChange={(e) => this.handleChange(e)} />
+                            <Input label="Ville" name="ville" type="text" value={editing ? hotelInfos.ville : newHotel.ville || ''} handleChange={(e) => this.handleChange(e)} />
+                            <Input label="Nombre de chambres" name="nb_chambres_utilise" type="text" value={editing ? hotelInfos.nb_chambres_utilise : newHotel.nb_chambres_utilise || ''} handleChange={(e) => this.handleChange(e)} />
+                            {/* <Input label="Nom" name="last_time_visited" type="text" value={editing ? hotelInfos.last_time_visited : newHotel.last_time_visited || ''} handleChange={(e) => this.handleChange(e)} /> */}
+                            {/* <DatePicker dateFormat="dd/mm/YYYY" locale="fr" name="last_time_visited"  selected={editing ? hotelInfos.last_time_visited : newHotel.last_time_visited || ''} onChange={this.handleChangeDate} /> */}
                         </Form>
                     </Modal>
                 }
@@ -196,5 +218,5 @@ class Hotels extends Component {
         );
     }
 }
- 
+
 export default Hotels;
