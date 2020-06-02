@@ -6,7 +6,7 @@ import Form from '../Common/Form/Form';
 import Modal from '../Common/Modal/Modal';
 import Nav from '../Common/Nav/Nav';
 
-import API from '../../../api/api';
+import {API} from '../../../api/api';
 
 class Teams extends Component {
     state = {
@@ -15,9 +15,6 @@ class Teams extends Component {
         allSector: ["75", "93", "92/94", "78/95", "77/91"],
         timeSlots: ['Matin', 'Journée', 'Soir'],
         newTeam: {},
-        hehe: {plage_h: "Journée", secteur_binome: "75"},
-        teamInfos: {},
-        editing: false,
         showForm: false,
         showDeleteConfirm: false,
         errorEmptyFieldsMessage: "",
@@ -54,16 +51,17 @@ class Teams extends Component {
         
         const { user_a_id, user_b_id, secteur_binome, plage_h } = e.target;
         if (user_a_id.value !== "" && user_b_id.value !== "" && secteur_binome.value !== "" && plage_h.value !== "") {
-            // const sliced = Object.keys(this.state.newTeam).slice(2, 4).reduce((result, key) => {
-            //     result[key] = this.state.newTeam[key];
-            //     return result;
-            // }, {});
-            // console.log(sliced)
-            API.post('/creer/5ebc648504476abde48e40b7/5ebc648504476abde48e40e3/', {plage_h: "Matin", secteur_binome: "91"}).then((response) => {
+
+            const sliced = Object.keys(this.state.newTeam).slice(2, 4).reduce((result, key) => {
+                result[key] = this.state.newTeam[key];
+                return result;
+            }, {});
+
+            API.post('/gestion/equipes/creer/' + this.state.newTeam.user_a_id + '/' + this.state.newTeam.user_b_id, sliced).then((response) => {
                 console.log(response.data)
                 this.setState({
                     newTeam: {
-                        user_a_id:"",user_b_id:"", plage_h:null, secteur_binome:""
+                        user_a_id:null,user_b_id:null, plage_h:null, secteur_binome:null
                     }
                 })
                 this._refreshTeams()
@@ -79,58 +77,31 @@ class Teams extends Component {
         }
     }
 
-    getTeamInfo = (team, editTeam) => {
-        editTeam ?
-            this.setState({
-                teamInfos: team,
-                editing: true,
-                showForm: !this.state.showForm,
-            })
-            :
-            this.setState({
-                teamInfos: team,
-                showMore: !this.state.showMore,
-            })
+    getIdForDelete = (id) => {
+        this.setState({ idTeamClicked: id })
+        this.toggleDeleteConfirmation()
     }
 
-    // updateteam = (e, id) => {
-    //     e.preventDefault();
-    //     API.post('teams/edit/' + id, this.state.teamInfos).then((response) => {
-    //         console.log(response.data)
-    //         this._refreshTeams()
-    //         this.toggleForm();
-    //         this.showSuccessMessage("L'utilisateur est modifier")
-    //     }).catch(error => {
-    //         console.log(error.response)
-    //     });
-    // }
+    toggleDeleteConfirmation = () => {
+        this.setState({
+            showDeleteConfirm: !this.state.showDeleteConfirm,
+        })
+    }
 
-    // getIdForDelete = (id) => {
-    //     this.setState({ idVisitorClicked: id })
-    //     this.toggleDeleteConfirmation()
-    // }
-
-    // toggleDeleteConfirmation = () => {
-    //     this.setState({
-    //         showDeleteConfirm: !this.state.showDeleteConfirm,
-    //     })
-    // }
-
-    // deleteTeam = (e) => {
-    //     e.preventDefault()
-    //     API.delete('teams/delete/' + this.state.idVisitorClicked).then((response) => {
-    //         console.log(response.data)
-    //         this.toggleDeleteConfirmation()
-    //         this._refreshTeams()
-    //         this.showSuccessMessage("L'utilisateur est supprimer")
-    //     })
-    // }
+    deleteTeam = (e) => {
+        e.preventDefault()
+        API.delete('/gestion/equipes/delete/' + this.state.idTeamClicked).then((response) => {
+            console.log(response.data)
+            this.toggleDeleteConfirmation()
+            this._refreshTeams()
+            this.showSuccessMessage("L'equipe est supprimer")
+        })
+    }
 
     toggleForm = () => {
         this.setState({
             showForm: !this.state.showForm
         })
-        this.state.editing && this.setState({ editing: false })
     }
 
     toggleShowMore = () => {
@@ -151,8 +122,6 @@ class Teams extends Component {
     }
 
     handleChange = (e) => {
-        
-
         const { name, value } = e.target;
 
         const move = (array, oldIndex, newIndex) => {
@@ -170,13 +139,8 @@ class Teams extends Component {
             })
             
         } 
-
-        this.state.editing ? this.setState(prevState => ({
-            teamInfos: {
-                ...prevState.teamInfos,
-                [name]: value
-            }
-        })) : this.setState(prevState => ({
+        
+        this.setState(prevState => ({
             newTeam: {
                 ...prevState.newTeam,
                 [name]: value
@@ -186,10 +150,10 @@ class Teams extends Component {
     }
 
     render() {
-        const { showForm, teams, newTeam, editing, teamInfos, showDeleteConfirm, successMessage, usersWithoutTeam, allSector, timeSlots } = this.state;
+        const { showForm, teams, newTeam, showDeleteConfirm, successMessage, usersWithoutTeam, allSector, timeSlots } = this.state;
 
         let allTeams = teams.map((team) => {
-            return <Card key={team._id} team={team} editTeam={() => this.getTeamInfo(team, true)} showMore={() => this.getTeamInfo(team)} deleteTeam={() => this.getIdForDelete(team._id)} />
+            return <Card key={team._id} team={team} deleteTeam={() => this.getIdForDelete(team._id)} />
         })
 
         return (
@@ -197,35 +161,34 @@ class Teams extends Component {
 
                 <Nav items={teams} addForm={this.toggleForm} name="binôme" />
 
-                {/* {successMessage !== "" &&
+                {successMessage !== "" &&
                     <>
                         <div className="overlay overlay-light"></div>
                         <div className="success-message">{successMessage}</div>
                     </>
-                } */}
+                }
 
                 <section className="card-container">
-                    {allTeams}
+                    {allTeams.length ? allTeams : <div>Il n'y a aucune equipes</div>}
                 </section>
 
                 {showForm &&
-                    <Modal title={editing ? "Modifier une equipe" : "Ajouter une equipe"} handleClick={this.toggleForm} successMessage={successMessage}>
-                        <Form btnSubmit="Valider" handleSubmit={editing ? (e) => this.updateTeam(e, teamInfos._id) : this.addTeam} handleClick={this.toggleForm}>
-                            <Input label="Premier membre" name="user_a_id" type="select" users value={editing ? teamInfos.user_a_id : newTeam.user_a_id || ''} options={usersWithoutTeam} handleChange={(e) => this.handleChange(e)} />
-                            <Input label="Deuxième membre" name="user_b_id" type="select" users value={editing ? teamInfos.user_b_id : newTeam.user_b_id || ''} firstInputValue={editing ? teamInfos.user_a_id : newTeam.user_a_id || ''} options={usersWithoutTeam} handleChange={(e) => this.handleChange(e)} />
-                            <Input label="Plage horaire du binôme" name="plage_h" type="select" value={editing ? teamInfos.plage_h : newTeam.plage_h || ''} timeSlots options={timeSlots} handleChange={(e) => this.handleChange(e)} />
-                            <Input label="Secteur du binôme" name="secteur_binome" type="select" value={editing ? teamInfos.secteur_binome : newTeam.secteur_binome || ''} secteur options={allSector} handleChange={(e) => this.handleChange(e)} />
-                            
+                    <Modal title={"Ajouter une equipe"} handleClick={this.toggleForm} successMessage={successMessage}>
+                        <Form btnSubmit="Valider" handleSubmit={this.addTeam} handleClick={this.toggleForm}>
+                            <Input label="Premier membre" title="un visiteur" name="user_a_id" type="select" users value={newTeam.user_a_id || ''} options={usersWithoutTeam} handleChange={(e) => this.handleChange(e)} />
+                            <Input label="Deuxième membre" title="un visiteur" name="user_b_id" type="select" users value={newTeam.user_b_id || ''} firstInputValue={newTeam.user_a_id || ''} options={usersWithoutTeam} handleChange={(e) => this.handleChange(e)} />
+                            <Input label="Plage horaire du binôme" title="une plage horaire" name="plage_h" type="select" value={newTeam.plage_h || ''} timeSlots options={timeSlots} handleChange={(e) => this.handleChange(e)} />
+                            <Input label="Secteur du binôme" title="une secteur pour le binome" name="secteur_binome" type="select" value={newTeam.secteur_binome || ''} secteur options={allSector} handleChange={(e) => this.handleChange(e)} />
                         </Form>
                     </Modal>
                 }
-                {/* {showDeleteConfirm &&
+                {showDeleteConfirm &&
                     <Modal handleClick={this.toggleDeleteConfirmation}>
                         <Form btnSubmit="Supprimer" handleSubmit={(e) => this.deleteTeam(e)} handleClick={this.toggleDeleteConfirmation}>
                             <p>Êtes-vous sûre de vouloir supprimer ?</p>
                         </Form>
                     </Modal>
-                } */}
+                }
             </div>
         );
     }

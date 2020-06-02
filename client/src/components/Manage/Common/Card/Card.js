@@ -1,9 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ItemMenu from '../../../../assets/item-menu';
 import './Card.scss'
+import {getUser} from '../../../../api/api'
 
-const Card = ({ user, editUser, deleteUser, hotel, editHotel, deleteHotel, team, editTeam, deleteTeam, showMore }) => {
+const Card = ({ user, editUser, deleteUser, hotel, editHotel, deleteHotel, team, deleteTeam, showMore, emergency, editEmergency, deleteEmergency }) => {
     const [showMenu, setShowMenu] = useState(false);
+    const [firstUser, setFirstUser] = useState({});
+    const [secondUser, setSecondUser] = useState({});
     const menuRef = useRef();
 
     const handleClickOutside = e => {
@@ -28,9 +31,14 @@ const Card = ({ user, editUser, deleteUser, hotel, editHotel, deleteHotel, team,
     };
 
     useEffect(() => {
+        if(team) {
+            getUser(team.user_a_id, setFirstUser)
+            getUser(team.user_b_id, setSecondUser)
+        }
         document.body.addEventListener('mousedown', handleClickOutside);
         return () => document.body.removeEventListener('mousedown', handleClickOutside);
-    });
+    }, [secondUser, firstUser, team]);
+
 
     return (
         hotel ?
@@ -55,20 +63,20 @@ const Card = ({ user, editUser, deleteUser, hotel, editHotel, deleteHotel, team,
             : team ?
 
             <div className="card">
-                <p className="text-overflow">{team.user_a_id}</p> <span onClick={() => setShowMenu(!showMenu)}><ItemMenu /></span>
-                <div ref={menuRef} className={showMenu ? "card-menu show" : "card-menu"}> <p onClick={editTeam}>Modifier</p> <p onClick={deleteTeam}>Supprimer</p></div>
-                <p>{team.user_b_id}</p>
+                <p className="text-overflow">{firstUser.prenom} {firstUser.nom}</p> <span onClick={() => setShowMenu(!showMenu)}><ItemMenu /></span>
+                <div ref={menuRef} className={showMenu ? "card-menu show" : "card-menu"}> <p onClick={deleteTeam}>Supprimer</p></div>
+                <p>{secondUser.prenom} {secondUser.nom}</p>
                 <div className="card-line" />
-                {/* <div className="flex-container"><p className="text-overflow">{user.fonction}</p> <p>{user.jour_bureau}</p></div> */}
+                <div className="flex-container"><p className="text-overflow">{team.plage_h}</p> <p>{team.secteur_binome}</p></div>
             </div>
 
             : 
             <div className="card">
-                <p className="text-overflow">{user.prenom} {user.nom}</p> <span onClick={() => setShowMenu(!showMenu)}><ItemMenu /></span>
-                <div ref={menuRef} className={showMenu ? "card-menu show" : "card-menu"}> <p onClick={editUser}>Modifier</p> <p onClick={deleteUser}>Supprimer</p> <p onClick={showMore}>En savoir plus</p></div>
-                <p>{user.secteur}</p>
+                <p className="text-overflow">{emergency.resume}</p> <span onClick={() => setShowMenu(!showMenu)}><ItemMenu /></span>
+                <div ref={menuRef} className={showMenu ? "card-menu show" : "card-menu"}> <p onClick={editEmergency}>Modifier</p> <p onClick={deleteEmergency}>Supprimer</p></div>
+                <p>{emergency.detail}</p>
                 <div className="card-line" />
-                <div className="flex-container"><p className="text-overflow">{user.fonction}</p> <p>{user.jour_bureau}</p></div>
+                // <div className="flex-container"><p className="text-overflow">{emergency.fonction}</p> <p>{emergency.jour_bureau}</p></div>
             </div>
              
     )

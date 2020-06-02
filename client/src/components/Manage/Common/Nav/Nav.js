@@ -7,7 +7,7 @@ const Nav = ({ children, name, addForm, items }) => {
         <section className="flex-container">
             <p>{`${items.length} ${name}`}{items.length > 1 && "s"}</p>
             {children}
-            <button onClick={addForm}>Ajouter un {name}</button>
+            <button onClick={addForm}>Ajouter un{name === "urgence" && "e"} {name}</button>
         </section>
     )
 }
