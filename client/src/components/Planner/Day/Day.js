@@ -12,6 +12,7 @@ class Day extends Component {
                     <p className="Day__date">{this.props.date}</p>
                 </div>
                 <div className="Day__list">
+                    {/* <Hotel />
                     <Hotel />
                     <Hotel />
                     <Hotel />
@@ -22,8 +23,7 @@ class Day extends Component {
                     <Hotel />
                     <Hotel />
                     <Hotel />
-                    <Hotel />
-                    <Hotel />
+                    <Hotel /> */}
                 </div>
             </div>
          );
