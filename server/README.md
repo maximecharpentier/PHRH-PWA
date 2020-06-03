@@ -15,6 +15,7 @@
       - [Comment nous l'utilisons](#comment-nous-lutilisons-2)
   - [Lancer serveur (v1)](#lancer-serveur-v1)
   - [Routes doc (temporary)](#routes-doc-temporary)
+  - [Insertion données réelles](#insertions-données-réelles)
 
 ## Responsable
 
@@ -251,3 +252,30 @@ En cours d'étude
     - @method : DELETE
     - @param : (string) : id Urgence
     - @return : (string) : error/confirm message
+
+**feature Autenthification**
+  - **IDs Plannificateur/Superviseur/admin : {nom: admin, pwd: admin}**
+  - TMP : **_/auth/login_** : verifier existence user avec couple (nom, pwd)
+    - @method : POST
+    - @param : (Object JSON) : {nom: (string), pwd: (string) }
+    - @return : mixed 
+      - Object JSON : object model User
+      - (string) : error message
+
+## Insertions données réelles
+  1) Telecharger TOUT les fichiers excell du dossier **Données** de **PHRH** (voir drive, fichiers 
+    "partagés avec moi" sur le drive de votre compte HETIC)
+  2) Placer ces fichiers dans ./server/data/**sources**
+  3) Mettez a jour votre fichier **.env** avec les nouveau parametres (voir **.env.sample**)
+  4) Editer le fichier ./server/**.env** à votre convenance pour l'insertion :
+    - **RESET_DB** : reset de la base de données
+    - **INSERT_TEST_DB** : si a "true" inserer les données de test
+    - **INSERT_REAL_DB** : si a "true" importer et inserer les données reelles
+  5) Lancer le serveur express : **node server**
+  6) Les données vont s'inserer, patientez jusqu'a la fin du chargement ~2min chez moi
+  7) Metez la configuration de votre **.env** de nouveau a jour pour eviter :
+    - de supprimer vos données eventuelement par erreur en mettant **RESET_DB** à "false"
+    - de relancer la procedure d'import pour rien en mettant **INSERT_TEST_DB** et/ou **INSERT_REAL_DB** à "false"
+  7) Si vous voulez afficher votre base de données locale dans un GUI :
+    - telecharger : MongoDB Compass Comunity : https://www.mongodb.com/download-center/compass (Version Community Edition Stable)
+    - à l'ouverture connectez vous grace a l'url : mongodb://<SERVER_HOST>:27017/PHRH ou SERVER_HOST est defini dans .env (chez moi c'est "localhost")

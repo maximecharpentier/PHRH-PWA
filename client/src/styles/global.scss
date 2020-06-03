@@ -11,33 +11,67 @@ input, button {
 }
 
 .App-Login {
-  background: white;
-  margin-top: 83px;
-  width: 395px;
-  box-shadow: 0 4px 8px 1px rgba(0,0,0,0.15);
-  border-radius: 5px;
+  width: 100%;
+  height: calc(100vh - 81px);
+  background: #EFF2FB;
+  display: flex;
+  justify-content: flex-end;
   &_Form {
+    background: white;
+    width: 70%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 7px 7px 28px 7px;
     &_Header {
+      width: 390px;
+      margin-bottom: 35px;
+      & h2 {
+        font-size: 26px;
+        font-weight: 600;
+        line-height: 39px;
+        color: #333333;
+      }
+    }
+    &_Label {
+      width: 390px;
+      font-size: 16px;
+      margin-bottom: 15px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      height: 60px;
+      justify-content: space-between;
+    }
+    &_Field {
+      width: 390px;
+      margin-bottom: 50px;
+    }
+    & label {
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 24px;
+      /* identical to box height */
+      color: #333333;
+    }
+    & input {
+      font-size: 14px;
       width: 100%;
-      font-size: 18px;
-      font-weight: bolder;
-      margin-bottom: 25px;
-      background: #F8FBFF;
+      padding: 8px 15px;
+      border: 1px solid #C8C3C3;
+      box-sizing: border-box;
+      border-radius: 6px;
+    }
+    & #text {
+      margin-top: 25px;
     }
     &_Forgot {
-      text-align: right;
-      margin-top: 10px;
-      margin-bottom: 40px;
-      width: 100%;
+      color: #C8C3C3;
+    }
+    &_Button {
+      padding: 8px 30px;
+      color: white;
+      background: #031772;
+      border-radius: 4px;
     }
   }
 }

@@ -5,6 +5,11 @@ const Hotel = require('./hotel.model');
 const Schema = mongoose.Schema;
 
 const visiteSchema = new Schema({
+    uid_internal : {
+        type: Number, 
+        required: false,
+        trim: true,
+    },
     hotel_id: {
         type: Schema.Types.ObjectId, 
         ref: 'Hotel', 
@@ -31,13 +36,28 @@ const visiteSchema = new Schema({
         required: true
 
     },
+    visite_effectue : {
+        type: Boolean,
+        required: true,
+        default: false
+    }
 })
 
 //definir la methode insertIfNotExist
 visiteSchema.statics.insertIfNotExist = async function(visite) {
     const docs = await this.find({date_visite: visite.date_visite, hotel_id : visite.hotel_id}).exec()
     if (!docs.length){
-        return await visite.save()
+        try {
+            const visiteDB = await visite.save()
+            return visiteDB
+        } catch(err) {
+            console.log(
+                "Visite invalide : " + '\n' + 
+                visite + '\n' +
+                "Erreur : " + '\n' +
+                err
+            )
+        }
     }
     else{
         //throw new Error('Visite <<X>> existe deja', null);

@@ -1,7 +1,7 @@
 {
    "hotels":[
       {
-         "id_temp":1,
+         "uid_internal":1,
          "nom":"08z2zo Hotel",
          "adresse":"60 rue 0xgv5ln",
          "cp":75007,
@@ -20,7 +20,7 @@
          ]
       },
       {
-         "id_temp":2,
+         "uid_internal":2,
          "nom":"9is4g9 Hotel",
          "adresse":"186 rue dntvk",
          "cp":75016,
@@ -39,7 +39,7 @@
          ]
       },
       {
-         "id_temp":3,
+         "uid_internal":3,
          "nom":"rh63qa Hotel",
          "adresse":"137 rue vjr88e",
          "cp":75015,
@@ -58,7 +58,7 @@
          ]
       },
       {
-         "id_temp":4,
+         "uid_internal":4,
          "nom":"tuzo4u Hotel",
          "adresse":"164 rue 5loqdc",
          "cp":75010,
@@ -77,7 +77,7 @@
          ]
       },
       {
-         "id_temp":5,
+         "uid_internal":5,
          "nom":"rs6t8i Hotel",
          "adresse":"24 rue ave96",
          "cp":75014,
@@ -96,7 +96,7 @@
          ]
       },
       {
-         "id_temp":6,
+         "uid_internal":6,
          "nom":"e3cmms Hotel",
          "adresse":"78 rue t8tfv",
          "cp":75018,
@@ -115,7 +115,7 @@
          ]
       },
       {
-         "id_temp":7,
+         "uid_internal":7,
          "nom":"480bnl Hotel",
          "adresse":"161 rue lo6cfh",
          "cp":75009,
@@ -134,7 +134,7 @@
          ]
       },
       {
-         "id_temp":8,
+         "uid_internal":8,
          "nom":"051ye5 Hotel",
          "adresse":"11 rue agmeuw",
          "cp":75007,
@@ -153,7 +153,7 @@
          ]
       },
       {
-         "id_temp":9,
+         "uid_internal":9,
          "nom":"3exfph Hotel",
          "adresse":"64 rue wn2xj7",
          "cp":75009,
@@ -172,7 +172,7 @@
          ]
       },
       {
-         "id_temp":10,
+         "uid_internal":10,
          "nom":"727mn7 Hotel",
          "adresse":"85 rue zxumja",
          "cp":75002,
@@ -191,7 +191,7 @@
          ]
       },
       {
-         "id_temp":11,
+         "uid_internal":11,
          "nom":"q5kgwq Hotel",
          "adresse":"13 rue kggtn",
          "cp":75004,
@@ -210,7 +210,7 @@
          ]
       },
       {
-         "id_temp":12,
+         "uid_internal":12,
          "nom":"qrwadb Hotel",
          "adresse":"104 rue vwr5te",
          "cp":75006,
@@ -229,7 +229,7 @@
          ]
       },
       {
-         "id_temp":14,
+         "uid_internal":14,
          "nom":"pk20es Hotel",
          "adresse":"87 rue y3xwik",
          "cp":75001,
@@ -253,7 +253,7 @@
          ]
       },
       {
-         "id_temp":15,
+         "uid_internal":15,
          "nom":"2ajnuu Hotel",
          "adresse":"170 rue mslnid",
          "cp":75020,
@@ -277,7 +277,7 @@
          ]
       },
       {
-         "id_temp":16,
+         "uid_internal":16,
          "nom":"92jxhv Hotel",
          "adresse":"238 rue wp7z9",
          "cp":75010,
@@ -301,7 +301,7 @@
          ]
       },
       {
-         "id_temp":17,
+         "uid_internal":17,
          "nom":"3fsofn Hotel",
          "adresse":"168 rue hx2o",
          "cp":75001,
@@ -325,7 +325,7 @@
          ]
       },
       {
-         "id_temp":18,
+         "uid_internal":18,
          "nom":"1u5hc Hotel",
          "adresse":"80 rue u7p0q",
          "cp":75009,
@@ -349,7 +349,7 @@
          ]
       },
       {
-         "id_temp":19,
+         "uid_internal":19,
          "nom":"sq17gm Hotel",
          "adresse":"58 rue j9anh",
          "cp":75002,
@@ -373,7 +373,7 @@
          ]
       },
       {
-         "id_temp":20,
+         "uid_internal":20,
          "nom":"ktkwe Hotel",
          "adresse":"166 rue 3ma3li",
          "cp":75003,
@@ -397,7 +397,7 @@
          ]
       },
       {
-         "id_temp":21,
+         "uid_internal":21,
          "nom":"cvaaym Hotel",
          "adresse":"18 rue nop5or",
          "cp":75010,
@@ -421,7 +421,7 @@
          ]
       },
       {
-         "id_temp":22,
+         "uid_internal":22,
          "nom":"ex625 Hotel",
          "adresse":"121 rue u43hkw",
          "cp":75009,
@@ -445,7 +445,7 @@
          ]
       },
       {
-         "id_temp":23,
+         "uid_internal":23,
          "nom":"w61euw Hotel",
          "adresse":"15 rue fdgn17",
          "cp":75016,
@@ -469,7 +469,7 @@
          ]
       },
       {
-         "id_temp":24,
+         "uid_internal":24,
          "nom":"ks8c1c Hotel",
          "adresse":"27 rue d7ff2f",
          "cp":75019,
@@ -493,7 +493,7 @@
          ]
       },
       {
-         "id_temp":25,
+         "uid_internal":25,
          "nom":"hns6yp Hotel",
          "adresse":"41 rue gx7mg",
          "cp":75015,
@@ -517,7 +517,7 @@
          ]
       },
       {
-         "id_temp":13,
+         "uid_internal":13,
          "nom":"44yd2c Hotel",
          "adresse":"44 rue yavrle",
          "cp":75011,
@@ -724,307 +724,396 @@
          "vehicule_id":null
       }
    ],
-   "visits":[
+   "visites":[
       {
          "hotel_id":1,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":81,
          "duree":36,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":1,
          "date_visite":"2020-03-20T11:42:06.537Z",
          "note":82,
          "duree":2,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":1,
          "date_visite":"2020-04-20T11:42:06.537Z",
          "note":82,
          "duree":13,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":2,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":79,
          "duree":32,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":2,
          "date_visite":"2020-03-20T11:42:06.537Z",
          "note":79,
          "duree":8,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":2,
          "date_visite":"2020-04-20T11:42:06.537Z",
          "note":74,
          "duree":48,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":3,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":81,
          "duree":18,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":3,
          "date_visite":"2020-03-20T11:42:06.537Z",
          "note":81,
          "duree":13,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":3,
          "date_visite":"2020-04-20T11:42:06.537Z",
          "note":78,
          "duree":48,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":4,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":71,
          "duree":48,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":4,
          "date_visite":"2020-03-20T11:42:06.537Z",
          "note":80,
          "duree":9,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":4,
          "date_visite":"2020-04-20T11:42:06.537Z",
          "note":71,
          "duree":48,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":5,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":79,
          "duree":13,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":5,
          "date_visite":"2020-03-20T11:42:06.537Z",
          "note":84,
          "duree":49,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":5,
          "date_visite":"2020-04-20T11:42:06.537Z",
          "note":82,
          "duree":20,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":6,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":80,
          "duree":49,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":6,
          "date_visite":"2020-03-20T11:42:06.537Z",
          "note":76,
          "duree":17,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":6,
          "date_visite":"2020-04-20T11:42:06.537Z",
          "note":75,
          "duree":5,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":7,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":64,
          "duree":22,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":7,
          "date_visite":"2020-03-20T11:42:06.537Z",
          "note":63,
          "duree":59,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":8,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":59,
          "duree":22,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":8,
          "date_visite":"2020-03-20T11:42:06.537Z",
          "note":52,
          "duree":16,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":9,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":51,
          "duree":40,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":9,
          "date_visite":"2020-03-20T11:42:06.537Z",
          "note":56,
          "duree":23,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":10,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":55,
          "duree":3,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":10,
          "date_visite":"2020-03-20T11:42:06.537Z",
          "note":59,
          "duree":50,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":11,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":65,
          "duree":44,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":11,
          "date_visite":"2020-03-20T11:42:06.537Z",
          "note":61,
          "duree":29,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":12,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":59,
          "duree":44,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":12,
          "date_visite":"2020-03-20T11:42:06.537Z",
          "note":57,
          "duree":58,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":13,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":56,
          "duree":38,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":14,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":59,
          "duree":14,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":15,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":60,
          "duree":11,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":16,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":51,
          "duree":13,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":17,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":64,
          "duree":28,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":18,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":62,
          "duree":52,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":19,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":16,
          "duree":44,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":20,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":30,
          "duree":14,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":21,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":33,
          "duree":37,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":22,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":15,
          "duree":12,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":23,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":24,
          "duree":2,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":24,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":31,
          "duree":19,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       },
       {
          "hotel_id":25,
          "date_visite":"2020-02-20T11:42:06.537Z",
          "note":48,
          "duree":28,
-         "type":"Visite"
+         "type":"Visite",
+         "visite_effectue":true,
+         "uid_internal":null
       }
+   ],
+   "vehicules":[
+
    ]
 }

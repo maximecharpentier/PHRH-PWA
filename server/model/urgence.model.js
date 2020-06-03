@@ -7,7 +7,8 @@ const Schema = mongoose.Schema;
 const urgenceSchema = new Schema({
     hotel_id : {
         type: Schema.Types.ObjectId, 
-        ref: 'Hotel', 
+        ref: 'Hotel',
+        required: true
     },
     equipe_id : {
         type: Schema.Types.ObjectId,
