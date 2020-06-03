@@ -6,6 +6,7 @@ const Hotel = require('../../model/hotel.model');
 /**
  * @route : get all
  * @method : GET
+ * @auth : dans l'entete de la requette "Authorisation" doit contenir le token
  * @param (optionnal) : filter Object : #toDefine
  * @return : mixed 
  *      (array[ (Object JSON) ]) : tableau d'object model Hotel
