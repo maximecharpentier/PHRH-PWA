@@ -3,6 +3,7 @@ const jsonwebtoken = require('jsonwebtoken');
 const fs = require('fs');
 const path = require('path');
 
+// Get private key (la clef privée est utilisée pour generer le JW token privé de l'utilisateur)
 const pathToKey = path.join(__dirname, '..', 'id_rsa_priv.pem');
 const PRIV_KEY = fs.readFileSync(pathToKey, 'utf8');
 

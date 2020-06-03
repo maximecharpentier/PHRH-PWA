@@ -11,14 +11,6 @@ const Vehicule = require("./vehicule.model");
 //BCRYPT
 const SALT_WORK_FACTOR = 10;
 
-/*const fonction_administrateur = 'Superviseur'
-const functions = () => {
-    cpnst mappingFile = 
-    const refDocUserAbsPath =     path.resolve('./datas/sources/Adresses Terrain.xlsx')
-    const fileReader = XLSXHelper()
-    ['Médiateur', 'Intervenant terrain', 'Mediateur SAS', fonction_administrateur]
-}*/
-
 const userSchema = new Schema({
     nom : {
         type: String, 
@@ -65,7 +57,10 @@ const userSchema = new Schema({
     }
 })
 
-//definir la methode insertIfNotExist
+/**
+ * @desc : methode du shema pour inserer si l'utilisateur n'existe pas
+ * @param {object} : user object conforme au schema
+ */
 userSchema.statics.insertIfNotExist = async function(user) {
     const docs = await this.find({nom : user.nom}).exec()
     if (!docs.length){
@@ -87,21 +82,31 @@ userSchema.statics.insertIfNotExist = async function(user) {
     }
 }
 
+/**
+ * @desc : methode de l'objet BD qui présente l'objet sous la forme "Pierre Jea."" 
+ * @param {void}
+ */
 userSchema.methods.getNamePres = function() {
     return `${ucFirst(this.prenom)} ${ucFirst(this.nom).substring(0,3)}.`  
 }
 
-
-//old meileur facon que "static" : comme ca on peux appeler la fonction sur l'objet recu après la requette BD
+/**
+ * @desc : methode de l'objet BD qui vérifie l'egalité entre le hash du pwd et celui en BD
+ * @param {string} : password en clair
+ */
 userSchema.methods.verifyPassword = function(candidatePassword) {
     return bcrypt.compareSync(candidatePassword, this.pwd)
-};
+}
 
 /*
  * HOOKS 
  */
 
-//Cryptage du password a chaque insertion/edition
+/**
+ * @hook : pre
+ * @desc : Cryptage du password a chaque insertion/edition
+ * @param {object} : user object conforme au schema
+ */
 userSchema.pre('save', function(next) {
     var user = this
 
@@ -123,9 +128,6 @@ userSchema.pre('save', function(next) {
     });
 })
 
-
 const User = mongoose.model('Utilisateur', userSchema)
 
 module.exports = User
-//exports.AvailableFunctions = functions
-//exports.SuperviseurFunctionName = fonction_administrateur

@@ -2,7 +2,7 @@ const router = require('./node_modules/express').Router();
 
 const Visite = require('../../model/visite.model');
 
-/*
+/**
  * @route : noter Hotel
  * @param : string : id Visite
  * @param : float : note

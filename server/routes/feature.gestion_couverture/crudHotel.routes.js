@@ -1,8 +1,9 @@
 const router = require('express').Router();
+const passport = require('passport');
 
 const Hotel = require('../../model/hotel.model');
 
-/*
+/**
  * @route : get all
  * @method : GET
  * @param (optionnal) : filter Object : #toDefine
@@ -10,7 +11,7 @@ const Hotel = require('../../model/hotel.model');
  *      (array[ (Object JSON) ]) : tableau d'object model Hotel
  *      (string) : error message
  */
-router.route('/').get((req, res) => {    
+router.route('/').get(passport.authenticate('jwt', { session: false }), (req, res) => {    
     //let mongoFilter = []
     let filterObj = {}
     /*
@@ -34,7 +35,7 @@ router.route('/').get((req, res) => {
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
-/*
+/**
  * @route : get
  * @method : GET
  * @param : (string) : id Hotel
@@ -49,7 +50,7 @@ router.route('/get/:id').get((req, res) => {
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
-/*
+/**
  * @route : add
  * @method : POST
  * @param : (Object JSON) : object Hotel conforme au schema (voir schema)
@@ -73,7 +74,7 @@ router.route('/add').post((req, res) => {
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
-/*
+/**
  * @route : edit
  * @method : POST
  * @param : (string) : id Hotel
@@ -116,7 +117,7 @@ router.route('/edit/:id').post((req, res) => {
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
-/*
+/**
  * @route : delete
  * @method : DELETE
  * @param : (string) : id Hotel
