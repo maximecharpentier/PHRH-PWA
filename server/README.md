@@ -110,7 +110,11 @@ En cours d'étude
     - @method : GET
     - @param (optionnal) : filter Object : #toDefine
     - @return : mixed 
-        - (array[ (Object JSON) ]) : tableau d'object model Equipe (= Assoc_user_user)
+        - (array[ (Object JSON) ]) : tableau d'object { equipe: model Equipe, 
+                                                        user_names: {
+                                                          user_a: (string), 
+                                                          user_b: (string)
+                                                      }}
         - (string) : error message
 
   - **_/gestion/get/:iduser_** : get equipe by id

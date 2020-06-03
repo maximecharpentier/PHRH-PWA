@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt');
+const ucFirst = require('../utils/utils').capitalize
 
 const Schema = mongoose.Schema;
 
@@ -86,6 +87,10 @@ userSchema.statics.insertIfNotExist = async function(user) {
     }
 }
 
+userSchema.methods.getNamePres = function() {
+    return `${ucFirst(this.prenom)} ${ucFirst(this.nom).substring(0,3)}.`  
+}
+
 
 //old meileur facon que "static" : comme ca on peux appeler la fonction sur l'objet recu après la requette BD
 userSchema.methods.verifyPassword = function(candidatePassword) {
@@ -108,11 +113,11 @@ userSchema.pre('save', function(next) {
         if (err) return next(err);
 
         // hash the password along with our new salt
-        bcrypt.hash(user.password, salt, function(err, hash) {
+        bcrypt.hash(user.pwd, salt, function(err, hash) {
             if (err) return next(err);
 
             // override the cleartext password with the hashed one
-            user.password = hash;
+            user.pwd = hash;
             next();
         });
     });
