@@ -21,7 +21,7 @@ const Input = props => {
                           <option key={id} value={option.jourNombre}>{option.jour}</option>
                         )}
                     </select> : props.type === "textarea" ?
-                    <textarea rows="7" cols="53" type={props.type} id={props.name} placeholder={props.label} name={props.name} value={props.value} onChange={props.handleChange}></textarea> :
+                    <textarea rows="7" cols="43" type={props.type} id={props.name} placeholder={props.label} name={props.name} value={props.value} onChange={props.handleChange}></textarea> :
                     <input type={props.type} id={props.name} placeholder={props.label} name={props.name} value={props.value} onChange={props.handleChange} />
             }
             {props.children}
