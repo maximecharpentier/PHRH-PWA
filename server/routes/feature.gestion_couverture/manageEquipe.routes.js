@@ -9,7 +9,11 @@ const Equipe = require('../../model/assoc_user_user.model');
  * @method : GET
  * @param (optionnal) : filter Object : #toDefine
  * @return : mixed 
- *      (array[ (Object JSON) ]) : tableau d'object model Equipe
+ *      (array[ (Object JSON) ]) : tableau d'object { equipe: model Equipe, 
+ *                                                    user_names: {
+ *                                                          user_a: (string), 
+ *                                                          user_b: (string)
+ *                                                    }}
  *      (string) : error message
  */
 router.route('/').get((req, res) => {    
@@ -17,7 +21,23 @@ router.route('/').get((req, res) => {
     let filterObj = {}
     //reprendre ici et construire le system de filtre dynamic
     Equipe.find(filterObj/*{ville: { $in: '.*b*'}}*/)
-        .then(equipes => res.status(200).json(equipes))            
+        .then(async (equipes) => {
+            let listFinale = []
+            //ajouter clé equipe
+            for (const equipe of equipes) {
+                //ajouter user names
+                const user_a = await User.findById(equipe.user_a_id)
+                const user_b = await User.findById(equipe.user_b_id)
+                listFinale.push({
+                    equipe: equipe,
+                    user_names: {
+                        user_a: user_a.getNamePres(), 
+                        user_b: user_b.getNamePres()
+                    }
+                })
+            }
+            res.status(200).json(listFinale)
+        })            
         .catch('Aucune equipes')
 })
 
@@ -37,7 +57,7 @@ router.route('/get/:iduser').get((req, res) => {
             {'user_b_id': req.params.iduser}
         ] 
     })
-    .then(hotel => res.status(200).json(hotel))
+    .then(equipe => res.status(200).json(equipe))
     .catch(err => res.status(400).json('Aucune equipe trouvée'))
 })
 
