@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const ucFirst = require('../utils/utils').capitalize
 
 //const XLSXHelper = require('./module_xlsx.helper');
 
@@ -83,6 +84,10 @@ userSchema.statics.insertIfNotExist = async function(user) {
         //throw new Error('Utilisateur <<'+ user.nom +'>> existe deja', null);
         console.log('Utilisateur <<'+ user.nom +'>> existe deja')
     }
+}
+
+userSchema.methods.getNamePres = function() {
+    return `${ucFirst(this.prenom)} ${ucFirst(this.nom).substring(0,3)}.`  
 }
 
 
