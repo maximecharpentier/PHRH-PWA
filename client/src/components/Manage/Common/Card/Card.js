@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ItemMenu from '../../../../assets/item-menu';
 import './Card.scss'
-import {getUser} from '../../../../api/api'
+import {getItem} from '../../../../api/api'
 
 const Card = ({ user, editUser, deleteUser, hotel, editHotel, deleteHotel, team, deleteTeam, showMore, emergency, editEmergency, deleteEmergency }) => {
     const [showMenu, setShowMenu] = useState(false);
     const [firstUser, setFirstUser] = useState({});
     const [secondUser, setSecondUser] = useState({});
+    const [emergencyHotel, setEmergencyHotel] = useState({});
+    const [emergencyTeam, setEmergencyTeam] = useState({});
     const menuRef = useRef();
 
     // const handleClickOutside = e => {
@@ -32,12 +34,16 @@ const Card = ({ user, editUser, deleteUser, hotel, editHotel, deleteHotel, team,
 
     useEffect(() => {
         if(team) {
-            getUser(team.user_a_id, setFirstUser)
-            getUser(team.user_b_id, setSecondUser)
+            getItem(team.user_a_id, setFirstUser)
+            getItem(team.user_b_id, setSecondUser)
+        }
+        if(emergency) {
+            getItem(emergency.equipe_id, "/gestion/get/", setEmergencyTeam)
+            getItem(emergency.hotel_id, "/hotels/get/", setEmergencyHotel)
         }
         // document.body.addEventListener('mousedown', handleClickOutside);
         // return () => document.body.removeEventListener('mousedown', handleClickOutside);
-    }, [team]);
+    }, [team, emergency]);
 
 
     return (
@@ -76,7 +82,7 @@ const Card = ({ user, editUser, deleteUser, hotel, editHotel, deleteHotel, team,
                 <div ref={menuRef} className={showMenu ? "card-menu show" : "card-menu"}> <p onClick={editEmergency}>Modifier</p> <p onClick={deleteEmergency}>Supprimer</p></div>
                 <p>{emergency.detail}</p>
                 <div className="card-line" />
-                // <div className="flex-container"><p className="text-overflow">{emergency.fonction}</p> <p>{emergency.jour_bureau}</p></div>
+                <div className="flex-container"><p className="text-overflow">{emergency.equipe_id}</p> <p>{emergencyHotel.nom}</p></div>
             </div>
              
     )
