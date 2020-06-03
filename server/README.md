@@ -75,6 +75,7 @@ En cours d'étude
 **feature Gestion couverture terrain: CRUD Hotel :**
   - **_/hotels_** : get All
     - @method : GET
+    - @auth : dans l'entete de la requette "Authorisation" doit contenir le token
     - @param (optionnal) : filter Object : #toDefine
     - @return : mixed 
         - (array[ (Object JSON) ]) : tableau d'object model Hotel
@@ -259,12 +260,17 @@ En cours d'étude
 
 **feature Autenthification**
   - **IDs Plannificateur/Superviseur/admin : {nom: admin, pwd: admin}**
-  - TMP : **_/auth/login_** : verifier existence user avec couple (nom, pwd)
+  - **IDs Tout les autres utilisateurs : {nom: <nom>, pwd: demodemo}**
+
+  - **_/auth/login_** : valider le login avec couple (nom, pwd) et generer le token d'authentification
     - @method : POST
-    - @param : (Object JSON) : {nom: (string), pwd: (string) }
-    - @return : mixed 
-      - Object JSON : object model User
-      - (string) : error message
+    - @param Object : {nom: (string) nom user BD, pwd: (string) pwd en clair}
+    - @return : Object 
+      - Object JSON : { 
+          success: (bool) le login a reussi/échoué, 
+          token: (string) token d'authorisation), 
+          expiresIn: (string) "1d" pour un jour par exemple
+          }
 
 ## Insertions données réelles
   1) Telecharger TOUT les fichiers excell du dossier **Données** de **PHRH** (voir drive, fichiers 

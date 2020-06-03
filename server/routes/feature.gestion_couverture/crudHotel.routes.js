@@ -5,9 +5,9 @@ const Hotel = require('../../model/hotel.model');
 
 /**
  * @route : get all
- * @method : GET
+ * @method GET
  * @auth : dans l'entete de la requette "Authorisation" doit contenir le token
- * @param (optionnal) : filter Object : #toDefine
+ * @param void : filter Object : #toDefine
  * @return : mixed 
  *      (array[ (Object JSON) ]) : tableau d'object model Hotel
  *      (string) : error message
@@ -38,7 +38,7 @@ router.route('/').get(passport.authenticate('jwt', { session: false }), (req, re
 
 /**
  * @route : get
- * @method : GET
+ * @method GET
  * @param : (string) : id Hotel
  * @return : mixed 
  *      (Object JSON) : object model Hotel

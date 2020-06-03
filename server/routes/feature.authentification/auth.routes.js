@@ -8,7 +8,13 @@ const utils = require('../../lib/utils');
 });*/
 
 /**
- * @desc : route pour valider le login avec couple (nom, pwd) et generer le token d'authentification
+ * @desc : valider le login avec couple (nom, pwd) et generer le token d'authentification
+ * @method POST
+ * @param {Object} : {nom: (string) nom user BD, pwd: (string) pwd en clair}
+ * @return {Object} : { success: (bool) le login a reussi/échoué, 
+ *                      token: (string) token d'authorisation), 
+ *                      expiresIn: (string) "1d" pour un jour par exemple
+ *                      }
  */
 router.post('/login', function(req, res, next){
 
@@ -19,7 +25,7 @@ router.post('/login', function(req, res, next){
                 res.status(401).json({ success: false, msg: "could not find user" });
             }
             else{
-                
+
                 // Function defined at bottom of app.js
                 const isValid = user.verifyPassword(req.body.pwd);
                 
