@@ -6,7 +6,7 @@ const User = require('../../model/user.model');
 const Hotel = require('../../model/hotel.model');
 const Assoc_user_visite = require('../../model/assoc_user_visite.model');
 
-/*
+/**
  * @route : get all visites
  * @method : GET
  * @param : void
@@ -21,7 +21,7 @@ router.route('/').get((req, res) => {
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
-/*
+/**
  * @route : get all visites pour un Hotel
  * @method : GET
  * @param : (string) : id entité Hotel
@@ -52,7 +52,7 @@ router.route('/get/forhotel/:idhotel').get(async (req, res) => {
     }
 })
 
-/*
+/**
  * @route : get all visites pour un User
  * @method : GET
  * @param : (string) : id entité Hotel
@@ -89,7 +89,7 @@ router.route('/get/foruser/:iduser').get(async (req, res) => {
     }
 })
 
-/*
+/**
  * @route : get
  * @method : GET
  * @param : (string) : id Visite
@@ -104,7 +104,7 @@ router.route('/get/:id').get((req, res) => {
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
-/*
+/**
  * @route : plannifier une visite (equivalent à add)
  * @method : POST
  * @param : (Object JSON) : object Visite conforme au schema (voir schema)
@@ -129,7 +129,7 @@ router.route('/plannifier').post((req, res) => {
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
-/*
+/**
  * @route : edit
  * @method : POST
  * @param : (string) : id Visite
@@ -179,7 +179,7 @@ router.route('/edit/:id').post((req, res) => {
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
-/*
+/**
  * @route : delete
  * @method : DELETE
  * @param : (string) : id Visite

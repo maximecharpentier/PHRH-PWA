@@ -1,13 +1,14 @@
 const mongoose = require('mongoose')
+const bcrypt = require('bcrypt');
 
-//const XLSXHelper = require('./module_xlsx.helper');
+const Schema = mongoose.Schema;
 
+//REFS
 const Visite = require("./visite.model");
 const Vehicule = require("./vehicule.model");
 
-const Schema = mongoose.Schema;
-    /*bcrypt = require('bcrypt'),
-    SALT_WORK_FACTOR = 10;*/
+//BCRYPT
+const SALT_WORK_FACTOR = 10;
 
 /*const fonction_administrateur = 'Superviseur'
 const functions = () => {
@@ -84,6 +85,38 @@ userSchema.statics.insertIfNotExist = async function(user) {
         console.log('Utilisateur <<'+ user.nom +'>> existe deja')
     }
 }
+
+
+//old meileur facon que "static" : comme ca on peux appeler la fonction sur l'objet recu après la requette BD
+userSchema.methods.verifyPassword = function(candidatePassword) {
+    return bcrypt.compareSync(candidatePassword, this.pwd)
+};
+
+/*
+ * HOOKS 
+ */
+
+//Cryptage du password a chaque insertion/edition
+userSchema.pre('save', function(next) {
+    var user = this
+
+    // only hash the password if it has been modified (or is new)
+    if (!user.isModified('pwd')) return next();
+
+    // generate a salt
+    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+        if (err) return next(err);
+
+        // hash the password along with our new salt
+        bcrypt.hash(user.password, salt, function(err, hash) {
+            if (err) return next(err);
+
+            // override the cleartext password with the hashed one
+            user.password = hash;
+            next();
+        });
+    });
+})
 
 
 const User = mongoose.model('Utilisateur', userSchema)

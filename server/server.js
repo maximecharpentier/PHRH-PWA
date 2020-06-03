@@ -4,6 +4,19 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 
 const app = express();
+//ici red database
+//#INC
+
+//KEY PAIRS
+require('./generateKeypair')
+
+//PASSPORT
+const passport = require('passport');
+// Pass the global passport object into the configuration function
+require('./config/passport')(passport);
+// This will initialize the passport object on every request
+app.use(passport.initialize());
+
 //brancher cors
 app.use(cors());
 //brancher le parseur d'HttpRequest
