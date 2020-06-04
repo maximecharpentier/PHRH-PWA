@@ -15,7 +15,7 @@ app.use(cors())
 //brancher le parseur d'HttpRequest
 app.use(express.json())
 
-//MONGO DB & IMPORT DES DONNE
+//MONGO DB & IMPORT DES DONNEES
 require('./config/database')
 
 //PASSPORT
