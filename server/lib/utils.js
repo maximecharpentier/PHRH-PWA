@@ -33,6 +33,16 @@ function issueJWT(user) {
   }
 }
 
+/**
+ * @desc : met le premier caractère de la chaine en capitale
+ * @param {string} s
+ */
+function capitalize(s) {
+  if (typeof s !== 'string') return ''
+  return s.charAt(0).toUpperCase() + s.slice(1)
+}
+
+module.exports.capitalize = capitalize;
 //module.exports.validPassword = validPassword;
 //module.exports.genPassword = genPassword;
 module.exports.issueJWT = issueJWT;

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt');
-const ucFirst = require('../utils/utils').capitalize
+const ucFirst = require('../lib/utils').capitalize
 
 const Schema = mongoose.Schema;
 
