@@ -43,6 +43,4 @@ function capitalize(s) {
 }
 
 module.exports.capitalize = capitalize;
-//module.exports.validPassword = validPassword;
-//module.exports.genPassword = genPassword;
 module.exports.issueJWT = issueJWT;
