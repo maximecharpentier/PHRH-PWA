@@ -259,8 +259,8 @@ En cours d'étude
     - @return : (string) : error/confirm message
 
 **feature Autenthification**
-  - **IDs Plannificateur/Superviseur/admin : {nom: admin, pwd: admin}**
-  - **IDs Tout les autres utilisateurs : {nom: <nom>, pwd: demodemo}**
+  - **IDs Plannificateur/Superviseur/admin** : {nom: admin, pwd: admin}
+  - **IDs Tout les autres utilisateurs** : {nom: <nom>, pwd: demodemo}
 
   - **_/auth/login_** : valider le login avec couple (nom, pwd) et generer le token d'authentification
     - @method : POST
