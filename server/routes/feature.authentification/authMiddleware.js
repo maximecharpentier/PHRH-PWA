@@ -13,3 +13,11 @@ module.exports.isAdmin = (req, res, next) => {
         res.status(401).json({ msg: 'You are not authorized to view this resource because you are not an admin.' });
     }
 }
+
+module.exports.passportJWTAuth = (req, res, next) => {
+    const passport = require('passport')
+    
+    //passport strategy : JWT
+    passport.authenticate('jwt', { session: false })
+    next()
+}

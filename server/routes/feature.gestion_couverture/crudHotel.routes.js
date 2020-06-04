@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const passport = require('passport');
+const authStrategy = require('../feature.authentification/authMiddleware').passportJWTAuth
 
 const Hotel = require('../../model/hotel.model');
 
@@ -12,7 +12,8 @@ const Hotel = require('../../model/hotel.model');
  *      (array[ (Object JSON) ]) : tableau d'object model Hotel
  *      (string) : error message
  */
-router.route('/').get(passport.authenticate('jwt', { session: false }), (req, res) => {    
+router.route('/').get(authStrategy, (req, res) => {
+    //#REPRENDRE ICI ET REPRODUIRE POUR TOUTES LES ROUTES    
     //let mongoFilter = []
     let filterObj = {}
     /*

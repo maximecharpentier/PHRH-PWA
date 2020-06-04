@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const router = require('express').Router();   
 const User = require("../../model/user.model");
 const utils = require('../../lib/utils');
