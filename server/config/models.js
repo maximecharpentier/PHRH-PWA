@@ -1,3 +1,6 @@
+//appelé dans : server.js
+
+//sert a ne pas require les models dans tt les fichiers via un chemin relatif, et permettre de les charger come suit "mongoose.model('ModelName')"
 require("../model/hotel.model")
 require("../model/visite.model")
 require("../model/user.model")
