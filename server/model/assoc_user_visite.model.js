@@ -46,6 +46,6 @@ assoc_user_visiteSchema.statics.insertIfNotExist = async function(assoc) {
     }
 }
 
-const AssocUserVisite = mongoose.model('AssocUserVisite', assoc_user_visiteSchema)
+const AssocUserVisite = mongoose.model('Assoc_User_Visite', assoc_user_visiteSchema)
 
 module.exports = AssocUserVisite

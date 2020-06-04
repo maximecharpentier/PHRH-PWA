@@ -83,7 +83,7 @@ En cours d'étude
 
   - **_/hotels/get/:id_** : get hotel by id :id
     - @method : GET
-    - @param : (string) : id Hotel
+    - @param {string} : id Hotel
     - @return : mixed 
         - (Object JSON) : object model Hotel
         - (string) : error message
@@ -95,7 +95,7 @@ En cours d'étude
 
   - **_/hotels/edit/:id_** : editer l'hotel ayant l'id :id
     - @method : POST
-    - @param : (string) : id Hotel
+    - @param {string} : id Hotel
     - @param : (object JSON) : {field1 : newValue, field2 : newValue ...}, 
           "fieldX" : (string) nom champ conforme au naming du model Hotel
         "newValue" : mixed 
@@ -103,7 +103,7 @@ En cours d'étude
 
   - **_/hotels/delete/:id_** : supprimer l'hotel ayant l'id :id
     - @method : DELETE
-    - @param : (string) : id Hotel
+    - @param {string} : id Hotel
     - @return : (string) : error/confirm message
 
 **feature Gestion couverture terrain: Creer equipes :**
@@ -120,7 +120,7 @@ En cours d'étude
 
   - **_/gestion/get/:iduser_** : get equipe by id
     - @method : GET
-    - @param : (string) : id Equipe
+    - @param {string} : id Equipe
     - @return : mixed 
         - (Object JSON) : object model Equipe (= Assoc_user_user)
         - (string) : error message
@@ -132,13 +132,13 @@ En cours d'étude
 
   - **_/creer/:idusera/:iduserb_** : associer User A avec User B
     - @method : POST
-    - @param : (string) : id User A
-    - @param : (string) : id User B
+    - @param {string} : id User A
+    - @param {string} : id User B
     - @return : (string) : error/confirm message
 
   - **_/users/delete/:id_** : effacer equipe
     - @method : DELETE
-    - @param : (string) : id Equipe
+    - @param {string} : id Equipe
     - @return : (string) : error/confirm message
 
 **feature Plannification visite: Plannifier visite (avec algo suggestion) :**
@@ -151,21 +151,21 @@ En cours d'étude
 
   - **_/gestion/visites/get/forhotel/:idhotel_** : get all visites pour un Hotel
     - @method : GET
-    - @param : (string) : id Hotel
+    - @param {string} : id Hotel
     - @return : mixed 
         - (Object JSON) : tableau d'object model Visite pour un Hotel
         - (string) : error message
 
   - **_/gestion/visites/get/foruser/:iduser_** : get all visites pour un User
     - @method : GET
-    - @param : (string) : id User
+    - @param {string} : id User
     - @return : mixed 
         - (Object JSON) : tableau d'object model Visite pour un User
         - (string) : error message
 
   - **_/gestion/visites/get/:id_** : get visite by id
     - @method : GET
-    - @param : (string) : id Visite
+    - @param {string} : id Visite
     - @return : mixed 
         - (Object JSON) : object model Visite
         - (string) : error message
@@ -177,7 +177,7 @@ En cours d'étude
     
   - **_/gestion/visites/edit/:id_** : plannifier une visite (equivalent à add)
     - @method : POST
-    - @param : (string) : id Visite
+    - @param {string} : id Visite
     - @param : (object JSON) : {field1 : newValue, field2 : newValue ...}, 
         "fieldX" : (string) nom champ conforme au naming du model Visite
         "newValue" : mixed 
@@ -188,7 +188,7 @@ En cours d'étude
 
   - **_/estion/visites/delete/:id_** : supprimer la visite ayant l'id :id
     - @method : DELETE
-    - @param : (string) : id Hotel
+    - @param {string} : id Hotel
     - @return : (string) : error/confirm message 
 
 **feature Gestion utilisateur : CRUD User :**
@@ -201,7 +201,7 @@ En cours d'étude
 
   - **_/users/get/:id_** : get user by id
     - @method : GET
-    - @param : (string) : id User
+    - @param {string} : id User
     - @return : mixed 
         - (Object JSON) : object model User
         - (string) : error message
@@ -213,7 +213,7 @@ En cours d'étude
 
   - **_/users/edit/:id_** : editer l'user ayant l'id :id
     - @method : POST
-    - @param : (string) : id User
+    - @param {string} : id User
     - @param : (object JSON) : {field1 : newValue, field2 : newValue ...}, 
           "fieldX" : (string) nom champ conforme au naming du model Hotel
           "newValue" : mixed 
@@ -221,7 +221,7 @@ En cours d'étude
 
   - **_/users/delete/:id_** : supprimer l'user ayant l'id :id
     - @method : DELETE
-    - @param : (string) : id User
+    - @param {string} : id User
     - @param : POST (object JSON) : { deleteEquipe = (string) true/false }
     - @return : (string) : error/confirm message
 
@@ -235,7 +235,7 @@ En cours d'étude
 
   - **_/urgences/get/:id_** : get urgence ayant l'id :id
      - @method : GET
-    - @param : (string) : id Urgence
+    - @param {string} : id Urgence
     - @return : mixed 
         - (Object JSON) : object model Urgence
         - (string) : error message
@@ -247,7 +247,7 @@ En cours d'étude
 
   - **_/urgences/edit/:id_** : editer l'urgence ayant l'id :id
     - @method : POST
-    - @param : (string) : id Urgence
+    - @param {string} : id Urgence
     - @param : (object JSON) : {field1 : newValue, field2 : newValue ...}, 
           "fieldX" : (string) nom champ conforme au naming du model Urgence
           "newValue" : mixed 
@@ -255,7 +255,7 @@ En cours d'étude
 
   - **_/urgences/delete/:id_** : supprimer l'urgence ayant l'id :id
     - @method : DELETE
-    - @param : (string) : id Urgence
+    - @param {string} : id Urgence
     - @return : (string) : error/confirm message
 
 **feature Autenthification**

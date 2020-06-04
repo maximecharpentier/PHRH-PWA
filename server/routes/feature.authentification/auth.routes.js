@@ -1,5 +1,6 @@
 const router = require('express').Router();   
-const User = require("../../model/user.model");
+const mongoose = require('mongoose');
+const User = mongoose.model('User');
 const utils = require('../../lib/utils');
 
 /*router.get('/protected', passport.authenticate('jwt', { session: false }), (req, res, next) => {

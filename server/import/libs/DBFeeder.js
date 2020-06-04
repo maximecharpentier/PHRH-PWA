@@ -1,15 +1,16 @@
 const path = require('path');
 const XLSXHelper = require('./module_xlsx.helper');
-const Hotel = require("../../model/hotel.model");
-const Visite = require("../../model/visite.model");
-const User = require("../../model/user.model");
-const Anomalie = require("../../model/anomalie.model");
-const Assoc_user_visite = require("../../model/assoc_user_visite.model");
-const Assoc_user_user = require("../../model/assoc_user_user.model");
-const Priorisation = require("../../model/priorisation.model");
-const Tache = require("../../model/tache.model");
-const Urgence = require("../../model/urgence.model");
-const Vehicule = require("../../model/vehicule.model");
+const mongoose = require('mongoose');
+const Hotel = mongoose.model('Hotel');
+const Visite = mongoose.model('Visite');
+const User = mongoose.model('User');
+const Anomalie = mongoose.model('Anomalie');
+const Assoc_user_visite = mongoose.model('Assoc_User_Visite');
+const Assoc_user_user = mongoose.model('Assoc_User_User');
+const Priorisation = mongoose.model('Priorisation');
+const Tache = mongoose.model('Tache');
+const Urgence = mongoose.model('Urgence');
+const Vehicule = mongoose.model('Vehicule');
 
 class DBFeeder {
 

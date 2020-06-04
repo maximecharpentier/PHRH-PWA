@@ -18,6 +18,9 @@ app.use(express.json())
 //MONGO DB & IMPORT DES DONNEES
 require('./config/database')
 
+//MODELS (require les models ici pour pouvoir les appeler partout sur "mongoose.model('ModelName')" sans avoir a mettre le chemin relatif dans les fichiers)
+require('./config/models')
+
 //PASSPORT
 const passport = require('passport')
 

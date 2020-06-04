@@ -19,5 +19,4 @@ module.exports.passportJWTAuth = (req, res, next) => {
     
     //passport strategy : JWT
     passport.authenticate('jwt', { session: false })
-    next()
 }
