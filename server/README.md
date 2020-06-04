@@ -69,7 +69,7 @@ En cours d'étude
 
 ## Lancer serveur (v1)
   - lancer mongo sur votre machine
-  - [a la racine] executer npm start server
+  - [a la racine] executer **npm start**
 
 ## Routes doc (temporary)
 **feature Gestion couverture terrain: CRUD Hotel :**
