@@ -86,10 +86,18 @@ h2, p, li{
 }
 
 .text-overflow {
-  max-width: 70%;
+  max-width: 80%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap !important;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.f18 {
+  font-size: 18px;
 }
 
 .inline-block {

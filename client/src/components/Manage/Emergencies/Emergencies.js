@@ -6,7 +6,7 @@ import Form from '../Common/Form/Form';
 import Modal from '../Common/Modal/Modal';
 import Nav from '../Common/Nav/Nav';
 
-import {API} from '../../../api/api';
+import { API } from '../../../api/api';
 
 class Emergencies extends Component {
     state = {
@@ -14,7 +14,7 @@ class Emergencies extends Component {
         hotels: [],
         teams: [],
         newEmergency: {},
-        emergencyInfos: {},
+        emergencyInfos: {emergencyDone: false},
         hotelInputValueEdit: "",
         hotelInputValue: "",
         editing: false,
@@ -23,7 +23,7 @@ class Emergencies extends Component {
         showDeleteConfirm: false,
         errorEmptyFieldsMessage: "",
         successMessage: "",
-        currentWeek: []
+        currentWeek: [],
     }
 
     _refreshEmergencies = () => {
@@ -85,22 +85,22 @@ class Emergencies extends Component {
     }
 
     getEmergencyInfo = (emergency, editEmergency) => {
-            this.setState({
-                emergencyInfos: emergency,
-                editing: true,
-                showForm: !this.state.showForm,
-                hotelInputValueEdit: emergency.hotel_id
-                
-            })
+        this.setState({
+            emergencyInfos: emergency,
+            editing: true,
+            showForm: !this.state.showForm,
+            hotelInputValueEdit: emergency.hotel_id
+
+        })
     }
 
     updateEmergency = (e, id) => {
         e.preventDefault();
         API.post('urgences/edit/' + id, this.state.emergencyInfos).then((response) => {
             console.log(response.data)
-            this._refreshemergencies()
+            this._refreshEmergencies()
             this.toggleForm();
-            this.showSuccessMessage("L'utilisateur est modifier")
+            this.showSuccessMessage("L'urgence est modifier")
         }).catch(error => {
             console.log(error.response)
         });
@@ -146,7 +146,7 @@ class Emergencies extends Component {
     }
 
     handleChange = (e) => {
-        const { name, value } = e.target;
+        const { name, value, type, checked } = e.target;
 
         if (name === "hotel_id") {
             this.state.editing ? this.setState({
@@ -162,6 +162,13 @@ class Emergencies extends Component {
                     hotels
                 })
             })
+        } else if (type === "checkbox") {
+            this.setState(prevState => ({
+                emergencyInfos: {
+                    ...prevState.emergencyInfos,
+                    emergencyDone: checked
+                }
+            }))
         } else {
 
             this.state.editing ? this.setState(prevState => ({
@@ -221,19 +228,20 @@ class Emergencies extends Component {
                 </section>
 
                 {showForm &&
-                    <Modal title={editing ? "Modifier un urgence" : "Ajouter un urgence"} handleClick={this.toggleForm} successMessage={successMessage}>
+                    <Modal title={editing ? "Modifier une urgence" : "Ajouter une urgence"} handleClick={this.toggleForm} successMessage={successMessage}>
                         <Form btnSubmit="Valider" handleSubmit={editing ? (e) => this.updateEmergency(e, emergencyInfos._id) : this.addEmergency} handleClick={this.toggleForm}>
-                            <Input label="Choisir un hôtel" name="hotel_id" type="text" value={ editing ? hotelInputValueEdit : hotelInputValue || ''} handleChange={(e) => this.handleChange(e)} >
-                            {hotels && hotels.length > 0 && !editingInputHotel ?
-                                <ul>
-                                    {hotelInputValueEdit || hotelInputValue !== "" && hotels.map((hotel, id) => <li onClick={() => this.addHotelInInput(hotel)} key={id} >{hotel.nom}</li>)}
-                                </ul> :
-                                ""
-                            }
+                            <Input label="Choisir un hôtel" name="hotel_id" type="text" value={editing ? hotelInputValueEdit : hotelInputValue || ''} handleChange={(e) => this.handleChange(e)} >
+                                {hotels && hotels.length > 0 && !editingInputHotel ?
+                                    <ul>
+                                        {(hotelInputValueEdit || hotelInputValue !== "") && hotels.map((hotel, id) => <li onClick={() => this.addHotelInInput(hotel)} key={id} >{hotel.nom}</li>)}
+                                    </ul> :
+                                    ""
+                                }
                             </Input>
                             <Input label="Choisir un binôme" name="equipe_id" type="select" value={editing ? emergencyInfos.equipe_id : newEmergency.equipe_id || ''} teamUrgency options={teams} handleChange={(e) => this.handleChange(e)} />
                             <Input label="Nom de l'urgence" name="resume" type="text" value={editing ? emergencyInfos.resume : newEmergency.resume || ''} handleChange={(e) => this.handleChange(e)} />
                             <Input label="Nature de l'urgence" name="detail" type="textarea" value={editing ? emergencyInfos.detail : newEmergency.detail || ''} handleChange={(e) => this.handleChange(e)} />
+                            {/* {editing && <><input type="checkbox" name="state" id="state" defaultChecked={this.state.emergencyInfos.emergencyDone} onChange={(e) => this.handleChange(e)} /><label htmlFor="state">Urgence traité</label></>} */}
                         </Form>
                     </Modal>
                 }

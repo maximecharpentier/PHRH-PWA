@@ -153,7 +153,7 @@ class Teams extends Component {
         const { showForm, teams, newTeam, showDeleteConfirm, successMessage, usersWithoutTeam, allSector, timeSlots } = this.state;
 
         let allTeams = teams.map((team) => {
-            return <Card key={team._id} team={team} deleteTeam={() => this.getIdForDelete(team._id)} />
+            return <Card key={team.equipe._id} team={team} deleteTeam={() => this.getIdForDelete(team.equipe._id)} />
         })
 
         return (

@@ -39,8 +39,6 @@ class Visitors extends Component {
         this._refreshVisitors()
     }
 
-   
-
     componentDidUpdate() {
         !this.state.showForm ? document.body.style.overflow = 'auto' : document.body.style.overflow = 'hidden'
         // console.log(this.state.visitors.filter(visitor => visitor.nom.toLowerCase().includes("nino")))
@@ -210,8 +208,8 @@ class Visitors extends Component {
                 {showForm &&
                     <Modal title={editing ? "Modifier un visiteur" : "Ajouter un visiteur"} handleClick={this.toggleForm} successMessage={successMessage}>
                         <Form btnSubmit="Valider" handleSubmit={editing ? (e) => this.updateUser(e, userInfos._id) : this.addVisitor} handleClick={this.toggleForm}>
-                            <Input label="Nom" name="nom" type="text" value={editing ? userInfos.nom : newVisitor.nom || ''} handleChange={(e) => this.handleChange(e)} />
                             <Input label="Prenom" name="prenom" type="text" value={editing ? userInfos.prenom : newVisitor.prenom || ''} handleChange={(e) => this.handleChange(e)} />
+                            <Input label="Nom" name="nom" type="text" value={editing ? userInfos.nom : newVisitor.nom || ''} handleChange={(e) => this.handleChange(e)} />
                             <Input label="Secteur" name="secteur" type="text" value={editing ? userInfos.secteur : newVisitor.secteur || ''} handleChange={(e) => this.handleChange(e)} />
                             {/* <Input label="Jour Bureau" name="jour_bureau" type="select" value={editing ? userInfos.jour_bureau : newVisitor.jour_bureau || ''} options={currentWeek} handleChange={(e) => this.handleChange(e)} /> */}
                             <Input label="Fonction de la personne" name="fonction" type="select" fonction value={editing ? userInfos.fonction : newVisitor.fonction || ''} options={fonctions} handleChange={(e) => this.handleChange(e)} />

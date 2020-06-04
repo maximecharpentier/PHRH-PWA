@@ -1,19 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ItemMenu from '../../../../assets/item-menu';
 import './Card.scss'
-import {getItem} from '../../../../api/api'
+import {getItem, getItems} from '../../../../api/api'
 
 const Card = ({ user, editUser, deleteUser, hotel, editHotel, deleteHotel, team, deleteTeam, showMore, emergency, editEmergency, deleteEmergency }) => {
     const [showMenu, setShowMenu] = useState(false);
-    const [firstUser, setFirstUser] = useState({});
-    const [secondUser, setSecondUser] = useState({});
     const [emergencyHotel, setEmergencyHotel] = useState({});
     const [emergencyTeam, setEmergencyTeam] = useState({});
+    const [emergencyDone, setEmergencyDone] = useState(false);
     const menuRef = useRef();
 
-    // const handleClickOutside = e => {
-    //     !menuRef.current.contains(e.target) && setShowMenu(false);
-    // };
+    const handleClickOutside = e => {
+        !menuRef.current.contains(e.target) && setShowMenu(false);
+    };
 
     const getDay = day => {
         switch (day) {
@@ -33,17 +32,13 @@ const Card = ({ user, editUser, deleteUser, hotel, editHotel, deleteHotel, team,
     };
 
     useEffect(() => {
-        if(team) {
-            getItem(team.user_a_id, setFirstUser)
-            getItem(team.user_b_id, setSecondUser)
-        }
         if(emergency) {
-            getItem(emergency.equipe_id, "/gestion/get/", setEmergencyTeam)
-            getItem(emergency.hotel_id, "/hotels/get/", setEmergencyHotel)
+            getItem( "/hotels/get/", setEmergencyHotel, emergency.hotel_id)
+            getItems( "/gestion/equipes/",setEmergencyTeam, emergency.equipe_id)
         }
-        // document.body.addEventListener('mousedown', handleClickOutside);
-        // return () => document.body.removeEventListener('mousedown', handleClickOutside);
-    }, [team, emergency]);
+        document.body.addEventListener('mousedown', handleClickOutside);
+        return () => document.body.removeEventListener('mousedown', handleClickOutside);
+    }, [emergency]);
 
 
     return (
@@ -53,7 +48,8 @@ const Card = ({ user, editUser, deleteUser, hotel, editHotel, deleteHotel, team,
                 <div ref={menuRef} className={showMenu ? "card-menu show" : "card-menu"}> <p onClick={editHotel}>Modifier</p> <p onClick={deleteHotel}>Supprimer</p></div>
                 <p className="text-overflow inline-block">{hotel.adresse}</p> <p className="inline-block right">{hotel.cp}</p>
                 <div className="card-line" />
-                <p className="inline-block">{hotel.nb_chambres_utilise}</p>
+                <p className="inline-block">{hotel.nb_chambres_utilise} chambres</p>
+                <p>{new Date(hotel.last_time_visited).getDate() + "/" + new Date(hotel.last_time_visited).getMonth() + "/" + new Date(hotel.last_time_visited).getFullYear()}</p>
             </div>
 
             : user ?
@@ -69,20 +65,21 @@ const Card = ({ user, editUser, deleteUser, hotel, editHotel, deleteHotel, team,
             : team ?
 
             <div className="card">
-                <p className="text-overflow">{firstUser.prenom} {firstUser.nom}</p> <span onClick={() => setShowMenu(!showMenu)}><ItemMenu /></span>
+                <p className="text-overflow"> {team.user_names.user_a}</p> <span onClick={() => setShowMenu(!showMenu)}><ItemMenu /></span>
                 <div ref={menuRef} className={showMenu ? "card-menu show" : "card-menu"}> <p onClick={deleteTeam}>Supprimer</p></div>
-                <p>{secondUser.prenom} {secondUser.nom}</p>
+                <p className="bold text-overflow inline-block f18">{team.user_names.user_b}</p> <p className="inline-block right">{team.equipe.secteur_binome}</p>
                 <div className="card-line" />
-                <div className="flex-container"><p className="text-overflow">{team.plage_h}</p> <p>{team.secteur_binome}</p></div>
+                <div className="flex-container"><p className="text-overflow">{team.equipe.plage_h}</p> </div>
             </div>
 
             : 
             <div className="card">
-                <p className="text-overflow">{emergency.resume}</p> <span onClick={() => setShowMenu(!showMenu)}><ItemMenu /></span>
+                <p className="text-overflow">{emergencyHotel.nom}</p> <span onClick={() => setShowMenu(!showMenu)}><ItemMenu /></span>
                 <div ref={menuRef} className={showMenu ? "card-menu show" : "card-menu"}> <p onClick={editEmergency}>Modifier</p> <p onClick={deleteEmergency}>Supprimer</p></div>
-                <p>{emergency.detail}</p>
+                <p className="text-overflow inline-block">{emergencyHotel.nb_chambres_utilise} chambres</p> <p className="inline-block right">{emergencyHotel.cp}</p>
                 <div className="card-line" />
-                <div className="flex-container"><p className="text-overflow">{emergency.equipe_id}</p> <p>{emergencyHotel.nom}</p></div>
+                <div className="flex-container"><p className="text-overflow">{emergencyTeam.user_names !== undefined ? emergencyTeam.user_names.user_a : ""}</p>  <p>{emergency.resume}</p></div>
+                <p className="text-overflow">{emergencyTeam.user_names !== undefined ? emergencyTeam.user_names.user_b : ""}</p>
             </div>
              
     )

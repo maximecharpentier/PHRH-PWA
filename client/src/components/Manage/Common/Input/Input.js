@@ -16,7 +16,7 @@ const Input = props => {
                            props.secteur || props.timeSlots || props.fonction ?
                           <option key={id} value={option}>{option}</option> :
                           props.teamUrgency ? 
-                            <option key={id} value={option._id}>{option.user_a_id}/ {option.user_b_id}</option>
+                            <option key={id} value={option.equipe._id}>{option.user_names.user_a}/ {option.user_names.user_b}</option>
                           :
                           <option key={id} value={option.jourNombre}>{option.jour}</option>
                         )}

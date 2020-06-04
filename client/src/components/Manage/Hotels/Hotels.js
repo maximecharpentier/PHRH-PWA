@@ -5,11 +5,9 @@ import Input from '../Common/Input/Input';
 import Form from '../Common/Form/Form';
 import Modal from '../Common/Modal/Modal';
 import Nav from '../Common/Nav/Nav';
-import DatePicker, { registerLocale, setDefaultLocale } from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
-// import fr from 'date-fns/locale/fr';
-// registerLocale("fr", fr)
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import fr from "date-fns/locale/fr";
 import { API } from '../../../api/api';
 
 
@@ -23,6 +21,7 @@ class Hotels extends Component {
         showDeleteConfirm: false,
         successMessage: "",
     }
+    
 
 
 
@@ -45,7 +44,7 @@ class Hotels extends Component {
     addHotel = (e) => {
         e.preventDefault();
         const { nom, adresse, cp, ville, nb_chambres_utilise, nb_visites_periode, last_time_visited } = e.target;
-        if (nom.value !== "" && adresse.value !== "" && cp.value !== "" && ville.value !== "" && nb_chambres_utilise.value !== "" && last_time_visited.value !== "") {
+        if (nom.value !== "" && adresse.value !== "" && cp.value !== "" && ville.value !== "" && nb_chambres_utilise.value !== "" ) {
             API.post('hotels/add/', this.state.newHotel).then((response) => {
                 console.log(response.data)
                 this.setState({
@@ -66,17 +65,14 @@ class Hotels extends Component {
         }
     }
 
-    getHotelInfo = (user, editHotel) => {
-        editHotel ?
+    getHotelInfo = (user) => {
             this.setState({
-                hotelInfos: user,
+                hotelInfos: {
+                    ...user,
+                    last_time_visited: new Date(user.last_time_visited).getTime()
+                },
                 editing: true,
                 showForm: !this.state.showForm,
-            })
-            :
-            this.setState({
-                hotelInfos: user,
-                showMore: !this.state.showMore,
             })
     }
 
@@ -159,12 +155,12 @@ class Hotels extends Component {
         this.state.editing ? this.setState(prevState => ({
             hotelInfos: {
                 ...prevState.hotelInfos,
-                last_time_visited: e
+                last_time_visited: new Date(e).getTime()
             }
         })) : this.setState(prevState => ({
             newHotel: {
                 ...prevState.newHotel,
-                last_time_visited: e
+                last_time_visited: new Date(e).getTime()
             }
         }))
 
@@ -176,6 +172,7 @@ class Hotels extends Component {
         let allHotels = hotels.map((hotel) => {
             return <Card key={hotel._id} hotel={hotel} editHotel={() => this.getHotelInfo(hotel, true)} showMore={() => this.getHotelInfo(hotel)} deleteHotel={() => this.getIdForDelete(hotel._id)} />
         })
+
 
         return (
             <div className="hotel-container">
@@ -201,8 +198,7 @@ class Hotels extends Component {
                             <Input label="Code postal" name="cp" type="text" value={editing ? hotelInfos.cp : newHotel.cp || ''} handleChange={(e) => this.handleChange(e)} />
                             <Input label="Ville" name="ville" type="text" value={editing ? hotelInfos.ville : newHotel.ville || ''} handleChange={(e) => this.handleChange(e)} />
                             <Input label="Nombre de chambres" name="nb_chambres_utilise" type="text" value={editing ? hotelInfos.nb_chambres_utilise : newHotel.nb_chambres_utilise || ''} handleChange={(e) => this.handleChange(e)} />
-                            {/* <Input label="Nom" name="last_time_visited" type="text" value={editing ? hotelInfos.last_time_visited : newHotel.last_time_visited || ''} handleChange={(e) => this.handleChange(e)} /> */}
-                            {/* <DatePicker dateFormat="dd/mm/YYYY" locale="fr" name="last_time_visited"  selected={editing ? hotelInfos.last_time_visited : newHotel.last_time_visited || ''} onChange={this.handleChangeDate} /> */}
+                            <DatePicker dateFormat="dd MMMM yyyy" locale={fr}  name="last_time_visited" selected={editing ? new Date(hotelInfos.last_time_visited).getTime() : newHotel.last_time_visited} onChange={this.handleChangeDate} />
                         </Form>
                     </Modal>
                 }
