@@ -69,7 +69,7 @@ router.route('/get/:iduser').get((req, res) => {
  */
 router.route('/users').get(async (req, res) => {
     //get users
-    User.find({ fonction: { $nin: ['Superviseur'] }}, '_id nom prenom')
+    User.find({ fonction: { $nin: ['Superviseur'] }}, '_id nom prenom secteur')
         //ici on passe par une fonction async pour pouvoir peupler 'users' 
         //pck si on le peuple ds le .then de AssocUserUser.find alors 
         //const "users" n'est pas remplie

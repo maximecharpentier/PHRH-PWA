@@ -1,0 +1,66 @@
+
+.emergency-container .input-container:first-child{
+  margin-bottom: 0;
+}
+.input-container {
+  position: relative;
+  display: inline-block;
+  width: calc(100% / 2 - 25px);
+  margin: 25px 0;
+  &.textarea {
+    width: 100%;
+    margin-left: 0!important;
+  }
+  
+  &:nth-child(odd) {
+    margin-right: 15px;
+  }
+  &:nth-child(even) {
+    margin-left: 15px;
+  }
+  label,
+  input {
+    display: block;
+    font-size: 14px;
+    text-transform: capitalize;
+  }
+  label {
+    margin-bottom: 10px;
+  }
+  textarea {
+    outline: none;
+    font-size: 14px;
+    border: 1px solid #111215;
+    border-radius: 4px;
+    background-color: #ffffff;
+    padding-left: 10px;
+    padding-top: 10px;
+  }
+  input, select {
+    outline: none;
+    width: calc(100% - 14px);
+    height: 30px;
+    border: 1px solid #111215;
+    border-radius: 4px;
+    background-color: #ffffff;
+    padding-left: 10px;
+  }
+  select {
+    height: 35px;
+  }
+  ul  {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    background-color: white;
+    li {
+      cursor: pointer;
+      font-size: 12px;
+      padding: 6px 2px;
+      background-color: white;
+      &:hover{
+        background-color: rgba(165, 161, 161, 0.28);
+      }
+    }
+  }
+}

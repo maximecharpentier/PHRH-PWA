@@ -15,17 +15,6 @@ export const StyledNavbar = styled.div`
     align-items: center;
 `
 
-export const YellowCircle = styled.div`
-    z-index: -1;
-    position: absolute;
-    bottom: 0;
-    left: -75px;
-    width: 200px;
-    height: 200px;
-    background: #FFA700;
-    border-radius: 100%;
-`
-
 export const StyledAccount = styled.div`
     color: white;
     width: 50px;
@@ -49,13 +38,5 @@ export const MenuItems = styled.div`
     align-items: center;
     justify-content: center;
     margin-right: 100px;
-    a {
-        color: #4357EA;
-        font-weight: bold;
-    }
     
-`
-
-export const MenuItem = styled.p`
-    margin-right: 50px;
 `

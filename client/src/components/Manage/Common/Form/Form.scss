@@ -1,0 +1,28 @@
+@import "../../../../styles/mixins.scss";
+
+.popin-form {
+  &-content {
+    width: 80%;
+    margin: auto;
+    padding: 30px 0;
+    p {
+      text-align: center;
+    }
+  }
+  &-btn-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 90px;
+    border-top: 1px solid #eff2fb;
+    width: 100%;
+    button {
+      @include button;
+      &:first-child {
+        color: #4357ea;
+        border: 2px solid #4357ea;
+        background-color: white;
+      }
+    }
+  }
+}
