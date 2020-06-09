@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 //connection a la base mongo
-const uri = `mongodb://${process.env.SERVER_HOST}:27017/PHRH`;
+const uri = `mongodb://localhost:27017/PHRH`;
 //loop connect command (pour deploiement)
 var connectWithRetry = function() {
   return mongoose.connect(
