@@ -37,7 +37,17 @@ const assoc_user_userSchema = new Schema({
 assoc_user_userSchema.statics.insertIfNotExist = async function(assoc) {
     const docs = await this.find({user_a_id : assoc.user_a_id, user_b_id: assoc.user_b_id}).exec()
     if (!docs.length){
-        return await assoc.save()
+        try {
+            const assocDB = await assoc.save()
+            return assocDB
+        } catch(err) {
+            console.log(
+                "Equipe invalide : " + '\n' + 
+                assoc + '\n' +
+                "Erreur : " + '\n' +
+                err
+            )
+        }
     }
     else{
         //throw new Error('Equipe existe deja', null);

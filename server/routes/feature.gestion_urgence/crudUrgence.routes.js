@@ -41,7 +41,8 @@ router.route('/get/:id').get((req, res) => {
 router.route('/add').post((req, res) => {
     //creer model Hotel
     const urgence = new Urgence({
-        hotel_id : req.body.hotel_id, 
+        hotel_id : req.body.hotel_id,
+        equipe_id : req.body.equipe_id,  
         resume : req.body.resume, 
         detail : req.body.detail 
     })

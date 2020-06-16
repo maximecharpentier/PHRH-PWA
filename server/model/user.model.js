@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
-/*Schema = mongoose.Schema,
-    bcrypt = require('bcrypt'),
-    SALT_WORK_FACTOR = 10;*/
+const ucFirst = require('../utils/utils').capitalize
+
+//const XLSXHelper = require('./module_xlsx.helper');
 
 const Visite = require("./visite.model");
 const Vehicule = require("./vehicule.model");
@@ -10,8 +10,13 @@ const Schema = mongoose.Schema;
     /*bcrypt = require('bcrypt'),
     SALT_WORK_FACTOR = 10;*/
 
-const fonction_administrateur = 'Superviseur'
-const functions = ['Médiateur', 'Intervenant terrain', 'Mediateur SAS', fonction_administrateur]
+/*const fonction_administrateur = 'Superviseur'
+const functions = () => {
+    cpnst mappingFile = 
+    const refDocUserAbsPath =     path.resolve('./datas/sources/Adresses Terrain.xlsx')
+    const fileReader = XLSXHelper()
+    ['Médiateur', 'Intervenant terrain', 'Mediateur SAS', fonction_administrateur]
+}*/
 
 const userSchema = new Schema({
     nom : {
@@ -35,7 +40,13 @@ const userSchema = new Schema({
     fonction : {
         type: String,
         required: true, 
-        enum: functions,
+        trim: true,
+        maxlength: 25
+        //enum: functions, //tmp : ici pas d'enum car cela cause une sensibilité trop élevé pour l'import, il faudrai adapter le code
+    },
+    adresse : {
+        type: String,
+        required: false, 
     },
     secteur : {
         type: String, 
@@ -57,7 +68,17 @@ const userSchema = new Schema({
 userSchema.statics.insertIfNotExist = async function(user) {
     const docs = await this.find({nom : user.nom}).exec()
     if (!docs.length){
-        return await user.save()
+        try {
+            const userDB = await user.save()
+            return userDB
+        } catch(err) {
+            console.log(
+                "User invalide : " + '\n' + 
+                user + '\n' +
+                "Erreur : " + '\n' +
+                err
+            )
+        }
     }
     else{
         //throw new Error('Utilisateur <<'+ user.nom +'>> existe deja', null);
@@ -65,7 +86,13 @@ userSchema.statics.insertIfNotExist = async function(user) {
     }
 }
 
+userSchema.methods.getNamePres = function() {
+    return `${ucFirst(this.prenom)} ${ucFirst(this.nom).substring(0,3)}.`  
+}
+
 
 const User = mongoose.model('Utilisateur', userSchema)
 
 module.exports = User
+//exports.AvailableFunctions = functions
+//exports.SuperviseurFunctionName = fonction_administrateur
