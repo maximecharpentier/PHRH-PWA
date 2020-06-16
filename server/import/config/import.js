@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const BaseValueInsertor = require("../import/libs/DBFeeder")
+const BaseValueInsertor = require("../libs/DBFeeder")
 
 /**
  * IMPORT VALUES IN DB FOR TEST OR MIGRATION
@@ -36,7 +36,7 @@ async function insertTestDB() {
     //recupération de l'objet d'import
     let baseValueInsertor = new BaseValueInsertor(
         mappingFile = null, 
-        testDB = require('../import/test/data.json')
+        testDB = require('../test/data.json')
         )
 
     //inserer les données de test
@@ -56,7 +56,7 @@ async function insertRealDB() {
 
      //recupération de l'objet d'import
      let baseValueInsertor = new BaseValueInsertor(
-         mappingFile = require('../import/sources/mappingfile.json'), 
+         mappingFile = require('../sources/mappingfile.json'), 
          null
          )
  

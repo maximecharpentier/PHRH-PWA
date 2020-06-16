@@ -2,9 +2,8 @@ const JwtStrategy = require('passport-jwt').Strategy
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const fs = require('fs');
 const path = require('path');
-//const mongoose = require('mongoose');
-//const User = mongoose.model('Utilisateur'); //MissingSchemaError: Schema hasn't been registered for model "Utilisateur".
-const User = require("../model/user.model");
+const mongoose = require('mongoose');
+const User = mongoose.model('User'); //MissingSchemaError: Schema hasn't been registered for model "Utilisateur".
 
 // Get public key (la clef publique est utilisée comme secret phrase pour initialiser la strategy JW Token)
 const pathToKey = path.join(__dirname, '..', 'id_rsa_pub.pem')

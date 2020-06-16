@@ -18,7 +18,7 @@ app.use(express.json())
 //MONGO DB & IMPORT DES DONNEES
 require('./config/database')
 
-//MODELS (require les models ici pour pouvoir les appeler partout sur "mongoose.model('ModelName')" sans avoir a mettre le chemin relatif dans les fichiers)
+// require des models ici pour pouvoir les appeler partout avec "mongoose.model('ModelName')" sans avoir a mettre le chemin relatif dans les fichiers
 require('./config/models')
 
 //PASSPORT
@@ -33,9 +33,13 @@ require('./config/passport')(passport)
 // This will initialize the passport object on every request
 app.use(passport.initialize())
 
+//SWAGGER
+require('./config/swagger')(app)
+
 /**
  * ROUTES
  */
+
 const crudHotelRouter = require("./routes/feature.gestion_couverture/crudHotel.routes.js")
 app.use("/hotels", crudHotelRouter)
 
@@ -63,7 +67,8 @@ app.use('/noter', featureNoterHotelRouter)*/
 /**
  * SERVER
  */
-const serv_port = "27017"; //process.env.SERV_PORT
+
+const serv_port = process.env.SERVER_PORT ? process.env.SERVER_PORT : "27017"; //process.env.SERV_PORT
 app.listen(serv_port, function() {
   console.log("server runing PORT: " + serv_port);
 })

@@ -41,5 +41,5 @@ mongoose.connection.once("open", async () => {
     console.log("PHRH database connection established");
 
     //import
-    require('./import')
+    require('../import/config/import')
 });
