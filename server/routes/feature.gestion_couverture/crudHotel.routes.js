@@ -1,16 +1,21 @@
 const router = require('express').Router();
+const passport = require('passport')
+const mongoose = require('mongoose');
+const Hotel = mongoose.model('Hotel');
 
-const Hotel = require('../../model/hotel.model');
+//const Hotel = require('../../model/hotel.model');
 
-/*
+/**
  * @route : get all
- * @method : GET
- * @param (optionnal) : filter Object : #toDefine
+ * @method GET
+ * @auth : dans l'entete de la requette "Authorisation" doit contenir le token
+ * @param {void} filter Object : #toDefine
  * @return : mixed 
  *      (array[ (Object JSON) ]) : tableau d'object model Hotel
  *      (string) : error message
  */
-router.route('/').get((req, res) => {    
+router.route('/').get(passport.authenticate('jwt', { session: false }), (req, res) => {
+    //#REPRENDRE ICI ET REPRODUIRE POUR TOUTES LES ROUTES    
     //let mongoFilter = []
     let filterObj = {}
     /*
@@ -34,28 +39,28 @@ router.route('/').get((req, res) => {
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
-/*
+/**
  * @route : get
- * @method : GET
- * @param : (string) : id Hotel
+ * @method GET
+ * @param {string} : id Hotel
  * @return : mixed 
  *      (Object JSON) : object model Hotel
  *      (string) : error message
  */
-router.route('/get/:id').get((req, res) => {
+router.route('/get/:id').get(passport.authenticate('jwt', { session: false }), (req, res) => {
     //get hotel from DB
     Hotel.findById(req.params.id)
         .then( hotel => res.status(200).json(hotel))
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
-/*
+/**
  * @route : add
- * @method : POST
+ * @method POST
  * @param : (Object JSON) : object Hotel conforme au schema (voir schema)
  * @return : (string) : error/confirm message
  */
-router.route('/add').post((req, res) => {
+router.route('/add').post(passport.authenticate('jwt', { session: false }), (req, res) => {
     //creer model Hotel
     const hotel = new Hotel({
         nom :           req.body.nom, 
@@ -73,10 +78,10 @@ router.route('/add').post((req, res) => {
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
-/*
+/**
  * @route : edit
- * @method : POST
- * @param : (string) : id Hotel
+ * @method POST
+ * @param {string} : id Hotel
  * @param : (object JSON) : {field1 : newValue, field2 : newValue ...}, 
  *      "fieldX" : (string) nom champ conforme au naming du model Hotel
  *      "newValue" : mixed 
@@ -85,7 +90,7 @@ router.route('/add').post((req, res) => {
  *      (array) : tableau d'objet model Hotel
  *      (string) : error message
  */
-router.route('/edit/:id').post((req, res) => {
+router.route('/edit/:id').post(passport.authenticate('jwt', { session: false }), (req, res) => {
     //create 
     const propList = [
         'nom',      'adresse',              'cp',
@@ -116,13 +121,13 @@ router.route('/edit/:id').post((req, res) => {
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
-/*
+/**
  * @route : delete
- * @method : DELETE
- * @param : (string) : id Hotel
+ * @method DELETE
+ * @param {string} : id Hotel
  * @return : (string) : error/confirm message
  */
-router.route('/delete/:id').delete((req, res) => {
+router.route('/delete/:id').delete(passport.authenticate('jwt', { session: false }), (req, res) => {
     Hotel.findByIdAndDelete(req.params.id)
         .then(() => { res.status(200).json('Hotel supprimé')})
         .catch(err => res.status(400).json('Erreurs: ' + err))

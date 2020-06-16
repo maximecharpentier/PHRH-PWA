@@ -55,6 +55,6 @@ assoc_user_userSchema.statics.insertIfNotExist = async function(assoc) {
     }
 }
 
-const AssocUserUser = mongoose.model('AssocUserUser', assoc_user_userSchema)
+const AssocUserUser = mongoose.model('Assoc_User_User', assoc_user_userSchema)
 
 module.exports = AssocUserUser

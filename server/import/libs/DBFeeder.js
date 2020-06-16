@@ -1,29 +1,31 @@
 const path = require('path');
 const XLSXHelper = require('./module_xlsx.helper');
-const Hotel = require("./../model/hotel.model");
-const Visite = require("../model/visite.model");
-const User = require("../model/user.model");
-const Anomalie = require("./../model/anomalie.model");
-const Assoc_user_visite = require("./../model/assoc_user_visite.model");
-const Assoc_user_user = require("./../model/assoc_user_user.model");
-const Priorisation = require("./../model/priorisation.model");
-const Tache = require("./../model/tache.model");
-const Urgence = require("./../model/urgence.model");
-const Vehicule = require("./../model/vehicule.model");
-const ModelFactory = require("./../model/model.factory");
+const mongoose = require('mongoose');
+const Hotel = mongoose.model('Hotel');
+const Visite = mongoose.model('Visite');
+const User = mongoose.model('User');
+const Anomalie = mongoose.model('Anomalie');
+const Assoc_user_visite = mongoose.model('Assoc_User_Visite');
+const Assoc_user_user = mongoose.model('Assoc_User_User');
+const Priorisation = mongoose.model('Priorisation');
+const Tache = mongoose.model('Tache');
+const Urgence = mongoose.model('Urgence');
+const Vehicule = mongoose.model('Vehicule');
 
-class BaseValueInsertor {
+class DBFeeder {
 
-  /* @param : mappingFile : object : contient le fichier json de mapping pour constituer le tableau de données a inserer, a partir de fichiers sources externes
+  /**
+   * @param : mappingFile : object : contient le fichier json de mapping pour constituer le tableau de données a inserer, a partir de fichiers sources externes
    * @param : objectDatas : (optionnal) object : objet contenant les données à inserer (voir data.sample.json)
    */
   constructor(mappingFile, objectDatas) {
     this.datasToInsert =  objectDatas ? objectDatas : {} 
     this.mappingFile =    mappingFile ? mappingFile : {} 
-    this.pathSources =    './datas/sources/' //emplacement des données sources pour le mapping
+    this.pathSources =    './import/sources/' //emplacement des données sources pour le mapping
   }
 
-  /* @desc : command de netpyage de la base de donnée
+  /** 
+   * @desc : command de netpyage de la base de donnée
    * @retur : void
    */
   static async resetDB() {
@@ -39,6 +41,14 @@ class BaseValueInsertor {
     await Vehicule.deleteMany({})
   }
 
+  /**
+   * @desc Fonction chapeau pour build puis lancer l'insertion (historique : 
+   * l'insertion a été crées al abase pour les données de test et est réutilisé 
+   * telle quelle ici une pour inseser le tableau build)
+   * @param {callback} cbconfirm 
+   * @param {callback} cberror 
+   * @param {bool} deleteOldValues 
+   */
   async importData(cbconfirm, cberror, deleteOldValues) {
     const buildOk = await this.buildDatasToInsert()
     if(buildOk !== this.BUILD_DATA_FAILED){
@@ -49,7 +59,8 @@ class BaseValueInsertor {
     }
   }
 
-  /* @desc : fonction d'insertion du fichier de données json dans la base mongoDB
+  /**  
+   * @desc : fonction d'insertion du fichier de données json dans la base mongoDB
    * @param : cbconfirm : call back : cb success
    * @param : cberror : call back : cb erreur
    * @param : deleteOldValues : bool : reset la base de donnée
@@ -234,10 +245,17 @@ class BaseValueInsertor {
       } 
     }
     //End : Inserer vehicules
-    console.log('Insertion des données terminées')
+    console.log('Insertion des données terminée')
   }
 
-  //recreer tableau type data a partir de mapping pour appeler insertData(datas)
+  /**
+   * @desc : build le tableau dataToInsert à partir de mapping 
+   * (historique: l'insertion d'un tableau de test format json 
+   * a été implémentée en premier, par contrainte de temps j'ai 
+   * décidé pour l'import de données de rebuild un tableau 
+   * identique en structure au tableau utilisé pour inserer 
+   * les données de test, pour ensuite executer l'insertion avec)
+   */
   async buildDatasToInsert() {
     //cette partie sert a parcourir les fichiers de reference pour peupler les entité, 
     //ensuite la fonction de recuperation de la valeur en fonciton du mapping, elle, ouvre 
@@ -329,7 +347,8 @@ class BaseValueInsertor {
     return true
   }
 
-  /* @desc : fonction pour importer une entité de base dans le tableai dataToInsert 
+  /** 
+   * @desc : fonction pour importer une entité de base dans le tableai dataToInsert 
    * @param entityName       : (string)  : nom de l'entité
    * @param refDocAbsPath    : (string)  : path de fichier absolue vers le fichier de référence pour le parcours
    * @param beginLineRefDoc  : (integer) : ligne a partir de laquelle commencer la lecture du ref doc (numéroté a partir de 1) (=2 : revient a sauter la première ligne)
@@ -403,7 +422,8 @@ class BaseValueInsertor {
     }
   }
 
-  /* @desc : fonction recurssive qui depuis un fichier de reference va creer peupler l'entité grace au fichier de mapping et inserer l'entité dans le tableau final pour insertion
+  /** 
+   * @desc : fonction recurssive qui depuis un fichier de reference va creer peupler l'entité grace au fichier de mapping et inserer l'entité dans le tableau final pour insertion
    * @param : refDocFileReader : classe outil du module du file reader choisit (ici module xlsx)
    * @param : entityName : nom de l'entité a extraire
    * @param : ligne courante : pour le parcours du fichier de reference, ligne en cours d'analyse
@@ -437,7 +457,8 @@ class BaseValueInsertor {
     return entity
   }
 
-  /* @desc permet de lire une ligne du fichier de mapping afin de recuperer la bonne valeur a inserer pour l'entité courante du fichier de référence
+  /** 
+   * @desc permet de lire une ligne du fichier de mapping afin de recuperer la bonne valeur a inserer pour l'entité courante du fichier de référence
    * @param : refSheetFileReader : objet module_xlsx, helper de manipulation de l'outil de lecture du fichier
    * @param : propName : propriété de l'entité en cours de traitement
    * @param : currentLine : ligne du fichier
@@ -541,13 +562,13 @@ class BaseValueInsertor {
   }
 }
 
-BaseValueInsertor.BUILD_FAILED = "la construction du tableau de données a inserer a échoué"
-BaseValueInsertor.SET_PROP_FAILED = "la propriété de l\'entité n\'a pas pu se set"
-BaseValueInsertor.JOIN_FAILED = "la jointure a échouée"
-BaseValueInsertor.FILL_ENTITY_FAILED = "l'entité n'a pas pu se set"
-BaseValueInsertor.IMPORT_ENTITY_FAILED = "l'entité ne peux etre importée"
-BaseValueInsertor.SKIP_ENTITY = "passer a l'entité suivante"
-BaseValueInsertor.BUILD_ENTITY_ARRAY_FAILED = "erreur de construction du tableau d'entités"
-BaseValueInsertor.IMPORT_FAILED = "l'importation des entités a échoué"
+DBFeeder.BUILD_FAILED = "la construction du tableau de données a inserer a échoué"
+DBFeeder.SET_PROP_FAILED = "la propriété de l\'entité n\'a pas pu se set"
+DBFeeder.JOIN_FAILED = "la jointure a échouée"
+DBFeeder.FILL_ENTITY_FAILED = "l'entité n'a pas pu se set"
+DBFeeder.IMPORT_ENTITY_FAILED = "l'entité ne peux etre importée"
+DBFeeder.SKIP_ENTITY = "passer a l'entité suivante"
+DBFeeder.BUILD_ENTITY_ARRAY_FAILED = "erreur de construction du tableau d'entités"
+DBFeeder.IMPORT_FAILED = "l'importation des entités a échoué"
 
-module.exports = BaseValueInsertor;
+module.exports = DBFeeder;

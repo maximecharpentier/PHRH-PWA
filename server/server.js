@@ -1,12 +1,19 @@
 const express = require("express");
 const cors = require("cors");
-const mongoose = require("mongoose");
 require("dotenv").config();
 
-const app = express();
+/**
+ * GENERAL SETUP
+ */
+
+//EXPRESS
+const app = express()
+
 //brancher cors
-app.use(cors());
+app.use(cors())
+
 //brancher le parseur d'HttpRequest
+<<<<<<< HEAD
 app.use(express.json());
 
 //connection a la base mongo
@@ -35,80 +42,64 @@ connectWithRetry();
 
 //lancer le serveur
 const serv_port = "27017"; //process.env.SERV_PORT
-app.listen(serv_port, function() {
-  console.log("server runing PORT: " + serv_port);
-});
+=======
+app.use(express.json())
 
-//ouvrir & deleguer la gestion de la connection a nodemon
-mongoose.connection.once("open", async () => {
-  console.log("PHRH database connection established");
+//MONGO DB & IMPORT DES DONNEES
+require('./config/database')
 
-  const BaseValueInsertor = require("./helpers/BaseValueInsertor.helper");
-  /*
-   * CLEAN DB
-   */
-  if(process.env.RESET_DB === 'true') {
-    await BaseValueInsertor.resetDB()
-    console.log('Base de données éffacée')
-  }
-  /*
-   * INSERER DONNEES DE TEST
-   */
-  if(process.env.INSERT_TEST_DB === 'true') {
-    console.log('Insertion des données DE TEST en cours ...')
-    let baseValueInsertor = new BaseValueInsertor(
-      mappingFile = null, 
-      testDB = require('./datas/test/data.json')
-      )
-    await baseValueInsertor.insertData(
-      msg => { console.log(msg) },
-      err => { console.error(err) },
-      insertTestAssocEntities = true //tmp : utiliser ce paramètre quand on insert les data de test
-    )
-    console.log('l\'Insertion des données DE TEST est terminée')
-  }
+// require des models ici pour pouvoir les appeler partout avec "mongoose.model('ModelName')" sans avoir a mettre le chemin relatif dans les fichiers
+require('./config/models')
 
-  /*
-   * INSERER DONNEES REELLES
-   */
-  if(process.env.INSERT_REAL_DB === 'true') {
-    console.log('Insertion des données REELLES en cours ...')
-    let baseValueInsertor = new BaseValueInsertor(
-      mappingFile = require('./datas/sources/mappingfile.json'), 
-      null
-      )
-    await baseValueInsertor.importData(
-      msg => { console.log(msg) },
-      err => { console.error(err) },
-      insertTestAssocEntities = false //tmp : utiliser ce paramètre quand on insert les data de test
-    )
-    console.log('l\'Insertion des données REELLES est terminée')
-  }
-});
+//PASSPORT
+const passport = require('passport')
 
-//en cas d'erreur de connection au server
-mongoose.connection.on("error", error => console.log(`Erreur de connection a l\'uri : ${uri}`, error));
+//generate keypairs for passport
+require('./generateKeypair')
 
-//Route to end points
-const crudHotelRouter = require("./routes/feature.gestion_couverture/crudHotel.routes.js");
-app.use("/hotels", crudHotelRouter);
+// Pass the global passport object into the configuration function
+require('./config/passport')(passport)
 
-const crudUrgenceRouter = require("./routes/feature.gestion_urgence/crudUrgence.routes.js");
-app.use("/urgences", crudUrgenceRouter);
+// This will initialize the passport object on every request
+app.use(passport.initialize())
 
-const crudUserRouter = require("./routes/feature.gestion_utilisateur/crudUser.routes.js");
-app.use("/users", crudUserRouter);
+//SWAGGER
+require('./config/swagger')(app)
 
-const manageEquipesRouter = require("./routes/feature.gestion_couverture/manageEquipe.routes.js");
-app.use("/gestion/equipes", manageEquipesRouter);
+/**
+ * ROUTES
+ */
 
-const plannnifierVisitesRouter = require("./routes/feature.plannifier_visite/crudVisite.routes.js");
-app.use("/gestion/visites", plannnifierVisitesRouter);
+const crudHotelRouter = require("./routes/feature.gestion_couverture/crudHotel.routes.js")
+app.use("/hotels", crudHotelRouter)
 
-const suggestionsVisitesRouter = require("./routes/feature.plannifier_visite/plannifierVisite.routes.js");
-app.use("/gestion/visites", suggestionsVisitesRouter);
+const crudUrgenceRouter = require("./routes/feature.gestion_urgence/crudUrgence.routes.js")
+app.use("/urgences", crudUrgenceRouter)
 
-const authRouter =  require("./routes/feature.authentification/auth.routes.js");
-app.use("/auth", authRouter);
+const crudUserRouter = require("./routes/feature.gestion_utilisateur/crudUser.routes.js")
+app.use("/users", crudUserRouter)
+
+const manageEquipesRouter = require("./routes/feature.gestion_couverture/manageEquipe.routes.js")
+app.use("/gestion/equipes", manageEquipesRouter)
+
+const plannnifierVisitesRouter = require("./routes/feature.plannifier_visite/crudVisite.routes.js")
+app.use("/gestion/visites", plannnifierVisitesRouter)
+
+const suggestionsVisitesRouter = require("./routes/feature.plannifier_visite/plannifierVisite.routes.js")
+app.use("/gestion/visites", suggestionsVisitesRouter)
+
+const authRouter =  require("./routes/feature.authentification/auth.routes.js")
+app.use("/auth", authRouter)
+
 /*const featureNoterHotelRouter = require('./routes/feature\.noterhotel/noterHotel.routes.js')
 app.use('/noter', featureNoterHotelRouter)*/
+
+/**
+ * SERVER
+ */
+
+const serv_port = process.env.SERVER_PORT ? process.env.SERVER_PORT : "27017"; //process.env.SERV_PORT
+>>>>>>> 37fce98b6c834362efb623bf53ff0123cb039f7d
+app.listen(serv_port, function() {
+  console.log("server runing PORT: " + serv_port);
+})

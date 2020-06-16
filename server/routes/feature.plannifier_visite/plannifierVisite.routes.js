@@ -1,21 +1,19 @@
 const router = require('express').Router();
+const passport = require('passport');
+const mongoose = require('mongoose');
+const Visite = mongoose.model('Visite');
+const Urgence = mongoose.model('Urgence');
+const User = mongoose.model('User');
 
-const ObjectId = require('mongoose').Types.ObjectId;
-const Visite = require('../../model/visite.model');
-const Urgence = require('../../model/urgence.model');
-const User = require('../../model/user.model');
-const Hotel = require('../../model/hotel.model');
-const Assoc_user_visite = require('../../model/assoc_user_visite.model');
-
-/*
+/**
  * @route : get all visites
- * @method : GET
- * @param : void
+ * @method GET
+ * @param {void}
  * @return : mixed 
  *      (array[ (Object JSON) ]) : tableau d'object model Visite
  *      (string) : error message
  */
-router.route('/suggestions').get((req, res) => {
+router.route('/suggestions').get(passport.authenticate('jwt', { session: false }), (req, res) => {
     //QUESTION : l'affichage de la liste se fait pour un binome ? -> metre des filtrs custom -> OK
     //notes :
         //pour les contre-visites : elles sont automatiquement set lorsque un Hotel a une anomalie
@@ -158,13 +156,13 @@ router.route('/suggestions').get((req, res) => {
         */
 })
 
-/*
+/**
  * @route : plannifier une visite (equivalent à add)
- * @method : POST
+ * @method POST
  * @param : (Object JSON) : object Visite conforme au schema (voir schema)
  * @return : (string) : error/confirm message
  */
-router.route('/plannifier').post((req, res) => {
+router.route('/plannifier').post(passport.authenticate('jwt', { session: false }), (req, res) => {
     //#SAME AS PLANNIFIER dans crudVisite
     //creer model Visite
     const visite = new Visite({
