@@ -2,60 +2,60 @@ const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
+//generate keypairs for passport
+require("./generateKeypair");
+
 /**
  * GENERAL SETUP
  */
 
 //EXPRESS
-const app = express()
+const app = express();
 
 //brancher cors
-app.use(cors())
+app.use(cors());
 
 //brancher le parseur d'HttpRequest
-app.use(express.json())
+app.use(express.json());
 
 //MONGO DB & IMPORT DES DONNEES
-require('./config/database')
+require("./config/database");
 
 //MODELS (require les models ici pour pouvoir les appeler partout sur "mongoose.model('ModelName')" sans avoir a mettre le chemin relatif dans les fichiers)
-require('./config/models')
+require("./config/models");
 
 //PASSPORT
-const passport = require('passport')
-
-//generate keypairs for passport
-require('./generateKeypair')
+const passport = require("passport");
 
 // Pass the global passport object into the configuration function
-require('./config/passport')(passport)
+require("./config/passport")(passport);
 
 // This will initialize the passport object on every request
-app.use(passport.initialize())
+app.use(passport.initialize());
 
 /**
  * ROUTES
  */
-const crudHotelRouter = require("./routes/feature.gestion_couverture/crudHotel.routes.js")
-app.use("/hotels", crudHotelRouter)
+const crudHotelRouter = require("./routes/feature.gestion_couverture/crudHotel.routes.js");
+app.use("/hotels", crudHotelRouter);
 
-const crudUrgenceRouter = require("./routes/feature.gestion_urgence/crudUrgence.routes.js")
-app.use("/urgences", crudUrgenceRouter)
+const crudUrgenceRouter = require("./routes/feature.gestion_urgence/crudUrgence.routes.js");
+app.use("/urgences", crudUrgenceRouter);
 
-const crudUserRouter = require("./routes/feature.gestion_utilisateur/crudUser.routes.js")
-app.use("/users", crudUserRouter)
+const crudUserRouter = require("./routes/feature.gestion_utilisateur/crudUser.routes.js");
+app.use("/users", crudUserRouter);
 
-const manageEquipesRouter = require("./routes/feature.gestion_couverture/manageEquipe.routes.js")
-app.use("/gestion/equipes", manageEquipesRouter)
+const manageEquipesRouter = require("./routes/feature.gestion_couverture/manageEquipe.routes.js");
+app.use("/gestion/equipes", manageEquipesRouter);
 
-const plannnifierVisitesRouter = require("./routes/feature.plannifier_visite/crudVisite.routes.js")
-app.use("/gestion/visites", plannnifierVisitesRouter)
+const plannnifierVisitesRouter = require("./routes/feature.plannifier_visite/crudVisite.routes.js");
+app.use("/gestion/visites", plannnifierVisitesRouter);
 
-const suggestionsVisitesRouter = require("./routes/feature.plannifier_visite/plannifierVisite.routes.js")
-app.use("/gestion/visites", suggestionsVisitesRouter)
+const suggestionsVisitesRouter = require("./routes/feature.plannifier_visite/plannifierVisite.routes.js");
+app.use("/gestion/visites", suggestionsVisitesRouter);
 
-const authRouter =  require("./routes/feature.authentification/auth.routes.js")
-app.use("/auth", authRouter)
+const authRouter = require("./routes/feature.authentification/auth.routes.js");
+app.use("/auth", authRouter);
 
 /*const featureNoterHotelRouter = require('./routes/feature\.noterhotel/noterHotel.routes.js')
 app.use('/noter', featureNoterHotelRouter)*/
@@ -63,7 +63,7 @@ app.use('/noter', featureNoterHotelRouter)*/
 /**
  * SERVER
  */
-const serv_port = "27017"; //process.env.SERV_PORT
-app.listen(serv_port, function() {
+const serv_port = process.env.SERV_PORT; //process.env.SERV_PORT
+app.listen(serv_port, function () {
   console.log("server runing PORT: " + serv_port);
-})
+});
