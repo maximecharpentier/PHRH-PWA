@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const authStrategy = require('../../lib/utils').authStrategy;
-const passport = require('passport');
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const Helper = require('../feature.gestion_couverture/helpers/feature_gestion_couverture.helper');
