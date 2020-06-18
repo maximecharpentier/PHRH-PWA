@@ -1,13 +1,14 @@
 const router = require('./node_modules/express').Router();
 
-const Visite = require('../../model/visite.model');
 
-/*
+const Visite = mongoose.model('Visite');;
+
+/**
  * @route : noter Hotel
  * @param : string : id Visite
  * @param : float : note
  */
-router.route('/:idvisite/:note').get((req, res) => {
+router.route('/:idvisite/:note').get(passport.authenticate('jwt', { session: false }), (req, res) => {
     //get visite
     Visite.findByIdAndUpdate(
         { _id: req.params.id }, 

@@ -1,35 +1,36 @@
 const router = require('express').Router();
-
 const ObjectId = require('mongoose').Types.ObjectId;
-const Visite = require('../../model/visite.model');
-const User = require('../../model/user.model');
+const passport = require('passport');
+const mongoose = require('mongoose');
+const Visite = mongoose.model('Visite');
+const User = mongoose.model('User');
 const Hotel = require('../../model/hotel.model');
 const Assoc_user_visite = require('../../model/assoc_user_visite.model');
 
-/*
+/**
  * @route : get all visites
  * @method : GET
- * @param : void
+ * @param {void}
  * @return : mixed 
  *      (array[ (Object JSON) ]) : tableau d'object model Visite
  *      (string) : error message
  */
-router.route('/').get((req, res) => {
+router.route('/').get(passport.authenticate('jwt', { session: false }), (req, res) => {
     //get all visites
     Visite.find()
         .then( visites => res.status(200).json(visites))
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
-/*
+/**
  * @route : get all visites pour un Hotel
  * @method : GET
- * @param : (string) : id entité Hotel
+ * @param {string} : id entité Hotel
  * @return : mixed 
  *      (array[ (Object JSON) ]) : tableau d'object model Visite pour un Hotel
  *      (string) : error message
  */
-router.route('/get/forhotel/:idhotel').get(async (req, res) => {
+router.route('/get/forhotel/:idhotel').get(passport.authenticate('jwt', { session: false }), async (req, res) => {
     //#todo : UTILISER DES VIEWS ICI
     let visites = []
     const hotelDB = await Hotel.findById(req.params.idhotel)
@@ -52,15 +53,15 @@ router.route('/get/forhotel/:idhotel').get(async (req, res) => {
     }
 })
 
-/*
+/**
  * @route : get all visites pour un User
  * @method : GET
- * @param : (string) : id entité Hotel
+ * @param {string} : id entité Hotel
  * @return : mixed 
  *      (array[ (Object JSON) ]) : tableau d'object model Visite pour un User
  *      (string) : error message
  */
-router.route('/get/foruser/:iduser').get(async (req, res) => {
+router.route('/get/foruser/:iduser').get(passport.authenticate('jwt', { session: false }), async (req, res) => {
     //#todo : UTILISER DES VIEWS ICI
 
     let visites = []
@@ -89,28 +90,28 @@ router.route('/get/foruser/:iduser').get(async (req, res) => {
     }
 })
 
-/*
+/**
  * @route : get
  * @method : GET
- * @param : (string) : id Visite
+ * @param {string} : id Visite
  * @return : mixed 
  *      (Object JSON) : object model Visite
  *      (string) : error message
  */
-router.route('/get/:id').get((req, res) => {
+router.route('/get/:id').get(passport.authenticate('jwt', { session: false }), (req, res) => {
     //get visite from DB
     Visite.findById(req.params.id)
         .then( visite => visite ? res.status(200).json(visite) : res.status(200).json('Aucune visites avec cet id'))
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
-/*
+/**
  * @route : plannifier une visite (equivalent à add)
  * @method : POST
  * @param : (Object JSON) : object Visite conforme au schema (voir schema)
  * @return : (string) : error/confirm message
  */
-router.route('/plannifier').post((req, res) => {
+router.route('/plannifier').post(passport.authenticate('jwt', { session: false }), (req, res) => {
     //#SAME AS PLANNIFIER dans plannifierVisite
     //creer model Visite
     const visite = new Visite({
@@ -129,10 +130,10 @@ router.route('/plannifier').post((req, res) => {
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
-/*
+/**
  * @route : edit
  * @method : POST
- * @param : (string) : id Visite
+ * @param {string} : id Visite
  * @param : (object JSON) : {field1 : newValue, field2 : newValue ...}, 
  *      "fieldX" : (string) nom champ conforme au naming du model Visite
  *      "newValue" : mixed 
@@ -141,7 +142,7 @@ router.route('/plannifier').post((req, res) => {
  *      (array) : tableau d'objet model Visite
  *      (string) : error message
  */
-router.route('/edit/:id').post((req, res) => {
+router.route('/edit/:id').post(passport.authenticate('jwt', { session: false }), (req, res) => {
     //create 
     const propList = [
         'hotel_id',     'date_visite',  'note',
@@ -179,13 +180,13 @@ router.route('/edit/:id').post((req, res) => {
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
-/*
+/**
  * @route : delete
  * @method : DELETE
- * @param : (string) : id Visite
+ * @param {string} : id Visite
  * @return : (string) : error/confirm message
  */
-router.route('/delete/:id').delete((req, res) => {
+router.route('/delete/:id').delete(passport.authenticate('jwt', { session: false }), (req, res) => {
     Visite.findByIdAndDelete(req.params.id)
         .then(() => { res.status(200).json('Visite supprimé')})
         .catch(err => res.status(400).json('Erreurs: ' + err))

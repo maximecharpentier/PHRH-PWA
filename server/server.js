@@ -1,95 +1,41 @@
 const express = require("express");
 const cors = require("cors");
-const mongoose = require("mongoose");
 require("dotenv").config();
 
+//generate keypairs for passport
+require("./generateKeypair");
+
+/**
+ * GENERAL SETUP
+ */
+
+//EXPRESS
 const app = express();
+
 //brancher cors
 app.use(cors());
+
 //brancher le parseur d'HttpRequest
 app.use(express.json());
 
-//connection a la base mongo
-const uri = `mongodb://localhost:27017/PHRH`;
-//loop connect command (pour deploiement)
-var connectWithRetry = function() {
-  return mongoose.connect(
-    uri,
-    {
-      useNewUrlParser: true,
-      useCreateIndex: true,
-      useUnifiedTopology: true
-    },
-    function(err) {
-      if (err) {
-        console.error(
-          "Failed to connect to mongo on startup - retrying in 5 sec",
-          err
-        );
-        setTimeout(connectWithRetry, 5000);
-      }
-    }
-  );
-};
-connectWithRetry();
+//MONGO DB & IMPORT DES DONNEES
+require("./config/database");
 
-//lancer le serveur
-const serv_port = "27017"; //process.env.SERV_PORT
-app.listen(serv_port, function() {
-  console.log("server runing PORT: " + serv_port);
-});
+//MODELS (require les models ici pour pouvoir les appeler partout sur "mongoose.model('ModelName')" sans avoir a mettre le chemin relatif dans les fichiers)
+require("./config/models");
 
-//ouvrir & deleguer la gestion de la connection a nodemon
-mongoose.connection.once("open", async () => {
-  console.log("PHRH database connection established");
+//PASSPORT
+const passport = require("passport");
 
-  const BaseValueInsertor = require("./helpers/BaseValueInsertor.helper");
-  /*
-   * CLEAN DB
-   */
-  if(process.env.RESET_DB === 'true') {
-    await BaseValueInsertor.resetDB()
-    console.log('Base de données éffacée')
-  }
-  /*
-   * INSERER DONNEES DE TEST
-   */
-  if(process.env.INSERT_TEST_DB === 'true') {
-    console.log('Insertion des données DE TEST en cours ...')
-    let baseValueInsertor = new BaseValueInsertor(
-      mappingFile = null, 
-      testDB = require('./datas/test/data.json')
-      )
-    await baseValueInsertor.insertData(
-      msg => { console.log(msg) },
-      err => { console.error(err) },
-      insertTestAssocEntities = true //tmp : utiliser ce paramètre quand on insert les data de test
-    )
-    console.log('l\'Insertion des données DE TEST est terminée')
-  }
+// Pass the global passport object into the configuration function
+require("./config/passport")(passport);
 
-  /*
-   * INSERER DONNEES REELLES
-   */
-  if(process.env.INSERT_REAL_DB === 'true') {
-    console.log('Insertion des données REELLES en cours ...')
-    let baseValueInsertor = new BaseValueInsertor(
-      mappingFile = require('./datas/sources/mappingfile.json'), 
-      null
-      )
-    await baseValueInsertor.importData(
-      msg => { console.log(msg) },
-      err => { console.error(err) },
-      insertTestAssocEntities = false //tmp : utiliser ce paramètre quand on insert les data de test
-    )
-    console.log('l\'Insertion des données REELLES est terminée')
-  }
-});
+// This will initialize the passport object on every request
+app.use(passport.initialize());
 
-//en cas d'erreur de connection au server
-mongoose.connection.on("error", error => console.log(`Erreur de connection a l\'uri : ${uri}`, error));
-
-//Route to end points
+/**
+ * ROUTES
+ */
 const crudHotelRouter = require("./routes/feature.gestion_couverture/crudHotel.routes.js");
 app.use("/hotels", crudHotelRouter);
 
@@ -108,7 +54,16 @@ app.use("/gestion/visites", plannnifierVisitesRouter);
 const suggestionsVisitesRouter = require("./routes/feature.plannifier_visite/plannifierVisite.routes.js");
 app.use("/gestion/visites", suggestionsVisitesRouter);
 
-const authRouter =  require("./routes/feature.authentification/auth.routes.js");
+const authRouter = require("./routes/feature.authentification/auth.routes.js");
 app.use("/auth", authRouter);
+
 /*const featureNoterHotelRouter = require('./routes/feature\.noterhotel/noterHotel.routes.js')
 app.use('/noter', featureNoterHotelRouter)*/
+
+/**
+ * SERVER
+ */
+const serv_port = process.env.SERV_PORT; //process.env.SERV_PORT
+app.listen(serv_port, function () {
+  console.log("server runing PORT: " + serv_port);
+});

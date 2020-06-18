@@ -1,18 +1,17 @@
 const router = require('express').Router();
-
-const User = require('../../model/user.model');
-
+const passport = require('passport');
+const mongoose = require('mongoose');
 const Helper = require('../feature.gestion_couverture/helpers/feature_gestion_couverture.helper');
 
-/*
+/**
  * @route : get all
- * @method : GET
+ * @method GET
  * @param (optionnal) : filter Object : #toDefine
  * @return : mixed 
  *      (array[ (Object JSON) ]) : tableau d'object model User
  *      (string) : error message
  */
-router.route('/').get((req, res) => {    
+router.route('/').get(passport.authenticate('jwt', { session: false }), (req, res) => {    
     //let mongoFilter = []
     let filterObj = {}
     /*
@@ -36,28 +35,28 @@ router.route('/').get((req, res) => {
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
-/*
+/**
  * @route : get
- * @method : GET
- * @param : (string) : id User
+ * @method GET
+ * @param {string} : id User
  * @return : mixed 
  *      (Object JSON) : object model User
  *      (string) : error message
  */
-router.route('/get/:id').get((req, res) => {
+router.route('/get/:id').get(passport.authenticate('jwt', { session: false }), (req, res) => {
     //get User from DB
     User.findById(req.params.id)
         .then( User => res.status(200).json(User))
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
-/*
+/**
  * @route : add
- * @method : POST
+ * @method POST
  * @param : (Object JSON) : object User conforme au schema (voir schema)
  * @return : (string) : error/confirm message
  */
-router.route('/add').post((req, res) => {
+router.route('/add').post(passport.authenticate('jwt', { session: false }), (req, res) => {
     //creer model User
     const user = new User({
         nom :       req.body.nom, 
@@ -75,10 +74,10 @@ router.route('/add').post((req, res) => {
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
-/*
+/**
  * @route : edit
- * @method : POST
- * @param : (string) : id User
+ * @method POST
+ * @param {string} : id User
  * @param : (object JSON) : {field1 : newValue, field2 : newValue ...}, 
  *      "fieldX" : (string) nom champ conforme au naming du model User
  *      "newValue" : mixed 
@@ -87,7 +86,7 @@ router.route('/add').post((req, res) => {
  *      (array) : tableau d'objet model User
  *      (string) : error message
  */
-router.route('/edit/:id').post((req, res) => {
+router.route('/edit/:id').post(passport.authenticate('jwt', { session: false }), (req, res) => {
     //create 
     const propList = [
         'nom',          'prenom',       'pwd',
@@ -116,14 +115,14 @@ router.route('/edit/:id').post((req, res) => {
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
-/*
+/**
  * @route : delete
- * @method : DELETE
+ * @method DELETE
  * @param : GET (string) : id User
  * @param : POST (object JSON) : { deleteEquipe = (string) true/false }
  * @return : (string) : error/confirm message
  */
-router.route('/delete/:id').delete((req, res) => {
+router.route('/delete/:id').delete(passport.authenticate('jwt', { session: false }), (req, res) => {
     User.findByIdAndDelete(req.params.id)
         .then(() => {
             if(req.body.deleteEquipe == 'true') {
