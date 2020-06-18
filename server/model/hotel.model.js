@@ -3,6 +3,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const hotelSchema = new Schema({
+    uid_internal : {
+        type: Number, 
+        required: false,
+        trim: true,
+    },
     nom: {
         type: String, 
         required: true,
@@ -27,6 +32,12 @@ const hotelSchema = new Schema({
         trim: true,
         maxlength: 25
     },
+    note : {
+        type: Number, 
+        required: false,
+        trim: true,
+        maxlength: 4
+    },
     nb_chambres_utilise : {
         type: Number, 
         required: true,
@@ -46,7 +57,17 @@ const hotelSchema = new Schema({
 hotelSchema.statics.insertIfNotExist = async function (hotel) {
     const docs = await this.find({nom : hotel.nom}).exec()
     if (!docs.length){
-        return await hotel.save()
+        try {
+            const hotelDB = await hotel.save()
+            return hotelDB
+        } catch(err) {
+            console.log(
+                "Hotel invalide : " + '\n' + 
+                hotel + '\n' +
+                "Erreur : " + '\n' +
+                err
+            )
+        }
     }
     else{
         //throw new Error('Hotel <<'+ hotel.nom +'>> existe deja');

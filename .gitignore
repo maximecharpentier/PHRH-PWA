@@ -1,2 +1,8 @@
 .env
 data
+
+config/terraform/terraform.tfstate
+config/terraform/terraform.tfstate.backup
+config/terraform/.terraform/
+
+server/.env

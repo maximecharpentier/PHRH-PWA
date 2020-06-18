@@ -1,45 +1,49 @@
+@import "../../styles/variables.scss";
 @import "../../styles/mixins.scss";
 
 section {
   display: block;
   width: 100%;
   div.success-message {
-    padding: 10px 20px;
-    margin-top: 30px;
+    position: fixed;
+    z-index: 30;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 30px 50px;
     border: 1px solid #c3e6cb;
     border-radius: 0.25rem;
     color: #155724;
     background-color: #d4edda;
   }
   header {
-    background: #eff2fb;
+    background: $main-background-border-color;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
     height: 110px;
-    width: calc(100% / 3);
+    width: 340px;
     margin-bottom: 40px;
     h2 {
-      color: #111215;
       font-size: 20px;
       font-weight: bold;
+      margin-left: 70px;
       span {
-        color: #efac2c;
+        color: $span-text-color;
         font-size: 25px;
       }
     }
   }
-  & > div {
-    width: calc(100% - 100px);
+  div.manage-container {
+    width: calc(100% - 140px);
     margin: 0 auto;
-    nav {
+    nav.manage-nav {
       ul {
         display: flex;
         justify-content: space-between;
         margin-bottom: 20px;
         li {
-          border: solid #eff2fb 1px;
+          border: solid $main-background-border-color 1px;
           cursor: pointer;
           display: flex;
           flex-direction: column;
@@ -48,9 +52,12 @@ section {
           width: calc(100% / 4);
           text-align: center;
           transition: ease 0.5s;
+          &:not(:last-child) {
+            border-right: none;
+          }
           &:hover,
           &.active {
-            background-color: #eff2fb;
+            background-color: $main-background-border-color;
           }
           &.active {
             box-shadow: inset 0 -2px 0;
@@ -67,74 +74,6 @@ section {
       @include button;
     }
   }
-
-  .visitor-card {
-    position: relative;
-    display: block;
-    width: calc(100% / 4 - 43px);
-    height: auto;
-    padding: 25px 10px;
-    background: #eff2fb;
-    border-radius: 4px;
-    margin: 0px 30px 15px 0;
-    &-container {
-      display: flex;
-      flex-wrap: wrap;
-      margin-top: 30px;
-    }
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.35);
-    &:nth-child(4n + 4) {
-      margin-right: 0;
-    }
-    & > p:first-child {
-      display: inline-block;
-      font-size: 18px;
-      font-weight: 700;
-    }
-    & > span {
-      cursor: pointer;
-      float: right;
-    }
-    p,
-    div:not(.visitor-card-menu) {
-      margin-bottom: 25px;
-    }
-    & > p:last-child {
-      margin-bottom: 0;
-    }
-    &-menu {
-      position: absolute;
-      top: 40px;
-      right: 5px;
-      background-color: #ffffff;
-      width: 55%;
-      margin: 0;
-      padding-left: 10px;
-      border-radius: 4px;
-      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.35);
-      transition: all 0.2s ease-in-out 0s;
-      opacity: 0;
-      visibility: hidden;
-      p {
-        cursor: pointer;
-        padding: 14px 0;
-        margin: 0;
-        border-bottom: 1px solid #eff2fb;
-        &:last-child {
-          border-bottom: none;
-        }
-      }
-      &.show {
-        opacity: 1;
-        visibility: visible;
-      }
-    }
-    &-line {
-      width: 100%;
-      height: 1px;
-      background: #031772;
-    }
-  }
 }
 
 span,
@@ -142,12 +81,29 @@ p {
   text-transform: capitalize;
 }
 
-@media screen and (max-width: 1024px) {
-  .planificator-card {
-    width: calc(100% / 3 - 45px) !important;
-    margin-right: 35px !important;
-    &:nth-child(3n + 3) {
-      margin-right: 0 !important;
-    }
-  }
+h2, p, li{
+  color: $main-text-color;
+}
+
+.text-overflow {
+  max-width: 80%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap !important;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.f18 {
+  font-size: 18px;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.right {
+  float: right;
 }
