@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const authStrategy = require('../../lib/utils').authStrategy;
 const passport = require('passport');
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
@@ -12,7 +13,7 @@ const Helper = require('../feature.gestion_couverture/helpers/feature_gestion_co
  *      (array[ (Object JSON) ]) : tableau d'object model User
  *      (string) : error message
  */
-router.route('/').get(passport.authenticate('jwt', { session: false }), (req, res) => {    
+router.route('/').get(authStrategy(), (req, res) => {    
     //let mongoFilter = []
     let filterObj = {}
     /*
@@ -44,7 +45,7 @@ router.route('/').get(passport.authenticate('jwt', { session: false }), (req, re
  *      (Object JSON) : object model User
  *      (string) : error message
  */
-router.route('/get/:id').get(passport.authenticate('jwt', { session: false }), (req, res) => {
+router.route('/get/:id').get(authStrategy(), (req, res) => {
     //get User from DB
     User.findById(req.params.id)
         .then( User => res.status(200).json(User))
@@ -57,7 +58,7 @@ router.route('/get/:id').get(passport.authenticate('jwt', { session: false }), (
  * @param : (Object JSON) : object User conforme au schema (voir schema)
  * @return : (string) : error/confirm message
  */
-router.route('/add').post(passport.authenticate('jwt', { session: false }), (req, res) => {
+router.route('/add').post(authStrategy(), (req, res) => {
     //creer model User
     const user = new User({
         nom :       req.body.nom, 
@@ -87,7 +88,7 @@ router.route('/add').post(passport.authenticate('jwt', { session: false }), (req
  *      (array) : tableau d'objet model User
  *      (string) : error message
  */
-router.route('/edit/:id').post(passport.authenticate('jwt', { session: false }), (req, res) => {
+router.route('/edit/:id').post(authStrategy(), (req, res) => {
     //create 
     const propList = [
         'nom',          'prenom',       'pwd',
@@ -123,7 +124,7 @@ router.route('/edit/:id').post(passport.authenticate('jwt', { session: false }),
  * @param : POST (object JSON) : { deleteEquipe = (string) true/false }
  * @return : (string) : error/confirm message
  */
-router.route('/delete/:id').delete(passport.authenticate('jwt', { session: false }), (req, res) => {
+router.route('/delete/:id').delete(authStrategy(), (req, res) => {
     User.findByIdAndDelete(req.params.id)
         .then(() => {
             if(req.body.deleteEquipe == 'true') {

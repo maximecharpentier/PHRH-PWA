@@ -42,5 +42,19 @@ function capitalize(s) {
   return s.charAt(0).toUpperCase() + s.slice(1)
 }
 
+/**
+ * @desc : fonction passport strategy, est appelé à chaque requettes pour verifier l'authentification de l'user
+ */
+function authStrategy() {
+  //en fonction de l'environnement il peux etre nescessaire de mocker la strategy d'authentification
+  const passport = require('passport')
+  if(process.env.ACTIVATE_AUTH_REQUESTS === "false") {
+    return passport.authenticate('mock', { session: false })
+  } else {
+    return passport.authenticate('jwt', { session: false })
+  }
+}
+
 module.exports.capitalize = capitalize;
 module.exports.issueJWT = issueJWT;
+module.exports.authStrategy = authStrategy;
