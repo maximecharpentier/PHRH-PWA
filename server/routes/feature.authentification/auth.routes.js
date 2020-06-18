@@ -1,9 +1,10 @@
-const router = require('express').Router();   
+const router = require('express').Router();
+const authStrategy = require('../../lib/utils').authStrategy;   
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const utils = require('../../lib/utils');
 
-/*router.get('/protected', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+/*router.get('/protected', authStrategy(), (req, res, next) => {
     res.status(200).json({ success: true, msg: "You are successfully authenticated to this route!"});
 });*/
 
@@ -17,7 +18,6 @@ const utils = require('../../lib/utils');
  *                      }
  */
 router.post('/login', function(req, res, next){
-
     User.findOne({ nom: req.body.nom })
         .then((user) => {
 

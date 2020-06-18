@@ -8,7 +8,7 @@ const Visite = mongoose.model('Visite');;
  * @param : string : id Visite
  * @param : float : note
  */
-router.route('/:idvisite/:note').get(passport.authenticate('jwt', { session: false }), (req, res) => {
+router.route('/:idvisite/:note').get(authStrategy(), (req, res) => {
     //get visite
     Visite.findByIdAndUpdate(
         { _id: req.params.id }, 

@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const authStrategy = require('../../lib/utils').authStrategy;
 const passport = require('passport');
 const mongoose = require('mongoose');
 const Urgence = mongoose.model('Urgence');
@@ -11,7 +12,7 @@ const Urgence = mongoose.model('Urgence');
  *      (array[ (Object JSON) ]) : tableau d'object model Urgence
  *      (string) : error message
  */
-router.route('/').get(passport.authenticate('jwt', { session: false }), (req, res) => {
+router.route('/').get(authStrategy(), (req, res) => {
     Urgence.find({})
         .then(urgences => res.status(200).json(urgences))            
         .catch(err => res.status(400).json('Erreurs: ' + err))
@@ -25,7 +26,7 @@ router.route('/').get(passport.authenticate('jwt', { session: false }), (req, re
  *      (Object JSON) : object model Urgence
  *      (string) : error message
  */
-router.route('/get/:id').get(passport.authenticate('jwt', { session: false }), (req, res) => {
+router.route('/get/:id').get(authStrategy(), (req, res) => {
     //get urgence from DB
     Urgence.findById(req.params.id)
         .then( urgence => res.status(200).json(urgence))
@@ -38,7 +39,7 @@ router.route('/get/:id').get(passport.authenticate('jwt', { session: false }), (
  * @param : (Object JSON) : object Urgence conforme au schema (voir schema)
  * @return : (string) : error/confirm message
  */
-router.route('/add').post(passport.authenticate('jwt', { session: false }), (req, res) => {
+router.route('/add').post(authStrategy(), (req, res) => {
     //creer model Hotel
     const urgence = new Urgence({
         hotel_id : req.body.hotel_id,
@@ -65,7 +66,7 @@ router.route('/add').post(passport.authenticate('jwt', { session: false }), (req
  *      (array) : tableau d'objet model Urgence
  *      (string) : error message
  */
-router.route('/edit/:id').post(passport.authenticate('jwt', { session: false }), (req, res) => {   
+router.route('/edit/:id').post(authStrategy(), (req, res) => {   
     Urgence.findById(req.params.id) 
         .then(urgence => {
             const propList = ['resume', 'detail']
@@ -86,7 +87,7 @@ router.route('/edit/:id').post(passport.authenticate('jwt', { session: false }),
  * @param {string} : id Urgence
  * @return : (string) : error/confirm message
  */
-router.route('/delete/:id').delete(passport.authenticate('jwt', { session: false }), (req, res) => {
+router.route('/delete/:id').delete(authStrategy(), (req, res) => {
     Urgence.findByIdAndDelete(req.params.id)
         .then(() => { res.json('Urgence supprimée')})
         .catch(err => res.status(400).json('Erreurs: ' + err))
