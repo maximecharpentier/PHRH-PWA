@@ -1,4 +1,5 @@
 const express = require("express");
+const MockStrategy = require('passport-mock-strategy');
 const cors = require("cors");
 require("dotenv").config();
 

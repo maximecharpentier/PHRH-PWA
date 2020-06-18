@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const authStrategy = require('../../lib/utils').authStrategy;
 const passport = require('passport');
 const mongoose = require('mongoose');
 const Visite = mongoose.model('Visite');
@@ -13,7 +14,7 @@ const User = mongoose.model('User');
  *      (array[ (Object JSON) ]) : tableau d'object model Visite
  *      (string) : error message
  */
-router.route('/suggestions').get(passport.authenticate('jwt', { session: false }), (req, res) => {
+router.route('/suggestions').get(authStrategy(), (req, res) => {
     //QUESTION : l'affichage de la liste se fait pour un binome ? -> metre des filtrs custom -> OK
     //notes :
         //pour les contre-visites : elles sont automatiquement set lorsque un Hotel a une anomalie
@@ -162,7 +163,7 @@ router.route('/suggestions').get(passport.authenticate('jwt', { session: false }
  * @param : (Object JSON) : object Visite conforme au schema (voir schema)
  * @return : (string) : error/confirm message
  */
-router.route('/plannifier').post(passport.authenticate('jwt', { session: false }), (req, res) => {
+router.route('/plannifier').post(authStrategy(), (req, res) => {
     //#SAME AS PLANNIFIER dans crudVisite
     //creer model Visite
     const visite = new Visite({
