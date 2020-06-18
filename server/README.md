@@ -261,6 +261,7 @@ En cours d'étude
 **feature Autenthification**
   - **IDs Plannificateur/Superviseur/admin** : {nom: admin, pwd: admin}
   - **IDs Tout les autres utilisateurs** : {nom: <nom>, pwd: demodemo}
+  - **"Desactiver" (=mocker passport authentification) l'authentification des requettes** : .env -> ACTIVATE_AUTH_REQUESTS = _false_
 
   - **_/auth/login_** : valider le login avec couple (nom, pwd) et generer le token d'authentification
     - @method : POST

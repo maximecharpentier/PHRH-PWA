@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const passport = require('passport');
+const authStrategy = require('../../lib/utils').authStrategy;
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const Equipe = mongoose.model('Assoc_User_User');
@@ -16,7 +16,7 @@ const Equipe = mongoose.model('Assoc_User_User');
  *                                                    }}
  *      (string) : error message
  */
-router.route('/').get(passport.authenticate('jwt', { session: false }), (req, res) => {    
+router.route('/').get(authStrategy(), (req, res) => {    
     //let mongoFilter = []
     let filterObj = {}
     //reprendre ici et construire le system de filtre dynamic
@@ -49,7 +49,7 @@ router.route('/').get(passport.authenticate('jwt', { session: false }), (req, re
  *      (Object JSON) : object model Equipe 
  *      (string) : error message
  */
-router.route('/get/:iduser').get(passport.authenticate('jwt', { session: false }), (req, res) => {
+router.route('/get/:iduser').get(authStrategy(), (req, res) => {
     //get hotel from DB
     Equipe.findOne({ 
         $or: [
@@ -67,7 +67,7 @@ router.route('/get/:iduser').get(passport.authenticate('jwt', { session: false }
  * @param {void}
  * @return : (array[ (JSON Object{_id, nom, prenom}) ]) : tableau d'Users non associé ds une equipe
  */
-router.route('/users').get(passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.route('/users').get(authStrategy(), async (req, res) => {
     //get users
     User.find({ fonction: { $nin: ['Superviseur'] }}, '_id nom prenom secteur')
         //ici on passe par une fonction async pour pouvoir peupler 'users' 
@@ -101,7 +101,7 @@ router.route('/users').get(passport.authenticate('jwt', { session: false }), asy
  * @param {string} : id user B
  * @return : (string) : error/confirm message
  */
-router.route('/creer/:idusera/:iduserb').post(passport.authenticate('jwt', { session: false }), (req, res) => {
+router.route('/creer/:idusera/:iduserb').post(authStrategy(), (req, res) => {
     //checker si un des id est ds une equipe
     Equipe.find({ 
         $or: [
@@ -139,7 +139,7 @@ router.route('/creer/:idusera/:iduserb').post(passport.authenticate('jwt', { ses
  * @param {string} : id Equipe
  * @return : (string) : error/confirm message
  */
-router.route('/delete/:id').delete(passport.authenticate('jwt', { session: false }), (req, res) => {
+router.route('/delete/:id').delete(authStrategy(), (req, res) => {
     Equipe.findByIdAndDelete(req.params.id)
         .then(() => { res.status(200).json('Equipe supprimée')})
         .catch(err => res.status(400).json('Erreurs: ' + err))

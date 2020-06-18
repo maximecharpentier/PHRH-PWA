@@ -1,21 +1,23 @@
-import axios from 'axios';
-
+import axios from "axios";
 
 const API = axios.create({
-  baseURL: `http://localhost:27017/`
+  baseURL: `http://localhost:3001/`,
 });
 
-const getItem = (route, setState, id) => {  
+const getItem = (route, setState, id) => {
   API.get(route + id).then((response) => {
-    setState(response.data)
-  })
-}
+    setState(response.data);
+  });
+};
 
-const getItems = (route, setState, id) => {  
+const getItems = (route, setState, id) => {
   API.get(route).then((response) => {
-    response.data.map(emergencyTeam => emergencyTeam.equipe._id === id && setState(emergencyTeam))
-    // 
-  })
-}
+    response.data.map(
+      (emergencyTeam) =>
+        emergencyTeam.equipe._id === id && setState(emergencyTeam)
+    );
+    //
+  });
+};
 
-export {API, getItem, getItems}
+export { API, getItem, getItems };

@@ -342,6 +342,8 @@ class DBFeeder {
     userAdmin.prenom = 'admin'
     userAdmin.pwd = 'admin'
     this.datasToInsert.users.push(userAdmin)
+    console.log('ADMIN USER ADDED');
+    
 
     //si on arrive ici c'est que l'import s'est bien déroulé
     return true
