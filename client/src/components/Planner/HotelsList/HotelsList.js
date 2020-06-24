@@ -44,7 +44,7 @@ class HotelsList extends Component {
     return (
       <div className="HotelsList">
         <div className="HotelsList__container">
-          {this.state.isLoaded ? 'Loading...' : this.renderHotels()}
+          {this.state.isLoaded ? this.renderHotels() : 'Loading...'}
         </div>
         <button className="HotelsList__button">Voir Plus</button>
       </div>
