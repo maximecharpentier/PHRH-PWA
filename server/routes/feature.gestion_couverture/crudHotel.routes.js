@@ -2,6 +2,7 @@ const router = require('express').Router();
 const authStrategy = require('../../lib/utils').authStrategy;
 const mongoose = require('mongoose');
 const Hotel = mongoose.model('Hotel');
+const Memo = mongoose.model('Memo');
 
 //const Hotel = require('../../model/hotel.model');
 
@@ -55,6 +56,29 @@ router.route('/get/:id').get(authStrategy(), (req, res) => {
 })
 
 /**
+ * @route : get memos
+ * @method GET
+ * @auth : dans l'entete de la requette "Authorisation" doit contenir le token
+ * @param {void} filter Object : #toDefine
+ * @return : mixed 
+ *      (array[ (Object JSON) ]) : tableau d'object mémos de la propriété memos d'Hotel
+ *      (string) : error message
+ */
+router.route('/get/:id/memos').get(authStrategy(), async (req, res) => {
+    const docs = await Hotel.aggregate([{
+        $lookup: {
+            from: "Memo",
+            localField: "memos",
+            foreignField: "_id",
+            as: "memos"
+        }
+    }]).exec()
+    res.status(200).json(docs)
+        //.then(hotels => res.status(200).json(hotels))            
+        //.catch(err => res.status(400).json('Erreurs: ' + err))
+})
+
+/**
  * @route : add
  * @method POST
  * @param : (Object JSON) : object Hotel conforme au schema (voir schema)
@@ -70,6 +94,7 @@ router.route('/add').post(authStrategy(), (req, res) => {
         nb_chambres_utilise :   req.body.nb_chambres_utilise, 
         nb_visites_periode :    req.body.nb_visites_periode, 
         last_time_visited :     new Date(req.body.last_time_visited),
+        memos : []
     })
 
     //save
@@ -95,7 +120,7 @@ router.route('/edit/:id').post(authStrategy(), (req, res) => {
     const propList = [
         'nom',      'adresse',              'cp',
         'ville',    'nb_chambres_utilise',  'nb_visites_periode',
-        'last_time_visited']
+        'last_time_visited', 'memos']
     const setObject = {}
     propList.forEach(prop => {
         if(prop in req.body) {
@@ -132,5 +157,6 @@ router.route('/delete/:id').delete(authStrategy(), (req, res) => {
         .then(() => { res.status(200).json('Hotel supprimé')})
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
+
 
 module.exports = router;
