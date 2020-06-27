@@ -2,6 +2,7 @@ const path = require('path');
 const XLSXHelper = require('./module_xlsx.helper');
 const mongoose = require('mongoose');
 const Hotel = mongoose.model('Hotel');
+const Memo = mongoose.model('Memo');
 const Visite = mongoose.model('Visite');
 const User = mongoose.model('User');
 const Anomalie = mongoose.model('Anomalie');
@@ -39,6 +40,7 @@ class DBFeeder {
     await Tache.deleteMany({})
     await Urgence.deleteMany({})
     await Vehicule.deleteMany({})
+    await Memo.deleteMany({})
   }
 
   /**
@@ -79,7 +81,7 @@ class DBFeeder {
         ville: hotel.ville,
         nb_chambres_utilise: hotel.nb_chambres_utilise,
         nb_visites_periode: hotel.nb_visites_periode,
-        last_time_visited: hotel.nb_visites_periode ? hotel.nb_visites_periode : null,
+        last_time_visited: hotel.last_time_visited ? hotel.last_time_visited : null,
         /////#Outdated : traiter a part
         urgences: hotel.urgences ? hotel.urgences : null,
         anomalies: hotel.anomalies ? hotel.anomalies : null,

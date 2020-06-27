@@ -106,6 +106,19 @@ En cours d'étude
     - @param {string} : id Hotel
     - @return : (string) : error/confirm message
 
+  - **_/hotels/add/:id/memo_** : ajouter memo sur un Hotel
+    - @method : POST
+    - @param {string} id : id de l'Hotel auquel ajouter le mémo
+    - @param (Object JSON) : { "message" : (string) "contenu du mémo" }
+    - @return : (string) : error/confirm message
+
+  - **_/hotels/get/:id/memos_** : get les memos d'un hotel
+    - @method : GET
+    - @param {string} id : Id de l'hotel ou ajouter le mémo
+    - @return : {mixed} 
+        - (array[ (Object JSON) ]) : tableau d'object mémos de l'Hotel
+        - (string) : error message
+
 **feature Gestion couverture terrain: Creer equipes :**
   - **_/gestion/equipes_** : get All
     - @method : GET
