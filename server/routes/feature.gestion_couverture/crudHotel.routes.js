@@ -2,6 +2,7 @@ const router = require('express').Router();
 const authStrategy = require('../../lib/utils').authStrategy;
 const mongoose = require('mongoose');
 const Hotel = mongoose.model('Hotel');
+const Memo = mongoose.model('Memo');
 
 //const Hotel = require('../../model/hotel.model');
 
@@ -55,6 +56,25 @@ router.route('/get/:id').get(authStrategy(), (req, res) => {
 })
 
 /**
+ * @route : get les memos d'un hotel
+ * @method GET
+ * @auth : dans l'entete de la requette "Authorisation" doit contenir le token
+ * @param {string} id : Id de l'hotel ou ajouter le mémo
+ * @return : {mixed} 
+ *      (array[ (Object JSON) ]) : tableau d'object mémos de l'Hotel
+ *      (string) : error message
+ */
+router.route('/get/:id/memos').get(authStrategy(), (req, res) => {
+    Hotel.findById(req.params.id).populate({
+        "path" : 'memos',
+        //"match": { "cp": { $regex: /^75.*/, $options: 'i' }}
+    })
+    .exec()
+        .then(hotel => res.status(200).json(hotel.memos))            
+        .catch(err => res.status(400).json('Hotel inconnu'))
+})
+
+/**
  * @route : add
  * @method POST
  * @param : (Object JSON) : object Hotel conforme au schema (voir schema)
@@ -70,12 +90,42 @@ router.route('/add').post(authStrategy(), (req, res) => {
         nb_chambres_utilise :   req.body.nb_chambres_utilise, 
         nb_visites_periode :    req.body.nb_visites_periode, 
         last_time_visited :     new Date(req.body.last_time_visited),
+        memos : []
     })
 
     //save
     hotel.save()
         .then(() => res.status(200).json('Hotel ajouté'))
         .catch(err => res.status(400).json('Erreurs: ' + err))
+})
+
+/**
+ * @route : add memo sur un Hotel
+ * @method POST
+ * @param {string} id : id de l'Hotel auquel ajouter le mémo
+ * @param (Object JSON) : { "message" : (string) "contenu du mémo" }
+ * @return : (string) : error/confirm message
+ */
+router.route('/add/:id/memo').post(authStrategy(), (req, res) => {
+    //creer model Hotel
+    const memo = new Memo({
+        date :    new Date(),
+        message : req.body.message
+    })
+
+    //save
+    memo.save()
+        .then(memo => {
+            //save key dans hotel
+            Hotel.findByIdAndUpdate(
+                { _id: req.params.id }, 
+                { $push: { memos: memo._id } }, 
+                //{ new: true }
+                )
+                .then(hotel => res.status(200).json('Mémo ajouté'))
+                .catch(err => res.status(400).json('Erreurs d\'ajout du mémo'))
+        })
+        .catch(err => res.status(400).json('Erreur d\'enregistrement du mémo'))
 })
 
 /**
@@ -95,7 +145,7 @@ router.route('/edit/:id').post(authStrategy(), (req, res) => {
     const propList = [
         'nom',      'adresse',              'cp',
         'ville',    'nb_chambres_utilise',  'nb_visites_periode',
-        'last_time_visited']
+        'last_time_visited', 'memos']
     const setObject = {}
     propList.forEach(prop => {
         if(prop in req.body) {
@@ -132,5 +182,6 @@ router.route('/delete/:id').delete(authStrategy(), (req, res) => {
         .then(() => { res.status(200).json('Hotel supprimé')})
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
+
 
 module.exports = router;

@@ -44,6 +44,7 @@ function capitalize(s) {
 
 /**
  * @desc : fonction passport strategy, est appelé à chaque requettes pour verifier l'authentification de l'user
+ * @return {object} : passport auth strategy object
  */
 function authStrategy() {
   //en fonction de l'environnement il peux etre nescessaire de mocker la strategy d'authentification

@@ -4,10 +4,6 @@ const ucFirst = require('../lib/utils').capitalize
 
 const Schema = mongoose.Schema;
 
-//REFS
-const Visite = require("./visite.model");
-const Vehicule = require("./vehicule.model");
-
 //BCRYPT
 const SALT_WORK_FACTOR = 10;
 
