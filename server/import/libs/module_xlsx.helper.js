@@ -1,5 +1,4 @@
 const XLSX = require('xlsx')
-const fs = require('fs');
 
 class module_xlsx {
 

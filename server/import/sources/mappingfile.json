@@ -1,6 +1,6 @@
 {
     "hotel": {
-        "ref_file_name" : "Liste des hotels.xlsx",
+        "ref_file_name" : "hotels.xlsx",
         "uid_internal" : {
             "col" : "A"
         },
@@ -22,7 +22,7 @@
         "nb_chambres_utilise" : {
             "col" : "A",
             "join" : {
-                "file" : "liste hôtel avec les chambres occupées a hier.xlsx",
+                "file" : "hotels_chambers.xlsx",
                 "on" : "A",
                 "get" : "G"
             }
@@ -44,7 +44,7 @@
         }
     },
     "user": {
-        "ref_file_name" : "Adresses Terrain.xlsx",
+        "ref_file_name" : "adresses.xlsx",
         "nom" : {
             "col" : "A"
         },
@@ -75,7 +75,7 @@
     },
     "visite": {
 
-        "ref_file_name" : "note_visites_hotels.xlsx",
+        "ref_file_name" : "notes.xlsx",
         
         "uid_internal" : {
             "col" : "A"
@@ -83,7 +83,7 @@
         "hotel_id" : {
             "col" : "B",
             "join" : {
-                "file" : "Liste des hotels.xlsx",
+                "file" : "hotels.xlsx",
                 "on" : "A",
                 "get" : "A"
             }
@@ -107,7 +107,7 @@
     },
     "vehicule": {
 
-        "ref_file_name" : "voitures.xlsx",
+        "ref_file_name" : "cars.xlsx",
 
         "immatriculation" : {
             "col" : "A"

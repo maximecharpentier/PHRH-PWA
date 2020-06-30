@@ -1,12 +1,12 @@
 const router = require('express').Router();
+const authStrategy = require('../../lib/utils').authStrategy;
+const mongoose = require('mongoose');
+const User = mongoose.model('User');
+const Equipe = mongoose.model('Assoc_User_User');
 
-//old const ObjectId = require('mongoose').Types.ObjectId;
-const User = require('../../model/user.model');
-const Equipe = require('../../model/assoc_user_user.model');
-
-/*
+/**
  * @route : get all
- * @method : GET
+ * @method GET
  * @param (optionnal) : filter Object : #toDefine
  * @return : mixed 
  *      (array[ (Object JSON) ]) : tableau d'object { equipe: model Equipe, 
@@ -16,7 +16,7 @@ const Equipe = require('../../model/assoc_user_user.model');
  *                                                    }}
  *      (string) : error message
  */
-router.route('/').get((req, res) => {    
+router.route('/').get(authStrategy(), (req, res) => {    
     //let mongoFilter = []
     let filterObj = {}
     //reprendre ici et construire le system de filtre dynamic
@@ -41,15 +41,15 @@ router.route('/').get((req, res) => {
         .catch('Aucune equipes')
 })
 
-/*
+/**
  * @route : get l'equipe de l'user
- * @method : GET
- * @param : (string) : id User
+ * @method GET
+ * @param {string} : id User
  * @return : mixed 
  *      (Object JSON) : object model Equipe 
  *      (string) : error message
  */
-router.route('/get/:iduser').get((req, res) => {
+router.route('/get/:iduser').get(authStrategy(), (req, res) => {
     //get hotel from DB
     Equipe.findOne({ 
         $or: [
@@ -61,13 +61,13 @@ router.route('/get/:iduser').get((req, res) => {
     .catch(err => res.status(400).json('Aucune equipe trouvée'))
 })
 
-/*
+/**
  * @route : get users pour association
- * @method : GET
- * @param : void
+ * @method GET
+ * @param {void}
  * @return : (array[ (JSON Object{_id, nom, prenom}) ]) : tableau d'Users non associé ds une equipe
  */
-router.route('/users').get(async (req, res) => {
+router.route('/users').get(authStrategy(), async (req, res) => {
     //get users
     User.find({ fonction: { $nin: ['Superviseur'] }}, '_id nom prenom secteur')
         //ici on passe par une fonction async pour pouvoir peupler 'users' 
@@ -94,14 +94,14 @@ router.route('/users').get(async (req, res) => {
         .catch(err => res.status(400).json('Aucun utilisateur'))
 })
 
-/*
+/**
  * @route : associer User A avec B
- * @method : POST
- * @param : (string) : id user A
- * @param : (string) : id user B
+ * @method POST
+ * @param {string} : id user A
+ * @param {string} : id user B
  * @return : (string) : error/confirm message
  */
-router.route('/creer/:idusera/:iduserb').post((req, res) => {
+router.route('/creer/:idusera/:iduserb').post(authStrategy(), (req, res) => {
     //checker si un des id est ds une equipe
     Equipe.find({ 
         $or: [
@@ -133,13 +133,13 @@ router.route('/creer/:idusera/:iduserb').post((req, res) => {
     .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
-/*
+/**
  * @route : delete
- * @method : DELETE
- * @param : (string) : id Equipe
+ * @method DELETE
+ * @param {string} : id Equipe
  * @return : (string) : error/confirm message
  */
-router.route('/delete/:id').delete((req, res) => {
+router.route('/delete/:id').delete(authStrategy(), (req, res) => {
     Equipe.findByIdAndDelete(req.params.id)
         .then(() => { res.status(200).json('Equipe supprimée')})
         .catch(err => res.status(400).json('Erreurs: ' + err))

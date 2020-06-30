@@ -1,40 +1,52 @@
 const router = require('express').Router();
+const authStrategy = require('../../lib/utils').authStrategy;   
+const mongoose = require('mongoose');
+const User = mongoose.model('User');
+const utils = require('../../lib/utils');
 
-const User = require('../../model/user.model');
+/*router.get('/protected', authStrategy(), (req, res, next) => {
+    res.status(200).json({ success: true, msg: "You are successfully authenticated to this route!"});
+});*/
 
-const Helper = require('../feature.gestion_couverture/helpers/feature_gestion_couverture.helper');
-
-/*
- * @desc : requette de login qui verifie si un couple (nom, pwd) existe pour un user
- * @route : login 
- * @method : POST
- * @param : (Object JSON) : {nom: (string), pwd: (string) }
- * @return : mixed 
- *      (array[ (Object JSON) ]) : object model User
- *      (string) : error message
+/**
+ * @desc : valider le login avec couple (nom, pwd) et generer le token d'authentification
+ * @method POST
+ * @param {Object} : {nom: (string) nom user BD, pwd: (string) pwd en clair}
+ * @return {Object} : { success: (bool) le login a reussi/échoué, 
+ *                      token: (string) token d'authorisation), 
+ *                      expiresIn: (string) "1d" pour un jour par exemple
+ *                      }
  */
-router.route('/login').post((req, res) => {
-    //envoyer la req user,pwd a la BD
-    const filterObject = {nom: req.body.nom, pwd: req.body.pwd}
-    User.findOne(filterObject)
-        .then(User => res.status(200).json(User))
-        .catch(err => res.status(400).json('Utilisateur inconnu'))
-    //#REPRENDRE ICI ET CONTINUER LA VIDEO https://www.youtube.com/watch?v=7nafaH9SddU&t=107s
-})
+router.post('/login', function(req, res, next){
+    User.findOne({ nom: req.body.nom })
+        .then((user) => {
 
-/*
- * @route : get
- * @method : GET
- * @param : (string) : id User
- * @return : mixed 
- *      (Object JSON) : object model User
- *      (string) : error message
- */
-router.route('/disconnect').get((req, res) => {
-    //get User from DB
-    User.findById(req.params.id)
-        .then( User => res.status(200).json(User))
-        .catch(err => res.status(400).json('Erreurs: ' + err))
-})
+            if (!user) {
+                res.status(401).json({ success: false, msg: "could not find user" });
+            }
+            else{
+
+                // Function defined at bottom of app.js
+                const isValid = user.verifyPassword(req.body.pwd);
+                
+                if (isValid) {
+
+                    const tokenObject = utils.issueJWT(user);
+
+                    res.status(200).json({ success: true, token: tokenObject.token, expiresIn: tokenObject.expires });
+
+                } else {
+
+                    res.status(401).json({ success: false, msg: "you entered the wrong password" });
+
+                }
+            }
+            
+            
+        })
+        .catch((err) => {
+            next(err);
+        });
+});
 
 module.exports = router;

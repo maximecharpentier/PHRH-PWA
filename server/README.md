@@ -69,12 +69,13 @@ En cours d'étude
 
 ## Lancer serveur (v1)
   - lancer mongo sur votre machine
-  - [a la racine] executer npm start server
+  - [a la racine] executer **npm start**
 
 ## Routes doc (temporary)
 **feature Gestion couverture terrain: CRUD Hotel :**
   - **_/hotels_** : get All
     - @method : GET
+    - @auth : dans l'entete de la requette "Authorisation" doit contenir le token
     - @param (optionnal) : filter Object : #toDefine
     - @return : mixed 
         - (array[ (Object JSON) ]) : tableau d'object model Hotel
@@ -82,7 +83,7 @@ En cours d'étude
 
   - **_/hotels/get/:id_** : get hotel by id :id
     - @method : GET
-    - @param : (string) : id Hotel
+    - @param {string} : id Hotel
     - @return : mixed 
         - (Object JSON) : object model Hotel
         - (string) : error message
@@ -94,7 +95,7 @@ En cours d'étude
 
   - **_/hotels/edit/:id_** : editer l'hotel ayant l'id :id
     - @method : POST
-    - @param : (string) : id Hotel
+    - @param {string} : id Hotel
     - @param : (object JSON) : {field1 : newValue, field2 : newValue ...}, 
           "fieldX" : (string) nom champ conforme au naming du model Hotel
         "newValue" : mixed 
@@ -102,8 +103,21 @@ En cours d'étude
 
   - **_/hotels/delete/:id_** : supprimer l'hotel ayant l'id :id
     - @method : DELETE
-    - @param : (string) : id Hotel
+    - @param {string} : id Hotel
     - @return : (string) : error/confirm message
+
+  - **_/hotels/add/:id/memo_** : ajouter memo sur un Hotel
+    - @method : POST
+    - @param {string} id : id de l'Hotel auquel ajouter le mémo
+    - @param (Object JSON) : { "message" : (string) "contenu du mémo" }
+    - @return : (string) : error/confirm message
+
+  - **_/hotels/get/:id/memos_** : get les memos d'un hotel
+    - @method : GET
+    - @param {string} id : Id de l'hotel ou ajouter le mémo
+    - @return : {mixed} 
+        - (array[ (Object JSON) ]) : tableau d'object mémos de l'Hotel
+        - (string) : error message
 
 **feature Gestion couverture terrain: Creer equipes :**
   - **_/gestion/equipes_** : get All
@@ -119,7 +133,7 @@ En cours d'étude
 
   - **_/gestion/get/:iduser_** : get equipe by id
     - @method : GET
-    - @param : (string) : id Equipe
+    - @param {string} : id Equipe
     - @return : mixed 
         - (Object JSON) : object model Equipe (= Assoc_user_user)
         - (string) : error message
@@ -131,13 +145,13 @@ En cours d'étude
 
   - **_/creer/:idusera/:iduserb_** : associer User A avec User B
     - @method : POST
-    - @param : (string) : id User A
-    - @param : (string) : id User B
+    - @param {string} : id User A
+    - @param {string} : id User B
     - @return : (string) : error/confirm message
 
   - **_/users/delete/:id_** : effacer equipe
     - @method : DELETE
-    - @param : (string) : id Equipe
+    - @param {string} : id Equipe
     - @return : (string) : error/confirm message
 
 **feature Plannification visite: Plannifier visite (avec algo suggestion) :**
@@ -150,21 +164,21 @@ En cours d'étude
 
   - **_/gestion/visites/get/forhotel/:idhotel_** : get all visites pour un Hotel
     - @method : GET
-    - @param : (string) : id Hotel
+    - @param {string} : id Hotel
     - @return : mixed 
         - (Object JSON) : tableau d'object model Visite pour un Hotel
         - (string) : error message
 
   - **_/gestion/visites/get/foruser/:iduser_** : get all visites pour un User
     - @method : GET
-    - @param : (string) : id User
+    - @param {string} : id User
     - @return : mixed 
         - (Object JSON) : tableau d'object model Visite pour un User
         - (string) : error message
 
   - **_/gestion/visites/get/:id_** : get visite by id
     - @method : GET
-    - @param : (string) : id Visite
+    - @param {string} : id Visite
     - @return : mixed 
         - (Object JSON) : object model Visite
         - (string) : error message
@@ -176,7 +190,7 @@ En cours d'étude
     
   - **_/gestion/visites/edit/:id_** : plannifier une visite (equivalent à add)
     - @method : POST
-    - @param : (string) : id Visite
+    - @param {string} : id Visite
     - @param : (object JSON) : {field1 : newValue, field2 : newValue ...}, 
         "fieldX" : (string) nom champ conforme au naming du model Visite
         "newValue" : mixed 
@@ -187,7 +201,7 @@ En cours d'étude
 
   - **_/estion/visites/delete/:id_** : supprimer la visite ayant l'id :id
     - @method : DELETE
-    - @param : (string) : id Hotel
+    - @param {string} : id Hotel
     - @return : (string) : error/confirm message 
 
 **feature Gestion utilisateur : CRUD User :**
@@ -200,7 +214,7 @@ En cours d'étude
 
   - **_/users/get/:id_** : get user by id
     - @method : GET
-    - @param : (string) : id User
+    - @param {string} : id User
     - @return : mixed 
         - (Object JSON) : object model User
         - (string) : error message
@@ -212,7 +226,7 @@ En cours d'étude
 
   - **_/users/edit/:id_** : editer l'user ayant l'id :id
     - @method : POST
-    - @param : (string) : id User
+    - @param {string} : id User
     - @param : (object JSON) : {field1 : newValue, field2 : newValue ...}, 
           "fieldX" : (string) nom champ conforme au naming du model Hotel
           "newValue" : mixed 
@@ -220,7 +234,7 @@ En cours d'étude
 
   - **_/users/delete/:id_** : supprimer l'user ayant l'id :id
     - @method : DELETE
-    - @param : (string) : id User
+    - @param {string} : id User
     - @param : POST (object JSON) : { deleteEquipe = (string) true/false }
     - @return : (string) : error/confirm message
 
@@ -234,7 +248,7 @@ En cours d'étude
 
   - **_/urgences/get/:id_** : get urgence ayant l'id :id
      - @method : GET
-    - @param : (string) : id Urgence
+    - @param {string} : id Urgence
     - @return : mixed 
         - (Object JSON) : object model Urgence
         - (string) : error message
@@ -246,7 +260,7 @@ En cours d'étude
 
   - **_/urgences/edit/:id_** : editer l'urgence ayant l'id :id
     - @method : POST
-    - @param : (string) : id Urgence
+    - @param {string} : id Urgence
     - @param : (object JSON) : {field1 : newValue, field2 : newValue ...}, 
           "fieldX" : (string) nom champ conforme au naming du model Urgence
           "newValue" : mixed 
@@ -254,32 +268,38 @@ En cours d'étude
 
   - **_/urgences/delete/:id_** : supprimer l'urgence ayant l'id :id
     - @method : DELETE
-    - @param : (string) : id Urgence
+    - @param {string} : id Urgence
     - @return : (string) : error/confirm message
 
 **feature Autenthification**
-  - **IDs Plannificateur/Superviseur/admin : {nom: admin, pwd: admin}**
-  - TMP : **_/auth/login_** : verifier existence user avec couple (nom, pwd)
+  - **IDs Plannificateur/Superviseur/admin** : {nom: admin, pwd: admin}
+  - **IDs Tout les autres utilisateurs** : {nom: <nom>, pwd: demodemo}
+  - **"Desactiver" (=mocker passport authentification) l'authentification des requettes** : .env -> ACTIVATE_AUTH_REQUESTS = _false_
+
+  - **_/auth/login_** : valider le login avec couple (nom, pwd) et generer le token d'authentification
     - @method : POST
-    - @param : (Object JSON) : {nom: (string), pwd: (string) }
-    - @return : mixed 
-      - Object JSON : object model User
-      - (string) : error message
+    - @param Object : {nom: (string) nom user BD, pwd: (string) pwd en clair}
+    - @return : Object 
+      - Object JSON : { 
+          success: (bool) le login a reussi/échoué, 
+          token: (string) token d'authorisation), 
+          expiresIn: (string) "1d" pour un jour par exemple
+          }
 
 ## Insertions données réelles
   1) Telecharger TOUT les fichiers excell du dossier **Données** de **PHRH** (voir drive, fichiers 
     "partagés avec moi" sur le drive de votre compte HETIC)
-  2) Placer ces fichiers dans ./server/data/**sources**
+  2) Placer ces fichiers dans ./server/import/**sources**
   3) Mettez a jour votre fichier **.env** avec les nouveau parametres (voir **.env.sample**)
   4) Editer le fichier ./server/**.env** à votre convenance pour l'insertion :
-    - **RESET_DB** : reset de la base de données
-    - **INSERT_TEST_DB** : si a "true" inserer les données de test
-    - **INSERT_REAL_DB** : si a "true" importer et inserer les données reelles
+  - **RESET_DB** : reset de la base de données
+  - **INSERT_TEST_DB** : si a "true" inserer les données de test
+  - **INSERT_REAL_DB** : si a "true" importer et inserer les données reelles
   5) Lancer le serveur express : **node server**
   6) Les données vont s'inserer, patientez jusqu'a la fin du chargement ~2min chez moi
   7) Metez la configuration de votre **.env** de nouveau a jour pour eviter :
-    - de supprimer vos données eventuelement par erreur en mettant **RESET_DB** à "false"
-    - de relancer la procedure d'import pour rien en mettant **INSERT_TEST_DB** et/ou **INSERT_REAL_DB** à "false"
+  - de supprimer vos données eventuelement par erreur en mettant **RESET_DB** à "false"
+  - de relancer la procedure d'import pour rien en mettant **INSERT_TEST_DB** et/ou **INSERT_REAL_DB** à "false"
   7) Si vous voulez afficher votre base de données locale dans un GUI :
-    - telecharger : MongoDB Compass Comunity : https://www.mongodb.com/download-center/compass (Version Community Edition Stable)
-    - à l'ouverture connectez vous grace a l'url : mongodb://<SERVER_HOST>:27017/PHRH ou SERVER_HOST est defini dans .env (chez moi c'est "localhost")
+  - telecharger : MongoDB Compass Comunity : https://www.mongodb.com/download-center/compass (Version Community Edition Stable)
+  - à l'ouverture connectez vous grace a l'url : mongodb://<**SERVER_HOST**>:27017/PHRH ou **SERVER_HOST** est defini dans .env (chez moi c'est "localhost")

@@ -51,7 +51,12 @@ const hotelSchema = new Schema({
     },
     last_time_visited : {
         type : Date
-    }
+    },
+    memos : [{
+        type: Schema.Types.ObjectId, 
+        ref: 'Memo',
+        required: false
+    }]
 })
 
 hotelSchema.statics.insertIfNotExist = async function (hotel) {

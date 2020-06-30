@@ -1,19 +1,4 @@
-const router = require('express').Router();
-const authStrategy = require('../../lib/utils').authStrategy;
-const mongoose = require('mongoose');
-const Visite = mongoose.model('Visite');
-const Urgence = mongoose.model('Urgence');
-const User = mongoose.model('User');
-
-/**
- * @route : get all visites
- * @method GET
- * @param {void}
- * @return : mixed 
- *      (array[ (Object JSON) ]) : tableau d'object model Visite
- *      (string) : error message
- */
-router.route('/suggestions').get(authStrategy(), (req, res) => {
+//OLD STUFF (inspiré de old)
     //QUESTION : l'affichage de la liste se fait pour un binome ? -> metre des filtrs custom -> OK
     //notes :
         //pour les contre-visites : elles sont automatiquement set lorsque un Hotel a une anomalie
@@ -154,31 +139,10 @@ router.route('/suggestions').get(authStrategy(), (req, res) => {
         .then(visites => res.status(200).json(visites))
         .catch(err => res.status(400).json('Erreurs: ' + err))
         */
-})
 
-/**
- * @route : plannifier une visite (equivalent à add)
- * @method POST
- * @param : (Object JSON) : object Visite conforme au schema (voir schema)
- * @return : (string) : error/confirm message
- */
-router.route('/plannifier').post(authStrategy(), (req, res) => {
-    //#SAME AS PLANNIFIER dans crudVisite
-    //creer model Visite
-    const visite = new Visite({
-        nom :           req.body.nom, 
-        adresse :       req.body.adresse, 
-        cp :            Number(req.body.cp), 
-        ville :                 req.body.ville, 
-        nb_chambres_utilise :   req.body.nb_chambres_utilise, 
-        nb_visites_periode :    req.body.nb_visites_periode, 
-        last_time_visited :     new Date(req.body.last_time_visited),
-    })
-
-    //save
-    visite.save()
-        .then(() => res.status(200).json('Visite ajouté'))
-        .catch(err => res.status(400).json('Erreurs: ' + err))
-})
-
-module.exports = router;
+    //NEW STUFF (inspiré de old)
+    //macro
+        //si première fois
+            //creer view ScoreView
+        //sinon
+            //peupler score view

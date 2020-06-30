@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Hotel = require('./hotel.model');
+const Hotel = mongoose.model('Hotel');
 
 const Schema = mongoose.Schema;
 
