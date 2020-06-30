@@ -5,8 +5,11 @@ import TimeRange from "./TimeRange/TimeRange";
 import WeekSelector from "./WeekSelector/WeekSelector";
 import Week from "./Week/Week";
 import HotelList from "./HotelsList/HotelsList"
+
 import { CurrentTeamContextProvider } from "../../contexts/CurrentTeamContext";
 
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { DndProvider } from 'react-dnd'
 
 import "./Planner.scss";
 
@@ -64,34 +67,36 @@ class Planner extends Component {
 
     render() {
         return (
-            <CurrentTeamContextProvider>
-                <section className="Planner">
+            <DndProvider backend={HTML5Backend}>
+                <CurrentTeamContextProvider>
+                    <section className="Planner">
 
-                    <div className="Planner__header">
-                        <h2 className="Planner__title">Visites à<br />plannifier</h2>
+                        <div className="Planner__header">
+                            <h2 className="Planner__title">Visites à<br />plannifier</h2>
 
-                        <TeamSelector />
-                        <TimeRange />
-                        <WeekSelector
-                            currentWeek={this.state.currentWeek}
-                            nextWeek={this.state.nextWeek}
-                            getToCurrentWeek={this.getToCurrentWeek}
-                            getToNextWeek={this.getToNextWeek}
-                            isNextWeek={this.state.isNextWeek}
-                        />
-                    </div>
+                            <TeamSelector />
+                            <TimeRange />
+                            <WeekSelector
+                                currentWeek={this.state.currentWeek}
+                                nextWeek={this.state.nextWeek}
+                                getToCurrentWeek={this.getToCurrentWeek}
+                                getToNextWeek={this.getToNextWeek}
+                                isNextWeek={this.state.isNextWeek}
+                            />
+                        </div>
 
-                    <div className="Planner__container">
-                        <HotelList />
-                        <Week
-                            currentWeek={this.state.currentWeek}
-                            nextWeek={this.state.nextWeek}
-                            isNextWeek={this.state.isNextWeek}
-                        />
-                    </div>
+                        <div className="Planner__container">
+                            <HotelList />
+                            <Week
+                                currentWeek={this.state.currentWeek}
+                                nextWeek={this.state.nextWeek}
+                                isNextWeek={this.state.isNextWeek}
+                            />
+                        </div>
 
-                </section>
-            </CurrentTeamContextProvider>
+                    </section>
+                </CurrentTeamContextProvider>
+            </DndProvider>
         );
     }
 }

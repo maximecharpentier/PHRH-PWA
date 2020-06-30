@@ -1,11 +1,8 @@
 import React, {Component} from "react"
 import "./TeamSelector.scss"
 
-import {API} from '../../../api/api'
+import {API} from '../../../utils/api'
 import { CurrentTeamContext } from "../../../contexts/CurrentTeamContext";
-
-
-// import { CounterContext } from "../../../";
 
 class TeamSelector extends Component {
 
