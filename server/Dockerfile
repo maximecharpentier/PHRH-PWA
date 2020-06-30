@@ -2,9 +2,11 @@
 
 FROM node:10
 
-WORKDIR /home/node
+RUN mkdir -p /usr/src/app
 
-COPY ./package.json .
+WORKDIR /usr/src/app
+
+COPY package.json .
 
 RUN npm install
 

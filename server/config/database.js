@@ -6,7 +6,7 @@ const User = require("../model/user.model");
  * CONNECTION A LA BASE
  */
 
-const uri = `mongodb://localhost:27017/PHRH`;
+const uri = `mongodb://mongo:27017/PHRH`;
 
 //CONNECTION (loop connect command (pour deploiement))
 var connectWithRetry = function () {
