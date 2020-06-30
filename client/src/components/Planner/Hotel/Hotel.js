@@ -8,7 +8,7 @@ class Hotel extends Component {
     render() {
         const {hotel} = this.props;
         return (
-            <div className="Hotel">
+            <div key={hotel._id} className="Hotel">
                 <div className="Hotel__container">
                     <p className="Hotel__name">{hotel.nom}</p>
                     <p className="Hotel__score">130</p>

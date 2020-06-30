@@ -43,6 +43,9 @@
         &:hover {
             background: #F2F2F2;
         }
+        &--active {
+            color: #111215;
+        }
     }
     &__items {
         background: #FFFFFF;

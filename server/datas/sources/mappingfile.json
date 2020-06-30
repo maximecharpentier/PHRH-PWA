@@ -1,0 +1,128 @@
+{
+    "hotel": {
+        "ref_file_name" : "Liste des hotels.xlsx",
+        "uid_internal" : {
+            "col" : "A"
+        },
+        "nom" : {
+            "col" : "B"
+        },
+        "adresse" : {
+            "col" : "C"
+        },
+        "cp" : {
+            "col" : "D"
+        },
+        "ville" : {
+            "col" : "E"
+        },
+        "note" : {
+            "default" : null
+        },
+        "nb_chambres_utilise" : {
+            "col" : "A",
+            "join" : {
+                "file" : "liste hôtel avec les chambres occupées a hier.xlsx",
+                "on" : "A",
+                "get" : "G"
+            }
+        },
+        "nb_visites_periode" : {
+            "default" : 0
+        },
+        "last_time_visited" : {
+            "default" : null
+        },
+        "urgences" : {
+            "default" : []
+        },
+        "anomalies" : {
+            "default" : []
+        },
+        "taches" : {
+            "default" : []
+        }
+    },
+    "user": {
+        "ref_file_name" : "Adresses Terrain.xlsx",
+        "nom" : {
+            "col" : "A"
+        },
+        "prenom" : {
+            "col" : "B"
+        },
+        "pwd" : {
+            "default" : "demodemo"
+        },
+        "fonction" : {
+            "col" : "C"
+        },
+        "adresse" : {
+            "col" : "E"
+        },
+        "secteur" : {
+            "col" : "D"
+        },
+        "jour_bureau" : {
+            "default" : null
+        },
+        "vehicule_id" : {
+            "default" : null
+        },
+        "visites_id" : {
+            "default" : []
+        }
+    },
+    "visite": {
+
+        "ref_file_name" : "note_visites_hotels.xlsx",
+        
+        "uid_internal" : {
+            "col" : "A"
+        },
+        "hotel_id" : {
+            "col" : "B",
+            "join" : {
+                "file" : "Liste des hotels.xlsx",
+                "on" : "A",
+                "get" : "A"
+            }
+        },
+        "date_visite" : {
+            "col" : "D",
+            "function_parse_name" : "parseTimeStampFromDateDDMMAAA"
+        },
+        "note" : {
+            "col" : "E"
+        },
+        "duree" : {
+            "default" : null
+        },
+        "type" : {
+            "default" : "Visite"
+        },
+        "visite_effectue" : {
+            "default" : true
+        }
+    },
+    "vehicule": {
+
+        "ref_file_name" : "voitures.xlsx",
+
+        "immatriculation" : {
+            "col" : "A"
+        },
+        "type" : {
+            "col" : "B"
+        },
+        "adresse_parking" : {
+            "col" : "C"
+        },
+        "cp" : {
+            "col" : "D"
+        },
+        "ville" : {
+            "col" : "E"
+        }
+    }
+}

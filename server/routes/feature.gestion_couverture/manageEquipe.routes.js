@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const ObjectId = require('mongoose').Types.ObjectId;
+//old const ObjectId = require('mongoose').Types.ObjectId;
 const User = require('../../model/user.model');
 const Equipe = require('../../model/assoc_user_user.model');
 
@@ -9,7 +9,11 @@ const Equipe = require('../../model/assoc_user_user.model');
  * @method : GET
  * @param (optionnal) : filter Object : #toDefine
  * @return : mixed 
- *      (array[ (Object JSON) ]) : tableau d'object model Equipe
+ *      (array[ (Object JSON) ]) : tableau d'object { equipe: model Equipe, 
+ *                                                    user_names: {
+ *                                                          user_a: (string), 
+ *                                                          user_b: (string)
+ *                                                    }}
  *      (string) : error message
  */
 router.route('/').get((req, res) => {    
@@ -17,7 +21,23 @@ router.route('/').get((req, res) => {
     let filterObj = {}
     //reprendre ici et construire le system de filtre dynamic
     Equipe.find(filterObj/*{ville: { $in: '.*b*'}}*/)
-        .then(equipes => res.status(200).json(equipes))            
+        .then(async (equipes) => {
+            let listFinale = []
+            //ajouter clé equipe
+            for (const equipe of equipes) {
+                //ajouter user names
+                const user_a = await User.findById(equipe.user_a_id)
+                const user_b = await User.findById(equipe.user_b_id)
+                listFinale.push({
+                    equipe: equipe,
+                    user_names: {
+                        user_a: user_a.getNamePres(), 
+                        user_b: user_b.getNamePres()
+                    }
+                })
+            }
+            res.status(200).json(listFinale)
+        })            
         .catch('Aucune equipes')
 })
 
@@ -37,7 +57,7 @@ router.route('/get/:iduser').get((req, res) => {
             {'user_b_id': req.params.iduser}
         ] 
     })
-    .then(hotel => res.status(200).json(hotel))
+    .then(equipe => res.status(200).json(equipe))
     .catch(err => res.status(400).json('Aucune equipe trouvée'))
 })
 
@@ -49,7 +69,7 @@ router.route('/get/:iduser').get((req, res) => {
  */
 router.route('/users').get(async (req, res) => {
     //get users
-    User.find({ fonction: { $nin: ['Superviseur'] }}, '_id nom prenom')
+    User.find({ fonction: { $nin: ['Superviseur'] }}, '_id nom prenom secteur')
         //ici on passe par une fonction async pour pouvoir peupler 'users' 
         //pck si on le peuple ds le .then de AssocUserUser.find alors 
         //const "users" n'est pas remplie
@@ -58,11 +78,10 @@ router.route('/users').get(async (req, res) => {
             const users = []
             for(userDB of usersDB) {
                 //recherche des joueurs appartenant a une equipe
-                var userDB_id = new ObjectId(userDB._id)
                 const assocDB = await Equipe.find({ 
                     $or: [
-                        {'user_a_id': userDB_id}, 
-                        {'user_b_id': userDB_id}
+                        {'user_a_id': userDB._id}, 
+                        {'user_b_id': userDB._id}
                     ] 
                 })
                 //si le joueur n'appartient a aucune equipe
@@ -102,7 +121,9 @@ router.route('/creer/:idusera/:iduserb').post((req, res) => {
             //on créé l'équipe
             const equipe = new Equipe({
                 user_a_id: req.params.idusera,
-                user_b_id: req.params.iduserb
+                user_b_id: req.params.iduserb,
+                plage_h: req.body.plage_h,
+                secteur_binome: req.body.secteur_binome
             })
             equipe.save()
                 .then(equipeDB => res.status(200).json('Equipe créée'))

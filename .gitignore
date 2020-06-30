@@ -6,3 +6,4 @@ config/terraform/terraform.tfstate.backup
 config/terraform/.terraform/
 
 server/.env
+.DS_Store

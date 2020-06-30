@@ -1,5 +1,6 @@
 const router = require('express').Router();
 
+const ObjectId = require('mongoose').Types.ObjectId;
 const Urgence = require('../../model/urgence.model');
 
 /*
@@ -40,7 +41,8 @@ router.route('/get/:id').get((req, res) => {
 router.route('/add').post((req, res) => {
     //creer model Hotel
     const urgence = new Urgence({
-        hotel_id : req.body.id_hotel, 
+        hotel_id : req.body.hotel_id,
+        equipe_id : req.body.equipe_id,  
         resume : req.body.resume, 
         detail : req.body.detail 
     })
