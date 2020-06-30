@@ -10,7 +10,8 @@ const urgenceSchema = new Schema({
     },
     equipe_id : {
         type: Schema.Types.ObjectId,
-        ref: 'Equipe'
+        ref: 'Equipe',
+        required: false
     },
     resume: {
         type: String, 
