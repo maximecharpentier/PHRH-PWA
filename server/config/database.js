@@ -6,7 +6,7 @@ const User = require("../model/user.model");
  * CONNECTION A LA BASE
  */
 
-const uri = `mongodb://mongo:27017/PHRH`;
+const uri = process.env.DB_URI;
 
 //CONNECTION (loop connect command (pour deploiement))
 var connectWithRetry = function () {
@@ -42,5 +42,5 @@ mongoose.connection.once("open", async () => {
   console.log("PHRH database connection established");
 
   //import
-  require('../import/config/import')
+  require("../import/config/import");
 });
