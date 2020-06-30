@@ -1,11 +1,14 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import Week from './Week/Week';
-import WeekSelection from './WeekSelection/WeekSelection';
+import TeamSelector from "./TeamSelector/TeamSelector";
+import TimeRange from "./TimeRange/TimeRange";
+import WeekSelector from "./WeekSelector/WeekSelector";
+import Week from "./Week/Week";
+import HotelList from "./HotelsList/HotelsList"
 
-import './Dashboard.scss';
+import "./Planner.scss";
 
-class Dashboard extends Component {
+class Planner extends Component {
     state = {
         currentWeek: [],
         nextWeek: [],
@@ -59,24 +62,33 @@ class Dashboard extends Component {
     
     render() { 
         return (
-            
-            <section className="Dashboard">
-                <WeekSelection
-                    currentWeek={this.state.currentWeek}
-                    nextWeek={this.state.nextWeek}
-                    getToCurrentWeek={this.getToCurrentWeek}
-                    getToNextWeek={this.getToNextWeek}
-                    isNextWeek={this.state.isNextWeek}
-                />
-                <Week 
-                    currentWeek={this.state.currentWeek}
-                    nextWeek={this.state.nextWeek}
-                    isNextWeek={this.state.isNextWeek}
-                />
-            </section>
+            <section className="Planner">
 
+                <div className="Planner__header">
+                    <h2 className="Planner__title">Visites à<br/>plannifier</h2>
+                    <TeamSelector />
+                    <TimeRange />
+                    <WeekSelector
+                        currentWeek={this.state.currentWeek}
+                        nextWeek={this.state.nextWeek}
+                        getToCurrentWeek={this.getToCurrentWeek}
+                        getToNextWeek={this.getToNextWeek}
+                        isNextWeek={this.state.isNextWeek}
+                    />
+                </div>
+
+                <div className="Planner__container">
+                    <HotelList />
+                    <Week
+                        currentWeek={this.state.currentWeek}
+                        nextWeek={this.state.nextWeek}
+                        isNextWeek={this.state.isNextWeek}
+                    />
+                </div>
+
+            </section>
         );
     }
 }
  
-export default Dashboard;
+export default Planner;
