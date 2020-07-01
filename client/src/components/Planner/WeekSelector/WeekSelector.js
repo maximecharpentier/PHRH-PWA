@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import './WeekSelection.scss';
+import './WeekSelector.scss';
 
 class WeekSelection extends Component {
     constructor(props) {
@@ -61,7 +61,6 @@ class WeekSelection extends Component {
                 case '12':
                     return 'Décembre'
                             
-
                 default:
                     break;
             }
@@ -70,12 +69,18 @@ class WeekSelection extends Component {
     render() { 
         
         return (
-            <div className="WeekSelection">
-                <p className="WeekSelection__text">{this.getFirstDay()} - {this.getLastDay()} {this.getMonthFr()} 2020</p>
-                <div className="WeekSelection__buttons">
-                    <button className={`WeekSelection__button ${!this.props.isNextWeek ? 'WeekSelection__button--active' : ''}`} onClick={() => this.props.getToCurrentWeek()}>Semaine en cours</button>
-                    <button className={`WeekSelection__button ${this.props.isNextWeek ? 'WeekSelection__button--active' : ''}`} onClick={() => this.props.getToNextWeek()}>Semaine suivante</button>
-                </div>
+            <div className="WeekSelector">
+                <button className={`WeekSelector__button ${!this.props.isNextWeek ? 'WeekSelector__button--disabled' : ''}`} onClick={() => this.props.getToCurrentWeek()}>
+                    <svg viewBox="0 0 8 12">
+                        <path d="M7.41 10.59L2.83 6L7.41 1.41L6 0L0 6L6 12L7.41 10.59Z" />
+                    </svg>
+                </button>
+                <p className="WeekSelector__text">{this.getFirstDay()} - {this.getLastDay()} {this.getMonthFr()} 2020</p>
+                <button className={`WeekSelector__button ${this.props.isNextWeek ? 'WeekSelector__button--disabled' : ''}`} onClick={() => this.props.getToNextWeek()}>
+                    <svg viewBox="0 0 8 12">
+                        <path d="M0.589966 10.59L5.16997 6L0.589966 1.41L1.99997 0L7.99997 6L1.99997 12L0.589966 10.59Z" />
+                    </svg>
+                </button>
             </div>
         );
     }
