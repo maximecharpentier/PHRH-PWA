@@ -1,15 +1,14 @@
-import React, { Component, useContext, createContext } from "react"
+import React, { useContext } from "react"
 import "./Hotel.scss"
 
 import { useDrag } from "react-dnd"
 import { ItemsType } from "../../../utils/items";
 
-import {CurrentTeamContext} from "../../../contexts/CurrentTeamContext"
+import { CurrentTeamContext } from "../../../contexts/CurrentTeamContext"
 
-const Hotel = ({ hotel }) => {
+const Hotel = ({ hotel, list }) => {
 
     const [currentTeam] = useContext(CurrentTeamContext)
-
     const [{ isDragging }, drag] = useDrag({
         item: {
             type: ItemsType.CARD,
@@ -21,7 +20,7 @@ const Hotel = ({ hotel }) => {
         })
     })
     return (
-        <div ref={drag} style={{opacity: isDragging ? 0.5 : 1}} key={hotel._id} className="Hotel">
+        <div ref={drag} style={{ opacity: isDragging ? 0 : 1 }} key={hotel._id} className="Hotel">
             <div className="Hotel__container">
                 <p className="Hotel__name">{hotel.nom}</p>
                 <p className="Hotel__score">130</p>
@@ -33,7 +32,7 @@ const Hotel = ({ hotel }) => {
             </div>
             <div className="Hotel__container">
                 <p className="Hotel__adress">{hotel.adresse}</p>
-                <p className="Hotel__date">{hotel.last_time_visited}</p>
+                <p className="Hotel__date">{new Date(hotel.last_time_visited).getDate() + "/" + new Date(hotel.last_time_visited).getMonth() + "/" + new Date(hotel.last_time_visited).getFullYear()}</p>
                 <p className="Hotel__room">{hotel.nb_chambres_utilise}</p>
             </div>
         </div>

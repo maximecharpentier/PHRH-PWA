@@ -6,8 +6,13 @@ import { CurrentTeamContext } from "../../../contexts/CurrentTeamContext";
 
 // Fetch the hotels to visit directly from the API, then render each of them into a component named "Hotel"
 export const HotelContext = createContext({
-  sendVisit: (id) => {
-    console.log(id)
+  sendVisit: (hotel, date) => {
+    console.log(hotel, date)
+    // API.post('gestion/visites/plannifier/', hotel).then((response) => {
+    //   console.log(response.data)
+    // }).catch(error => {
+    //   console.log(error.response)
+    // });
   }
 });
 
@@ -15,7 +20,7 @@ const HotelsList = () => {
   const [hotels, setHotels] = useState([])
   const [currentTeam] = useContext(CurrentTeamContext)
 
-  const {sendVisit} = useContext(HotelContext)
+  const { sendVisit } = useContext(HotelContext)
 
   useEffect(() => {
     API.get('hotels/').then((response) => {
@@ -23,22 +28,22 @@ const HotelsList = () => {
     })
   }, []);
 
-  
 
-  let allVisits = currentTeam && hotels.length !== 0 ? hotels.filter(hotels => hotels.cp.toString().substring(0, 2) == currentTeam.equipe.secteur_binome).map(hotel => <Hotel key={hotel._id} hotel={hotel} />) : hotels.map(hotel => <Hotel key={hotel._id} hotel={hotel} />)
+
+  let allVisits = currentTeam && hotels.length !== 0 ? hotels.filter(hotels => hotels.cp.toString().substring(0, 2) === currentTeam.equipe.secteur_binome).map(hotel => <Hotel list key={hotel._id} hotel={hotel} />) : hotels.map(hotel => <Hotel list key={hotel._id} hotel={hotel} />)
   if (!currentTeam) {
     return (
       <div>Veuillez choisir un binome</div>
     )
   }
-  
+
   return (
-    <HotelContext.Provider value={{sendVisit}}>
+    <HotelContext.Provider value={{ sendVisit }}>
       <div className="HotelsList">
         <div className="HotelsList__container">
           {allVisits}
         </div>
-        {/* <button className="HotelsList__button">Voir Plus</button> */}
+        <button className="HotelsList__button">Voir Plus</button>
       </div>
     </HotelContext.Provider>
   );

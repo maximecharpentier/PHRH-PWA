@@ -39,7 +39,7 @@ class TeamSelector extends Component {
 
     render() {
 
-        const { title, isActive, value, teams } = this.state
+        const { title, isActive, teams } = this.state
         const [currentTeam] = this.context
 
 
