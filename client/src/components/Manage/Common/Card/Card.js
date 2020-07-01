@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ItemMenu from '../../../../assets/item-menu';
 import './Card.scss'
-import {getItem, getItems} from '../../../../api/api'
+import {getItem, getItems} from '../../../../utils/api'
 
 const Card = ({ user, editUser, deleteUser, hotel, editHotel, deleteHotel, team, deleteTeam, showMore, emergency, editEmergency, deleteEmergency }) => {
     const [showMenu, setShowMenu] = useState(false);
     const [emergencyHotel, setEmergencyHotel] = useState({});
     const [emergencyTeam, setEmergencyTeam] = useState({});
-    const [emergencyDone, setEmergencyDone] = useState(false);
+    // const [emergencyDone, setEmergencyDone] = useState(false);
     const menuRef = useRef();
 
     const handleClickOutside = e => {
