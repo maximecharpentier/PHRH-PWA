@@ -6,7 +6,7 @@ import Form from '../Common/Form/Form';
 import Modal from '../Common/Modal/Modal';
 import Nav from '../Common/Nav/Nav';
 
-import { API } from '../../../api/api';
+import { API } from '../../../utils/api';
 
 class Emergencies extends Component {
     state = {
