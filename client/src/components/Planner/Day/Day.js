@@ -23,7 +23,7 @@ const Day = (props) => {
                 <p className="Day__label">{props.label}</p>
                 <p className="Day__date">{props.date}</p>
             </div>
-            <div style={{backgroundColor: isOver ? "#d8d7d754" : "#FFFFFF"}} ref={drop} className="Day__list">
+            <div style={{backgroundColor: isOver ? "#4357ea33" : "#FFFFFF"}} ref={drop} className="Day__list">
                 {/* <Hotel />
                     <Hotel />
                     <Hotel />

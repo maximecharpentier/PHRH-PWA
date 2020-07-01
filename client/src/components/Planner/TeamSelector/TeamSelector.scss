@@ -1,6 +1,6 @@
 .TeamSelector {
     height: 60px;
-    margin-right: 64px;
+    width: 25%;
     padding-top: 28px;
     &__title {
         color: #000000;
@@ -26,7 +26,7 @@
         justify-content: space-between;
         padding: 0px 8px 0px 8px;
         position: absolute;
-        width: 100%;
+        width: 230px;
         z-index: 1;
         background: #FFFFFF;
         transition: .1s ease;

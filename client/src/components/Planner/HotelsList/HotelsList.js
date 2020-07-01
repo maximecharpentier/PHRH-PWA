@@ -25,12 +25,17 @@ class HotelsList extends Component {
     const { hotels } = this.state;
     const currentTeam = this.context
     let allVisits = currentTeam[0] && this.state.hotels.length !== 0 ?  hotels.filter(hotels => hotels.cp.toString().substring(0, 2) == currentTeam[0].equipe.secteur_binome).map(hotel => <Hotel key={hotel._id} hotel={hotel} />) : hotels.map(hotel => <Hotel key={hotel._id} hotel={hotel} />)
+    if(!currentTeam[0]) {
+      return (
+        <div>Veuillez choisir un binome</div>
+      )
+    }
     return (
       <div className="HotelsList">
         <div className="HotelsList__container">
           {allVisits}
         </div>
-        <button className="HotelsList__button">Voir Plus</button>
+        {/* <button className="HotelsList__button">Voir Plus</button> */}
       </div>
     )
   }
