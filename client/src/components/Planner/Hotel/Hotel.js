@@ -1,15 +1,20 @@
-import React, { Component } from "react"
+import React, { Component, useContext } from "react"
 import "./Hotel.scss"
 
 import { useDrag } from "react-dnd"
 import { ItemsType } from "../../../utils/items";
 
+import {CurrentTeamContext} from "../../../contexts/CurrentTeamContext"
+
 const Hotel = ({ hotel }) => {
 
+    const [currentTeam] = useContext(CurrentTeamContext)
 
     const [{ isDragging }, drag] = useDrag({
         item: {
             type: ItemsType.CARD,
+            hotel: hotel,
+            currentTeam: currentTeam
         },
         collect: monitor => ({
             isDragging: !!monitor.isDragging()
