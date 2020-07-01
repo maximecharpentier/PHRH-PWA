@@ -1,14 +1,8 @@
 const mongoose = require('mongoose')
-/*Schema = mongoose.Schema,
-    bcrypt = require('bcrypt'),
-    SALT_WORK_FACTOR = 10;*/
-
 const User = require("./user.model");
 const Visite = require("./visite.model");
 
 const Schema = mongoose.Schema;
-    /*bcrypt = require('bcrypt'),
-    SALT_WORK_FACTOR = 10;*/
 
 const assoc_user_visiteSchema = new Schema({
     user_id : {
@@ -46,6 +40,6 @@ assoc_user_visiteSchema.statics.insertIfNotExist = async function(assoc) {
     }
 }
 
-const AssocUserVisite = mongoose.model('AssocUserVisite', assoc_user_visiteSchema)
+const AssocUserVisite = mongoose.model('Assoc_User_Visite', assoc_user_visiteSchema)
 
 module.exports = AssocUserVisite

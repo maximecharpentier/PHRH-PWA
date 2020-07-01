@@ -4,7 +4,7 @@ FROM node:10
 
 WORKDIR /home/node
 
-COPY ./package.json .
+COPY package.json .
 
 RUN npm install
 
