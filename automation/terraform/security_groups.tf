@@ -1,4 +1,4 @@
-resource "aws_security_group" "phrh_security_group" {
+resource "aws_security_group" "phrh_g10_security_groups" {
   vpc_id = "${aws_default_vpc.default.id}"
   ingress {
     from_port   = 22
@@ -7,20 +7,8 @@ resource "aws_security_group" "phrh_security_group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   ingress {
-    from_port   = 8080
-    to_port     = 8080
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    from_port   = 8081
-    to_port     = 8081
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-  ingress {
-    from_port   = 27017
-    to_port     = 27017
+    from_port   = 3000
+    to_port     = 3000
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
