@@ -2,6 +2,11 @@
 
 ![data stack](./assets/data-stack.png)
 
+| Docker Image | Version |
+| ------------ | ------- |
+| [phrh-client](https://hub.docker.com/repository/docker/blyndusk/phrh-client) | ![phrh-client](https://img.shields.io/docker/v/blyndusk/phrh-client) |
+| [phrh-server](https://hub.docker.com/repository/docker/blyndusk/phrh-server) | ![phrh-server](https://img.shields.io/docker/v/blyndusk/phrh-server) |
+
 ## Terraform
 
 1. **Generate** RSA *public/private* key pair:
@@ -36,23 +41,23 @@
 
 > Current directory: `automation/terraform`
 
-    - **Init** the terraform folder:
+  - **Init** the terraform folder:
 
-    ```bash
-    terraform init
-    ```
+  ```bash
+  terraform init
+  ```
 
-    - ***Visualize*** the modifications ( *added, changed, destroyed* ):
+  - **Visualize** the modifications ( *added, changed, destroyed* ):
 
-    ```bash
-    terraform plan
-    ```
+  ```bash
+  terraform plan
+  ```
 
-    - **Apply** modifications: 
+  - **Apply** modifications: 
 
-    ```bash
-    terraform apply
-    ```
+  ```bash
+  terraform apply
+  ```
 
 ## Ansible 
 
