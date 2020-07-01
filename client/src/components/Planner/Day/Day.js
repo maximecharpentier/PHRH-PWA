@@ -1,16 +1,19 @@
-import React, { Component } from "react";
+import React, { useContext } from "react";
 import Hotel from "./../Hotel/Hotel"
 import "./Day.scss";
 
 import { useDrop } from "react-dnd"
 import { ItemsType } from "../../../utils/items";
+import { HotelContext } from "../HotelsList/HotelsList"
 
 
 const Day = (props) => {
+    
+    const { sendVisit } = useContext(HotelContext)
 
     const [{isOver}, drop] = useDrop({
         accept: ItemsType.CARD,
-        drop: (item, monitor) => console.log(item, props.date),
+        drop: (item, monitor) => sendVisit(item.hotel._id),
         collect: monitor => ({
             isOver: !!monitor.isOver()
         })

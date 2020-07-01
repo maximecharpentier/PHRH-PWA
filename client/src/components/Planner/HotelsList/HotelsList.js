@@ -1,45 +1,48 @@
-import React, { Component } from "react"
+import React, { createContext, useContext, useState, useEffect } from "react"
 import "./HotelsList.scss"
 import Hotel from "./../Hotel/Hotel"
 import { API } from '../../../utils/api'
 import { CurrentTeamContext } from "../../../contexts/CurrentTeamContext";
 
-
 // Fetch the hotels to visit directly from the API, then render each of them into a component named "Hotel"
-
-class HotelsList extends Component {
-  state = {
-    hotels: []
+export const HotelContext = createContext({
+  sendVisit: (id) => {
+    console.log(id)
   }
-  static contextType = CurrentTeamContext
+});
 
-  componentWillMount() {
+const HotelsList = () => {
+  const [hotels, setHotels] = useState([])
+  const [currentTeam] = useContext(CurrentTeamContext)
+
+  const {sendVisit} = useContext(HotelContext)
+
+  useEffect(() => {
     API.get('hotels/').then((response) => {
-      this.setState({
-        hotels: response.data
-      })
+      setHotels(response.data)
     })
-  }
+  }, []);
 
-  render() {
-    const { hotels } = this.state;
-    const currentTeam = this.context
-    let allVisits = currentTeam[0] && this.state.hotels.length !== 0 ?  hotels.filter(hotels => hotels.cp.toString().substring(0, 2) == currentTeam[0].equipe.secteur_binome).map(hotel => <Hotel key={hotel._id} hotel={hotel} />) : hotels.map(hotel => <Hotel key={hotel._id} hotel={hotel} />)
-    if(!currentTeam[0]) {
-      return (
-        <div>Veuillez choisir un binome</div>
-      )
-    }
+  
+
+  let allVisits = currentTeam && hotels.length !== 0 ? hotels.filter(hotels => hotels.cp.toString().substring(0, 2) == currentTeam.equipe.secteur_binome).map(hotel => <Hotel key={hotel._id} hotel={hotel} />) : hotels.map(hotel => <Hotel key={hotel._id} hotel={hotel} />)
+  if (!currentTeam) {
     return (
+      <div>Veuillez choisir un binome</div>
+    )
+  }
+  
+  return (
+    <HotelContext.Provider value={{sendVisit}}>
       <div className="HotelsList">
         <div className="HotelsList__container">
           {allVisits}
         </div>
         {/* <button className="HotelsList__button">Voir Plus</button> */}
       </div>
-    )
-  }
+    </HotelContext.Provider>
+  );
+};
 
-}
 
-export default HotelsList
+export default HotelsList;
