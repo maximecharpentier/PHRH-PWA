@@ -79,6 +79,7 @@ class DBFeeder {
         adresse: hotel.adresse,
         cp: hotel.cp,
         ville: hotel.ville,
+        note: hotel.note,
         nb_chambres_utilise: hotel.nb_chambres_utilise,
         nb_visites_periode: hotel.nb_visites_periode,
         last_time_visited: hotel.last_time_visited ? hotel.last_time_visited : null,
@@ -102,7 +103,6 @@ class DBFeeder {
               uid_internal: visite.uid_internal,
               hotel_id: HotelDB._id,
               date_visite: new Date(visite.date_visite),
-              note: visite.note,
               ville: visite.ville,
               duree: visite.duree,
               type: visite.type,
@@ -325,8 +325,8 @@ class DBFeeder {
           hotel.nb_visites_periode++
           //last_time_visited
           hotel.last_time_visited = visite.date_visite
-          //note
-          hotel = visite.note
+          //note : on ne s'occupe pas d
+          hotel.note = visite.note
         }
       })
     })
@@ -518,7 +518,7 @@ class DBFeeder {
               }
               //sinon informer que la jointure a retourné un resultat vide
               else {
-                console.log('[skip visite] cause : jointure échouée, valeur < '
+                console.log('[skip entité] cause : jointure échouée, valeur < '
                   + joinPropValue +
                   ' > absente de < ' 
                   + mapInfo['file'] + 

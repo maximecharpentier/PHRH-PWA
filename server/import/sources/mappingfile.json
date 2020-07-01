@@ -17,7 +17,12 @@
             "col" : "E"
         },
         "note" : {
-            "default" : null
+            "col" : "A",
+            "join" : {
+                "file" : "notes.xlsx",
+                "on" : "B",
+                "get" : "E"
+            }
         },
         "nb_chambres_utilise" : {
             "col" : "A",

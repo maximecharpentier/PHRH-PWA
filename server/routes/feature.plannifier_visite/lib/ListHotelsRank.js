@@ -17,6 +17,14 @@ class ListHotelsRank {
         //return with $options
     }
 
+    add(elem) {
+        this.addOrUpdate(elem)
+    }
+
+    update(elem) {
+        this.addOrUpdate(elem)
+    }
+
     /**
      * @desc : fonction qui update la vue HotelRank et le snapshot
      * @param {*} elem : element de liste
