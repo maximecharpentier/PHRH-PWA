@@ -7,6 +7,7 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import "./styles/master.scss";
 import "./App.scss";
+import { isAuth } from "./utils/Login.utils"
 
 // Pages
 import Login from "./pages/Login";

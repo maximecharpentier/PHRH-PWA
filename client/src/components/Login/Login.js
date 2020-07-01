@@ -2,16 +2,24 @@ import React, { Component } from 'react'
 import styled from 'styled-components';
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import {API} from '../../api/api'
+//import { storeToken } from "./utils/Login.utils"
 
 class Login extends Component {
-  userLogin = (e, id) => {
-    e.preventDefault();
-    API.post('auth/login/' + id, "admin").then((response) => {
-        console.log(response.data)
-    }).catch(error => {
-        console.log(error.response)
-    });
-  }
+  // userLogin = (e, id) => {
+  //   e.preventDefault();
+  //   API.post('auth/login', "token").then((response) => {
+  //       console.log(response.data)
+  //       storeToken(response.data) // recupérer depuis response --> clé BEABER
+  //       // redirect to dashboard page
+  //   }).catch(error => {
+  //       console.log(error.response)
+  //   });
+  // }
+
+  // const oject = {
+  //   nom: null,
+  //   pwd: null
+  // }
 
   render() {
     return (

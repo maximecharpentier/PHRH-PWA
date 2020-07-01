@@ -1,42 +1,37 @@
 //1) creer utilitaire
 
-//A CALL WHEN LOGIN
-auth(user, mdp) {
-	//req sur /login
-	//stocker le token en localstorage
-	storeToken((string) token)
+// WHEN LOGIN SUCCESS
+const storeToken = (token) => {
+  //store token in LocalStorage
+  window.localStorage.setItem('login_token', token);
 }
 
-//A CALL WHEN LOGIN SUCCESS
-storeToken((string) token) {
-	//store token in LocalStorage	
+const getToken = () => {
+  // get token value from localStorage
+  window.localStorage.getItem('login_token');
 }
 
-//A APPELER A LA DECONNECTION
-disconnect() {
-	removeToken()
+// WHEN USER DISCONNECT
+const removeToken = () => {
+  // remove token from localStorage
+  window.localStorage.removeItem('login_token');
 }
 
-removeToken() {
-	//remove token from localStorage
-}
 
-getToken() {
-	//get token from local storage
-}
 
 //A APPELER AVANT CHAQUE REDIRECTION
-isAuth() {
+const isAuth = () => {
 	//requette sur la route /isConnected()
 	//si code 200 -> ok return true
 	//si code 401 -> ko redirect to login page
 }
 
 //A APPELER POUR PEUPLER LA CLEF "header" lor de axios connect
-getAuthHeaders() {
-	//get token from local storage
-	//return object formated {'Authorization': token}
+const getAuthHeaders = () => {
+  Authorization: getToken()
 }
+
+console.log(getAuthHeaders())
 
 //2) brancher test d'authentification sur APP.js
 //APALER IS CONNECTED DANS APP
