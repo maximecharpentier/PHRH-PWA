@@ -14,6 +14,7 @@ export const HotelContext = createContext({
       type: "Visite", 
       visite_effectue: false,
       equipe_id: data.currentTeam.equipe._id,
+      user_id: data.currentTeam.equipe.user_a_id,
       note: 12
   }
     console.log(visite)
@@ -36,6 +37,7 @@ const HotelsList = () => {
     API.get('hotels/').then((response) => {
       setHotels(response.data)
     })
+    
   }, []);
 
 

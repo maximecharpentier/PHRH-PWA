@@ -1,18 +1,23 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import "./Day.scss";
 
 import { useDrop } from "react-dnd"
 import { ItemsType } from "../../../utils/items";
 import { HotelContext } from "../HotelsList/HotelsList"
+import { CurrentTeamContext } from "../../../contexts/CurrentTeamContext";
+
+import { API } from '../../../utils/api'
+
 
 import Hotel from '../Hotel/Hotel'
 
 
 const Day = (props) => {
 
-    const oneHotel = {"memos":[],"_id":"5efc5eeb894a3e0012b06e6c","uid_internal":10745398,"nom":"F1 Beauvais - H2225","adresse":"23 Avenue Montaigne","cp":60000,"ville":"BEAUVAIS","nb_chambres_utilise":0,"nb_visites_periode":0,"last_time_visited":null,"__v":0}
-    
+    const [visits, setVisits] = useState([])
     const { sendVisit } = useContext(HotelContext)
+    const [currentTeam] = useContext(CurrentTeamContext)
+
 
     const [{isOver}, drop] = useDrop({
         accept: ItemsType.CARD,
@@ -22,6 +27,14 @@ const Day = (props) => {
         })
     })
 
+    useEffect(() => { 
+        if(currentTeam){
+            API.get('/gestion/visites/get/foruser/' + currentTeam.equipe.user_a_id).then((response) => {
+                setVisits(response.data.filter(visit => visit.date_visite.slice(0, 10) == props.fullDate))
+              })
+        }
+      }, [currentTeam, visits]);
+
 
     return (
         <div className="Day">
@@ -30,7 +43,7 @@ const Day = (props) => {
                 <p className="Day__date">{props.date}</p>
             </div>
             <div style={{backgroundColor: isOver ? "#4357ea33" : "#FFFFFF"}} ref={drop} className="Day__list">
-                {/* <Hotel hotel={oneHotel}/> */}
+                {visits !== "Aucune visite pour cet user" && visits.map(visit => <Hotel key={visit._id} hotel={visit}/>)}
             </div>
         </div>
     );
