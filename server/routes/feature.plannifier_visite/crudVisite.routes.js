@@ -124,10 +124,46 @@ router.route('/plannifier').post(authStrategy(), (req, res) => {
         last_time_visited :     new Date(req.body.last_time_visited),
     })
 
-    //save
-    visite.save()
-        .then(() => res.status(200).json('Visite ajouté'))
-        .catch(err => res.status(400).json('Erreurs: ' + err))
+    //creer visite
+    const visiteDB = await Visite.insertIfNotExist(visite)
+
+    if(visiteDB) {
+        let msg = "Visite ajouté"
+        //creer model assoc_user_visites
+        let usersToAssoc
+
+        //recupération des informations de la requette
+        if(req.body.hasOwnProperty('equipe_id')) {
+            const equipe = await Equipe.findById(req.body.equipe_id)
+            if(equipe) {
+                usersToAssoc = [equipe.user_a_id, equipe.user_b_id]
+                msg+=" pour les users de l'équipe"
+            }
+        }
+        if(req.body.hasOwnProperty('user_id')) {
+            usersToAssoc = [req.body.user_id]
+            msg+=" pour l'user"
+        }
+    
+        for(const [index, user_id] of usersToAssoc.entries()) {
+            const assocUserVisite = new Assoc_user_visite({
+                user_id: user_id,
+                visite_id: visiteDB._id
+            })
+
+            const assocDB = await Assoc_user_visite.insertIfNotExist(assocUserVisite)
+            if(!assocDB) {
+                //delete visite
+                Visite.findByIdAndDelete(visiteDB._id)
+
+                res.status(400).json('Erreurs d\'insertion de l\'association visite/user, la visite n\'a pas été enregistrée')
+            }
+        }
+        res.status(200).json(msg)
+
+    } else {
+        res.status(400).json('Erreur d\'insertion de la visite ou la visite existe deja')
+    }
 })
 
 /**
