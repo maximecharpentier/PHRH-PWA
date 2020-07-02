@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'http://52.47.86.14:3001/'
+  baseURL: 'https://localhost:27017/'
 });
 
 const getItem = (route, setState, id) => {
