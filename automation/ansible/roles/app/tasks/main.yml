@@ -1,56 +1,61 @@
 - name: Create directory structure
   file:
-    path: "{{ app_directory }}"
+    path: "{{ phrh_directory }}"
     state: directory
-    owner: "{{ app_user }}"
-    group: "{{ app_group }}"
+    owner: "{{ phrh_user }}"
+    group: "{{ phrh_group }}"
 
-# - name: Copy Server application
-#   copy:
-#     src: ../../../../server
-#     dest: "{{ app_directory }}"
+- name: Copy Server application
+  copy:
+    src: ../../server
+    dest: "{{ phrh_directory }}"
+  tags: ["build"]
 
-# - name: Copy Client Application
-#   copy:
-#     src: ../../../../client
-#     dest: "{{ app_directory }}"
+- name: Copy Client Application
+  copy:
+    src: ../../client
+    dest: "{{ phrh_directory }}"
+  tags: ["build"]
 
-# - name: Login to Docker registry
-#   docker_login:
-#     username: "{{ docker_username }}"
-#     password: "{{ docker_password }}"
+- name: Login to Docker registry
+  docker_login:
+    username: "{{ docker_username }}"
+    password: "{{ docker_password }}"
+  tags: ["build"]
 
-# - name: Build and push docker image client
-#   docker_image:
-#     build:
-#       path: /home/ubuntu/phrh/client
-#     name: "{{ phrh_client_image }}"
-#     tag: "{{ phrh_client_tag }}"
-#     push: yes
-#     source: build
-#   notify: restart docker stack
-#   tags: ["build", "redeploy"]
+- name: Build and push docker image client
+  docker_image:
+    build:
+      path: "{{ phrh_directory }}/client"
+    name: "{{ phrh_client_image }}"
+    tag: "{{ phrh_client_tag }}"
+    push: yes
+    source: build
+  notify: restart docker stack
+  tags: ["build"]
 
-# - name: Build and push docker image server
-#   docker_image:
-#     build:
-#       path: /home/ubuntu/phrh/server
-#     name: "{{ phrh_server_image }}"
-#     tag: "{{ phrh_server_tag }}"
-#     push: yes
-#     source: build
-#   notify: restart docker stack
-#   tags: ["build", "redeploy"]
+- name: Build and push docker image server
+  docker_image:
+    build:
+      path: "{{ phrh_directory }}/server"
+    name: "{{ phrh_server_image }}"
+    tag: "{{ phrh_server_tag }}"
+    push: yes
+    source: build
+  notify: restart docker stack
+  tags: ["build"]
 
 - name: Copy docker-compose configuration file
   template:
     src: templates/docker-compose.yml
-    dest: "{{ app_directory }}/docker-compose.yml"
-    owner: "{{ app_user }}"
-    group: "{{ app_group }}"
+    dest: "{{ phrh_directory }}/docker-compose.yml"
+    owner: "{{ phrh_user }}"
+    group: "{{ phrh_group }}"
   notify: restart docker stack
-  tags: ["compose"]
+  tags: ["build", "deploy"]
 
 - name: start docker stack
   docker_compose:
-    project_src: "{{ app_directory }}"
+    project_src: "{{ phrh_directory }}"
+  tags: ["build", "deploy"]
+

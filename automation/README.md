@@ -87,6 +87,14 @@ ansible-playbook -i inventory.ini app.yml --key <YOUR_PRIVATE_KEY> --user ubuntu
 ansible-playbook -i inventory.ini app.yml --key <YOUR_PRIVATE_KEY> --user ubuntu --tags="deploy"       
 ```
 
+4. To **build new client & server docker images**, run this command:
+
+> Current directory: `automation/ansible`
+
+```bash
+ansible-playbook -i inventory.ini app.yml --key <YOUR_PRIVATE_KEY> --user ubuntu --tags="build"       
+```
+
 4. To do all this **in one time**, run this command:
 
 > Current directory: `automation/ansible`
