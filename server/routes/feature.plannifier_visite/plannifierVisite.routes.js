@@ -1,9 +1,11 @@
 const router = require('express').Router();
 const authStrategy = require('../../lib/utils').authStrategy;
 const mongoose = require('mongoose');
+const AssocUserVisite = require('../../model/assoc_user_visite.model');
 const Visite = mongoose.model('Visite');
 const Urgence = mongoose.model('Urgence');
 const User = mongoose.model('User');
+const Equipe = mongoose.model('Assoc_User_User');
 
 /**
  * @route : get all visites
@@ -159,26 +161,11 @@ router.route('/suggestions').get(authStrategy(), (req, res) => {
 /**
  * @route : plannifier une visite (equivalent à add)
  * @method POST
- * @param : (Object JSON) : object Visite conforme au schema (voir schema)
+ * @param : (Object JSON) : object Visite conforme au schema (voir schema) + equipe_id
  * @return : (string) : error/confirm message
  */
 router.route('/plannifier').post(authStrategy(), (req, res) => {
-    //#SAME AS PLANNIFIER dans crudVisite
-    //creer model Visite
-    const visite = new Visite({
-        nom :           req.body.nom, 
-        adresse :       req.body.adresse, 
-        cp :            Number(req.body.cp), 
-        ville :                 req.body.ville, 
-        nb_chambres_utilise :   req.body.nb_chambres_utilise, 
-        nb_visites_periode :    req.body.nb_visites_periode, 
-        last_time_visited :     new Date(req.body.last_time_visited),
-    })
-
-    //save
-    visite.save()
-        .then(() => res.status(200).json('Visite ajouté'))
-        .catch(err => res.status(400).json('Erreurs: ' + err))
+    //vide déplac é ds crudVisite
 })
 
 module.exports = router;
