@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components';
 import { Formik, Form, Field, ErrorMessage } from 'formik'
-import {API} from '../../api/api'
+import {API} from '../../utils/api'
 
 class Login extends Component {
   userLogin = (e, id) => {

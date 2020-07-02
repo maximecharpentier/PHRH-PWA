@@ -1,15 +1,14 @@
 - name: Install libs & packages
   hosts: app
+  become: yes
   roles:
     - role: common
-      become: true
       tags: ["install"]
     - role: geerlingguy.docker
-      become: true
-      tags: ["install", "docker"]
+      tags: ["install"]
 
 - name: Deploy PHRH
   hosts: app
   roles:
     - role: app
-      tags: ["deploy"]
+      tags: ["build"]

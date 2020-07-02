@@ -6,13 +6,13 @@ import Form from '../Common/Form/Form';
 import Modal from '../Common/Modal/Modal';
 import Nav from '../Common/Nav/Nav';
 
-import {API} from '../../../api/api';
+import {API} from '../../../utils/api';
 
 class Teams extends Component {
     state = {
         teams: [],
         usersWithoutTeam:[],
-        allSector: ["75", "93", "92/94", "78/95", "77/91"],
+        allSector: ["75", "93", "92", "78", "77"],
         timeSlots: ['Matin', 'Journée', 'Soir'],
         newTeam: {},
         showForm: false,
