@@ -5,10 +5,10 @@
     - role: common
       tags: ["install"]
     - role: geerlingguy.docker
-      tags: ["install", "docker"]
+      tags: ["install"]
 
 - name: Deploy PHRH
   hosts: app
   roles:
     - role: app
-      tags: ["deploy"]
+      tags: ["build"]

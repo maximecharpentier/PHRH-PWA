@@ -4,16 +4,16 @@ docker_users:
 docker_username: blyndusk
 docker_password: 
 
-app_user: ubuntu
-app_group: "{{ app_user }}"
-app_directory: "/home/{{ app_user }}/phrh"
+phrh_user: ubuntu
+phrh_group: "{{ phrh_user }}"
+phrh_directory: "/home/{{ phrh_user }}/phrh"
 
 phrh_client_image: "{{ docker_username }}/phrh-client"
-phrh_client_tag: latest
+phrh_client_tag: 2.0
 phrh_client_port: 3000
 
 phrh_server_image: "{{ docker_username }}/phrh-server"
-phrh_server_tag: latest
+phrh_server_tag: 2.0
 phrh_server_port: 3001
 phrh_server_host: phrh-db
 

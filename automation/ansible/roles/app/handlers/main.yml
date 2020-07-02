@@ -1,4 +1,4 @@
 - name: restart docker stack
   docker_compose:
-    project_src: "{{ app_directory }}"
+    project_src: "{{ phrh_directory }}"
     restarted: yes

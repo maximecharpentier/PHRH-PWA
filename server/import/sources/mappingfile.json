@@ -88,13 +88,7 @@
             "col" : "A"
         },
         "hotel_id" : {
-            "col" : "B",
-            "join" : {
-                "file" : "hotels.xlsx",
-                "on" : "A",
-                "get" : "A"
-            },
-            "default": null
+            "col" : "B"
         },
         "date_visite" : {
             "col" : "D",
