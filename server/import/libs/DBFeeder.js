@@ -30,6 +30,18 @@ class DBFeeder {
    * @retur : void
    */
   static async resetDB() {
+    await Hotel.deleteMany({})
+    await Visite.deleteMany({})
+    await User.deleteMany({})
+    await Anomalie.deleteMany({})
+    await Assoc_user_visite.deleteMany({})
+    await Assoc_user_user.deleteMany({})
+    await Priorisation.deleteMany({})
+    await Tache.deleteMany({})
+    await Urgence.deleteMany({})
+    await Vehicule.deleteMany({})
+    await Memo.deleteMany({})
+
     //TMP : retire les artefacts pour les devs
     mongoose.connection.db.dropCollection('utilisateurs')
       .then()
@@ -48,18 +60,6 @@ class DBFeeder {
       .catch(err => {
         console.log('artefact deja éffacé')
       })
-
-    await Hotel.deleteMany({})
-    await Visite.deleteMany({})
-    await User.deleteMany({})
-    await Anomalie.deleteMany({})
-    await Assoc_user_visite.deleteMany({})
-    await Assoc_user_user.deleteMany({})
-    await Priorisation.deleteMany({})
-    await Tache.deleteMany({})
-    await Urgence.deleteMany({})
-    await Vehicule.deleteMany({})
-    await Memo.deleteMany({})
   }
 
   /**

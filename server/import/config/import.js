@@ -1,24 +1,27 @@
 require("dotenv").config();
 
-const BaseValueInsertor = require("../libs/DBFeeder")
+const BaseValueInsertor = require("../libs/DBFeeder");
 
 /**
  * IMPORT VALUES IN DB FOR TEST OR MIGRATION
  */
+importData()
 
-//case : Clean Database
-if(process.env.RESET_DB === 'true') {
-    resetDB()
-}
+async function importData() {
+    //case : Clean Database
+    if(process.env.RESET_DB === 'true') {
+        await resetDB()
+    }
 
-//case : Import test DB
-if(process.env.INSERT_TEST_DB === 'true') {
-    insertTestDB()
-}
+    //case : Import test DB
+    if(process.env.INSERT_TEST_DB === 'true') {
+        await insertTestDB()
+    }
 
-//case : Import DB from external sources
-if(process.env.INSERT_REAL_DB === 'true') {
-    insertRealDB()
+    //case : Import DB from external sources
+    if(process.env.INSERT_REAL_DB === 'true') {
+        await insertRealDB()
+    }
 }
 
 async function resetDB() {
