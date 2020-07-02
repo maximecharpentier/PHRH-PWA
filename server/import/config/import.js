@@ -59,7 +59,7 @@ async function insertRealDB() {
 
      //recupération de l'objet d'import
      let baseValueInsertor = new BaseValueInsertor(
-         mappingFile = require('../sources/mappingfile.json'), 
+         mappingFile = require('../config/mappingfile.json'), 
          null
          )
  
