@@ -6,13 +6,23 @@ import { CurrentTeamContext } from "../../../contexts/CurrentTeamContext";
 
 // Fetch the hotels to visit directly from the API, then render each of them into a component named "Hotel"
 export const HotelContext = createContext({
-  sendVisit: (hotel, date) => {
-    console.log(hotel, date)
-    // API.post('gestion/visites/plannifier/', hotel).then((response) => {
-    //   console.log(response.data)
-    // }).catch(error => {
-    //   console.log(error.response)
-    // });
+  sendVisit: (data, date) => {
+    const visite = {
+      hotel_id: data.hotel._id, 
+      date_visite: date, 
+      duree: null, 
+      type: "Visite", 
+      visite_effectue: false,
+      equipe_id: data.currentTeam.equipe._id,
+      note: 12
+  }
+    console.log(visite)
+    API.post('gestion/visites/plannifier/', visite).then((response) => {
+      console.log(response.data)
+    }).catch(error => {
+      console.log(error.response)
+    });
+
   }
 });
 

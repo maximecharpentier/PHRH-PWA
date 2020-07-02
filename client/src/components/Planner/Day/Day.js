@@ -16,7 +16,7 @@ const Day = (props) => {
 
     const [{isOver}, drop] = useDrop({
         accept: ItemsType.CARD,
-        drop: (item, monitor) => sendVisit(item, props.date),
+        drop: (item, monitor) => sendVisit(item, props.fullDate),
         collect: monitor => ({
             isOver: !!monitor.isOver()
         })
