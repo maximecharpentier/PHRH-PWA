@@ -5,6 +5,6 @@ config/terraform/terraform.tfstate
 config/terraform/terraform.tfstate.backup
 config/terraform/.terraform/
 
-id_rsa*
+server/id_rsa*
 
 server/.env

@@ -40,9 +40,10 @@ const hotelSchema = new Schema({
     },
     nb_chambres_utilise : {
         type: Number, 
-        required: true,
+        required: false,
         trim: true,
-        maxlength: 3
+        maxlength: 3,
+        default: null
     },
     nb_visites_periode : {
         type: Number, 

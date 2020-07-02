@@ -24,9 +24,9 @@ jobs:
           playbook: ./config/ansible/app.yml
           key: ${{ secrets.PHRH_PRIVATE_KEY }}
           options: |
-            --inventory ./config/ansible/inventory.ini
+            --inventory ./automation/ansible/inventory.ini
             --user ubuntu
             --tags "deploy"
             --verbose
       - name: test
-        run: curl http://35.180.35.120:27017/hotels
+        run: curl http://52.47.86.14:3001/hotels

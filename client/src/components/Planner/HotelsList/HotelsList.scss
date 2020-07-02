@@ -1,0 +1,44 @@
+.HotelsList {
+    width: calc(100% / 6);
+    border-right: 1px solid #EFF2FB;
+    height: calc(100vh - (81px + 116px + 17px + 17px));
+    position: relative;
+    &:before {
+        content: '';
+        top: 0px;
+        background: #EFF2FB;
+        height: 1px;
+        width: calc(100% - 14px);
+        left: 0px;
+        position: absolute;
+    }
+    &:after {
+        content: '';
+        bottom: 52px;
+        background: #EFF2FB;
+        height: 1px;
+        width: calc(100% - 14px);
+        left: 0px;
+        position: absolute;
+    }
+    &__container {
+        padding: 17px 14px 0px 0px;
+        overflow: auto;
+        height: calc(100% - 52px);
+        box-sizing: border-box;
+    }
+    &__button {
+        margin-top: 16px;
+        background: #031772;
+        border-radius: 4px;
+        height: 36px;
+        width: calc(100% - 14px);
+        color: #EFF2FB;
+        font-weight: 500;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 14px;
+    }
+}

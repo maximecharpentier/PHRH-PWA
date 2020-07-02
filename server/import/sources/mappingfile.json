@@ -22,7 +22,8 @@
                 "file" : "notes.xlsx",
                 "on" : "B",
                 "get" : "E"
-            }
+            },
+            "default": null
         },
         "nb_chambres_utilise" : {
             "col" : "A",
@@ -30,7 +31,8 @@
                 "file" : "hotels_chambers.xlsx",
                 "on" : "A",
                 "get" : "G"
-            }
+            },
+            "default": null
         },
         "nb_visites_periode" : {
             "default" : 0
@@ -86,12 +88,7 @@
             "col" : "A"
         },
         "hotel_id" : {
-            "col" : "B",
-            "join" : {
-                "file" : "hotels.xlsx",
-                "on" : "A",
-                "get" : "A"
-            }
+            "col" : "B"
         },
         "date_visite" : {
             "col" : "D",

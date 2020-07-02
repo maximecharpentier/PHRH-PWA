@@ -8,7 +8,7 @@ import Nav from '../Common/Nav/Nav';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import fr from "date-fns/locale/fr";
-import { API } from '../../../api/api';
+import { API } from '../../../utils/api';
 
 
 class Hotels extends Component {
