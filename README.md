@@ -49,6 +49,7 @@
 
 - [Client](http://52.47.86.14:3000)
 - [API](http://52.47.86.14:3001)
+- [Mobile app](https://github.com/blyndusk/PHRH-PWA-mobile)
 
 ### 2. Technical choices & specifications
 
