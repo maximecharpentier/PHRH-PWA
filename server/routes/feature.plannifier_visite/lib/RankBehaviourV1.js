@@ -62,10 +62,19 @@ class RankBehaviourV1 extends RankBehaviour{
         //si seuil visite urgente
         /**
          * si un hotel n'a qu'1 ou 0 visite sur la periode
+         * si un hotel n'a pas été visité depuis plus d'1/X periode
          * et qu'il n'a pas été visité depuis (DUREE_PERIODE_M / NB_VISITES_OPTI_PERIODE)
          */
-        if(this.hotel.nb_visites_periode in [0,1]) {
-            //#REPRENDRE ICI ici faire le calcul de savoir su la dernière visite remonte a + de (DUREE_PERIODE_M / NB_VISITES_OPTI_PERIODE)
+        /*if(this.hotel.nb_visites_periode in [0,1]) {
+        }*/
+
+        if(this.hotel.nb_visites_periode < NB_VISITES_OPTI_PERIODE) {
+            //si ecart Now - date_visite > (DUREE_PERIODE_M / NB_VISITES_OPTI_PERIODE)
+            const ecart = Math.abs(Math.floor((new Date() - new Date(this.hotel.last_time_visited)) / (1000*60*60*24*31)))
+            const intervalIdeal = Math.floor(DUREE_PERIODE_M / NB_VISITES_OPTI_PERIODE)
+            if(ecart > intervalIdeal) {
+                
+            }
         }
 
 
