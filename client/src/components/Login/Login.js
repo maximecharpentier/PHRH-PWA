@@ -1,59 +1,56 @@
-import React, { Component } from 'react'
-import styled from 'styled-components';
-import  { Redirect } from 'react-router-dom'
-import {API} from '../../utils/api'
+import React, { useState } from 'react'
+import { Redirect } from 'react-router-dom'
+import { API } from '../../utils/api'
 
-class Login extends Component {
-  constructor() {
-    super()
-    this.state = {
-      nom: '',
-      pwd: ''
-    }
-    this.handleChange = this.handleChange.bind(this)
-  }
+import { useAuth } from "../../contexts/AuthContext";
 
-  handleChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value
-    })
-    console.log(this.state)
-  }
 
-  handleSubmit = () => {
-    API.post('auth/login/', this.state).then((response) => {
-      console.log(response.data)
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+const Login = () => {
+  const [nom, setNom] = useState("");
+  const [pwd, setPwd] = useState("");
+  const [isLoggedIn, setLoggedIn] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const { setAuthToken } = useAuth();
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    API.post('auth/login/', {
+      nom,
+      pwd
+    }).then((response) => {
+      setAuthToken(response.data.token, response.data.user);
+      setLoggedIn(true);
     }).catch(error => {
-      console.log(error.response)
+      setErrorMsg(error.response.data.msg)
     });
   }
 
-  render() {
-    return (
-      <form>
-        <input
-          type="text"
-          value={this.state.nom}
-          name="nom"
-          placeholder="Nom d'utilisateur"
-          onChange={this.handleChange} />
-        <input
-          type="password"
-          value={this.state.pwd}
-          name="pwd"
-          placeholder="Mot de passe"
-          onChange={this.handleChange} />
-        <button type="submit" onClick={this.handleSubmit}>Valider</button>
-      </form>
-    )
+  if (isLoggedIn) {
+    return <Redirect to="/manage" />
   }
+  return (
+    <form onSubmit={(e) => handleSubmit(e)}>
+      <input
+        type="text"
+        value={nom || ''}
+        name="nom"
+        placeholder="Nom d'utilisateur"
+        onChange={e => {
+          setNom(e.target.value);
+        }} />
+      <input
+        type="password"
+        value={pwd || ''}
+        name="pwd"
+        placeholder="Mot de passe"
+        onChange={e => {
+          setPwd(e.target.value);
+        }} />
+      <button type="submit">Valider</button>
+      {errorMsg !== "" ? <p>{errorMsg}</p> : ""}
+    </form>
+  )
 }
 
 export default Login
-
-const StyledErrorMessage = styled.p`
-    margin-top: 15px;
-    color: red;
-`
