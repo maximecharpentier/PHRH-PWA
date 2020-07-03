@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components';
 import { Formik, Form, Field, ErrorMessage } from 'formik'
+import  { Redirect } from 'react-router-dom'
 //import { storeToken } from "./utils/Login.utils"
 import {API} from '../../utils/api'
 
@@ -15,33 +16,24 @@ class Login extends Component {
   //       console.log(error.response)
   //   });
   // }
-
   // const oject = {
   //   nom: null,
   //   pwd: null
   // }
 
   render() {
+    // if(){
+    //   return <Redirect />
+    // }
     return (
       <div className="App-Login">
       <Formik
-        initialValues={{ email: '', password: '' }}
-        validate={values => {
-          const errors = {};
-          if (!values.email) {
-            errors.email = `Veuillez entrer votre adresse email.`;
-          } else if (
-            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-          ) {
-            errors.email = `L'email n'est pas valide.`;
-          }
-          return errors;
-        }}
+        initialValues={{ nom: '', pwd: '' }}
         onSubmit={(values, { setSubmitting }) => {
-          alert(JSON.stringify(values, null, 2));
-          setSubmitting(false);
-          API.post('auth/login/', "admin").then((response) => {
+          API.post('auth/login/', values).then((response) => {
               console.log(response.data)
+              localStorage.setItem('token', response.data.token);
+              localStorage.setItem('user', JSON.stringify(response.data.user));
           }).catch(error => {
               console.log(error.response)
           });
@@ -55,18 +47,18 @@ class Login extends Component {
               </div>
               <div className="App-Login_Form_Field">
                 <div className="App-Login_Form_Label">
-                  <label>Email</label>
+                  <label>Nom</label>
                 </div>
-                <Field type="email" name="email" />
-                <ErrorMessage name="email" component="div" />
+                <Field name="nom" />
+                <ErrorMessage name="nom" component="div" />
               </div>
               <div className="App-Login_Form_Field">
                 <div className="App-Login_Form_Label">
                   <label>Mot de passe</label>
                   <p className="App-Login_Form_Forgot">Mot de passe oublié ?</p>
                 </div>
-                <Field type="password" name="password" />
-                <ErrorMessage name="password" component="div" />
+                <Field type="password" name="pwd" />
+                <ErrorMessage name="pwd" component="div" />
               </div>
               <button className="App-Login_Form_Button" type="submit" disabled={isSubmitting}>
                 Se connecter

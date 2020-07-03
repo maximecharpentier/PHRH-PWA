@@ -1,9 +1,8 @@
-import axios from "axios";
-//import { getAuthHeaders } from "./utils/Login.utils"
+import axios from 'axios';
 
 const API = axios.create({
-  baseURL: `http://52.47.86.14:3001/`,
-  //headers: { getAuthHeaders() }
+  baseURL: 'http://localhost:27017/',
+  headers: { Authorization: localStorage.getItem('token') }
 });
 
 const getItem = (route, setState, id) => {
