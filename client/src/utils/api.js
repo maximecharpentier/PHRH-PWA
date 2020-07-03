@@ -2,7 +2,7 @@ import axios from "axios";
 //import { getAuthHeaders } from "./utils/Login.utils"
 
 const API = axios.create({
-  baseURL: `http://localhost:3001/`,
+  baseURL: `http://52.47.86.14:3001/`,
   //headers: { getAuthHeaders() }
 });
 

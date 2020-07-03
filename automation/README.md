@@ -1,58 +1,92 @@
-# Infrastructure
+# Automation
+
+![data stack](./assets/data-stack.png)
 
 ## Terraform
 
-1. Generate RSA **public/private** keys
+1. **Generate** RSA *public/private* key pair:
 
-2. **paste** the public key here: `config/terraform/ec2.tf`
+  ```bash
+  ssh-keygen -t rsa -b 4096
+  ```
 
-```TF
-resource "aws_key_pair" "admin" {
-  key_name   = "phrh-key"
-  public_key = "<PUBLIC_RSA_KEY>"
-}
-```
+2. **Replace** the *public key* (`<YOUR_PUBLIC_KEY>`)
 
-3. (Optional) Replace the **region** here: `config/terraform/provider.tf`
+    - **File**: `automation/terraform/ec2.tf`
 
-```tf
-provider "aws" {
-  profile = "default"
-  region  = "<YOUR_REGION>"
-}
+    ```terraform
+    resource "aws_key_pair" "phrh_g10_ssh_key_pair" {
+      key_name   = "phrh_g10_public_ssh_key"
+      public_key = "<YOUR_PUBLIC_KEY>"
+    }
+    ```
 
-```
+3. (Optional) **Replace** the *region* here: 
 
-4. To create an **AWS EC2 instance** with security groups, public/private key, vpc, run this command:
+    - **File**: `automation/terraform/provider.tf`
 
-```bash
-terraform init ; terraform plan ; terraform apply
-```
+    ```terraform
+    provider "aws" {
+      profile = "default"
+      region  = "<YOUR_REGION>"
+    }
+    ```
+
+4. Create an **AWS EC2 instance**, running with `Ubuntu@18.04` with *security groups*, *public/private key pair*, *vpc*, run these commands:
+
+> Current directory: `automation/terraform`
+
+    - **Init** the terraform folder:
+
+    ```bash
+    terraform init
+    ```
+
+    - ***Visualize*** the modifications ( *added, changed, destroyed* ):
+
+    ```bash
+    terraform plan
+    ```
+
+    - **Apply** modifications: 
+
+    ```bash
+    terraform apply
+    ```
 
 ## Ansible 
 
-1. get the IPv4 adress on the AWS EC2 console, and replace the **old adress** here : `config/ansible/inventory.ini` :
-   
-```INI
-[app]
-<IPV4_EC2_INSTANCE_ADRESS>
-```
+1. **Get** the `IPv4` adress on the `AWS EC2` console, and **replace** the *old adress*: 
 
-2. To **install deps** like Python, Docker, run this command:
+    - **File**: `automation/ansible/inventory.ini` :
+   
+    ```ini
+    [app]
+    <IPV4_AWS_EC2_ADRESS>
+    ```
+
+2. To **install dependenciess** like Python, Docker, run this command:
+
+> Current directory: `automation/ansible`
 
 ```bash
-ansible-playbook -i inventory.ini app.yml --user ubuntu --private-key <PATH_TO_YOUR_PRIVATE_KEY> --tags="install"       
+ansible-playbook -i inventory.ini app.yml --key <YOUR_PRIVATE_KEY> --user ubuntu --tags="install"
+     
 ```
 
 3. To **deploy the application to your EC2 instance**, run this command:
 
+> Current directory: `automation/ansible`
+
 ```bash
-ansible-playbook -i inventory.ini app.yml --user ubuntu --private-key <PATH_TO_YOUR_PRIVATE_KEY> --tags="deploy"       
+ansible-playbook -i inventory.ini app.yml --key <YOUR_PRIVATE_KEY> --user ubuntu --tags="deploy"       
 ```
 
 4. To do all this **in one time**, run this command:
 
+> Current directory: `automation/ansible`
+
 ```bash
-ansible-playbook -i inventory.ini app.yml --user ubuntu --private-key <PATH_TO_YOUR_PRIVATE_KEY>       
+ansible-playbook -i inventory.ini app.yml --key <YOUR_PRIVATE_KEY> --user ubuntu        
 ```
 

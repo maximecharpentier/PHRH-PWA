@@ -2,17 +2,19 @@ docker_users:
   - ubuntu
 
 docker_username: blyndusk
-docker_password: Ew2V{ab}kLbS[ypP~FL]Dkn#g:wJ
+docker_password: 
 
-app_directory: /home/ubuntu/phrh
+app_user: ubuntu
+app_group: "{{ app_user }}"
+app_directory: "/home/{{ app_user }}/phrh"
 
 phrh_client_image: "{{ docker_username }}/phrh-client"
-phrh_client_tag: 0.14
-phrh_client_port: 8080
+phrh_client_tag: latest
+phrh_client_port: 3000
 
 phrh_server_image: "{{ docker_username }}/phrh-server"
-phrh_server_tag: 0.5
-phrh_server_port: 3000
-phrh_server_host: db
+phrh_server_tag: latest
+phrh_server_port: 3001
+phrh_server_host: phrh-db
 
 phrh_db_port: 27017
