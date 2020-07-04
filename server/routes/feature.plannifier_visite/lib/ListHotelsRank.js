@@ -1,52 +1,98 @@
-const createHotelRankView = require("../utils").createHotelRankView
-const getHotelRankView = require("../utils").getHotelRankView
+const HotelRank = require('../model/hotelrank.model')
+const Hotel = require("../../../model/hotel.model")
 
 class ListHotelsRank {
 
-    /**
-     * @param : 
-     */
-    constructor() {
+    constructor(rankBehaviour) {
         this.listHotelRank = []
+        this.rankBehavious = rankBehaviour
     }
 
-    get($options) {
-        if(!this.listHotel) {
-            //create | get listHotelRank
-        }
-        //return with $options
-    }
+    async get($options) {
+        //await HotelRank.deleteMany({})
+        if(!this.listHotelRank.length) {
 
-    add(elem) {
-        this.addOrUpdate(elem)
-    }
+            //get elems to verify table is created
+            const elems = await HotelRank.find({})
+            .populate({
+                "path" : 'hotel_id',
+                //"match": { "cp": { $regex: /^75.*/, $options: 'i' }}
+            })
+            .populate({ 
+                "path" : 'urgences'
+            })
 
-    update(elem) {
-        this.addOrUpdate(elem)
+            //si la table est remplie
+            if(elems.length) {
+                
+                //get listHotelRank
+                for(const hotelRankDB in elems) {
+
+                    //update snapshot
+                    this.listHotelRank.push(hotelRankDB)
+                }
+            
+            //sinon remplir la table
+            } else {
+
+                //create
+                const hotels = await Hotel.find({})
+
+                if(hotels.length) {
+
+                    //fill this.listHotelRank
+                    for(const hotelDB of hotels) {
+
+                        //build list elem
+                        const elemHotelRank = new HotelRank()
+                        await elemHotelRank.build(hotelDB) //reprendre ici
+
+                        //ajouter l'element
+                        await this.addOrUpdate(elemHotelRank)
+
+                        //update snapshot
+                        this.listHotelRank.push(elemHotelRank)
+                    }
+                }
+            }
+        } 
+            
+        //return
+        return this.listHotelRank.filter(hotelElem => hotelElem.hotel_id.cp.match(new RegExp("^" + $options.secteur + ".*",'g')))            
     }
 
     /**
      * @desc : fonction qui update la vue HotelRank et le snapshot
      * @param {*} elem : element de liste
      */
-    addOrUpdate(elem) {
-        if(elem instanceof ElemHotelRank) {
-            const indexElem = this.listHotelRank.findIndex(hotel => hotel.getId() === elem.getId());
-            if(indexElem) {
-                //update snapshot
-                this.listHotelRank[indexElem] = elem
+    async addOrUpdate(elem) {
+        console.log(elem)
+        //definir si c'est un cas d'update
+        const indexElem = this.listHotelRank.findIndex(hotelRank => hotelRank.hotel_id === elem.hotel_id);
+        if(indexElem) {
+            //update snapshot
+            this.listHotelRank[indexElem] = elem
 
-                //update view
-                //update view & return string message
-            } else {
-                //insert in view
-            }
+            //update table
+            await HotelRank.findByIdAndUpdate(
+                { _id: elem._id }, 
+                { $set: elem }, 
+                //{ new: true }
+                )
+            console.log('Element mis à jour')
+        
+        //sinon inserer l'element
+        } else {
+
+            //insert in view
+            await HotelRank.insertIfNotExist(elem.get())
+
+            console.log('Element inséré')
         }
-        console.log('Elem doit etre un objet ElemHotelRank')
     }
 
     delete($options) {
-
+        //A VENIR
     }
 }
 

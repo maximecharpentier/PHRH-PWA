@@ -56,6 +56,28 @@ function authStrategy() {
   }
 }
 
+/**
+ * @desc : calcul la note moyenne de tout les hotels
+ * @param {void}
+ * @return {float} : moyenne des notes des hotels
+ */
+function getMoyenneNoteHotels() {
+  const mongoose = require('mongoose');
+  const Hotel =  mongoose.model('Hotel');
+  Hotel.aggregate([{
+      $group: {
+          _id: null,
+          average: {
+              $avg: "$note"
+          }
+      }
+  }])
+    .then( result => {return result.average})
+    .catch( err => console.log('fonction getMoyenneNoteHotels : ', err))
+}
+
+
 module.exports.capitalize = capitalize;
 module.exports.issueJWT = issueJWT;
 module.exports.authStrategy = authStrategy;
+module.exports.getMoyenneNoteHotels = getMoyenneNoteHotels;

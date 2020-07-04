@@ -1,16 +1,31 @@
-const RankBehaviour = require("./RankBehaviour");
+const RankBehaviour = require("./RankBehaviour"); 
+const mongoose = require('mongoose');
+const Hotel = mongoose.model('Hotel');
+const Urgence = mongoose.model('Urgence');
 
 class RankBehaviourV1 extends RankBehaviour{
 
-    constructor(hotel){
-        super(hotel)
+    constructor(){
+        super()
     }
 
-    calculateScoreHotel() {
-        super.calculateScoreHotel()
+    async calculateScoreHotel(hotel) {
+        super.calculateScoreHotel(hotel)
 
+        //vars diverses
         const DATE_DEBUT_PERIODE = {month: 1}
         const DUREE_PERIODE_M = 12
+        const NB_VISITES_OPTI_PERIODE = 3
+        const AMELIORATION_SOUHAITEE_NOTE_MOYENNE = 3
+        const CURRENT_NOTE_MOYENNE =  await Hotel.aggregate([{
+            $group: {
+                _id: null,
+                average: {
+                    $avg: "$note"
+                }
+            }
+        }]).exec().average
+        const NOTE_MOYENNE_SOUHAITEE = CURRENT_NOTE_MOYENNE + AMELIORATION_SOUHAITEE_NOTE_MOYENNE
         //return : int : % d'avancement par rapport a la periode
         const CURRENT_AVCMNT_PERIODE = () => {
             const current_month = new Date().getMonth()
@@ -31,27 +46,48 @@ class RankBehaviourV1 extends RankBehaviour{
             }
         }
 
-        const NB_VISITES_OPTI_PERIODE = 3
+        //quartilles pour les notes
+        const QUARTILE_1_NOTE = 65
+        const QUARTILE_2_NOTE = 45
+        const QUARTILE_3_NOTE = 30
+        const QUARTILE_4_NOTE = 20
+        const getScoreQuartile = () => {
+            if(hotel.note <= QUARTILE_1_NOTE) return 0
+            if(hotel.note <= QUARTILE_2_NOTE) return PAS_BASE
+            if(hotel.note <= QUARTILE_3_NOTE) return PAS_PB_IMPORTANCE_FAIBLE
+            if(hotel.note <= QUARTILE_4_NOTE) return PAS_PB_IMPORTANCE_FORTE
+        }
 
-        const SEUIL_URGENCE = 1
-        const SEUIL_CONTRE_VISITE = 0.99
-        const SEUIL_VISITE_URGENTE = 0.98
+        //definitions des seuils = scores definissants des intervales de catégories de classement
+        const SEUIL_URGENCE = 1 //si l'hotel comporte une urgence
+        const SEUIL_CONTRE_VISITE = 0.99 //si l'hotel nescessite une contre visite
+        const SEUIL_VISITE_URGENTE = 0.98 //si la visite est urgente pour maintenir un bon equilibrage du nb de visites / hotels
+        const SEUIL_OPTI_VISITE = 0.8 //seuil le plus bas
+
+        //definition des pas
         const PAS_PB_IMPORTANCE_FORTE = 0.08
         const PAS_PB_IMPORTANCE_FAIBLE = 0.06
         const PAS_BASE = 0.04
-        const BASE_SCORE = 1/Number(this.hotel.note)
+        const BASE_SCORE = SEUIL_OPTI_VISITE/Number(hotel.note)
         //PS : verifier le processus compte rendu, programation des contres-visites
         //L'ordre des blocks suivants ne doit pas changer pour réaliser la bonne évaluation
 
+        //score de base
+        /**
+         * Le score de base est calculé par rapport a la une note médiane 
+         * qualitative, c'est a dire calculé non pas par rapport a la reele note médianes
+         * mais par rapport a la note médiane souhaitée par le métier #REPRNENDREI CI ET LIER LA QUALI ET LE CALCUL DU SCORE
+         */
+
         //si urgence
-        const urgences = Urgence.find({hotel_id: this.hotel._id})
+        const urgences = await Urgence.find({hotel_id: hotel._id})
         if(urgences) {
             return SEUIL_URGENCE
         }
 
         //si contre visite
         const contreVisite = await Visite.findOne({ //ici on part du principe que l'on ne peux pas avoir deux contre-visites pour un meme hotel ce qui selon ma compéhension du metier : n'aurait pas de sens
-           hotel_id: this.hotel._id,
+           hotel_id: hotel._id,
            type: "Contre-visite",
            visite_effectue: false
         })
@@ -61,79 +97,54 @@ class RankBehaviourV1 extends RankBehaviour{
 
         //si seuil visite urgente
         /**
-         * si un hotel n'a qu'1 ou 0 visite sur la periode
-         * si un hotel n'a pas été visité depuis plus d'1/X periode
-         * et qu'il n'a pas été visité depuis (DUREE_PERIODE_M / NB_VISITES_OPTI_PERIODE)
+         * Si 70% de la période a été depassé et que seulement 0 ou 1 visites on été faites pour l'hotel
+         * On cosidère que la visite presse vraiment vraiment
          */
-        /*if(this.hotel.nb_visites_periode in [0,1]) {
-        }*/
+        if(hotel.nb_visites_periode in [0,1] && CURRENT_AVCMNT_PERIODE() >= 70) {
+            return SEUIL_VISITE_URGENTE
+        }
 
-        if(this.hotel.nb_visites_periode < NB_VISITES_OPTI_PERIODE) {
-            //si ecart Now - date_visite > (DUREE_PERIODE_M / NB_VISITES_OPTI_PERIODE)
-            const ecart = Math.abs(Math.floor((new Date() - new Date(this.hotel.last_time_visited)) / (1000*60*60*24*31)))
+        //si seuil visite optimale
+        /**
+         * Le but est d'optimiser globalement le rithme des visites en fonction
+         */
+        
+        if(hotel.nb_visites_periode < NB_VISITES_OPTI_PERIODE) {
+            //si ecart entre 
+            const ecart = Math.abs(Math.floor((new Date() - new Date(hotel.last_time_visited)) / (1000*60*60*24*31)))
+
             const intervalIdeal = Math.floor(DUREE_PERIODE_M / NB_VISITES_OPTI_PERIODE)
+
             if(ecart > intervalIdeal) {
-                
+                SCORE = SEUIL_OPTI_VISITE + getScoreQuartile()
+
+                //si on depace le seuil juste au dessus, on retranche 0.01 pour etre juste en dessous
+                if(SCORE >= SEUIL_VISITE_URGENTE) {
+                    SCORE = SEUIL_VISITE_URGENTE - 0.01
+                }
             }
         }
 
-
-
-        //si anomalie || priorisation || nb_visite_periode
-        //évolution du score
-        //score démare a 0.8
-        baseScore = 0.8
+        //si anomalies etc, augmenter le score
+        /*
+         * si anomalie || priorisation || nb_visite_periode
+         */
         //si anomalie(s)
-        //pour chaque anomalie : +pas
+        //pour chaque anomalie : +PAS_PB_IMPORTANCE_FORTE || +PAS_PB_IMPORTANCE_FAIBLE || +PAS_BASE
 
         //si priorisation(s)
-        //pour chaque priorisation : +pas
+        //pour chaque priorisation : +PAS_PB_IMPORTANCE_FORTE || +PAS_PB_IMPORTANCE_FAIBLE || +PAS_BASE
 
-        //si indicateur
-
+        //calcul pour le dernier seuil
         /**
-         * base : 1/note Hotel
-         * increment : 0.05
-         * 
+         * On calcul a partir de la note et du quartile
          */
-
-        //evaluation nb_visite_periode en fonction de la période : plus on est loin ds l'année
-        //pour les nombre de visite periode
-            //3 visites par ans préconisées
-                //calcul periode de l'année : P (old A) (1/2/3)
-                //nb_visites_optimales par an : O (3)
-                //get nb_visites_periode : V (old P)
-
-                //V1
-                //si A >= P OK
-                //si A < P
-
-                //V2
-                //calcul ecart puis comparer a la periode en cours
-                //ecartOV = O - V
-                //si ecartPV < 0 : continue
-                //si ecartPV =  ex : A=2 P=1
-
-
-
-        //PS : voir ou incrementer le nb_visites_periode
-        //calcul score de base
-        const noteMediane = 38.52
-
-        
-        if(this.hotel.note) {
-            baseScore = Math.floor(0.98/(this.hotel.note/100)) 
-        } else {
-            baseScore = Math.floor(0.98/(noteMediane/100))
+        SCORE += getScoreQuartile()
+        //si on depace le seuil juste au dessus, on retranche 0.01 pour etre juste en dessous
+        if(SCORE >= SEUIL_OPTI_VISITE) {
+            SCORE = SEUIL_OPTI_VISITE - 0.01
         }
-
-        //évolution du score
-        const pas = 0.005
-        //Si: anincrementer de "pas" * nb anomalies
-
-        //#REPRENDRE ICI ET TROUVER METHODES POUR QUEL E CLASEMNT OSIT LP LUS PRECIS POSSIBLES IDEES :
-        //-seuil pour les hotels qui ont au moins 1 anomalie, ou 1 prio ou autre (ex : nb_visite_periode)
-        //anomalies non ?
+        
     }
 }
 
