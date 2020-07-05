@@ -29,9 +29,7 @@ const App = () => {
     <AuthContext.Provider value={{ authToken, setAuthToken: setToken }}>
     <div className="App">
       <Router>
-        <header className="App-header">
-          <Navbar />
-        </header>
+        <Navbar />
         <Switch>
           <Login path="/login" />
           <PrivateRoute path="/manage" component={Manage} />
