@@ -1,0 +1,119 @@
+@import "../../styles/variables.scss";
+@import "../../styles/mixins.scss";
+
+.Login {
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  width: 100vw;
+  height: 100vh;
+  background: #FFF;
+  z-index: 1000;
+  display: flex;
+  &:before {
+    content: '';
+    background: #031772;
+    width: 33%;
+    height: 100%;
+  }
+  svg {
+    fill: #FFF;
+    position: fixed;
+    top: 28px;
+    left: 42px;
+    width: 168px;
+  }
+  &__container {
+    width: 66%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &__form {
+    display: flex;
+    flex-direction: column;
+    width: 384px;
+    transform: translateX(-33%)
+  }
+  &__title {
+    font-weight: 600;
+    font-size: 26px;
+    line-height: 39px;
+    color: #333333;
+    margin-bottom: 2px;
+  }
+  &__subtitle {
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    color: #333333;
+    margin-bottom: 33px;
+  }
+  &__label {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: #333333;
+    margin-bottom: 13px;
+  }
+  &__input {
+    border: 1px solid #C8C3C3;
+    box-sizing: border-box;
+    border-radius: 6px;
+    height: 36px;
+    padding: 16px;
+    font-size: 14px;
+    color: #333333;
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+    &:nth-child(6) {
+      margin-bottom: 32px;
+    }
+    &::placeholder {
+      color: #C8C3C3;
+    }
+    &:focus {
+      border-color: #031772;
+    }
+  }
+  &__button {
+    background: #031772;
+    border-radius: 4px;
+    width: 176px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    line-height: 21px;
+    color: #EFF2FB;
+    align-self: center;
+    transition: .3s ease;
+    font-weight: 500;
+    &:hover {
+      background: #4357EA;
+    }
+  }
+  &__error {
+    font-size: 14px;
+    color: #F44336;
+    position: absolute;
+    bottom: -40px;
+    animation: error .3s linear;
+  }
+}
+
+@keyframes error {
+  from {
+    transform: translateY(16px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
