@@ -33,7 +33,7 @@ router.post('/login', function(req, res, next){
 
                     const tokenObject = utils.issueJWT(user);
 
-                    res.status(200).json({ success: true, token: tokenObject.token, expiresIn: tokenObject.expires });
+                    res.status(200).json({ user: user, success: true, token: tokenObject.token, expiresIn: tokenObject.expires });
 
                 } else {
 

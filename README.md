@@ -5,7 +5,7 @@
     <img src="https://github.com/blyndusk/PHRH-PWA/workflows/Main%20Workflow/badge.svg?branch=master" alt="GitHub Actions"/>
   </a>
   <a href="http://35.180.37.72:8080/" target="_blank">
-    <img src="https://img.shields.io/website?url=http%3A%2F%2F35.180.37.72%3A8080" alt="PHRH website"/>
+    <img src="https://img.shields.io/website?url=http%3A%2F%2F52.47.86.14%3A3000%2F" alt="PHRH website"/>
   </a>
   
   <a href="https://github.com/blyndusk/PHRH-PWA/blob/master/LICENSE" target="_blank">
@@ -47,20 +47,24 @@
 
 ### 1. Apps
 
-- [App](http://35.180.37.72:8080)
-- [API](http://35.180.37.72:3001)
+- [Client](http://52.47.86.14:3000)
+- [API](http://52.47.86.14:3001)
+- [Mobile app](https://github.com/blyndusk/PHRH-PWA-mobile)
 
 ### 2. Technical choices & specifications
 
-- [Front-End](https://github.com/blyndusk/PHRH-PWA/blob/master/client/README.md)
-- [Back-End](https://github.com/blyndusk/PHRH-PWA/blob/master/server/README.md)
-- [Infrastructure](https://github.com/blyndusk/PHRH-PWA/blob/master/terraform/README.md)
+- [Front-End](./client/README.md)
+- [Back-End](./server/README.md)
+- [Automation](./automation/README.md)
 
 
 ### 3. Docker images
 
-- [phrh-client](https://hub.docker.com/r/blyndusk/phrh-client)
-- [phrh-fake-server](https://hub.docker.com/r/blyndusk/phrh-fake-server)
+
+| Docker Image | Version |
+| ------------ | ------- |
+| [phrh-client](https://hub.docker.com/repository/docker/blyndusk/phrh-client) | ![phrh-client](https://img.shields.io/docker/v/blyndusk/phrh-client) |
+| [phrh-server](https://hub.docker.com/repository/docker/blyndusk/phrh-server) | ![phrh-server](https://img.shields.io/docker/v/blyndusk/phrh-server) |
 
 
 ## II - Guidelines
@@ -69,12 +73,12 @@
 
 - The `master` branch is the **production** branch. **NEVER** push *source* or *compiled* code on it. **Documentation** and stuff like that are allowed
 
-- The `develop` branch is the developement branch (lol). **NEVER DIRECTLY** push *source* or *compiled* code on it. Instead, merge your `<feature|fix>` branches on it
+- The `develop` branch is the developement branch. **NEVER DIRECTLY** push *source* or *compiled* code on it. Instead, merge your `<feat|fix>` branches on it
 
 ### 2. Features & Fix branches
 
-- A `feature/<client|server>-name-of-the-feature` is used to implement **new content** to the app
-  - e.g. `feature/client-router`
+- A `feat/<client|server>-name-of-the-feature` is used to implement **new content** to the app
+  - e.g. `feat/client-router`
 
 - A `fix/<client|server>-bug-to-fix` is used to fix a bug (lol)
   - e.g. `fix/server-env-vars`
@@ -98,15 +102,19 @@
   - Design
 - **Maxime CHARPENTIER**
   - Front-end
+  - Hybrid
 - **Nino LAM**
   - Front-end
+  - Hybrid
 - **Nicolas MARTIN**
   - Front-end
+  - Hybrid
 - **Pierre-Alexis KRSTIC**
   - Back-end
 - **Alexandre DELALOY**
   - Technical leader
-  - Infrastructure
+  - Automation
+  - Hybrid
 
 
 ## IV - License

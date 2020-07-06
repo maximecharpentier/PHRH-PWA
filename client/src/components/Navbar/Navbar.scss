@@ -1,51 +1,152 @@
-section.nav-container {
-  z-index: 10;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  border-bottom: 1px solid #edf1f7;
-  background-color: #fff;
+.Nav {
   height: 65px;
-  div {
+  background: #FFF;
+  width: 100vw;
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  z-index: 100;
+  border-bottom: 1px solid #EFF2FB;
+  box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.07);
+  padding-right: 70px;
+  box-sizing: border-box;
+  &__brand {
+    background: #031772;
+    height: 100%;
+    width: 340px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 0 50px 0 70px;
-    nav {
-      ul {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        li {
-          &:nth-child(-n + 2) {
-            a {
-              width: 220px;
-              padding: 0;
-              border-right: 1px solid #eff2fb;
-              border-left: 1px solid #eff2fb;
-            }
-          }
-          a {
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: 500;
-            padding: 0 20px;
-            height: 65px;
-            color: #031772;
-            &.active,
-            &:hover {
-              background-color: #eff2fb;
-            }
-            &.active {
-              box-shadow: inset 0 -2px 0;
-              border: none;
-            }
-          }
+    padding-left: 70px;
+    box-sizing: border-box;
+  }
+  &__container {
+    display: flex;
+    align-items: center;
+  }
+  &__items {
+    display: flex;
+    align-items: center;
+    margin-right: 16px;
+    height: 100%;
+  }
+  &__item {
+    width: 220px;
+    height: 100%;
+    border-right: 1px solid #EFF2FB;
+    transition: .2s ease;
+    &:not(:last-child) {
+      border-left: 1px solid #EFF2FB;
+    }
+    &:hover {
+      background: #EFF2FB;
+    }
+    a {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 24px;
+      color: #031772;
+      box-sizing: border-box;
+      position: relative;
+      &.active {
+        &:after {
+          content: '';
+          height: 2px;
+          width: 100%;
+          background: #031772;
+          position: absolute;
+          bottom: 0px;
+          left: 0px;
+          right: 0px;
         }
       }
     }
   }
+  &__button {
+    width: 36px;
+    height: 36px;
+    background: transparent;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .2s ease;
+    &:not(:nth-child(3)) {
+      margin-right: 8px;
+    }
+    svg {
+      width: 26px;
+      height: 26px;
+    }
+    &:hover {
+      background: #F2F2F2;
+    }
+  }
 }
+
+
+
+
+
+
+
+
+
+// section.nav-container {
+//   z-index: 10;
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   right: 0;
+//   border-bottom: 1px solid #edf1f7;
+//   background-color: #fff;
+//   height: 65px;
+//   div {
+//     display: flex;
+//     justify-content: space-between;
+//     align-items: center;
+//     padding: 0 50px 0 70px;
+//     nav {
+//       ul {
+//         display: flex;
+//         align-items: center;
+//         justify-content: center;
+//         li {
+//           &:nth-child(-n + 2) {
+//             a {
+//               width: 220px;
+//               padding: 0;
+//               border-right: 1px solid #eff2fb;
+//               border-left: 1px solid #eff2fb;
+//             }
+//           }
+//           a {
+//             cursor: pointer;
+//             display: flex;
+//             justify-content: center;
+//             align-items: center;
+//             font-weight: 500;
+//             padding: 0 20px;
+//             height: 65px;
+//             color: #031772;
+//             &.active,
+//             &:hover {
+//               background-color: #eff2fb;
+//             }
+//             &.active {
+//               box-shadow: inset 0 -2px 0;
+//               border: none;
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+// }

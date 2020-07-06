@@ -46,10 +46,10 @@ const Card = ({ user, editUser, deleteUser, hotel, editHotel, deleteHotel, team,
             <div className="card">
                 <p className="text-overflow">{hotel.nom}</p> <span onClick={() => setShowMenu(!showMenu)}><ItemMenu /></span>
                 <div ref={menuRef} className={showMenu ? "card-menu show" : "card-menu"}> <p onClick={editHotel}>Modifier</p> <p onClick={deleteHotel}>Supprimer</p></div>
-                <p className="text-overflow inline-block">{hotel.adresse}</p> <p className="inline-block right">{hotel.cp}</p>
+                <p className="text-overflow inline-block">{hotel.adresse}, {hotel.ville}</p> <p className="inline-block right">{hotel.cp}</p>
                 <div className="card-line" />
-                <p className="inline-block">{hotel.nb_chambres_utilise} chambres</p>
-                <p>{new Date(hotel.last_time_visited).getDate() + "/" + new Date(hotel.last_time_visited).getMonth() + "/" + new Date(hotel.last_time_visited).getFullYear()}</p>
+                <p className="inline-block mb-25">{new Date(hotel.last_time_visited).getDate() + "/" + (new Date(hotel.last_time_visited).getMonth() + 1) + "/" + new Date(hotel.last_time_visited).getFullYear()}</p> <p className="inline-block right">{hotel.note && hotel.note.toFixed(2)}</p>
+                <p>{hotel.nb_chambres_utilise ? hotel.nb_chambres_utilise : "???"} chambres</p>
             </div>
 
             : user ?

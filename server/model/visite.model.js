@@ -21,14 +21,16 @@ const visiteSchema = new Schema({
     },
     note : {
         type: Number, 
-        required: true,
+        required: false,
         trim: true,
-        maxlength: 4
+        maxlength: 4,
+        default: null
     },
     duree : {
         type: Number, 
         trim: true,
-        maxlength: 3
+        maxlength: 3,
+        default: 60
     },
     type : {
         type: String,

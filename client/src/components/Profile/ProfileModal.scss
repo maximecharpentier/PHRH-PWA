@@ -1,0 +1,71 @@
+.Profile {
+  position: absolute;
+  top: calc(100% + 9px);
+  right: 70px;
+  width: 360px;
+  background: #FFF;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.35);
+  &__container {
+    display: flex;
+    align-items: center;
+    padding: 20px 16px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #031772;
+    margin-bottom: 32px;
+  }
+  &__picture {
+    background: #4357EA;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    color: #FFF;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+  }
+  &__username {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: #111215;
+  }
+  &__label {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: #111215;
+    padding: 0px 16px 8px 16px;
+    &:nth-child(4) {
+      padding-top: 16px;
+    }
+  }
+  &__info {
+    font-size: 16px;
+    line-height: 24px;
+    color: #111215;
+    padding: 0px 16px;
+    box-sizing: border-box;
+    width: 100%;
+  }
+  &__button {
+    margin: 20px 0px 20px 16px;
+    background: #031772;
+    border-radius: 4px;
+    width: 176px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    line-height: 21px;
+    color: #EFF2FB;
+    align-self: center;
+    transition: .3s ease;
+    font-weight: 500;
+    &:hover {
+      background: #4357EA;
+    }
+  }
+}
