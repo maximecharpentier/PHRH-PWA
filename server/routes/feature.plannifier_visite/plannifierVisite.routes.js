@@ -11,12 +11,10 @@ const RankBehaviourV1 = require('./lib/RankBehaviourV1')
 const ListHotelRank = require('./lib/ListHotelsRank');
 
 /**
- * @route : get all visites
+ * @route : recuperer la liste des visites a efectuer
  * @method GET
- * @param {void}
- * @return : mixed 
- *      (array[ (Object JSON) ]) : tableau d'object model Visite
- *      (string) : error message
+ * @param {} : objet filter (seul le secteur est dispo a l'heure acteulle) {"filters": {"secteur": X}}
+ * @return array[ (Object JSON) ]) : tableau d'object HotelRank
  */
 router.route('/suggestions').get(authStrategy(), async (req, res) => {
     //QUESTION : l'affichage de la liste se fait pour un binome ? -> metre des filtrs custom -> OK
