@@ -1,8 +1,21 @@
 import axios from 'axios';
+import { useAuth } from "../contexts/AuthContext";
+
+axios.defaults.headers.common.Authorization = localStorage.getItem('token');
 
 const API = axios.create({
-  baseURL: 'http://localhost:27017/'
+  baseURL: 'http://localhost:27017/',
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
+
+API.interceptors.request.use(function (config) {
+  const token = localStorage.getItem('token');
+  config.headers.Authorization =  token ?  token : '';
+  return config;
+});
+
 
 const getItem = (route, setState, id) => {
   API.get(route + id).then((response) => {

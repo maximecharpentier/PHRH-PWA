@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from "react"
 import "./HotelsList.scss"
 import Hotel from "./../Hotel/Hotel"
@@ -14,8 +15,7 @@ export const HotelContext = createContext({
       type: "Visite", 
       visite_effectue: false,
       equipe_id: data.currentTeam.equipe._id,
-      user_id: data.currentTeam.equipe.user_a_id,
-      note: 12
+      note: 12,
   }
     console.log(visite)
     API.post('gestion/visites/plannifier/', visite).then((response) => {
@@ -42,7 +42,7 @@ const HotelsList = () => {
 
 
 
-  let allVisits = currentTeam && hotels.length !== 0 ? hotels.filter(hotels => hotels.cp.toString().substring(0, 2) === currentTeam.equipe.secteur_binome).map(hotel => <Hotel list key={hotel._id} hotel={hotel} />) : hotels.map(hotel => <Hotel list key={hotel._id} hotel={hotel} />)
+  let allVisits = currentTeam && hotels.length !== 0 ? hotels.filter(hotels => hotels.cp.toString().substring(0, 2) === currentTeam.equipe.secteur_binome.substring(0, 2)).map(hotel => <Hotel list key={hotel._id} hotel={hotel} />) : hotels.map(hotel => <Hotel list key={hotel._id} hotel={hotel} />)
   if (!currentTeam) {
     return (
       <div>Veuillez choisir un binome</div>

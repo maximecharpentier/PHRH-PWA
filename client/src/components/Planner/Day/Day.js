@@ -29,8 +29,8 @@ const Day = (props) => {
 
     useEffect(() => { 
         if(currentTeam){
-            API.get('/gestion/visites/get/foruser/' + currentTeam.equipe.user_a_id).then((response) => {
-                setVisits(response.data.filter(visit => visit.date_visite.slice(0, 10) == props.fullDate))
+            API.get('/gestion/visites/get/foruser/' + currentTeam.equipe.user_b_id).then((response) => {
+                setVisits(response.data === "Aucune visite pour cet user" ? [] : response.data )
               })
         }
       }, [currentTeam, visits]);
@@ -43,7 +43,7 @@ const Day = (props) => {
                 <p className="Day__date">{props.date}</p>
             </div>
             <div style={{backgroundColor: isOver ? "#4357ea33" : "#FFFFFF"}} ref={drop} className="Day__list">
-                {visits !== "Aucune visite pour cet user" && visits.map(visit => <Hotel key={visit._id} hotel={visit}/>)}
+                {visits !== "Aucune visite pour cet user" && visits.filter(visit => visit !== null && visit.date_visite.slice(0, 10) == props.fullDate).map(visit => <Hotel key={visit._id} hotel={visit}/>)}
             </div>
         </div>
     );
