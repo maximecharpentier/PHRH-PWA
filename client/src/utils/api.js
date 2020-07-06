@@ -1,7 +1,16 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'http://52.47.86.14:3001/'
+  baseURL: process.env.API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+API.interceptors.request.use(function (config) {
+  const token = localStorage.getItem('token');
+  config.headers.Authorization =  token ?  token : '';
+  return config;
 });
 
 const getItem = (route, setState, id) => {
