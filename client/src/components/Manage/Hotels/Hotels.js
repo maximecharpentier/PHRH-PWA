@@ -187,7 +187,7 @@ class Hotels extends Component {
                 }
 
                 <section className="card-container">
-                    {loading ? <div>ca charge frerot</div> : allHotels}
+                    {loading ? <div>chargement</div> : allHotels}
                 </section>
 
                 {showForm &&
