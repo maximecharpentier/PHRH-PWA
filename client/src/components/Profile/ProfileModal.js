@@ -8,6 +8,7 @@ const ProfileModal = ({setProfile}) => {
 
     const logOut = () => {
         setAuthToken();
+        localStorage.clear()
         setProfile(false)
     }
 
