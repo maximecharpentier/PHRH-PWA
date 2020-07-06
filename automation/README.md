@@ -20,8 +20,8 @@
     - **File**: `automation/terraform/ec2.tf`
 
     ```terraform
-    resource "aws_key_pair" "phrh_g10_ssh_key_pair" {
-      key_name   = "phrh_g10_public_ssh_key"
+    resource "aws_key_pair" "phrh_g12_ssh_key_pair" {
+      key_name   = "phrh_g12_public_ssh_key"
       public_key = "<YOUR_PUBLIC_KEY>"
     }
     ```

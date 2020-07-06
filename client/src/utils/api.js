@@ -4,7 +4,7 @@ import { useAuth } from "../contexts/AuthContext";
 axios.defaults.headers.common.Authorization = localStorage.getItem('token');
 
 const API = axios.create({
-  baseURL: 'http://52.47.86.14:3001/',
+  baseURL: process.env.API_URL,
   headers: {
     'Content-Type': 'application/json',
   },

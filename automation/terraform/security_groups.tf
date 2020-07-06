@@ -1,4 +1,4 @@
-resource "aws_security_group" "phrh_g10_security_groups" {
+resource "aws_security_group" "phrh_g12_security_groups" {
   vpc_id = "${aws_default_vpc.default.id}"
   ingress {
     from_port   = 22
