@@ -17,34 +17,11 @@ class ListHotelsRank {
             await HotelRank.deleteMany({})
             this.listHotelRank = []
         }
+
+        this.listHotelRank = await HotelRank.find({}).sort({score: 'desc'})
         
         //set snapshot : depuis la table classement existante ou creer la table classement
         if(!this.listHotelRank.length) {
-            /*
-            //get elems to verify table is created
-            const elems = await HotelRank.find()
-            .populate({
-                "path" : 'hotel_id',
-            })
-            .populate({ 
-                "path" : 'urgences'
-            })
-            */
-
-            /*
-            //si la table est remplie
-            if(elems.length) {
-                
-                //get listHotelRank
-                for(const hotelRankDB of elems) {
-
-                    //update snapshot
-                    this.updateSnapshot(hotelRankDB)
-                }
-            
-            //sinon remplir la table
-            } else {
-            */
 
             //create
             await this.set()
