@@ -84,7 +84,7 @@ class RankBehaviourV1 extends RankBehaviour {
          * mais par rapport a la note médiane souhaitée par le métier #REPRNENDREI CI ET LIER LA QUALI ET LE CALCUL DU SCORE
          */
 
-        //si urgence
+        //si urgence -> OK
         const urgences = await Urgence.find({hotel_id: hotel._id})
         if(urgences.length) {
             return SCORE_SEUIL_URGENCE

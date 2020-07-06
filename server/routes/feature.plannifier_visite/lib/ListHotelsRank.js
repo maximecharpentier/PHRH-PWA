@@ -18,7 +18,9 @@ class ListHotelsRank {
             this.listHotelRank = []
         }
 
-        this.listHotelRank = await HotelRank.find({}).sort({score: 'desc'})
+        this.listHotelRank = await HotelRank.find({}).populate('hotel_id').sort({score: 'desc'})
+
+        console.log(this.listHotelRank)
         
         //set snapshot : depuis la table classement existante ou creer la table classement
         if(!this.listHotelRank.length) {
@@ -28,22 +30,32 @@ class ListHotelsRank {
         } 
             
         //filters
+        let filteredHotelRank = this.listHotelRank
         if($options.hasOwnProperty('secteur')) {
 
             //filter snapshot plutot que la requette Mongo
-            const filteredHotelRank = this.listHotelRank.filter(hotelElem =>
+            filteredHotelRank = filteredHotelRank.filter(hotelElem =>
 
                 //filter
                 hotelElem.hotel_id.cp
                     .toString()
                     .match(new RegExp("^" + $options.secteur + ".*",'g')) !== null
             )
-
-            return filteredHotelRank
-
-        } else {
-            return this.listHotelRank
         }
+        if($options.hasOwnProperty('hotel_id')) {
+
+            //filter snapshot plutot que la requette Mongo
+            console.log(filteredHotelRank) //#REPRNEDRE ICI ET FAIRE FONCTRIONNERL E FILTRE
+            filteredHotelRank = filteredHotelRank.filter(hotelElem =>
+
+                //filter
+                hotelElem.hotel_id._id
+                    .toString()
+                    .match($options.hotel_id) !== null
+            )
+        } 
+
+        return filteredHotelRank
     }
 
     async set() {
