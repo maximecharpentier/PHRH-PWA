@@ -1,79 +1,69 @@
-import React, { Component } from 'react'
-import styled from 'styled-components';
-import { Formik, Form, Field, ErrorMessage } from 'formik'
-import {API} from '../../utils/api'
+import React, { useState } from 'react'
+import { Redirect } from 'react-router-dom'
+import { API } from '../../utils/api'
+import { useAuth } from '../../contexts/AuthContext'
+import './Login.scss'
+import Logo from '../../assets/logo'
 
-class Login extends Component {
-  userLogin = (e, id) => {
-    e.preventDefault();
-    API.post('auth/login/' + id, "admin").then((response) => {
-        console.log(response.data)
+
+const Login = () => {
+  const [nom, setNom] = useState("");
+  const [pwd, setPwd] = useState("");
+  const [isLoggedIn, setLoggedIn] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const { setAuthToken } = useAuth();
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    API.post('auth/login/', {
+      nom,
+      pwd
+    }).then((response) => {
+      setAuthToken(response.data.token, response.data.user);
+      setLoggedIn(true);
     }).catch(error => {
-        console.log(error.response)
+      setErrorMsg(error.response.data.msg)
     });
   }
 
-  render() {
-    return (
-      <div className="App-Login">
-      <Formik
-        initialValues={{ email: '', password: '' }}
-        validate={values => {
-          const errors = {};
-          if (!values.email) {
-            errors.email = `Veuillez entrer votre adresse email.`;
-          } else if (
-            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-          ) {
-            errors.email = `L'email n'est pas valide.`;
-          }
-          return errors;
-        }}
-        onSubmit={(values, { setSubmitting }) => {
-          alert(JSON.stringify(values, null, 2));
-          setSubmitting(false);
-          API.post('auth/login/', "admin").then((response) => {
-              console.log(response.data)
-          }).catch(error => {
-              console.log(error.response)
-          });
-        }}
-        >
-          {({ isSubmitting }) => (
-            <Form className="App-Login_Form">
-              <div className="App-Login_Form_Header">
-                <h2>Connexion</h2>
-                <p>Pour continuer, connectez-vous.</p>
-              </div>
-              <div className="App-Login_Form_Field">
-                <div className="App-Login_Form_Label">
-                  <label>Email</label>
-                </div>
-                <Field type="email" name="email" />
-                <ErrorMessage name="email" component="div" />
-              </div>
-              <div className="App-Login_Form_Field">
-                <div className="App-Login_Form_Label">
-                  <label>Mot de passe</label>
-                  <p className="App-Login_Form_Forgot">Mot de passe oublié ?</p>
-                </div>
-                <Field type="password" name="password" />
-                <ErrorMessage name="password" component="div" />
-              </div>
-              <button className="App-Login_Form_Button" type="submit" disabled={isSubmitting}>
-                Se connecter
-              </button>
-            </Form>
-          )}
-        </Formik>
-      </div>
-    )
+  if (isLoggedIn) {
+    return <Redirect to="/manage" />
   }
+  return (
+    <div className="Login">
+      <Logo />
+      <div className="Login__container">
+        <form className="Login__form" onSubmit={(e) => handleSubmit(e)}>
+          <h2 className="Login__title">Connexion</h2>
+          <p className="Login__subtitle">Pour continuer, connectez-vous.</p>
+          <label className="Login__label">Email</label>
+          <input
+            className="Login__input"
+            type="text"
+            value={nom || ''}
+            name="nom"
+            placeholder="Nom d'utilisateur"
+            onChange={e => {
+              setNom(e.target.value);
+            }}
+          />
+          <label className="Login__label">Mot de passe</label>
+          <input
+            className="Login__input"
+            type="password"
+            value={pwd || ''}
+            name="pwd"
+            placeholder="Mot de passe"
+            onChange={e => {
+              setPwd(e.target.value);
+            }} />
+          <button className="Login__button" type="submit">Se connecter</button>
+          {errorMsg !== "" ? <p className="Login__error">{errorMsg}</p> : ""}
+        </form>
+      </div>
+    </div>
+  )
 }
 
 export default Login
-
-const StyledErrorMessage = styled.p`
-    margin-top: 15px;
-    color: red;
-`

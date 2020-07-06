@@ -205,7 +205,7 @@ router.route('/plannifier').post(authStrategy(), async (req, res) => {
         if(req.body.hasOwnProperty('equipe_id')) {
             const equipe = await Equipe.findById(req.body.equipe_id)
             if(equipe) {
-                usersToAssoc = [equipe.user_a_id, equipe.user_a_id]
+                usersToAssoc = [equipe.user_a_id, equipe.user_b_id]
                 msg+=" pour les users de l'équipe"
             }
         }

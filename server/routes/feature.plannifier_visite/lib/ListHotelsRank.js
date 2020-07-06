@@ -4,25 +4,34 @@ const ElemListHotelsRank = require("./ElemListHotelsRank");
 
 class ListHotelsRank {
 
-    constructor(rankBehaviour) {
-        this.listHotelRank = [] //snapshot
+    constructor(rankBehaviour, reset) {
+        this.listHotelRank = [] //snapshot : image 1:1 de la table HotelRank
         this.rankBehaviour = rankBehaviour
+        this.reset = reset
     }
 
     async get($options) {
-        //await HotelRank.deleteMany({})
-        if(!this.listHotelRank.length) {
 
+        //reset si nescessaire
+        if(this.reset) {
+            await HotelRank.deleteMany({})
+            this.listHotelRank = []
+        }
+        
+        //set snapshot : depuis la table classement existante ou creer la table classement
+        if(!this.listHotelRank.length) {
+            /*
             //get elems to verify table is created
             const elems = await HotelRank.find()
             .populate({
                 "path" : 'hotel_id',
-                //"match": { "cp": { $regex: /^75.*/, $options: 'i' }}
             })
             .populate({ 
                 "path" : 'urgences'
             })
+            */
 
+            /*
             //si la table est remplie
             if(elems.length) {
                 
@@ -35,41 +44,47 @@ class ListHotelsRank {
             
             //sinon remplir la table
             } else {
+            */
 
-                //create
-                const hotels = await Hotel.find({})
-
-                if(hotels.length) {
-
-                    //fill this.listHotelRank
-                    for(const hotelDB of hotels) {
-
-                        //build list elem
-                        const elemHotelRank = new ElemListHotelsRank(this.rankBehaviour)
-                        await elemHotelRank.buildFromHotel(hotelDB)
-
-                        //update / create
-                        const indexElem = this.listHotelRank.findIndex(hotelRank => hotelRank.hotel_id === elem.hotel_id);
-                        if(indexElem > 0) {
-                            
-                            //update element
-                            await this.update(elemHotelRank)
-                        } else {
-
-                            //ajouter l'element
-                            await this.create(elemHotelRank)
-                        }
-                    }
-                }
-            }
+            //create
+            await this.set()
         } 
             
-        //console.log(this.listHotelRank)
-        //return
+        //filters
         if($options.hasOwnProperty('secteur')) {
-            return this.listHotelRank.filter(hotelElem => hotelElem.hotel_id.cp.match(new RegExp("^" + $options.secteur + ".*",'g')))            
+
+            //filter snapshot plutot que la requette Mongo
+            const filteredHotelRank = this.listHotelRank.filter(hotelElem =>
+
+                //filter
+                hotelElem.hotel_id.cp
+                    .toString()
+                    .match(new RegExp("^" + $options.secteur + ".*",'g')) !== null
+            )
+
+            return filteredHotelRank
+
         } else {
             return this.listHotelRank
+        }
+    }
+
+    async set() {
+        //create
+        const hotels = await Hotel.find({})
+
+        if(hotels.length) {
+
+            //fill this.listHotelRank
+            for(const hotelDB of hotels) {
+
+                //build list elem
+                const elemHotelRank = new ElemListHotelsRank(this.rankBehaviour)
+                await elemHotelRank.buildFromHotel(hotelDB)
+
+                //ajouter l'element
+                await this.create(elemHotelRank)
+            }
         }
     }
 
@@ -92,13 +107,16 @@ class ListHotelsRank {
      * @param {*} elem : Objet ElemListHotelRank
      */
     async create(elem) {
+        //populate field
+        await elem.populate('hotel_id').execPopulate()
+
         //update snapshot 
         await this.updateSnapshot(elem)
 
         //insert in view
         await HotelRank.insertIfNotExist(elem)
 
-        console.log('Element inséré')
+        //console.log('Element inséré')
     }
 
     delete($options) {

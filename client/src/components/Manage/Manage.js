@@ -31,7 +31,7 @@ class Manage extends Component {
         return (
             <section className="manage">
                 <header className="manage-header">
-                    <h2>Gestions des <br /> ressources <span>.</span></h2>
+                    <h2>Gestions des <br /> ressources</h2>
                 </header>
                 <div className="manage-container">
                     <nav className="manage-nav">

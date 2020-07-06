@@ -29,10 +29,17 @@ router.route('/suggestions').get(authStrategy(), async (req, res) => {
         //creer une fonction cron qui chaque jour calcul si un hotel n'a pas été visité au moins trois fois en un an et met une priorisation
 
     const options = {}
+
+    if(req.body.filters) {
+        for(const prop in req.body.filters) {
+            options[prop] = req.body.filters[prop]
+        }
+    }
+    
     const rankBehaviour = new RankBehaviourV1()
-    const listHotelRankObj = new ListHotelRank(rankBehaviour)
+    const listHotelRankObj = new ListHotelRank(rankBehaviour, reset = true)
     const list = await listHotelRankObj.get(options)
-    res.status(400).json(list)
+    res.status(200).json(list)
 })
 
 module.exports = router;

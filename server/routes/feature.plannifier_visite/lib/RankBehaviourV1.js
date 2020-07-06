@@ -149,7 +149,6 @@ class RankBehaviourV1 extends RankBehaviour {
          */
         SCORE += getScoreQuartile()
         //si on depace le seuil juste au dessus, on retranche 0.01 pour etre juste en dessous
-        console.log(SCORE)
         if(SCORE >= SCORE_SEUIL_OPTI_VISITE) {
             SCORE = SCORE_SEUIL_OPTI_VISITE - 0.01
         }

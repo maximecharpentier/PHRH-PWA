@@ -12,7 +12,7 @@ class Teams extends Component {
     state = {
         teams: [],
         usersWithoutTeam:[],
-        allSector: ["75", "93", "92", "78", "77"],
+        allSector: ["75", "93", "92-94", "78-95", "77-91"],
         timeSlots: ['Matin', 'Journée', 'Soir'],
         newTeam: {},
         showForm: false,

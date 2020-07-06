@@ -35,7 +35,6 @@ const hotelRankSchema = new Schema({
 })
 
 hotelRankSchema.statics.insertIfNotExist = async function (hotelRank) {
-    console.log(hotelRank)
     const docs = await this.find({hotel_id : hotelRank.hotel_id}).exec()
     if (!docs.length){
         try {

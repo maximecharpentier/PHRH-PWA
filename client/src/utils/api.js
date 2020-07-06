@@ -1,7 +1,21 @@
-import axios from 'axios';
+import axios from "axios";
+import { useAuth } from "../contexts/AuthContext";
+// import dotenv from 'dotenv'
+// dotenv.config()
+
+axios.defaults.headers.common.Authorization = localStorage.getItem("token");
 
 const API = axios.create({
-  baseURL: 'http://52.47.86.14:3001/'
+  baseURL: 'http://52.47.86.14:3001/',
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+API.interceptors.request.use(function (config) {
+  const token = localStorage.getItem("token");
+  config.headers.Authorization = token ? token : "";
+  return config;
 });
 
 const getItem = (route, setState, id) => {

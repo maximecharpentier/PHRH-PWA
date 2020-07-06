@@ -19,7 +19,6 @@ class ElemListHotelsRank extends HotelRank {
     async buildFromHotel(hotel) {
         this.hotel_id = hotel._id
 
-        //create list props
         this.score = await this.rankBehaviour.calculateScoreHotel(hotel)
     
         this.listUrgences = await Urgence.find({hotel_id: hotel._id}).select('_id')//list urgences pour affichage des infos ds la liste
