@@ -4,7 +4,7 @@ services:
     container_name: phrh-db
     image: mongo
     volumes:
-      - /var/lib/mongodb:/data/db
+      - "{{ phrh_db_folder }}:/data/db"
     ports:
       - "{{ phrh_db_port }}:27017"
   phrh-server:
