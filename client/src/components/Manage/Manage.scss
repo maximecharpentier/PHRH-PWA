@@ -22,16 +22,24 @@ section {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 110px;
+    height: 116px;
     width: 340px;
     margin-bottom: 40px;
     h2 {
-      font-size: 20px;
-      font-weight: bold;
-      margin-left: 70px;
-      span {
-        color: $span-text-color;
-        font-size: 25px;
+      box-sizing: border-box;
+      background: #EFF2FB;
+      color: #111215;
+      font-size: 24px;
+      font-weight: 500;
+      line-height: 36px;
+      margin-right: 67px;
+      padding: 28px 0px 0px 70px;
+      width: 340px;
+      height: 100%;
+      &:after {
+          margin-left: 2px;
+          color: #EFAC2C;
+          content: '.';
       }
     }
   }
