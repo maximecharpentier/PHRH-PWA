@@ -6,13 +6,13 @@
     group: "{{ phrh_group }}"
 
 - name: Copy Server application
-  copy:
+  synchronize:
     src: ../../server
     dest: "{{ phrh_directory }}"
   tags: ["build"]
 
 - name: Copy Client Application
-  copy:
+  synchronize:
     src: ../../client
     dest: "{{ phrh_directory }}"
   tags: ["build"]
