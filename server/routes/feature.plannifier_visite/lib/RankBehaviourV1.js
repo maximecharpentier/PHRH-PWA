@@ -1,9 +1,11 @@
-const RankBehaviour = require("./RankBehaviour"); 
 const mongoose = require('mongoose');
 const Hotel = mongoose.model('Hotel');
 const Urgence = mongoose.model('Urgence');
+const Visite = mongoose.model('Visite');
 
-class RankBehaviourV1 extends RankBehaviour{
+const RankBehaviour = require("./RankBehaviour"); 
+
+class RankBehaviourV1 extends RankBehaviour {
 
     constructor(){
         super()
@@ -31,7 +33,7 @@ class RankBehaviourV1 extends RankBehaviour{
             const current_month = new Date().getMonth()
 
             //le moi de début de priode est le moi courant
-            if(current_month = DATE_DEBUT_PERIODE.month) {
+            if(current_month === DATE_DEBUT_PERIODE.month) {
                 return 0
             }
 
@@ -59,18 +61,21 @@ class RankBehaviourV1 extends RankBehaviour{
         }
 
         //definitions des seuils = scores definissants des intervales de catégories de classement
-        const SEUIL_URGENCE = 1 //si l'hotel comporte une urgence
-        const SEUIL_CONTRE_VISITE = 0.99 //si l'hotel nescessite une contre visite
-        const SEUIL_VISITE_URGENTE = 0.98 //si la visite est urgente pour maintenir un bon equilibrage du nb de visites / hotels
-        const SEUIL_OPTI_VISITE = 0.8 //seuil le plus bas
+        const SCORE_SEUIL_URGENCE = 1 //si l'hotel comporte une urgence
+        const SCORE_SEUIL_CONTRE_VISITE = 0.99 //si l'hotel nescessite une contre visite
+        const SCORE_SEUIL_VISITE_URGENTE = 0.98 //si la visite est urgente pour maintenir un bon equilibrage du nb de visites / hotels
+        const SCORE_SEUIL_OPTI_VISITE = 0.8 //seuil le plus bas
 
         //definition des pas
         const PAS_PB_IMPORTANCE_FORTE = 0.08
         const PAS_PB_IMPORTANCE_FAIBLE = 0.06
         const PAS_BASE = 0.04
-        const BASE_SCORE = SEUIL_OPTI_VISITE/Number(hotel.note)
+
+        //score de base
+        let SCORE = SCORE_SEUIL_OPTI_VISITE/Number(hotel.note)
+
         //PS : verifier le processus compte rendu, programation des contres-visites
-        //L'ordre des blocks suivants ne doit pas changer pour réaliser la bonne évaluation
+        //PS : L'ordre des blocks suivants ne doit pas changer pour réaliser la bonne évaluation
 
         //score de base
         /**
@@ -81,8 +86,8 @@ class RankBehaviourV1 extends RankBehaviour{
 
         //si urgence
         const urgences = await Urgence.find({hotel_id: hotel._id})
-        if(urgences) {
-            return SEUIL_URGENCE
+        if(urgences.length) {
+            return SCORE_SEUIL_URGENCE
         }
 
         //si contre visite
@@ -92,7 +97,7 @@ class RankBehaviourV1 extends RankBehaviour{
            visite_effectue: false
         })
         if(contreVisite) {
-            return SEUIL_CONTRE_VISITE
+            return SCORE_SEUIL_CONTRE_VISITE
         }
 
         //si seuil visite urgente
@@ -101,12 +106,15 @@ class RankBehaviourV1 extends RankBehaviour{
          * On cosidère que la visite presse vraiment vraiment
          */
         if(hotel.nb_visites_periode in [0,1] && CURRENT_AVCMNT_PERIODE() >= 70) {
-            return SEUIL_VISITE_URGENTE
+            return SCORE_SEUIL_VISITE_URGENTE
         }
 
         //si seuil visite optimale
         /**
          * Le but est d'optimiser globalement le rithme des visites en fonction
+         * de l'ecart de temps entre le moment présent et la date de la dernière visite pour 
+         * le comparer a l'ecart optimal théorique entre chaque visite (=temps total periode / nombre de visites optimale)
+         * et remonter les hotels qui n'ont pas un bon rithme de visite
          */
         
         if(hotel.nb_visites_periode < NB_VISITES_OPTI_PERIODE) {
@@ -116,11 +124,11 @@ class RankBehaviourV1 extends RankBehaviour{
             const intervalIdeal = Math.floor(DUREE_PERIODE_M / NB_VISITES_OPTI_PERIODE)
 
             if(ecart > intervalIdeal) {
-                SCORE = SEUIL_OPTI_VISITE + getScoreQuartile()
+                SCORE = SCORE_SEUIL_OPTI_VISITE + getScoreQuartile()
 
                 //si on depace le seuil juste au dessus, on retranche 0.01 pour etre juste en dessous
-                if(SCORE >= SEUIL_VISITE_URGENTE) {
-                    SCORE = SEUIL_VISITE_URGENTE - 0.01
+                if(SCORE >= SCORE_SEUIL_VISITE_URGENTE) {
+                    SCORE = SCORE_SEUIL_VISITE_URGENTE - 0.01
                 }
             }
         }
@@ -141,10 +149,12 @@ class RankBehaviourV1 extends RankBehaviour{
          */
         SCORE += getScoreQuartile()
         //si on depace le seuil juste au dessus, on retranche 0.01 pour etre juste en dessous
-        if(SCORE >= SEUIL_OPTI_VISITE) {
-            SCORE = SEUIL_OPTI_VISITE - 0.01
+        console.log(SCORE)
+        if(SCORE >= SCORE_SEUIL_OPTI_VISITE) {
+            SCORE = SCORE_SEUIL_OPTI_VISITE - 0.01
         }
         
+        return SCORE
     }
 }
 

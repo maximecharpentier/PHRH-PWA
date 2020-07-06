@@ -61,7 +61,7 @@ hotelRankSchema.statics.insertIfNotExist = async function (hotelRank) {
  * chaque modification du metier qui pourra impacter le classement
  * @param {*} hotel 
  */
-hotelRankSchema.statics.build = async function (hotel) {
+/*hotelRankSchema.statics.build = async function (hotel) {
     const rankBehaviour = new RankBehaviour()
 
     //create list props
@@ -79,8 +79,9 @@ hotelRankSchema.statics.build = async function (hotel) {
     if(contreVisite) this.isContreVisite = true
     else this.isContreVisite = false
 
+    console.log(this)
     return this
-}
+}*/
 
 const HotelRank = mongoose.model('HotelRank', hotelRankSchema)
 

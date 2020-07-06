@@ -2,7 +2,6 @@ const router = require('express').Router();
 const authStrategy = require('../../lib/utils').authStrategy;
 const ObjectId = require('mongoose').Types.ObjectId;
 const mongoose = require('mongoose');
-const AssocUserVisite = require('../../model/assoc_user_visite.model');
 const Visite = mongoose.model('Visite');
 const User = mongoose.model('User');
 const Hotel = mongoose.model('Hotel');

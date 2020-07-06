@@ -6,6 +6,7 @@ const Visite = mongoose.model('Visite');
 const Urgence = mongoose.model('Urgence');
 const User = mongoose.model('User');
 const Equipe = mongoose.model('Assoc_User_User');
+const RankBehaviourV1 = require('./lib/RankBehaviourV1')
 
 const ListHotelRank = require('./lib/ListHotelsRank');
 
@@ -17,7 +18,7 @@ const ListHotelRank = require('./lib/ListHotelsRank');
  *      (array[ (Object JSON) ]) : tableau d'object model Visite
  *      (string) : error message
  */
-router.route('/suggestions').get(authStrategy(), (req, res) => {
+router.route('/suggestions').get(authStrategy(), async (req, res) => {
     //QUESTION : l'affichage de la liste se fait pour un binome ? -> metre des filtrs custom -> OK
     //notes :
         //pour les contre-visites : elles sont automatiquement set lorsque un Hotel a une anomalie
@@ -28,8 +29,10 @@ router.route('/suggestions').get(authStrategy(), (req, res) => {
         //creer une fonction cron qui chaque jour calcul si un hotel n'a pas été visité au moins trois fois en un an et met une priorisation
 
     const options = {}
-    const listHotelRankObj = new ListHotelRank()
-    res.status(400).json(listHotelRankObj.get(options))
+    const rankBehaviour = new RankBehaviourV1()
+    const listHotelRankObj = new ListHotelRank(rankBehaviour)
+    const list = await listHotelRankObj.get(options)
+    res.status(400).json(list)
 })
 
 module.exports = router;

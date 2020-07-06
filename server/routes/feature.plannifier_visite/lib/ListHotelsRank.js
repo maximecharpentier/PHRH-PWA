@@ -1,11 +1,12 @@
-const HotelRank = require('../model/hotelrank.model')
-const Hotel = require("../../../model/hotel.model")
+const HotelRank = require('../model/hotelrank.model');
+const Hotel = require("../../../model/hotel.model");
+const ElemListHotelsRank = require("./ElemListHotelsRank");
 
 class ListHotelsRank {
 
     constructor(rankBehaviour) {
-        this.listHotelRank = []
-        this.rankBehavious = rankBehaviour
+        this.listHotelRank = [] //snapshot
+        this.rankBehaviour = rankBehaviour
     }
 
     async get($options) {
@@ -13,7 +14,7 @@ class ListHotelsRank {
         if(!this.listHotelRank.length) {
 
             //get elems to verify table is created
-            const elems = await HotelRank.find({})
+            const elems = await HotelRank.find()
             .populate({
                 "path" : 'hotel_id',
                 //"match": { "cp": { $regex: /^75.*/, $options: 'i' }}
@@ -26,10 +27,10 @@ class ListHotelsRank {
             if(elems.length) {
                 
                 //get listHotelRank
-                for(const hotelRankDB in elems) {
+                for(const hotelRankDB of elems) {
 
                     //update snapshot
-                    this.listHotelRank.push(hotelRankDB)
+                    this.updateSnapshot(hotelRankDB)
                 }
             
             //sinon remplir la table
@@ -44,55 +45,86 @@ class ListHotelsRank {
                     for(const hotelDB of hotels) {
 
                         //build list elem
-                        const elemHotelRank = new HotelRank()
-                        await elemHotelRank.build(hotelDB) //reprendre ici
+                        const elemHotelRank = new ElemListHotelsRank(this.rankBehaviour)
+                        await elemHotelRank.buildFromHotel(hotelDB)
 
-                        //ajouter l'element
-                        await this.addOrUpdate(elemHotelRank)
+                        //update / create
+                        const indexElem = this.listHotelRank.findIndex(hotelRank => hotelRank.hotel_id === elem.hotel_id);
+                        if(indexElem > 0) {
+                            
+                            //update element
+                            await this.update(elemHotelRank)
+                        } else {
 
-                        //update snapshot
-                        this.listHotelRank.push(elemHotelRank)
+                            //ajouter l'element
+                            await this.create(elemHotelRank)
+                        }
                     }
                 }
             }
         } 
             
+        //console.log(this.listHotelRank)
         //return
-        return this.listHotelRank.filter(hotelElem => hotelElem.hotel_id.cp.match(new RegExp("^" + $options.secteur + ".*",'g')))            
+        if($options.hasOwnProperty('secteur')) {
+            return this.listHotelRank.filter(hotelElem => hotelElem.hotel_id.cp.match(new RegExp("^" + $options.secteur + ".*",'g')))            
+        } else {
+            return this.listHotelRank
+        }
+    }
+
+    async update(elem) {
+        //update snapshot
+        await this.updateSnapshot(elem)
+
+        //update table
+        await HotelRank.findByIdAndUpdate(
+        { _id: elem._id }, 
+        { $set: elem }, 
+        //{ new: true }
+        )
+
+        console.log('Element mis à jour')
     }
 
     /**
-     * @desc : fonction qui update la vue HotelRank et le snapshot
-     * @param {*} elem : element de liste
+     * @desc : 
+     * @param {*} elem : Objet ElemListHotelRank
      */
-    async addOrUpdate(elem) {
-        console.log(elem)
-        //definir si c'est un cas d'update
-        const indexElem = this.listHotelRank.findIndex(hotelRank => hotelRank.hotel_id === elem.hotel_id);
-        if(indexElem) {
-            //update snapshot
-            this.listHotelRank[indexElem] = elem
+    async create(elem) {
+        //update snapshot 
+        await this.updateSnapshot(elem)
 
-            //update table
-            await HotelRank.findByIdAndUpdate(
-                { _id: elem._id }, 
-                { $set: elem }, 
-                //{ new: true }
-                )
-            console.log('Element mis à jour')
-        
-        //sinon inserer l'element
-        } else {
+        //insert in view
+        await HotelRank.insertIfNotExist(elem)
 
-            //insert in view
-            await HotelRank.insertIfNotExist(elem.get())
-
-            console.log('Element inséré')
-        }
+        console.log('Element inséré')
     }
 
     delete($options) {
         //A VENIR
+    }
+
+     /**
+     * @desc : cette fonction met à jour ou enrichi le snap^shot de la table
+     * avec le nouvel element
+     * @param {*} elem : objet ElemListHotel ou HotelRank model
+     */
+    async updateSnapshot(elem) {
+
+        //convert elem in right class
+        if(!elem instanceof ElemListHotelsRank) {
+            elem = new ElemListHotelsRank(this.rankBehaviour, elem)
+            await elem.buildFromHotel(hotelDB)
+        }
+
+        //check if snapshot need to be updated or filled
+        const indexElem = this.listHotelRank.findIndex(elemHotelRank => elemHotelRank.hotel_id === elem.hotel_id)
+        if(indexElem > 0) {
+            this.listHotelRank[indexElem] = elem
+        } else {
+            this.listHotelRank.push(elem)
+        }
     }
 }
 
