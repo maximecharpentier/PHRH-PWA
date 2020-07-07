@@ -43,7 +43,7 @@ const Day = (props) => {
                 <p className="Day__date">{props.date}</p>
             </div>
             <div style={{backgroundColor: isOver ? "#4357ea33" : "#FFFFFF"}} ref={drop} className="Day__list">
-                {visits !== "Aucune visite pour cet user" && visits.filter(visit => visit !== null && visit.date_visite.slice(0, 10) === props.fullDate).map(visit => <Hotel key={visit._id} hotel={visit}/>)}
+                {visits !== "Aucune visite pour cet user" && visits.filter(visit => visit !== null && visit.date_visite.slice(0, 10) == props.fullDate).map(visit => <Hotel key={visit._id} hotel={visit}/>)}
             </div>
         </div>
     );
