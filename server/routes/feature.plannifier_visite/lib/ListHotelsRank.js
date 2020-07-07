@@ -30,7 +30,6 @@ class ListHotelsRank {
             
         //filters
         let filteredHotelRank = this.listHotelRank
-        console.log($options)
         if($options.hasOwnProperty('secteur')) {
             
 
