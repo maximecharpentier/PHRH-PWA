@@ -12,8 +12,16 @@ const Urgence = mongoose.model('Urgence');
  *      (string) : error message
  */
 router.route('/').get(authStrategy(), (req, res) => {
+    const Observer = loadFileIfExist('feature.plannifier_visite/listHotelsRank')
+
     Urgence.find({})
-        .then(urgences => res.status(200).json(urgences))            
+        .then(urgences => {
+
+            //notify observer
+            Observer.notify(urgences[0]) //#REPRENDRE ICI TESTER CA
+
+            res.status(200).json(urgences)           
+        })
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
@@ -49,7 +57,13 @@ router.route('/add').post(authStrategy(), (req, res) => {
 
     //save
     urgence.save()
-        .then(() => res.status(200).json('Urgence ajoutée'))
+        .then(() => {
+            
+            //update ranking
+            //#REPRNED ICI ET NOTIFY
+
+            res.status(200).json('Urgence ajoutée')
+        })
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 

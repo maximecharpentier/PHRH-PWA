@@ -35,6 +35,10 @@ class ElemListHotelsRank extends HotelRank {
             this.isContreVisite = true
         }
     }
+
+    async refreshScore() {
+        this.score = await this.rankBehaviour.calculateScoreHotel(hotel)
+    }
 }
 
 module.exports = ElemListHotelsRank;

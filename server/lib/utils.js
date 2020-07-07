@@ -76,8 +76,16 @@ function getMoyenneNoteHotels() {
     .catch( err => console.log('fonction getMoyenneNoteHotels : ', err))
 }
 
+function loadFileIfExist(path) {
+  const fs = require('fs');
+  if(fs.existsSync(path)) {
+    require(path)
+  }
+}
+
 
 module.exports.capitalize = capitalize;
 module.exports.issueJWT = issueJWT;
 module.exports.authStrategy = authStrategy;
 module.exports.getMoyenneNoteHotels = getMoyenneNoteHotels;
+module.exports.loadFileIfExist = loadFileIfExist;

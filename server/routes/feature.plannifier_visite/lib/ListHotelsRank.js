@@ -1,16 +1,49 @@
+const HotelsRank = require("./HotelRank")
 const HotelRank = require('../model/hotelrank.model');
 const Hotel = require("../../../model/hotel.model");
 const ElemListHotelsRank = require("./ElemListHotelsRank");
 
-class ListHotelsRank {
 
-    constructor(rankBehaviour, reset) {
+class ListHotelsRank extends HotelsRank {
+
+    constructor(reset = null) {
+        super()
         this.listHotelRank = [] //snapshot : image 1:1 de la table HotelRank
-        this.rankBehaviour = rankBehaviour
         this.reset = reset
     }
 
-    async get($options) {
+    async get(fromidelem = null, 
+        fromhotel = null, 
+        fromvisite = null, 
+        fromurgence = null) {
+
+        let elem = {}
+
+        if(fromidelem) {
+            elem = await HotelRank.findById(fromidelem).populate('hotel_id')
+        }
+
+        if(fromhotel) {
+            elem = await HotelRank.find({hotel_id: fromhotel._id}).populate('hotel_id')
+        }
+
+        if(fromvisite) {
+            elem = await HotelRank.find({hotel_id: fromvisite.hotel_id}).populate('hotel_id')
+        }
+
+        if(fromurgence) {
+            elem = await HotelRank.find({hotel_id: fromurgence.hotel_id}).populate('hotel_id')
+        }
+
+        return new ElemListHotelsRank(this.rankBehaviour, elem)
+    }
+
+    /**
+     * @desc recupère la liste d'element, lance création si elle n'existe pas, l'efface si this.reset est true
+     * @param {*} $options 
+     * @return {Array} : liste d'element ElemListHotelsRank filtré en fonction des options et ordonné par score descroissant
+     */
+    async list($options) {
 
         //reset si nescessaire
         if(this.reset) {
@@ -30,7 +63,6 @@ class ListHotelsRank {
             
         //filters
         let filteredHotelRank = this.listHotelRank
-        console.log($options)
         if($options.hasOwnProperty('secteur')) {
             
 
@@ -56,6 +88,10 @@ class ListHotelsRank {
         return filteredHotelRank
     }
 
+    /**
+     * @desc : set la liste en base & set snapshot
+     * @param void 
+     */
     async set() {
         //create
         const hotels = await Hotel.find({})
@@ -70,11 +106,15 @@ class ListHotelsRank {
                 await elemHotelRank.buildFromHotel(hotelDB)
 
                 //ajouter l'element
-                await this.create(elemHotelRank)
+                await this.insert(elemHotelRank)
             }
         }
     }
 
+    /**
+     * @desc : update la liste en base & set snapshot
+     * @param elem : Objet ElemListHotelsRank
+     */
     async update(elem) {
         //update snapshot
         await this.updateSnapshot(elem)
@@ -90,10 +130,10 @@ class ListHotelsRank {
     }
 
     /**
-     * @desc : 
-     * @param {*} elem : Objet ElemListHotelRank
+     * @desc : insert un element de la liste dans la base et dans le snapshot
+     * @param elem : Objet ElemListHotelRank
      */
-    async create(elem) {
+    async insert(elem) {
         //populate field
         await elem.populate('hotel_id').execPopulate()
 
@@ -101,17 +141,27 @@ class ListHotelsRank {
         await this.updateSnapshot(elem)
 
         //insert in view
-        await HotelRank.insertIfNotExist(elem)
+        HotelRank.insertIfNotExist(elem)
+            .then( hotelRankDB => {
+                //ok
+            })
+            .catch( err => {
+                //tmp : update
+            })
 
         //console.log('Element inséré')
     }
 
+    /**
+     * @desc efface un element l'hotel de la liste et du snapshot
+     * @param {*} $options 
+     */
     delete($options) {
         //A VENIR
     }
 
      /**
-     * @desc : cette fonction met à jour ou enrichi le snap^shot de la table
+     * @desc : cette fonction met à jour ou enrichi le snapshot de la table
      * avec le nouvel element
      * @param {*} elem : objet ElemListHotel ou HotelRank model
      */
@@ -132,20 +182,82 @@ class ListHotelsRank {
         }
     }
 
-    notify(elem) {
+    /**
+     * @desc : trigger (Observer) déclanché sur certaines action pour assurer le maintiens de la liste
+     * @param {*} objet {element: objet concerné, origin: motif du trigger} 
+     */
+    async notify(elem) {
+        //#REPRENDRE ICI ET
+        
+        let listElem = {}
         //actions possibles :
+        switch(elem.origin) {
+            
             //delete de la liste
+            case 'visite added' :
                 //qd visite est planiffiée
-                    //elem = Visite
-                    //
+                    //elem = Visite, origin: plannif visite 
+                    //effacer l'hotel du ranking
+                listElem = await this.get(null, null, fromvisite = elem, null)
+                this.delete(listElem)
+                break
+
+            
             //ajouter a la liste
+            case 'hotel added' :
                 //qd nouvel hotel est crée
+                    //elem = Hotel, origin: nouvel hotel
+                    //(re) insert l'hotel au ranking
+                listElem = await this.get(null, fromhotel = elem, null, null)
+            case 'visit done' :
                 //qd une visite est efféctuée
+                    //elem = Visite, origin: visite done
+                    //(re) insert le ranking de l'hotel            
+                listElem = await this.get(null, null, fromvisite = elem, null)
+            case 'visit canceled' :
+                //qd une visite (non effectuée) est supprimée
+                    //elem = Visite, origin: visite non effectuée
+                    //(re) insert l'hotel dans le ranking
+                listElem = await this.get(null, null, fromvisite = elem, null)
+                this.insert(listElem)
+                break
+
             //modifier le ranking
-                //qd une visite est plannifiée
+            case 'hotel note updated' :
                 //qd modification de la note de l'hotel
+                    //elem = Hotel, origin: note hotel updated
+                    //update l'hotel ds le ranking            
+                listElem = await this.get(null, fromhotel = elem, null, null)
+            case 'urgence added' :
                 //qd placement d'une urgence
-                //qd le temps passe chaque mois -> pas sur
+                    //elem = Urgence, origin: urgence added
+                    //update l'hotel ds le ranking            
+                listElem = await this.get(null, null, null, fromurgence = elem)
+            case 'urgence deleted' :
+                //qd suppression d'une urgence
+                    //elem = Urgence, origin: urgence deleted
+                    //update l'hotel ds le ranking
+                listElem = await this.get(null, null, null, fromurgence = elem)
+                this.update(listElem)
+                break
+        }    
+        //always
+            //refresh le score : une partie du score est calculé
+            //en fonction de la "date courante" du moment ou il est calculé
+            //donc il faut regulièrement le refresh pour assurer une 
+            //adéquation du score avec l'etat courant du metier
+            this.refreshScores()
+    }
+
+    /**
+     * @desc : rafraichis les scores de la liste
+     */
+    async refreshScores() {
+        //a venir
+        for(let elemList of this.listHotelRank) {
+            await elemList.refreshScore()
+            this.update(elemList)
+        }
     }
 }
 
