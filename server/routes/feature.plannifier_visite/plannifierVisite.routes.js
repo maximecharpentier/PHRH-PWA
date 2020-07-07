@@ -32,6 +32,12 @@ router.route('/suggestions').get(authStrategy(), async (req, res) => {
             options[prop] = JSON.parse(req.query.filters)[prop]
         }
     }
+
+    if(req.body.filters) {
+        for(const prop in req.body.filters) {
+            options[prop] = req.body.filters[prop]
+        }
+    }
     
     const rankBehaviour = new RankBehaviourV1()
     const listHotelRankObj = new ListHotelRank(rankBehaviour, reset = false)
