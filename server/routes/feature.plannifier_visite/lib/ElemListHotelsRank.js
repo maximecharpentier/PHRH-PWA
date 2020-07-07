@@ -35,7 +35,6 @@ class ElemListHotelsRank extends HotelRank {
             this.isContreVisite = true
         }
     }
-   
 }
 
 module.exports = ElemListHotelsRank;
