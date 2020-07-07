@@ -28,7 +28,7 @@ router.route('/suggestions').get(authStrategy(), async (req, res) => {
 
     const options = {}
 
-    if(req.body.filters) {
+    if(req.query.filters) {
         for(const prop in req.body.filters) {
             options[prop] = req.body.filters[prop]
         }
