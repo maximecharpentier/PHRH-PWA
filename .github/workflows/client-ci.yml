@@ -20,11 +20,17 @@ jobs:
     - name: install
       run: npm install
       working-directory: ./client
+      env:
+        CI: ""
 
     - name: lint
       run: npm run lint
       working-directory: ./client
+      env:
+        CI: ""
 
     - name: build
       run: npm run build
       working-directory: ./client
+      env:
+        CI: ""
