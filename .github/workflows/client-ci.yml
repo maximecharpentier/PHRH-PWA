@@ -9,8 +9,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    env:
-      working-directory: ../../client
     steps:
     - uses: actions/checkout@master
         
@@ -21,12 +19,12 @@ jobs:
 
     - name: install
       run: npm install
-      working-directory: ${{env.working-directory}}
+      working-directory: working-directory: ../../client
 
     - name: lint
       run: npm run lint
-      working-directory: ${{env.working-directory}}
+      working-directory: working-directory: ../../client
 
     - name: build
       run: npm run build
-      working-directory: ${{env.working-directory}}
+      working-directory: working-directory: ../../client
