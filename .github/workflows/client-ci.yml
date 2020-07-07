@@ -19,12 +19,12 @@ jobs:
 
     - name: install
       run: npm install
-      working-directory: working-directory: ../../client
+      working-directory: ../../client
 
     - name: lint
       run: npm run lint
-      working-directory: working-directory: ../../client
+      working-directory: ../../client
 
     - name: build
       run: npm run build
-      working-directory: working-directory: ../../client
+      working-directory: ../../client
