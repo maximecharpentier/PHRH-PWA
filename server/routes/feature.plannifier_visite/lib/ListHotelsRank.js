@@ -18,9 +18,8 @@ class ListHotelsRank {
             this.listHotelRank = []
         }
 
+        //get sorted list
         this.listHotelRank = await HotelRank.find({}).populate('hotel_id').sort({score: 'desc'})
-
-        console.log(this.listHotelRank)
         
         //set snapshot : depuis la table classement existante ou creer la table classement
         if(!this.listHotelRank.length) {
@@ -45,13 +44,10 @@ class ListHotelsRank {
         if($options.hasOwnProperty('hotel_id')) {
 
             //filter snapshot plutot que la requette Mongo
-            console.log(filteredHotelRank) //#REPRNEDRE ICI ET FAIRE FONCTRIONNERL E FILTRE
             filteredHotelRank = filteredHotelRank.filter(hotelElem =>
 
                 //filter
-                hotelElem.hotel_id._id
-                    .toString()
-                    .match($options.hotel_id) !== null
+                hotelElem.hotel_id._id.toString() === $options.hotel_id
             )
         } 
 
