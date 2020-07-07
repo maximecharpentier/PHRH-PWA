@@ -41,6 +41,25 @@ class DBFeeder {
     await Urgence.deleteMany({})
     await Vehicule.deleteMany({})
     await Memo.deleteMany({})
+
+    //TMP : retire les artefacts pour les devs
+    mongoose.connection.db.dropCollection('utilisateurs')
+      .then()
+      .catch(err => {
+        console.log('artefact deja éffacé')
+      })
+    
+    mongoose.connection.db.dropCollection('assocuserusers')
+      .then()
+      .catch(err => {
+        console.log('artefact deja éffacé')
+      })
+
+    mongoose.connection.db.dropCollection('assocuservisites')
+      .then()
+      .catch(err => {
+        console.log('artefact deja éffacé')
+      })
   }
 
   /**
@@ -78,7 +97,9 @@ class DBFeeder {
         nom: hotel.nom,
         adresse: hotel.adresse,
         cp: hotel.cp,
+        note: hotel.note,
         ville: hotel.ville,
+        note: hotel.note,
         nb_chambres_utilise: hotel.nb_chambres_utilise,
         nb_visites_periode: hotel.nb_visites_periode,
         last_time_visited: hotel.last_time_visited ? hotel.last_time_visited : null,
@@ -101,7 +122,7 @@ class DBFeeder {
             const visiteObj = new Visite({
               uid_internal: visite.uid_internal,
               hotel_id: HotelDB._id,
-              date_visite: new Date(visite.date_visite),
+              date_visite: visite.date_visite,
               note: visite.note,
               ville: visite.ville,
               duree: visite.duree,
@@ -326,7 +347,7 @@ class DBFeeder {
           //last_time_visited
           hotel.last_time_visited = visite.date_visite
           //note
-          hotel = visite.note
+          hotel.note = visite.note
         }
       })
     })
@@ -464,7 +485,7 @@ class DBFeeder {
   /** 
    * @desc permet de lire une ligne du fichier de mapping afin de recuperer la bonne valeur a inserer pour l'entité courante du fichier de référence
    * @param : refSheetFileReader : objet module_xlsx, helper de manipulation de l'outil de lecture du fichier
-   * @param : propName : propriété de l'entité en cours de traitement
+   * @param : mapObject : objet de mapping du mapping file pour la propriété en cours
    * @param : currentLine : ligne du fichier
    * @return : mixed : (mixed) valeur de l'attribut / (string) message d'erreur du reader
    */
@@ -518,20 +539,55 @@ class DBFeeder {
               }
               //sinon informer que la jointure a retourné un resultat vide
               else {
-                console.log('[skip visite] cause : jointure échouée, valeur < '
+                //en cas d'echec retourner la valeur de default spécifiée ds le mapObject, sinon retourner l'erreur 
+                if(mapObject.hasOwnProperty('default')) {
+
+                  //set prop value to default
+                  propValue = mapObject['default']
+
+                  console.log('[prop set to default value] cause : jointure échouée, valeur < '
                   + joinPropValue +
                   ' > absente de < ' 
                   + mapInfo['file'] + 
                   ' > à la position < ' 
                   + mapInfo['on'] + 
                   ' >')
-                return this.JOIN_FAILED
+
+                  break
+
+                } else {
+
+                  console.log('[skip entity] cause : jointure échouée, valeur < '
+                  + joinPropValue +
+                  ' > absente de < ' 
+                  + mapInfo['file'] + 
+                  ' > à la position < ' 
+                  + mapInfo['on'] + 
+                  ' >')
+
+                  return this.JOIN_FAILED
+                } 
               }
             }
             //si erreur d'instanciation du reader
             else{
-              console.log(iftJoinedFileReader.error)
-              return this.SET_PROP_FAILED
+              if(mapObject.hasOwnProperty('default')) {
+
+                //set prop value to default
+                propValue = mapObject['default']
+
+                console.log('[prop set to default value] cause : erreur instanciation du reader pour le fichier < '
+                + fileAbsPath +' >')
+
+                break
+
+              } else {
+
+                console.log('[prop set to default value] cause : erreur instanciation du reader pour le fichier < '
+                + fileAbsPath +' >')
+
+                return this.SET_PROP_FAILED
+              } 
             }
             
           }

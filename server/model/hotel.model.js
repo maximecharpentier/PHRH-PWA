@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Visite = require('./visite.model');
 
 const Schema = mongoose.Schema;
 
@@ -40,9 +41,10 @@ const hotelSchema = new Schema({
     },
     nb_chambres_utilise : {
         type: Number, 
-        required: true,
+        required: false,
         trim: true,
-        maxlength: 3
+        maxlength: 3,
+        default: null
     },
     nb_visites_periode : {
         type: Number, 
@@ -77,6 +79,35 @@ hotelSchema.statics.insertIfNotExist = async function (hotel) {
     else{
         //throw new Error('Hotel <<'+ hotel.nom +'>> existe deja');
         console.log('Hotel <<'+ hotel.nom +'>> existe deja')
+    }
+}
+
+/**
+ * @desc : recuperer l'historique complet des visites ou pour la période en cours
+ * @param {object} : object de description de la période {month: (int) moi de début de periode [0-11], day: (int) [1-31] jour du mois de debut de peridoe}
+ * @return {array} : tableau d'objet model Visites
+ */
+hotelSchema.statics.getVisitsHistory = async function(periodeInfo = null) {
+    let visits = []
+
+    //si periode est indiqué, donné les visites de la periode en cours (on assume que cette periode commence forcément a un moment de l'année EN COURS et non l'année d'avant)
+    if(periodeInfo) {
+        visits = await Visite.find({
+                date_visite: { 
+                    $gte: new Date(new Date().getFullYear(), periodeInfo.month, periodeInfo.day)
+                }
+            }).sort({date: 'descending'})
+
+    //sinon get toutes les visites
+    } else {
+        visits = await Visite.find({hotel_id: this._id})
+    }
+
+    //retourner les visites
+    if(visits) {
+        return visits
+    } else {
+        return []
     }
 }
 

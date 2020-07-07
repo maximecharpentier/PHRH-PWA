@@ -19,7 +19,7 @@ class HotelsFormula extends Component {
     this.getHotels();
   }
   getHotels = () => {
-    axios.get('http://35.180.37.72:3001/hotels')
+    axios.get('http://52.47.86.14:3001/hotels')
       .then(res => {
         this.setState({
           hotels: res.data

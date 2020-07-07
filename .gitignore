@@ -1,0 +1,10 @@
+.env
+data
+
+config/terraform/terraform.tfstate
+config/terraform/terraform.tfstate.backup
+config/terraform/.terraform/
+
+server/id_rsa*
+
+server/.env

@@ -12,7 +12,7 @@ const Input = props => {
                         <option value="" disabled>Selectionner {props.title}</option>
                         {props.options.map((option, id) =>
                             props.users ? 
-                          <option disabled={props.firstInputValue ===  option._id ? true : null} key={id} value={option._id}>{`${option.nom} / ${option.secteur}`}</option> :
+                          <option disabled={props.firstInputValue ===  option._id ? true : null} key={id} value={option._id}>{`${option.prenom} / ${option.secteur}`}</option> :
                            props.secteur || props.timeSlots || props.fonction ?
                           <option key={id} value={option}>{option}</option> :
                           props.teamUrgency ? 

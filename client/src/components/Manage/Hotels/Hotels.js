@@ -14,23 +14,23 @@ import { API } from '../../../utils/api';
 class Hotels extends Component {
     state = {
         hotels: [],
-        newHotel: {last_time_visited: new Date()},
+        newHotel: { last_time_visited: new Date() },
         hotelInfos: {},
         editing: false,
         showForm: false,
         showDeleteConfirm: false,
         successMessage: "",
+        loading: false
     }
-    
-
-
 
     _refreshHotels = () => {
-        API.get('hotels/').then((response) => {
-            this.setState({
+        this.setState({ loading: true }, () => {
+            API.get('hotels/').then(response => this.setState({
+                loading: false,
                 hotels: response.data
-            })
-        })
+            }));
+        });
+
     }
 
     componentDidMount() {
@@ -44,7 +44,7 @@ class Hotels extends Component {
     addHotel = (e) => {
         e.preventDefault();
         const { nom, adresse, cp, ville, nb_chambres_utilise, nb_visites_periode, last_time_visited } = e.target;
-        if (nom.value !== "" && adresse.value !== "" && cp.value !== "" && ville.value !== "" && nb_chambres_utilise.value !== "" ) {
+        if (nom.value !== "" && adresse.value !== "" && cp.value !== "" && ville.value !== "" && nb_chambres_utilise.value !== "") {
             API.post('hotels/add/', this.state.newHotel).then((response) => {
                 console.log(response.data)
                 this.setState({
@@ -66,14 +66,14 @@ class Hotels extends Component {
     }
 
     getHotelInfo = (user) => {
-            this.setState({
-                hotelInfos: {
-                    ...user,
-                    last_time_visited: new Date(user.last_time_visited).getTime()
-                },
-                editing: true,
-                showForm: !this.state.showForm,
-            })
+        this.setState({
+            hotelInfos: {
+                ...user,
+                last_time_visited: new Date(user.last_time_visited).getTime()
+            },
+            editing: true,
+            showForm: !this.state.showForm,
+        })
     }
 
     updateHotel = (e, id) => {
@@ -167,7 +167,7 @@ class Hotels extends Component {
     }
 
     render() {
-        const { showForm, hotels, newHotel, editing, hotelInfos, showDeleteConfirm, successMessage } = this.state;
+        const { showForm, hotels, newHotel, editing, hotelInfos, showDeleteConfirm, successMessage, loading } = this.state;
 
         let allHotels = hotels.map((hotel) => {
             return <Card key={hotel._id} hotel={hotel} editHotel={() => this.getHotelInfo(hotel, true)} showMore={() => this.getHotelInfo(hotel)} deleteHotel={() => this.getIdForDelete(hotel._id)} />
@@ -187,7 +187,7 @@ class Hotels extends Component {
                 }
 
                 <section className="card-container">
-                    {allHotels}
+                    {loading ? <div>chargement</div> : allHotels}
                 </section>
 
                 {showForm &&
@@ -198,7 +198,7 @@ class Hotels extends Component {
                             <Input label="Code postal" name="cp" type="text" value={editing ? hotelInfos.cp : newHotel.cp || ''} handleChange={(e) => this.handleChange(e)} />
                             <Input label="Ville" name="ville" type="text" value={editing ? hotelInfos.ville : newHotel.ville || ''} handleChange={(e) => this.handleChange(e)} />
                             <Input label="Nombre de chambres" name="nb_chambres_utilise" type="text" value={editing ? hotelInfos.nb_chambres_utilise : newHotel.nb_chambres_utilise || ''} handleChange={(e) => this.handleChange(e)} />
-                            <DatePicker dateFormat="dd MMMM yyyy" locale={fr}  name="last_time_visited" selected={editing ? new Date(hotelInfos.last_time_visited).getTime() : newHotel.last_time_visited} onChange={this.handleChangeDate} />
+                            <DatePicker dateFormat="dd MMMM yyyy" locale={fr} name="last_time_visited" selected={editing ? new Date(hotelInfos.last_time_visited).getTime() : newHotel.last_time_visited} onChange={this.handleChangeDate} />
                         </Form>
                     </Modal>
                 }

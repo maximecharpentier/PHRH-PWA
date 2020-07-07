@@ -175,6 +175,13 @@ En cours d'étude
     - @return : mixed 
         - (Object JSON) : tableau d'object model Visite pour un User
         - (string) : error message
+  
+  - **_/gestion/visites/get/forequipe/:idequipe_** : get all visites pour une Equipe
+    - @method : GET
+    - @param {string} : id User
+    - @return : mixed 
+        - (Object JSON) : tableau d'object {visite: Visite model, user_assoc: (string) id, name: (string) user name en texte formaté
+        - (string) : error message
 
   - **_/gestion/visites/get/:id_** : get visite by id
     - @method : GET
@@ -183,9 +190,15 @@ En cours d'étude
         - (Object JSON) : object model Visite
         - (string) : error message
 
-  - **_/gestion/visites/plannifier/_** : plannifier une visite (equivalent à add)
+  - **_/gestion/visites/plannifier/_** : plannifier une visite (equivalent à add) pour un user ou pour une equipe
     - @method : POST
-    - @param : (Object JSON) : object Visite conforme au schema (voir schema)
+    - @param : {Object JSON} : object Visite restreint & custom {
+        user_id | equipe_id : (string) id entité Equipe ou User
+        hotel_id: (string) 
+        date_visite: (string)
+        duree : (int) 
+        type :  (string) "Visite ou "Contre-visite"
+      }
     - @return : (string) : error/confirm message
     
   - **_/gestion/visites/edit/:id_** : plannifier une visite (equivalent à add)
@@ -199,10 +212,16 @@ En cours d'étude
         (array) : tableau d'objet model Visite
         (string) : error message
 
-  - **_/estion/visites/delete/:id_** : supprimer la visite ayant l'id :id
+  - **_/gestion/visites/delete/:id_** : supprimer la visite ayant l'id :id
     - @method : DELETE
     - @param {string} : id Hotel
     - @return : (string) : error/confirm message 
+
+  - **_/gestion/visites/suggestions_** : supprimer la visite ayant l'id :id
+    - @method GET
+    - @param {object} : objet filter (seul le secteur est dispo a l'heure acteulle) {"filters": {"secteur": X}}
+    - @return : array[ (Object JSON) ] : tableau d'object HotelRank
+ 
 
 **feature Gestion utilisateur : CRUD User :**
   - **_/users_** : get All

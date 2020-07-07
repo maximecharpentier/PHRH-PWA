@@ -51,6 +51,7 @@ class Week extends Component {
                 id={item.id}
                 label={item.label}
                 date={this.getDay(this.props.isNextWeek ? this.props.nextWeek[id] : this.props.currentWeek[id])}
+                fullDate={this.props.isNextWeek ? this.props.nextWeek[id] : this.props.currentWeek[id]}
                 visits={ id === 1 ? this.context.journees : null}
             />
 
