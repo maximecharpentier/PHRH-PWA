@@ -99,6 +99,7 @@ class DBFeeder {
         cp: hotel.cp,
         note: hotel.note,
         ville: hotel.ville,
+        note: hotel.note,
         nb_chambres_utilise: hotel.nb_chambres_utilise,
         nb_visites_periode: hotel.nb_visites_periode,
         last_time_visited: hotel.last_time_visited ? hotel.last_time_visited : null,
