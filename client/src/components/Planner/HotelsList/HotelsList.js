@@ -9,14 +9,14 @@ import { CurrentTeamContext } from "../../../contexts/CurrentTeamContext";
 export const HotelContext = createContext({
   sendVisit: (data, date) => {
     const visite = {
-      hotel_id: data.hotel._id, 
-      date_visite: date, 
-      duree: null, 
-      type: "Visite", 
+      hotel_id: data.hotel.hotel_id,
+      date_visite: date,
+      duree: null,
+      type: "Visite",
       visite_effectue: false,
       equipe_id: data.currentTeam.equipe._id,
-      note: 12,
-  }
+      note: data.hotel.score,
+    }
     console.log(visite)
     API.post('gestion/visites/plannifier/', visite).then((response) => {
       console.log(response.data)
@@ -34,15 +34,15 @@ const HotelsList = () => {
   const { sendVisit } = useContext(HotelContext)
 
   useEffect(() => {
-    API.get('hotels/').then((response) => {
+    API.get('gestion/visites/suggestions/', { params: { filters: { secteur: 75 } } }).then((response) => {
       setHotels(response.data)
     })
-    
   }, []);
 
+  // currentTeam && hotels.length !== 0 && console.log( hotels[500].hotel_id.cp.toString().substring(0, 2), currentTeam.equipe.secteur_binome.substring(0, 2))
+  // let allVisits = currentTeam && hotels.length !== 0 && hotels.filter(hotel => hotel.hotel_id.cp.toString().substring(0, 2) === currentTeam.equipe.secteur_binome.substring(0, 2)).map(hotel => <Hotel list key={hotel._id} hotel={hotel} />) 
 
-
-  let allVisits = currentTeam && hotels.length !== 0 ? hotels.filter(hotels => hotels.cp.toString().substring(0, 2) === currentTeam.equipe.secteur_binome.substring(0, 2)).map(hotel => <Hotel list key={hotel._id} hotel={hotel} />) : hotels.map(hotel => <Hotel list key={hotel._id} hotel={hotel} />)
+  let allVisits = currentTeam && hotels.length !== 0 && hotels.map(hotel => <Hotel list key={hotel._id} hotel={hotel} />) 
   if (!currentTeam) {
     return (
       <div>Veuillez choisir un binome</div>
