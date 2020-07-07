@@ -11,12 +11,10 @@ const RankBehaviourV1 = require('./lib/RankBehaviourV1')
 const ListHotelRank = require('./lib/ListHotelsRank');
 
 /**
- * @route : get all visites
+ * @route : recuperer la liste des visites a efectuer
  * @method GET
- * @param {void}
- * @return : mixed 
- *      (array[ (Object JSON) ]) : tableau d'object model Visite
- *      (string) : error message
+ * @param {} : objet filter (seul le secteur est dispo a l'heure acteulle) {"filters": {"secteur": X}}
+ * @return array[ (Object JSON) ]) : tableau d'object HotelRank
  */
 router.route('/suggestions').get(authStrategy(), async (req, res) => {
     //QUESTION : l'affichage de la liste se fait pour un binome ? -> metre des filtrs custom -> OK
@@ -29,16 +27,17 @@ router.route('/suggestions').get(authStrategy(), async (req, res) => {
         //creer une fonction cron qui chaque jour calcul si un hotel n'a pas été visité au moins trois fois en un an et met une priorisation
 
     const options = {}
-
-    if(req.body.filters) {
-        for(const prop in req.body.filters) {
-            options[prop] = req.body.filters[prop]
+    if(req.query.filters) {
+        for(const prop in JSON.parse(req.query.filters)) {
+            options[prop] = JSON.parse(req.query.filters)[prop]
         }
     }
     
     const rankBehaviour = new RankBehaviourV1()
-    const listHotelRankObj = new ListHotelRank(rankBehaviour, reset = true)
+    const listHotelRankObj = new ListHotelRank(rankBehaviour, reset = false)
+
     const list = await listHotelRankObj.get(options)
+
     res.status(200).json(list)
 })
 

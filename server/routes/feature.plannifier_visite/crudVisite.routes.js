@@ -67,13 +67,17 @@ router.route('/get/forhotel/:id').get(authStrategy(), async (req, res) => {
  *      (string) : error message
  */
 router.route('/get/foruser/:id').get(authStrategy(), async (req, res) => {
-    const assocsDB = await Assoc_user_visite.find({user_id: req.params.id}).populate({
-        "path" : 'visite_id'
+    const assocsDB = await Assoc_user_visite.find({user_id: req.params.id})
+    .populate({
+        "path" : 'visite_id',
+        populate: {
+            path: 'hotel_id',
+            model: 'Hotel'
+          } 
     })
 
     //return les visites associées à l'User
     if(assocsDB.length){
-        console.log({user_id: req.params.id})
         //get visites objects
         let visites = []
 
@@ -83,7 +87,6 @@ router.route('/get/foruser/:id').get(authStrategy(), async (req, res) => {
 
         //return
         if(visites.length){
-            console.log(visites);
             res.status(200).json(visites)
         }
 

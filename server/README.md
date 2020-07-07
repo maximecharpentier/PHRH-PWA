@@ -212,10 +212,16 @@ En cours d'étude
         (array) : tableau d'objet model Visite
         (string) : error message
 
-  - **_/estion/visites/delete/:id_** : supprimer la visite ayant l'id :id
+  - **_/gestion/visites/delete/:id_** : supprimer la visite ayant l'id :id
     - @method : DELETE
     - @param {string} : id Hotel
     - @return : (string) : error/confirm message 
+
+  - **_/gestion/visites/suggestions_** : supprimer la visite ayant l'id :id
+    - @method GET
+    - @param {object} : objet filter (seul le secteur est dispo a l'heure acteulle) {"filters": {"secteur": X}}
+    - @return : array[ (Object JSON) ] : tableau d'object HotelRank
+ 
 
 **feature Gestion utilisateur : CRUD User :**
   - **_/users_** : get All

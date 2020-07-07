@@ -17,56 +17,41 @@ class ListHotelsRank {
             await HotelRank.deleteMany({})
             this.listHotelRank = []
         }
+
+        //get sorted list
+        this.listHotelRank = await HotelRank.find({}).populate('hotel_id').sort({score: 'desc'})
         
         //set snapshot : depuis la table classement existante ou creer la table classement
         if(!this.listHotelRank.length) {
-            /*
-            //get elems to verify table is created
-            const elems = await HotelRank.find()
-            .populate({
-                "path" : 'hotel_id',
-            })
-            .populate({ 
-                "path" : 'urgences'
-            })
-            */
-
-            /*
-            //si la table est remplie
-            if(elems.length) {
-                
-                //get listHotelRank
-                for(const hotelRankDB of elems) {
-
-                    //update snapshot
-                    this.updateSnapshot(hotelRankDB)
-                }
-            
-            //sinon remplir la table
-            } else {
-            */
 
             //create
             await this.set()
         } 
             
         //filters
+        let filteredHotelRank = this.listHotelRank
         if($options.hasOwnProperty('secteur')) {
 
             //filter snapshot plutot que la requette Mongo
-            const filteredHotelRank = this.listHotelRank.filter(hotelElem =>
+            filteredHotelRank = filteredHotelRank.filter(hotelElem =>
 
                 //filter
                 hotelElem.hotel_id.cp
                     .toString()
                     .match(new RegExp("^" + $options.secteur + ".*",'g')) !== null
             )
-
-            return filteredHotelRank
-
-        } else {
-            return this.listHotelRank
         }
+        if($options.hasOwnProperty('hotel_id')) {
+
+            //filter snapshot plutot que la requette Mongo
+            filteredHotelRank = filteredHotelRank.filter(hotelElem =>
+
+                //filter
+                hotelElem.hotel_id._id.toString() === $options.hotel_id
+            )
+        } 
+
+        return filteredHotelRank
     }
 
     async set() {

@@ -72,7 +72,7 @@ class RankBehaviourV1 extends RankBehaviour {
         const PAS_BASE = 0.04
 
         //score de base
-        let SCORE = SCORE_SEUIL_OPTI_VISITE/Number(hotel.note)
+        let SCORE = ((Number(hotel.note)/100)*1)/SCORE_SEUIL_OPTI_VISITE
 
         //PS : verifier le processus compte rendu, programation des contres-visites
         //PS : L'ordre des blocks suivants ne doit pas changer pour réaliser la bonne évaluation
@@ -84,13 +84,13 @@ class RankBehaviourV1 extends RankBehaviour {
          * mais par rapport a la note médiane souhaitée par le métier #REPRNENDREI CI ET LIER LA QUALI ET LE CALCUL DU SCORE
          */
 
-        //si urgence
+        //si urgence -> OK
         const urgences = await Urgence.find({hotel_id: hotel._id})
         if(urgences.length) {
             return SCORE_SEUIL_URGENCE
         }
 
-        //si contre visite
+        //si contre visite -> Supposé OK
         const contreVisite = await Visite.findOne({ //ici on part du principe que l'on ne peux pas avoir deux contre-visites pour un meme hotel ce qui selon ma compéhension du metier : n'aurait pas de sens
            hotel_id: hotel._id,
            type: "Contre-visite",
@@ -100,12 +100,12 @@ class RankBehaviourV1 extends RankBehaviour {
             return SCORE_SEUIL_CONTRE_VISITE
         }
 
-        //si seuil visite urgente
+        //si seuil visite urgente -> OK
         /**
          * Si 70% de la période a été depassé et que seulement 0 ou 1 visites on été faites pour l'hotel
          * On cosidère que la visite presse vraiment vraiment
          */
-        if(hotel.nb_visites_periode in [0,1] && CURRENT_AVCMNT_PERIODE() >= 70) {
+        if(hotel.nb_visites_periode in [0,1] && CURRENT_AVCMNT_PERIODE() >= 50) {
             return SCORE_SEUIL_VISITE_URGENTE
         }
 
@@ -118,17 +118,23 @@ class RankBehaviourV1 extends RankBehaviour {
          */
         
         if(hotel.nb_visites_periode < NB_VISITES_OPTI_PERIODE) {
-            //si ecart entre 
-            const ecart = Math.abs(Math.floor((new Date() - new Date(hotel.last_time_visited)) / (1000*60*60*24*31)))
+            if(hotel.last_time_visited) {
+                //si ecart entre 
+                const currentMonth = new Date().getMonth() + 1
+                const lastVisitMonth = new Date(hotel.last_time_visited).getMonth() + 1
+                const ecart = Math.abs(Math.floor(currentMonth - lastVisitMonth))
+                console.log('Ecart', ecart)
 
-            const intervalIdeal = Math.floor(DUREE_PERIODE_M / NB_VISITES_OPTI_PERIODE)
+                const intervalIdeal = Math.floor(DUREE_PERIODE_M / NB_VISITES_OPTI_PERIODE)
+                console.log('Interval', intervalIdeal)
 
-            if(ecart > intervalIdeal) {
-                SCORE = SCORE_SEUIL_OPTI_VISITE + getScoreQuartile()
+                if(ecart > intervalIdeal) {
+                    SCORE = SCORE_SEUIL_OPTI_VISITE + getScoreQuartile()
 
-                //si on depace le seuil juste au dessus, on retranche 0.01 pour etre juste en dessous
-                if(SCORE >= SCORE_SEUIL_VISITE_URGENTE) {
-                    SCORE = SCORE_SEUIL_VISITE_URGENTE - 0.01
+                    //si on depace le seuil juste au dessus, on retranche 0.01 pour etre juste en dessous
+                    if(SCORE >= SCORE_SEUIL_VISITE_URGENTE) {
+                        SCORE = SCORE_SEUIL_VISITE_URGENTE - 0.01
+                    }
                 }
             }
         }

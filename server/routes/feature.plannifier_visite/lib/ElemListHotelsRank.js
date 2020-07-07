@@ -21,7 +21,7 @@ class ElemListHotelsRank extends HotelRank {
 
         this.score = await this.rankBehaviour.calculateScoreHotel(hotel)
     
-        this.listUrgences = await Urgence.find({hotel_id: hotel._id}).select('_id')//list urgences pour affichage des infos ds la liste
+        this.urgences = await Urgence.find({hotel_id: hotel._id}).select('_id')//list urgences pour affichage des infos ds la liste
     
         //this.listPriorisation = //NON UTILISE ENCORE //list priorisations pour affichage d'infos ds la liste
         
@@ -35,7 +35,6 @@ class ElemListHotelsRank extends HotelRank {
             this.isContreVisite = true
         }
     }
-   
 }
 
 module.exports = ElemListHotelsRank;
