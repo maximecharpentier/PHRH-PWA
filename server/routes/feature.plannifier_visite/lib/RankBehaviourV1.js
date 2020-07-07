@@ -120,11 +120,13 @@ class RankBehaviourV1 extends RankBehaviour {
         if(hotel.nb_visites_periode < NB_VISITES_OPTI_PERIODE) {
             if(hotel.last_time_visited) {
                 //si ecart entre 
-                const ecart = Math.abs(Math.floor((new Date().getMonth()+1 - new Date(hotel.last_time_visited).getMonth()+1) / (1000*60*60*24*31)))
-                //console.log('Ecart', ecart)
+                const currentMonth = new Date().getMonth() + 1
+                const lastVisitMonth = new Date(hotel.last_time_visited).getMonth() + 1
+                const ecart = Math.abs(Math.floor(currentMonth - lastVisitMonth))
+                console.log('Ecart', ecart)
 
                 const intervalIdeal = Math.floor(DUREE_PERIODE_M / NB_VISITES_OPTI_PERIODE)
-                //console.log('Interval', intervalIdeal)
+                console.log('Interval', intervalIdeal)
 
                 if(ecart > intervalIdeal) {
                     SCORE = SCORE_SEUIL_OPTI_VISITE + getScoreQuartile()
