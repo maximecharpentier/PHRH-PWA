@@ -40,3 +40,4 @@ jobs:
             --user ubuntu \
             --tags="deploy" \
             -vv
+            
