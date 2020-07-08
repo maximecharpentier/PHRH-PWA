@@ -36,5 +36,6 @@ jobs:
             ./automation/ansible/app.yml \
             --key .ssh/id_digitalocean
             --user ubuntu \
+            --ask-pass \
             --tags="deploy" \
             -vv
