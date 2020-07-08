@@ -24,17 +24,18 @@ jobs:
           pip install ansible==2.9.2 requests
 
       - name: set ansible config secrets
+        working-directory: ./automation/ansible/
         env:
           DO_SSH_KEY: ${{ secrets.DO_SSH_KEY }}
         run: |
           echo "foobar"
-          mkdir .ssh
-          echo "$DO_SSH_KEY" > .ssh/id_digitalocean
-          chmod 600 .ssh/id_digitalocean
-          ansible-galaxy role install -r ./automation/ansible/requirements.yml
+          mkdir ~/.ssh
+          echo "$DO_SSH_KEY" > ~/.ssh/id_digitalocean
+          chmod 600 ~/.ssh/id_digitalocean
+          ansible-galaxy role install -r requirements.yml
           ansible-playbook \
-            -i ./automation/ansible/inventory.ini \
-            ./automation/ansible/app.yml \
+            -i inventory.ini \
+            app.yml \
             --user ubuntu \
             --tags="deploy" \
             -vv
