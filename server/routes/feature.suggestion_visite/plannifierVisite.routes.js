@@ -31,8 +31,6 @@ router.route('/').get(authStrategy(), async (req, res) => {
  * @param {string} secteur : secteur a filtrer
  * @return array[ (Object JSON) ]) : tableau d'object HotelRank
  */
-/* NE FONCTIONNE PAS : err : Cannot GET /gestion/suggestions/visites/secteur/95
-
 router.route('/secteur/:sec').get(authStrategy(), async (req, res) => {
     //QUESTION : l'affichage de la liste se fait pour un binome ? -> metre des filtrs custom -> OK
     //notes :
@@ -55,6 +53,5 @@ router.route('/secteur/:sec').get(authStrategy(), async (req, res) => {
     
     res.status(200).json(list)
 })
-*/
 
 module.exports = router;
