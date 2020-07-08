@@ -16,7 +16,21 @@ const ListHotelRank = require('./lib/ListHotelsRank');
  * @param {} : objet filter (seul le secteur est dispo a l'heure acteulle) {"filters": {"secteur": X}}
  * @return array[ (Object JSON) ]) : tableau d'object HotelRank
  */
-router.route('/suggestions/secteur/:secteur').get(authStrategy(), async (req, res) => {
+router.route('/').get(authStrategy(), async (req, res) => {
+    const listHotelRankObj = new ListHotelRank(reset = false)
+
+    listHotelRankObj.list(options)
+        .then( list => { res.status(200).json(list) })
+        .catch( err => { res.status(200).json(list) })
+})
+
+/**
+ * @route : recuperer la liste des visites a efectuer
+ * @method GET
+ * @param {string} secteur : secteur a filtrer
+ * @return array[ (Object JSON) ]) : tableau d'object HotelRank
+ */
+router.route('/secteur/:sec').get(authStrategy(), async (req, res) => {
     //QUESTION : l'affichage de la liste se fait pour un binome ? -> metre des filtrs custom -> OK
     //notes :
         //pour les contre-visites : elles sont automatiquement set lorsque un Hotel a une anomalie
@@ -27,11 +41,15 @@ router.route('/suggestions/secteur/:secteur').get(authStrategy(), async (req, re
         //creer une fonction cron qui chaque jour calcul si un hotel n'a pas été visité au moins trois fois en un an et met une priorisation
 
     const options = {}
+    if(req.params.sec) {
+        options['secteur'] = req.params.sec
+    }
     
-    const listHotelRankObj = new ListHotelRank(reset = false)
+    const rankBehaviour = new RankBehaviourV1()
+    const listHotelRankObj = new ListHotelRank(rankBehaviour, reset = true)
 
-    const list = await listHotelRankObj.list(options)
-
+    const list = await listHotelRankObj.get(options)
+    
     res.status(200).json(list)
 })
 
