@@ -46,3 +46,4 @@ jobs:
             --tags="deploy" \
             --vault-password-file  ~/.vault_pass.txt \
             -vv 
+            
