@@ -47,5 +47,5 @@ jobs:
             --key ~/.ssh/id_digitalocean
             --user ubuntu \
             --tags="deploy" \
-            --vault-password-file ~/.ansible-vault-password \
+            --vault-password-file ../../.ansible-vault-password \
             -vv
