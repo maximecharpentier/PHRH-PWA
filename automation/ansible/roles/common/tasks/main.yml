@@ -1,6 +1,7 @@
 ---
 
 - name: Install common packages
+  sudo: yes
   apt:
     name:
       - apt-transport-https
