@@ -12,14 +12,17 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v1
+
       - name: Set up Python 3.7
         uses: actions/setup-python@v1
         with:
           python-version: 3.7
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install ansible==2.9.2 requests
+
       - name: set ansible config secrets
         env:
           ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
@@ -29,9 +32,11 @@ jobs:
           mkdir .ssh
           echo "$DO_SSH_KEY" > .ssh/phrh-key-pair
           chmod 600 .ssh/phrh-key-pair
+
       - name: install roles
         run: |
           ansible-galaxy role install -r ./automation/ansible/requirements.yml
+          
       - name: run exporters playbook
         run: |
           ansible-playbook -i ./automation/ansible/inventory.ini ./automation/ansible/app.yml --user ubuntu --tags="deploy" -vv --vault-password-file .ansible-vault-password
