@@ -16,7 +16,7 @@ const ListHotelRank = require('./lib/ListHotelsRank');
  * @param {} : objet filter (seul le secteur est dispo a l'heure acteulle) {"filters": {"secteur": X}}
  * @return array[ (Object JSON) ]) : tableau d'object HotelRank
  */
-router.route('/suggestions').get(authStrategy(), async (req, res) => {
+router.route('/').get(authStrategy(), async (req, res) => {
     //QUESTION : l'affichage de la liste se fait pour un binome ? -> metre des filtrs custom -> OK
     //notes :
         //pour les contre-visites : elles sont automatiquement set lorsque un Hotel a une anomalie
@@ -53,7 +53,7 @@ router.route('/suggestions').get(authStrategy(), async (req, res) => {
  * @param {} : objet filter (seul le secteur est dispo a l'heure acteulle) {"filters": {"secteur": X}}
  * @return array[ (Object JSON) ]) : tableau d'object HotelRank
  */
-router.route('/suggestions/secteur/:secteur').get(authStrategy(), async (req, res) => {
+router.route('/secteur/:secteur').get(authStrategy(), async (req, res) => {
     //QUESTION : l'affichage de la liste se fait pour un binome ? -> metre des filtrs custom -> OK
     //notes :
         //pour les contre-visites : elles sont automatiquement set lorsque un Hotel a une anomalie

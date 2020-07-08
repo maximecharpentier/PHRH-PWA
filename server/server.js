@@ -57,7 +57,7 @@ const plannnifierVisitesRouter = require("./routes/feature.plannifier_visite/cru
 app.use("/gestion/visites", plannnifierVisitesRouter);
 
 const suggestionsVisitesRouter = require("./routes/feature.plannifier_visite/plannifierVisite.routes.js");
-app.use("/gestion/visites", suggestionsVisitesRouter);
+app.use("/gestion/visites/suggestions", suggestionsVisitesRouter);
 
 const authRouter = require("./routes/feature.authentification/auth.routes.js");
 app.use("/auth", authRouter);
