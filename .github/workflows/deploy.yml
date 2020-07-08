@@ -28,25 +28,22 @@ jobs:
           ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
           DO_SSH_KEY: ${{ secrets.DO_SSH_KEY }}
         run: |
-          echo "$ANSIBLE_VAULT_PASSWORD" > ~/.ansible-vault-password
-          mkdir ~/.ssh
-          echo "$DO_SSH_KEY" > ~/.ssh/id_digitalocean
-          chmod 600 ~/.ssh/id_digitalocean
+          echo "$ANSIBLE_VAULT_PASSWORD" > .ansible-vault-password
+          mkdir .ssh
+          echo "$DO_SSH_KEY" > .ssh/id_digitalocean
+          chmod 600 .ssh/id_digitalocean
 
       - name: install roles
-        working-directory: ./automation/ansible/
         run: |
-          ansible-galaxy role install -r requirements.yml
+          ansible-galaxy role install -r ./automation/ansible/requirements.yml
 
       - name: run exporters playbook
-        working-directory: ./automation/ansible/
         run: |
           ansible-playbook \
-            -i inventory.ini \
-            app.yml \
-            --key ~/.ssh/id_digitalocean
+            -i ./automation/ansible/inventory.ini \
+            ./automation/ansible/app.yml \
+            --key .ssh/id_digitalocean
             --user ubuntu \
             --tags="deploy" \
-            --vault-password-file ../../.ansible-vault-password \
+            --vault-password-file .ansible-vault-password \
             -vv
-            
