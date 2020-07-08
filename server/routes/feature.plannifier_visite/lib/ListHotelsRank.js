@@ -33,6 +33,7 @@ class ListHotelsRank extends HotelsRank {
 
         if(fromurgence) {
             elem = await HotelRank.find({hotel_id: fromurgence.hotel_id}).populate('hotel_id')
+            console.log('test', elem)
         }
 
         return new ElemListHotelsRank(this.rankBehaviour, elem)
@@ -190,7 +191,7 @@ class ListHotelsRank extends HotelsRank {
                 //qd visite est planiffiée
                     //elem = Visite, origin: plannif visite 
                     //effacer l'hotel du ranking
-                listElem = await this.get(null, null, true)
+                listElem = await this.get(null, null, elem)
                 this.delete(listElem)
                 break
 
@@ -200,17 +201,17 @@ class ListHotelsRank extends HotelsRank {
                 //qd nouvel hotel est crée
                     //elem = Hotel, origin: nouvel hotel
                     //(re) insert l'hotel au ranking
-                listElem = await this.get(null, true)
+                listElem = await this.get(null, elem)
             case 'visit done' :
                 //qd une visite est efféctuée
                     //elem = Visite, origin: visite done
                     //(re) insert le ranking de l'hotel            
-                listElem = await this.get(null, null, true)
+                listElem = await this.get(null, null, elem)
             case 'visit canceled' :
                 //qd une visite (non effectuée) est supprimée
                     //elem = Visite, origin: visite non effectuée
                     //(re) insert l'hotel dans le ranking
-                listElem = await this.get(null, null, true)
+                listElem = await this.get(null, null, elem)
                 this.insert(listElem)
                 break
 
@@ -219,18 +220,18 @@ class ListHotelsRank extends HotelsRank {
                 //qd modification de la note de l'hotel
                     //elem = Hotel, origin: note hotel updated
                     //update l'hotel ds le ranking            
-                listElem = await this.get(null, true)
+                listElem = await this.get(null, elem)
             case 'urgence added' :
                 //qd placement d'une urgence
                     //elem = Urgence, origin: urgence added
                     //update l'hotel ds le ranking            
-                listElem = await this.get(null, null, null, true)
-                console.log('listElem', listElem)
+                listElem = await this.get(null, null, null, elem)
+                console.log('listElem :', listElem)
             case 'urgence deleted' :
                 //qd suppression d'une urgence
                     //elem = Urgence, origin: urgence deleted
                     //update l'hotel ds le ranking
-                listElem = await this.get(null, null, null, true)
+                listElem = await this.get(null, null, null, elem)
                 this.update(listElem)
                 break
         }    
@@ -240,6 +241,16 @@ class ListHotelsRank extends HotelsRank {
             //donc il faut regulièrement le refresh pour assurer une 
             //adéquation du score avec l'etat courant du metier
             this.refreshScores()
+    }
+
+    refreshScores() {
+        if(this.listHotelRank.length) {
+            this.listHotelRank.forEach( elemListVisit => {
+                elemListVisit.refreshScores()
+            })
+        } else {
+            //#REPRENDRE ICI
+        }
     }
 }
 

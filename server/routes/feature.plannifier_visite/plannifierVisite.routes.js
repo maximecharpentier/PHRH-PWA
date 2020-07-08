@@ -26,22 +26,7 @@ router.route('/suggestions/secteur/:secteur').get(authStrategy(), async (req, re
         //quand une priorisation est ajouté : on recalcul le score pour l'hotel
         //creer une fonction cron qui chaque jour calcul si un hotel n'a pas été visité au moins trois fois en un an et met une priorisation
 
-    const options = { filters: {} }
-    if(req.query.filters) {
-        for(const prop in JSON.parse(req.query.filters)) {
-            options[prop] = JSON.parse(req.query.filters)[prop]
-        }
-    }
-
-    if(req.body.filters) {
-        for(const prop in req.body.filters) {
-            options[prop] = req.body.filters[prop]
-        }
-    }
-
-    if(req.params.secteur) {
-        options.filters['secteur'] = req.params.secteur
-    }
+    const options = {}
     
     const listHotelRankObj = new ListHotelRank(reset = false)
 
