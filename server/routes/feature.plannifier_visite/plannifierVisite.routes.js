@@ -69,10 +69,10 @@ router.route('/suggestions/secteur/:secteur').get(authStrategy(), async (req, re
     }
     
     const rankBehaviour = new RankBehaviourV1()
-    const listHotelRankObj = new ListHotelRank(rankBehaviour, reset = false)
+    const listHotelRankObj = new ListHotelRank(rankBehaviour, reset = true)
 
     const list = await listHotelRankObj.get(options)
-
+    
     res.status(200).json(list)
 })
 
