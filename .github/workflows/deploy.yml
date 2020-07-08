@@ -44,5 +44,5 @@ jobs:
             ./automation/ansible/app.yml \
             --user ubuntu \
             --tags="deploy" \
-            --vault-password-file .ansible-vault-password \
+            --vault-password-file  ~/.vault_pass.txt \
             -vv 
