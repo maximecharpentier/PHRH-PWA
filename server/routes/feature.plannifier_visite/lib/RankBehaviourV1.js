@@ -72,9 +72,8 @@ class RankBehaviourV1 extends RankBehaviour {
         const PAS_BASE = 0.04
 
         //score de base
-        let SCORE = ((Number(hotel.note)/100)*1)/SCORE_SEUIL_OPTI_VISITE
+        let SCORE = ((Number(hotel.note)/100)*1)/SCORE_SEUIL_OPTI_VISITE //0>= SCORE <=SCORE_SEUIL_OPTI_VISITE (= au 1er seuil) 
 
-        //PS : verifier le processus compte rendu, programation des contres-visites
         //PS : L'ordre des blocks suivants ne doit pas changer pour réaliser la bonne évaluation
 
         //score de base
@@ -106,6 +105,7 @@ class RankBehaviourV1 extends RankBehaviour {
          * On cosidère que la visite presse vraiment vraiment
          */
         if(hotel.nb_visites_periode in [0,1] && CURRENT_AVCMNT_PERIODE() >= 50) {
+            //return {score: SCORE_SEUIL_VISITE_URGENTE, raison: "0 ou 1 visites efectué, alors que 50% de la période est passée"}
             return SCORE_SEUIL_VISITE_URGENTE
         }
 
@@ -119,21 +119,26 @@ class RankBehaviourV1 extends RankBehaviour {
         
         if(hotel.nb_visites_periode < NB_VISITES_OPTI_PERIODE) {
             if(hotel.last_time_visited) {
-                //si ecart entre 
+                /**
+                 * tmp : pour la démo on part du principe que toutes les visites on été efféctuées soit 
+                 * cette année soit l'année precédente
+                 * 
+                 * On prend la val abs pour pouvoir integrer le bon calcul de l'ecart si la visite a 
+                 * été efféctuée par exemple en Décembre de l'année dernière et que l'on est en Janvier ->
+                 * 1 mois d'ecart (et non 11)
+                 * */
                 const currentMonth = new Date().getMonth() + 1
                 const lastVisitMonth = new Date(hotel.last_time_visited).getMonth() + 1
                 const ecart = Math.abs(Math.floor(currentMonth - lastVisitMonth))
-                console.log('Ecart', ecart)
 
                 const intervalIdeal = Math.floor(DUREE_PERIODE_M / NB_VISITES_OPTI_PERIODE)
-                console.log('Interval', intervalIdeal)
 
                 if(ecart > intervalIdeal) {
                     SCORE = SCORE_SEUIL_OPTI_VISITE + getScoreQuartile()
 
                     //si on depace le seuil juste au dessus, on retranche 0.01 pour etre juste en dessous
                     if(SCORE >= SCORE_SEUIL_VISITE_URGENTE) {
-                        SCORE = SCORE_SEUIL_VISITE_URGENTE - 0.01
+                        SCORE = SCORE_SEUIL_VISITE_URGENTE - 0.0001
                     }
                 }
             }
@@ -156,7 +161,7 @@ class RankBehaviourV1 extends RankBehaviour {
         SCORE += getScoreQuartile()
         //si on depace le seuil juste au dessus, on retranche 0.01 pour etre juste en dessous
         if(SCORE >= SCORE_SEUIL_OPTI_VISITE) {
-            SCORE = SCORE_SEUIL_OPTI_VISITE - 0.01
+            SCORE = SCORE_SEUIL_OPTI_VISITE - 0.0001
         }
         
         return SCORE

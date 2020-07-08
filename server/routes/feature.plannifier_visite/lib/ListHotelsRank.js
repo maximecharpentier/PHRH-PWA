@@ -31,6 +31,7 @@ class ListHotelsRank {
         //filters
         let filteredHotelRank = this.listHotelRank
         if($options.hasOwnProperty('secteur')) {
+            
 
             //filter snapshot plutot que la requette Mongo
             filteredHotelRank = filteredHotelRank.filter(hotelElem =>
@@ -128,6 +129,22 @@ class ListHotelsRank {
         } else {
             this.listHotelRank.push(elem)
         }
+    }
+
+    notify(elem) {
+        //actions possibles :
+            //delete de la liste
+                //qd visite est planiffiée
+                    //elem = Visite
+                    //
+            //ajouter a la liste
+                //qd nouvel hotel est crée
+                //qd une visite est efféctuée
+            //modifier le ranking
+                //qd une visite est plannifiée
+                //qd modification de la note de l'hotel
+                //qd placement d'une urgence
+                //qd le temps passe chaque mois -> pas sur
     }
 }
 
