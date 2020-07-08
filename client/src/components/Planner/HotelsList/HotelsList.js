@@ -34,7 +34,7 @@ const HotelsList = () => {
 
   useEffect(() => {
     if (currentTeam) {
-      API.get('gestion/visites/suggestions/', { params: { filters: { secteur: Number(currentTeam.equipe.secteur_binome.substring(0, 2)) } } }).then((response) => {
+      API.get(`gestion/visites/suggestions/secteur/${Number(currentTeam.equipe.secteur_binome.substring(0, 2))}`).then((response) => {
         setHotels(response.data)
         console.log(response.data)
       })
