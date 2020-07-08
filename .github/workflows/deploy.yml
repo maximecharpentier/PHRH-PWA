@@ -32,13 +32,7 @@ jobs:
           mkdir .ssh
           echo "$DO_SSH_KEY" > .ssh/id_digitalocean
           chmod 600 .ssh/id_digitalocean
-
-      - name: install roles
-        run: |
           ansible-galaxy role install -r ./automation/ansible/requirements.yml
-
-      - name: run exporters playbook
-        run: |
           ansible-playbook \
             -i ./automation/ansible/inventory.ini \
             ./automation/ansible/app.yml \
