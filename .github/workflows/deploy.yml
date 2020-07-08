@@ -19,14 +19,15 @@ jobs:
           ref: master
 
       - name: deploy
-        uses: dawidd6/action-ansible-playbook@master
+        uses: dawidd6/action-ansible-playbook@v2
         with:
-          playbook: ./config/ansible/app.yml
-          key: ${{ secrets.PHRH_PRIVATE_KEY }}
+          playbook: app.yml
+          directory: ./automation/ansible/
+          key: ${{secrets.PHRH_PRIVATE_KEY}}
+          inventory: |
+            [app]
+            52.47.86.14 ansible_user=ubuntu 
           options: |
-            --inventory ./automation/ansible/inventory.ini
             --user ubuntu
             --tags "deploy"
             --verbose
-      - name: test
-        run: curl http://52.47.86.14:3001/hotels
