@@ -30,9 +30,9 @@ jobs:
           DO_SSH_KEY: ${{ secrets.DO_SSH_KEY }}
         run: |
           echo "$ANSIBLE_VAULT_PASSWORD" > .ansible-vault-password
-          mkdir .ssh
-          echo "$DO_SSH_KEY" > .ssh/id_digitalocean
-          chmod 600 .ssh/id_digitalocean
+          mkdir ~/.ssh
+          echo "$DO_SSH_KEY" > ~/.ssh/id_digitalocean
+          chmod 600 ~/.ssh/id_digitalocean
 
       - name: install roles
         working-directory: ./automation/ansible/
@@ -45,6 +45,7 @@ jobs:
           ansible-playbook \
             -i inventory.ini \
             app.yml \
+            --key ~/.ssh/id_digitalocean
             --user ubuntu \
             --tags="deploy" \
             --vault-password-file .ansible-vault-password \
