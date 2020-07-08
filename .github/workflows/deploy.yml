@@ -30,6 +30,5 @@ jobs:
           echo "$DO_SSH_KEY" > .ssh/phrh-key-pair
           chmod 600 .ssh/phrh-key-pair
       - name: run exporters playbook
-        working-directory: ./automation/ansible
         run: |
-          ansible-playbook -i inventory.ini app.yml --user ubuntu --tags="deploy" -vv
+          ansible-playbook -i ./automation/ansible/inventory.ini ./automation/ansible/app.yml --user ubuntu --tags="deploy" -vv
