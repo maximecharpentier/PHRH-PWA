@@ -1,35 +1,35 @@
-name: Deploy
-
+name: Ansible deploy
+ 
 on:
   push:
-  # pull_request:
-  #   types: [closed]
     branches:
       - feat/quality
-
 jobs:
   deploy:
+
     runs-on: ubuntu-latest
-    # if: github.event.pull_request.merged
 
     steps:
       - name: checkout
-        # if: github.event.pull_request.merged
         uses: actions/checkout@v1
-        # with:
-        #   ref: master
-
-      - name: deploy
-        uses: dawidd6/action-ansible-playbook@v2
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v1
         with:
-          playbook: app.yml
-          directory: ./automation/ansible/
-          key: ${{secrets.PHRH_PRIVATE_KEY}}
-          inventory: |
-            [app]
-            ${{secrets.EC2_IP}} ansible_user=ubuntu 
-          vault_password: ${{secrets.VAULT_PASSWORD}}
-          options: |
-            --user ubuntu
-            --tags "deploy"
-            --verbose
+          python-version: 3.7
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install ansible==2.9.2 requests
+      - name: set ansible config secrets
+        env:
+          ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
+          DO_SSH_KEY: ${{ secrets.DO_SSH_KEY }}
+        run: |
+          echo "$ANSIBLE_VAULT_PASSWORD" > .ansible-vault-password
+          mkdir .ssh
+          echo "$DO_SSH_KEY" > .ssh/phrh-key-pair
+          chmod 600 .ssh/phrh-key-pair
+      - name: run exporters playbook
+        working-directory: ./automation/ansible
+        run: |
+          ansible-playbook -i inventory.ini app.yml --user ubuntu --tags="deploy" -vv
