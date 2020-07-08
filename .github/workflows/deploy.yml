@@ -29,6 +29,9 @@ jobs:
           mkdir .ssh
           echo "$DO_SSH_KEY" > .ssh/phrh-key-pair
           chmod 600 .ssh/phrh-key-pair
+      - name: install roles
+        run: |
+          ansible-galaxy role install -r requirements.yml
       - name: run exporters playbook
         run: |
           ansible-playbook -i ./automation/ansible/inventory.ini ./automation/ansible/app.yml --user ubuntu --tags="deploy" -vv --vault-password-file .ansible-vault-password
