@@ -28,10 +28,10 @@ jobs:
           ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
           DO_SSH_KEY: ${{ secrets.DO_SSH_KEY }}
         run: |
-          echo "$ANSIBLE_VAULT_PASSWORD" > ~/.vault_pass.txt
+          echo "$ANSIBLE_VAULT_PASSWORD" > .ansible-vault-password
           mkdir .ssh
-          ansible-vault view --vault-password-file=~/.vault_pass.txt ansible/ssh_key.txt.secret > ~/.ssh/id_rsa
-          chmod 0600 .ssh/id_rsa
+          echo "$DO_SSH_KEY" > .ssh/id_digitalocean
+          chmod 600 .ssh/id_digitalocean
 
       - name: install roles
         run: |
@@ -44,6 +44,5 @@ jobs:
             ./automation/ansible/app.yml \
             --user ubuntu \
             --tags="deploy" \
-            --vault-password-file  ~/.vault_pass.txt \
+            --vault-password-file .ansible-vault-password \
             -vv 
-            
