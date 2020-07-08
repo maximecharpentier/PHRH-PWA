@@ -26,7 +26,7 @@ router.route('/suggestions/secteur/:secteur').get(authStrategy(), async (req, re
         //quand une priorisation est ajouté : on recalcul le score pour l'hotel
         //creer une fonction cron qui chaque jour calcul si un hotel n'a pas été visité au moins trois fois en un an et met une priorisation
 
-    const options = {}
+    const options = { filters: {} }
     if(req.query.filters) {
         for(const prop in JSON.parse(req.query.filters)) {
             options[prop] = JSON.parse(req.query.filters)[prop]
@@ -39,40 +39,13 @@ router.route('/suggestions/secteur/:secteur').get(authStrategy(), async (req, re
         }
     }
 
-    if(req.params)
+    if(req.params.secteur) {
+        options.filters['secteur'] = req.params.secteur
+    }
     
     const listHotelRankObj = new ListHotelRank(reset = false)
 
     const list = await listHotelRankObj.list(options)
-
-    res.status(200).json(list)
-})
-
-/**
- * @route : recuperer la liste des visites a efectuer
- * @method GET
- * @param {} : objet filter (seul le secteur est dispo a l'heure acteulle) {"filters": {"secteur": X}}
- * @return array[ (Object JSON) ]) : tableau d'object HotelRank
- */
-router.route('/suggestions/secteur/:secteur').get(authStrategy(), async (req, res) => {
-    //QUESTION : l'affichage de la liste se fait pour un binome ? -> metre des filtrs custom -> OK
-    //notes :
-        //pour les contre-visites : elles sont automatiquement set lorsque un Hotel a une anomalie
-        //quand un Hotel est ajouté : ScoreView est recalculé (voir pour mettre une note default qui permet de reperer les nouveau hotels et les traiter différament : voir groupe pour ca)
-        //quand une visite se valide : on recalcul le score ppour l'hotel
-        //quand une anomalie est ajouté : on recalcul le score pour l'hotel
-        //quand une priorisation est ajouté : on recalcul le score pour l'hotel
-        //creer une fonction cron qui chaque jour calcul si un hotel n'a pas été visité au moins trois fois en un an et met une priorisation
-
-    const options = {}
-    if(req.params.secteur) {
-        options['secteur'] = req.params.secteur
-    }
-    
-    const rankBehaviour = new RankBehaviourV1()
-    const listHotelRankObj = new ListHotelRank(rankBehaviour, reset = false)
-
-    const list = await listHotelRankObj.get(options)
 
     res.status(200).json(list)
 })
