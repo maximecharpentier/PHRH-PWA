@@ -25,10 +25,8 @@ jobs:
 
       - name: set ansible config secrets
         env:
-          ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
           DO_SSH_KEY: ${{ secrets.DO_SSH_KEY }}
         run: |
-          echo "$ANSIBLE_VAULT_PASSWORD" > .ansible-vault-password
           mkdir .ssh
           echo "$DO_SSH_KEY" > .ssh/id_digitalocean
           chmod 600 .ssh/id_digitalocean
@@ -40,4 +38,3 @@ jobs:
             --user ubuntu \
             --tags="deploy" \
             -vv
-            
