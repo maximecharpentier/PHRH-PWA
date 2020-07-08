@@ -24,7 +24,6 @@ jobs:
           pip install ansible==2.9.2 requests
 
       - name: set ansible config secrets
-        working-directory: ./automation/ansible/
         env:
           ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
           DO_SSH_KEY: ${{ secrets.DO_SSH_KEY }}
@@ -50,4 +49,3 @@ jobs:
             --tags="deploy" \
             --vault-password-file ~/.ansible-vault-password \
             -vv
-            
