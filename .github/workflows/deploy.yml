@@ -25,7 +25,7 @@ jobs:
           key: ${{secrets.PHRH_PRIVATE_KEY}}
           inventory: |
             [app]
-            52.47.86.14
+            52.47.86.14 ansible_user=ubuntu 
           
           # vault_password: ${{secrets.VAULT_PASSWORD}}
           options: |
