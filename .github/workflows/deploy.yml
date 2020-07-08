@@ -27,17 +27,14 @@ jobs:
         env:
           DO_SSH_KEY: ${{ secrets.DO_SSH_KEY }}
         run: |
+          echo "foobar"
           mkdir .ssh
           echo "$DO_SSH_KEY" > .ssh/id_digitalocean
           chmod 600 .ssh/id_digitalocean
-          export ANSIBLE_HOST_KEY_CHECKING=False
-          echo "foobar"
           ansible-galaxy role install -r ./automation/ansible/requirements.yml
           ansible-playbook \
             -i ./automation/ansible/inventory.ini \
             ./automation/ansible/app.yml \
-            --key .ssh/id_digitalocean
             --user ubuntu \
-            --ask-pass \
             --tags="deploy" \
             -vv
