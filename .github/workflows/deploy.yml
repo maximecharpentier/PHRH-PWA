@@ -24,6 +24,7 @@ jobs:
           pip install ansible==2.9.2 requests
 
       - name: set ansible config secrets
+        working-directory: ./automation/ansible/
         env:
           ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
           DO_SSH_KEY: ${{ secrets.DO_SSH_KEY }}
@@ -34,16 +35,17 @@ jobs:
           chmod 600 .ssh/id_digitalocean
 
       - name: install roles
+        working-directory: ./automation/ansible/
         run: |
-          ansible-galaxy role install -r ./automation/ansible/requirements.yml
+          ansible-galaxy role install -r requirements.yml
 
       - name: run exporters playbook
+        working-directory: ./automation/ansible/
         run: |
           ansible-playbook \
-            -i ./automation/ansible/inventory.ini \
-            ./automation/ansible/app.yml \
+            -i inventory.ini \
+            app.yml \
             --user ubuntu \
             --tags="deploy" \
             --vault-password-file .ansible-vault-password \
             -vv
-            
