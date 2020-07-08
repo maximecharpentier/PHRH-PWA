@@ -31,7 +31,7 @@ jobs:
           chmod 600 .ssh/phrh-key-pair
       - name: install roles
         run: |
-          ansible-galaxy role install -r requirements.yml
+          ansible-galaxy role install -r ./automation/ansible/requirements.yml
       - name: run exporters playbook
         run: |
           ansible-playbook -i ./automation/ansible/inventory.ini ./automation/ansible/app.yml --user ubuntu --tags="deploy" -vv --vault-password-file .ansible-vault-password
