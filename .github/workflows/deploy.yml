@@ -30,6 +30,7 @@ jobs:
           mkdir .ssh
           echo "$DO_SSH_KEY" > .ssh/id_digitalocean
           chmod 600 .ssh/id_digitalocean
+          export ANSIBLE_HOST_KEY_CHECKING=False
           ansible-galaxy role install -r ./automation/ansible/requirements.yml
           ansible-playbook \
             -i ./automation/ansible/inventory.ini \
@@ -39,4 +40,3 @@ jobs:
             --ask-pass \
             --tags="deploy" \
             -vv
-            
