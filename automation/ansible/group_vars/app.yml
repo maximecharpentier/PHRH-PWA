@@ -9,11 +9,11 @@ phrh_group: "{{ phrh_user }}"
 phrh_directory: "/home/{{ phrh_user }}/phrh"
 
 phrh_client_image: "{{ docker_username }}/phrh-client"
-phrh_client_tag: latest
+phrh_client_tag: 2.4
 phrh_client_port: 3000
 
 phrh_server_image: "{{ docker_username }}/phrh-server"
-phrh_server_tag: latest
+phrh_server_tag: 2.4
 phrh_server_port: 3001
 phrh_server_host: phrh-db
 
