@@ -28,15 +28,24 @@ jobs:
           ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
           DO_SSH_KEY: ${{ secrets.DO_SSH_KEY }}
         run: |
-          echo "$ANSIBLE_VAULT_PASSWORD" > .ansible-vault-password
+          echo "$ANSIBLE_VAULT_PASSWORD" > ~/.vault_pass.txt
           mkdir .ssh
-          echo "$DO_SSH_KEY" > .ssh/phrh-key-pair
-          chmod 600 .ssh/phrh-key-pair
+          ansible-vault view --vault-password-file=~/.vault_pass.txt ansible/ssh_key.txt.secret > ~/.ssh/id_rsa
+          chmod 0600 .ssh/id_rsa
 
       - name: install roles
         run: |
           ansible-galaxy role install -r ./automation/ansible/requirements.yml
-          
+
       - name: run exporters playbook
         run: |
-          ansible-playbook -i ./automation/ansible/inventory.ini ./automation/ansible/app.yml --user ubuntu --tags="deploy" -vv --vault-password-file .ansible-vault-password
+          ansible-playbook \
+            -i ./automation/ansible/inventory.ini \
+            ./automation/ansible/app.yml \
+            --user ubuntu \
+            --tags="deploy" \
+            --vault-password-file .ansible-vault-password \
+            -vv 
+
+
+           
