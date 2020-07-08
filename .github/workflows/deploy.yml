@@ -1,9 +1,10 @@
 name: Deploy
 
 on:
-  push:
+  pull_request:
+    types: [closed]
     branches:
-      - feat/quality
+      - master
 
 jobs:
   deploy:
@@ -15,15 +16,18 @@ jobs:
         if: github.event.pull_request.merged
         uses: actions/checkout@v1
         with:
-          ref: feat/quality
+          ref: master
 
       - name: deploy
-        uses: dawidd6/action-ansible-playbook@master
+        uses: dawidd6/action-ansible-playbook@v2
         with:
-          playbook: ./automation/ansible/app.yml
-          key: ${{ secrets.PHRH_PRIVATE_KEY }}
+          playbook: app.yml
+          directory: ./automation/ansible/
+          key: ${{secrets.PHRH_PRIVATE_KEY}}
+          inventory: |
+            [app]
+            52.47.86.14 ansible_user=ubuntu 
           options: |
-            --inventory ./automation/ansible/inventory.ini
             --user ubuntu
             --tags "deploy"
             --verbose
