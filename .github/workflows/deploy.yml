@@ -18,12 +18,17 @@ jobs:
           ref: feat/quality
 
       - name: deploy
-        uses: dawidd6/action-ansible-playbook@master
+        uses: dawidd6/action-ansible-playbook@v2
         with:
-          playbook: ./automation/ansible/app.yml
-          key: ${{ secrets.PHRH_PRIVATE_KEY }}
+          playbook: app.yml
+          directory: ./automation/ansible/
+          key: ${{secrets.PHRH_PRIVATE_KEY}}
+          inventory: |
+            [app]
+            52.47.86.14
+          
+          # vault_password: ${{secrets.VAULT_PASSWORD}}
           options: |
-            --inventory ./automation/ansible/inventory.ini
             --user ubuntu
             --tags "deploy"
             --verbose
