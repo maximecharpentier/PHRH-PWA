@@ -34,14 +34,14 @@ const HotelsList = () => {
 
   useEffect(() => {
     if (currentTeam) {
-      API.get('gestion/visites/suggestions/', { params: { filters: { secteur: Number(currentTeam.equipe.secteur_binome.substring(0, 2)) } } }).then((response) => {
+      API.get(`gestion/suggestions/visites/`).then((response) => {
         setHotels(response.data)
         console.log(response.data)
       })
     }
   }, [currentTeam]);
 
-  let allVisits = currentTeam && hotels.length !== 0 && hotels.map(hotel => <Hotel list key={hotel._id} hotel={hotel} />)
+  let allVisits = currentTeam && hotels.length !== 0 && hotels.filter(hotel => hotel.hotel_id.cp.toString().substring(0, 2) === currentTeam.equipe.secteur_binome.substring(0, 2)).map(hotel => <Hotel list key={hotel._id} hotel={hotel} />)
   if (!currentTeam) {
     return (
       <div>Veuillez choisir un binome</div>
