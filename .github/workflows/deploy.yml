@@ -8,14 +8,14 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged
+    # if: github.event.pull_request.merged
 
     steps:
       - name: checkout
-        if: github.event.pull_request.merged
+        # if: github.event.pull_request.merged
         uses: actions/checkout@v1
-        with:
-          ref: feat/quality
+        # with:
+        #   ref: feat/quality
 
       - name: deploy
         uses: dawidd6/action-ansible-playbook@v2
