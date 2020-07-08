@@ -12,13 +12,11 @@ const Urgence = mongoose.model('Urgence');
  *      (string) : error message
  */
 router.route('/').get(authStrategy(), (req, res) => {
-    const Observer = loadFileIfExist('feature.plannifier_visite/listHotelsRank')
-
     Urgence.find({})
         .then(urgences => {
 
             //notify observer
-            Observer.notify(urgences[0]) //#REPRENDRE ICI TESTER CA
+            Urgence.notifyObservers({element: urgences[0], origin: "urgence added"}) 
 
             res.status(200).json(urgences)           
         })

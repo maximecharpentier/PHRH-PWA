@@ -1,13 +1,17 @@
 const mongoose = require('mongoose');
 const Urgence = mongoose.model('Urgence');
 const Visite = mongoose.model('Visite');
-const HotelRank = require('../model/hotelrank.model');
-const RankBehaviour = require('./RankBehaviour');
+const Hotel = mongoose.model('Hotel');
+const HotelRankModel = require('../model/hotelrank.model');
 
-class ElemListHotelsRank extends HotelRank {
+class ElemListHotelsRank {
 
     constructor(rankBehaviour, entity = {}) {
-        super(entity)
+        this.hotel_id =         entity.hotel_id ? entity.hotel_id : null
+        this.score =            entity.score ? entity.score : 0
+        this.urgences =         entity.urgences ? entity.urgences : []
+        this.isContreVisite =   entity.isContreVisite ? entity.isContreVisite : false
+
         this.rankBehaviour = rankBehaviour
     }
 
@@ -25,7 +29,6 @@ class ElemListHotelsRank extends HotelRank {
     
         //this.listPriorisation = //NON UTILISE ENCORE //list priorisations pour affichage d'infos ds la liste
         
-        this.isContreVisite = false
         const contreVisite = await Visite.findOne({ //ici on part du principe que l'on ne peux pas avoir deux contre-visites pour un meme hotel ce qui selon ma compéhension du metier : n'aurait pas de sens
            hotel_id: hotel._id,
            type: "Contre-visite",
@@ -36,8 +39,33 @@ class ElemListHotelsRank extends HotelRank {
         }
     }
 
+    async insert() {
+        this.entity.hotel_id =  this.hotel_id
+        this.entity.score =     this.score
+        this.entity.urgences =  this.urgences
+        this.entity.isContreVisite = this.isContreVisite
+
+        HotelRankModel.insertIfNotExist(this.entity)
+    }
+
+    async update() {
+        this.entity.hotel_id =  this.hotel_id
+        this.entity.score =     this.score
+        this.entity.urgences =  this.urgences
+        this.entity.isContreVisite = this.isContreVisite
+
+        HotelRankModel.findByIdAndUpdate(
+            { _id: this.entity._id }, 
+            { $set: this.entity }
+        )  
+    }
+
     async refreshScore() {
-        this.score = await this.rankBehaviour.calculateScoreHotel(hotel)
+        console.log('refresh')
+        if(this.hotel_id) {
+            const hotel = await Hotel.findById(this.hotel_id)
+            this.score = await this.rankBehaviour.calculateScoreHotel(hotel)
+        }
     }
 }
 
