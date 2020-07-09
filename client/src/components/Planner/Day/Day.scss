@@ -31,7 +31,7 @@
     }
     &__list {
         height: calc(100% - 58px);
-        overflow: scroll;
+        overflow-y: scroll;
         padding: 0px 8px;
         transition: 0.2s ease;
     }

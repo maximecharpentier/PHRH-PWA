@@ -1,4 +1,7 @@
 - name: restart docker stack
+  # become: yes
   docker_compose:
-    project_src: "{{ phrh_directory }}"
+    build: yes
     restarted: yes
+    state: present
+    project_src: "{{ phrh_directory }}"

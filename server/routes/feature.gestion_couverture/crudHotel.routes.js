@@ -50,7 +50,11 @@ router.route('/').get(authStrategy(), (req, res) => {
  */
 router.route('/get/:id').get(authStrategy(), (req, res) => {
     //get hotel from DB
-    Hotel.findById(req.params.id)
+    Hotel.findById(req.params.id).populate({
+        "path" : 'memos',
+        "options" : { sort: { 'date': 'descending' } }
+        //"match": { "cp": { $regex: /^75.*/, $options: 'i' }}
+        })
         .then( hotel => res.status(200).json(hotel))
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
@@ -67,6 +71,7 @@ router.route('/get/:id').get(authStrategy(), (req, res) => {
 router.route('/get/:id/memos').get(authStrategy(), (req, res) => {
     Hotel.findById(req.params.id).populate({
         "path" : 'memos',
+        "options" : { sort: { 'date': 'descending' } }
         //"match": { "cp": { $regex: /^75.*/, $options: 'i' }}
     })
     .exec()
@@ -122,7 +127,7 @@ router.route('/add/:id/memo').post(authStrategy(), (req, res) => {
                 { $push: { memos: memo._id } }, 
                 //{ new: true }
                 )
-                .then(hotel => res.status(200).json('Mémo ajouté'))
+                .then(memo => res.status(200).json('Mémo ajouté'))
                 .catch(err => res.status(400).json('Erreurs d\'ajout du mémo'))
         })
         .catch(err => res.status(400).json('Erreur d\'enregistrement du mémo'))
@@ -166,7 +171,11 @@ router.route('/edit/:id').post(authStrategy(), (req, res) => {
         { _id: req.params.id }, 
         { $set: setObject }, 
         //{ new: true }
-        )
+        ).populate({
+            "path" : 'memos',
+            "options" : { sort: { 'date': 'descending' } }
+            //"match": { "cp": { $regex: /^75.*/, $options: 'i' }}
+        })
         .then(hotel => res.status(200).json('Hotel édité avec succès'))
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
