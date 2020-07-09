@@ -5,11 +5,7 @@
     <img src="https://github.com/blyndusk/PHRH-PWA/workflows/Main%20Workflow/badge.svg?branch=master" alt="GitHub Actions"/>
   </a>
   <a href="http://35.180.37.72:8080/" target="_blank">
-<<<<<<< HEAD
     <img src="https://img.shields.io/website?url=http%3A%2F%2Fhttp://35.180.28.237%3A3000%2F" alt="PHRH website"/>
-=======
-    <img src="https://img.shields.io/website?url=http%3A%2F%2F35.180.137.52%3A3000%2F" alt="PHRH website"/>
->>>>>>> fb85a3186eedbd1a262fe0bf0b11e5b5cd96a16b
   </a>
   
   <a href="https://github.com/blyndusk/PHRH-PWA/blob/master/LICENSE" target="_blank">
