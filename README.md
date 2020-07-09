@@ -4,8 +4,8 @@
   <a href="https://github.com/blyndusk/PHRH-PWA/actions" target="_blank">
     <img src="https://github.com/blyndusk/PHRH-PWA/workflows/Main%20Workflow/badge.svg?branch=master" alt="GitHub Actions"/>
   </a>
-  <a href="http://35.180.37.72:8080/" target="_blank">
-    <img src="https://img.shields.io/website?url=http%3A%2F%2F35.180.137.52%3A3000%2F" alt="PHRH website"/>
+  <a href="http://35.180.28.237:8080/" target="_blank">
+    <img src="https://img.shields.io/website?url=http%3A%2F%2Fhttp://35.180.28.237%3A3000%2F" alt="PHRH website"/>
   </a>
   
   <a href="https://github.com/blyndusk/PHRH-PWA/blob/master/LICENSE" target="_blank">
@@ -47,8 +47,8 @@
 
 ### 1. Apps
 
-- [Client](http://35.180.137.52:3000)
-- [API](http://35.180.137.52:3001)
+- [Client](http://35.180.28.237:3000)
+- [API](http://35.180.28.237:3001)
 - [Mobile app](https://github.com/blyndusk/PHRH-PWA-mobile)
 
 ### 2. Technical choices & specifications

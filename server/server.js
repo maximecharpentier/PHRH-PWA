@@ -62,6 +62,9 @@ app.use("/gestion/visites/cr", compteRenduVisite);
 const suggestionsVisitesRouter = require("./routes/feature.suggestion_visite/plannifierVisite.routes.js");
 app.use("/gestion/suggestions/visites", suggestionsVisitesRouter);
 
+const utiliserVehicule = require("./routes/feature.gestion_vehicules/crudVehicule.routes.js");
+app.use("/vehicules", utiliserVehicule);
+
 const authRouter = require("./routes/feature.authentification/auth.routes.js");
 app.use("/auth", authRouter);
 
