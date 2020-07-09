@@ -221,7 +221,20 @@ En cours d'étude
     - @method GET
     - @param {object} : objet filter (seul le secteur est dispo a l'heure acteulle) {"filters": {"secteur": X}}
     - @return : array[ (Object JSON) ] : tableau d'object HotelRank
- 
+
+  - **_/gestion/visites/cr/hotel/planned/foruser/:id_** : get les hotels des visites plannifiées et non effectuées pour l'user ayant l'id :id
+    - @method GET
+    - @param {id} : id User
+    - @return : mixed 
+        (array[ (Object JSON) ]) : tableau d'object Visite peuplé avec l'hotel
+        (string) : error message
+
+  - **_/gestion/visites/cr/hotel/cancel/many/foruser/:id_** : get les hotels des visites plannifiées et non effectuées pour l'user ayant l'id :id
+    - @method GET
+    - @param {id} : id User
+    - @return : mixed 
+        (array[ (Object JSON) ]) : tableau d'object Visite peuplé avec l'hotel
+        (string) : error message 
 
 **feature Gestion utilisateur : CRUD User :**
   - **_/users_** : get All

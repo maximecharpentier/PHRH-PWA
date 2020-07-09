@@ -95,6 +95,7 @@ router.route('/add').post(authStrategy(), (req, res) => {
         nb_chambres_utilise :   req.body.nb_chambres_utilise, 
         nb_visites_periode :    req.body.nb_visites_periode, 
         last_time_visited :     new Date(req.body.last_time_visited),
+        //a ajouter : nb_chambres: req.body.nb_visites_periode
         memos : []
     })
 
@@ -150,13 +151,13 @@ router.route('/edit/:id').post(authStrategy(), (req, res) => {
     const propList = [
         'nom',      'adresse',              'cp',
         'ville',    'nb_chambres_utilise',  'nb_visites_periode',
-        'last_time_visited', 'memos']
+        'last_time_visited', 'memos', 'nb_chambres']
     const setObject = {}
     propList.forEach(prop => {
         if(prop in req.body) {
             switch (prop) {
                 case 'last_time_visited':
-                    setObject[prop] = req.body[prop] ? new Date(Number(req.body[prop])) : null
+                    setObject[prop] = req.body[prop] ? req.body[prop] : null
                     break;
                 case 'cp':
                     setObject[prop] = req.body[prop] ? Number(req.body[prop]) : null

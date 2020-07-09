@@ -12,7 +12,8 @@ const assoc_user_visiteSchema = new Schema({
         ref: 'Visite', 
     },
     date_effectue : {
-        type : Date
+        type : Date,
+        default: null
     }
 })
 
