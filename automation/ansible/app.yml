@@ -1,6 +1,6 @@
 - name: Install libs & packages
   hosts: app
-  # become: yes
+  become: true
   roles:
     - role: common
       tags: ["install"]
@@ -9,6 +9,7 @@
 
 - name: Deploy PHRH
   hosts: app
+  become: true
   roles:
     - role: app
       tags: ["app"]

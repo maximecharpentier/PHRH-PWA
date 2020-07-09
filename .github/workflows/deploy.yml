@@ -25,10 +25,8 @@ jobs:
       - name: set ansible config secrets
         working-directory: ./automation/ansible/
         env:
-          ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
           DO_SSH_KEY: ${{ secrets.DO_SSH_KEY }}
         run: |
-          echo "$ANSIBLE_VAULT_PASSWORD" > .ansible-vault-password
           mkdir ~/.ssh
           echo "$DO_SSH_KEY" > ~/.ssh/id_digitalocean
           chmod 0400 ~/.ssh/id_digitalocean
@@ -41,10 +39,9 @@ jobs:
         working-directory: ./automation/ansible/
         run: |
           ansible-playbook \
-            -i inventory.ini \
+            -i inventory.ini\
             app.yml \
             --key ~/.ssh/id_digitalocean
             --user ubuntu \
-            --tags="deploy" \
-            --vault-password-file .ansible-vault-password \
-            -vv
+            --skip-tags "install" \
+            -v
