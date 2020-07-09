@@ -58,7 +58,9 @@
   # become: yes
   docker_compose:
     build: yes
-    restarted: yes
-    state: present
+    # restarted: yes
+    # state: present
+    # debug: yes
+    recreate: always
     project_src: "{{ phrh_directory }}"
   tags: ["deploy"]
