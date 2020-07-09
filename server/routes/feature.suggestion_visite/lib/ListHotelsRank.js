@@ -202,9 +202,10 @@ class ListHotelsRank extends HotelsRank {
 
     async refreshList() {
         const hotelsRank = this.list()
-        hotelsRank.forEach( listElem => {
-            listElem.refresh()
-        })
+        const length = hotelsRank.length
+        for (let index = 0; index < length - 1; index++) {
+            await hotelsRank[index].update()
+        }
     }
 }
 

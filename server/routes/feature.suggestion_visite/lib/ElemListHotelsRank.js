@@ -43,7 +43,7 @@ class ElemListHotelsRank {
     async refresh() {
         if(this.hotel_id) {
             const hotel = await Hotel.find({})
-            this.buildFromHotel(hotel)
+            return await this.buildFromHotel(hotel)
         }
     }
 
@@ -69,14 +69,6 @@ class ElemListHotelsRank {
         const elem = await HotelRank.findByIdAndDelete(this.id)
         
         return elem
-    }
-
-    async refreshScore() {
-        if(this.hotel_id) {
-            const hotel = await Hotel.findById(this.hotel_id)
-            this.score = await this.rankBehaviour.calculateScoreHotel(hotel)
-            this.update()
-        }
     }
 }
 

@@ -14,6 +14,8 @@ class RankBehaviourV1 extends RankBehaviour {
     async calculateScoreHotel(hotel) {
         super.calculateScoreHotel(hotel)
 
+        console.log('entrée')
+
         //vars diverses
         const DATE_DEBUT_PERIODE = {month: 1}
         const DUREE_PERIODE_M = 12
@@ -54,10 +56,10 @@ class RankBehaviourV1 extends RankBehaviour {
         const QUARTILE_3_NOTE = 30
         const QUARTILE_4_NOTE = 20
         const getScoreQuartile = () => {
-            if(hotel.note <= QUARTILE_1_NOTE) return 0
-            if(hotel.note <= QUARTILE_2_NOTE) return PAS_BASE
-            if(hotel.note <= QUARTILE_3_NOTE) return PAS_PB_IMPORTANCE_FAIBLE
-            if(hotel.note <= QUARTILE_4_NOTE) return PAS_PB_IMPORTANCE_FORTE
+            if(hotel.note >= QUARTILE_1_NOTE) return 0
+            if(hotel.note >= QUARTILE_2_NOTE) return PAS_BASE
+            if(hotel.note >= QUARTILE_3_NOTE) return PAS_PB_IMPORTANCE_FAIBLE
+            if(hotel.note >= QUARTILE_4_NOTE) return PAS_PB_IMPORTANCE_FORTE
         }
 
         //definitions des seuils = scores definissants des intervales de catégories de classement
@@ -73,6 +75,8 @@ class RankBehaviourV1 extends RankBehaviour {
 
         //score de base
         let SCORE = SCORE_SEUIL_OPTI_VISITE - (( Number(hotel.note)/100) * SCORE_SEUIL_OPTI_VISITE )//0>= SCORE <=SCORE_SEUIL_OPTI_VISITE (= au 1er seuil) 
+
+        console.log('BASE SCORE : ', SCORE)
 
         //PS : L'ordre des blocks suivants ne doit pas changer pour réaliser la bonne évaluation
 
@@ -119,6 +123,8 @@ class RankBehaviourV1 extends RankBehaviour {
         
         if(hotel.nb_visites_periode < NB_VISITES_OPTI_PERIODE) {
             if(hotel.last_time_visited) {
+
+                //#REPRENDRE ICI ET CREUSER UN PEU AVEC l'HOTEL 5f06acd33cefb638846cf33e
                 /**
                  * tmp : pour la démo on part du principe que toutes les visites on été efféctuées soit 
                  * cette année soit l'année precédente
@@ -158,7 +164,13 @@ class RankBehaviourV1 extends RankBehaviour {
         /**
          * On calcul a partir de la note et du quartile
          */
+        console.log('OLD SCORE: ', SCORE)
+
         SCORE += getScoreQuartile()
+
+        console.log('QUARTILE: ', getScoreQuartile())
+        console.log('SCORE + QUARTILE: ', SCORE)
+
         //si on depace le seuil juste au dessus, on retranche 0.01 pour etre juste en dessous
         if(SCORE >= SCORE_SEUIL_OPTI_VISITE) {
             SCORE = SCORE_SEUIL_OPTI_VISITE - 0.0001
