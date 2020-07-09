@@ -230,11 +230,14 @@ En cours d'étude
         (string) : error message
 
   - **_/gestion/visites/cr/hotel/cancel/many/foruser/:id_** : get les hotels des visites plannifiées et non effectuées pour l'user ayant l'id :id
-    - @method GET
-    - @param {id} : id User
-    - @return : mixed 
-        (array[ (Object JSON) ]) : tableau d'object Visite peuplé avec l'hotel
-        (string) : error message 
+    - @method POST
+    - @param GET {id} : id User
+    - @param POST {object} : { visitesToCancel : [{
+                              "visite_id": (string) visite id,
+                              "raison": (string) le texte
+                            }]
+                          }
+    - @return  (string) : error message 
 
 **feature Gestion utilisateur : CRUD User :**
   - **_/users_** : get All
