@@ -17,33 +17,33 @@
     dest: "{{ phrh_directory }}"
   tags: ["build"]
 
-- name: Login to Docker registry
-  docker_login:
-    username: "{{ docker_username }}"
-    password: "{{ docker_password }}"
-  tags: ["build"]
+# - name: Login to Docker registry
+#   docker_login:
+#     username: "{{ docker_username }}"
+#     password: "{{ docker_password }}"
+#   tags: ["build"]
 
-- name: Build and push docker image client
-  docker_image:
-    build:
-      path: "{{ phrh_directory }}/client"
-    name: "{{ phrh_client_image }}"
-    tag: "{{ phrh_client_tag }}"
-    push: yes
-    source: build
-  notify: restart docker stack
-  tags: ["build"]
+# - name: Build and push docker image client
+#   docker_image:
+#     build:
+#       path: "{{ phrh_directory }}/client"
+#     name: "{{ phrh_client_image }}"
+#     tag: "{{ phrh_client_tag }}"
+#     push: yes
+#     source: build
+#   notify: restart docker stack
+#   tags: ["build"]
 
-- name: Build and push docker image server
-  docker_image:
-    build:
-      path: "{{ phrh_directory }}/server"
-    name: "{{ phrh_server_image }}"
-    tag: "{{ phrh_server_tag }}"
-    push: yes
-    source: build
-  notify: restart docker stack
-  tags: ["build"]
+# - name: Build and push docker image server
+#   docker_image:
+#     build:
+#       path: "{{ phrh_directory }}/server"
+#     name: "{{ phrh_server_image }}"
+#     tag: "{{ phrh_server_tag }}"
+#     push: yes
+#     source: build
+#   notify: restart docker stack
+#   tags: ["build"]
 
 - name: Copy docker-compose configuration file
   template:
@@ -52,10 +52,15 @@
     owner: "{{ phrh_user }}"
     group: "{{ phrh_group }}"
   notify: restart docker stack
-  tags: ["build", "deploy"]
+  tags: ["deploy"]
 
 - name: start docker stack
+  # become: yes
   docker_compose:
+    build: yes
+    # restarted: yes
+    # state: present
+    # debug: yes
+    recreate: always
     project_src: "{{ phrh_directory }}"
-  tags: ["build", "deploy"]
-
+  tags: ["deploy"]
