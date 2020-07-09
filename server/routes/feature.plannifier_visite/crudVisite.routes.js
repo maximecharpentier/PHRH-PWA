@@ -2,6 +2,7 @@ const router = require('express').Router();
 const authStrategy = require('../../lib/utils').authStrategy;
 const ObjectId = require('mongoose').Types.ObjectId;
 const mongoose = require('mongoose');
+const { options } = require('../feature.authentification/auth.routes');
 const Visite = mongoose.model('Visite');
 const User = mongoose.model('User');
 const Hotel = mongoose.model('Hotel');
@@ -72,7 +73,12 @@ router.route('/get/foruser/:id').get(authStrategy(), async (req, res) => {
         "path" : 'visite_id',
         populate: {
             path: 'hotel_id',
-            model: 'Hotel'
+            model: 'Hotel',
+            populate: {
+                path: 'memos',
+                model: 'Memo',
+                options: { sort: { 'date': 'descending' } }
+            },
           } 
     })
 
@@ -117,13 +123,12 @@ router.route('/get/forequipe/:id').get(authStrategy(), async (req, res) => {
             
         }).populate({
             "path" : 'visite_id',
+            
             //INSERER FILTRE ICI : "match": { "cp": { $regex: /^75.*/, $options: 'i' }}
         }).populate({
             "path" : 'user_id',
             //INSERER FILTRE ICI : "match": { "cp": { $regex: /^75.*/, $options: 'i' }}
         })
-
-        console.log(assocsDB[0].visite_id)
 
         //return les visites associées aux users de l'equipe
         //si des visites sont trouvées

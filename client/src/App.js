@@ -15,6 +15,7 @@ import PrivateRoute from "./PrivateRoute"
 // Pages
 import Login from "./components/Login/Login";
 
+console.log('test 2');
 
 const App = () => {
   const existingTokens = localStorage.getItem("token");

@@ -7,6 +7,15 @@
 | [phrh-client](https://hub.docker.com/repository/docker/blyndusk/phrh-client) | ![phrh-client](https://img.shields.io/docker/v/blyndusk/phrh-client) |
 | [phrh-server](https://hub.docker.com/repository/docker/blyndusk/phrh-server) | ![phrh-server](https://img.shields.io/docker/v/blyndusk/phrh-server) |
 
+## Replace the current API host with the actual IP adress:
+
+> Current directory: `automation/`
+
+```bash
+source set-ip-adress.sh
+```
+
+
 ## Terraform
 
 1. **Generate** RSA *public/private* key pair:
