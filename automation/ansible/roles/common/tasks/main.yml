@@ -1,6 +1,6 @@
 
 - name: Install common packages
-  become: true
+  # become: true
   apt:
     name:
       - apt-transport-https
@@ -11,7 +11,7 @@
     state: present
 
 - name: Install pip dependencies
-  become: true
+  # become: true
   pip:
     name:
       - docker

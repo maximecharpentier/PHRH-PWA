@@ -1,5 +1,5 @@
 - name: restart docker stack
-  become: yes
+  # become: yes
   docker_compose:
     build: yes
     restarted: yes

@@ -18,7 +18,7 @@ const Navbar = () => {
       <div className="Nav__container">
         <ul className="Nav__items">
           <li className="Nav__item">
-            <NavLink activeClassName="active" exact to="/">Plannification</NavLink>
+            <NavLink activeClassName="active" exact to="/">Nonono Plannification</NavLink>
           </li>
           <li className="Nav__item">
             <NavLink activeClassName="active" to="/manage">Gestion des ressources</NavLink>
