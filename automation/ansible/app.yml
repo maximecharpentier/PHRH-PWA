@@ -6,8 +6,8 @@
       tags: ["install"]
     - role: geerlingguy.docker
       tags: ["install"]
-    - role: sysfix
-      tags: ["install"]
+    # - role: sysfix
+    #   tags: ["install"]
 
 - name: Deploy PHRH
   hosts: app
