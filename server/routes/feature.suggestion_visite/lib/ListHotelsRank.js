@@ -11,11 +11,10 @@ const Visite = mongoose.model('Visite');
 
 class ListHotelsRank extends HotelsRank {
 
-    constructor(reset = null) {
+    constructor() {
         super()
         this.listHotelRank = [] //snapshot : image 1:1 de la table HotelRank (peu ne pas etre rempli suivant la situation)
         this.filter = {}
-        this.reset = reset
     }
 
     async get(id = null,  idhotel = null) {
@@ -39,11 +38,6 @@ class ListHotelsRank extends HotelsRank {
      * @return {Array} : liste d'element ElemListHotelsRank filtré en fonction des options et ordonné par score descroissant
      */
     async list($options = null) {
-
-        //reset si nescessaire
-        if(this.reset) {
-            await HotelRank.deleteMany({})
-        }
 
         //fill this.listHotelRank with ElemListHotelsRank items
         const tmpList = await HotelRank.find({})
@@ -203,6 +197,13 @@ class ListHotelsRank extends HotelsRank {
 
         listHotelRank.forEach( listElem => {
             listElem.refreshScore()
+        })
+    }
+
+    async refreshList() {
+        const hotelsRank = this.list()
+        hotelsRank.forEach( listElem => {
+            listElem.refresh()
         })
     }
 }

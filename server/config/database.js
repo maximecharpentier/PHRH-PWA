@@ -42,6 +42,9 @@ mongoose.connection.once("open", async () => {
   //message
   console.log("PHRH database connection established");
 
-  //import
+  //pilotage import
   require("../import/config/import");
+
+  //pilotage ranking
+  require("../routes/feature.suggestion_visite/config/config");
 });

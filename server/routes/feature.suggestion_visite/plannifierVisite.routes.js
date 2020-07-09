@@ -18,7 +18,7 @@ const ListHotelRank = require('./lib/ListHotelsRank');
  */
 router.route('/').get(authStrategy(), async (req, res) => {
 
-    const listHotelRankObj = new ListHotelRank(refresh = false)
+    const listHotelRankObj = new ListHotelRank(refresh = true)
 
     const list = await listHotelRankObj.list({})
     if(list.length > 0) {

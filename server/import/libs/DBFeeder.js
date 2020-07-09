@@ -149,6 +149,13 @@ class DBFeeder {
 
         //Set Hotel base value
 
+        //Begin : insert HotelRank de l'hotel
+        const observerHotelRank = ObserverHotelRank ? new ObserverHotelRank() : null
+        await observerHotelRank.notify("hotel added", HotelDB)  //notify observer
+          cbconfirm(
+            "<< Hotel " + (index + 1) + "/" + this.datasToInsert.hotels.length + " classé >>"
+          );
+        //End : inserer HotelRank
       }
       else{
         cberror(HotelDB + " invalide")
@@ -274,8 +281,7 @@ class DBFeeder {
     }
     //End : Inserer vehicules
 
-    //Begin : inserer HotelRank
-      //trigger insertion
+    /*  //trigger insertion
       const observerHotelRank = ObserverHotelRank ? new ObserverHotelRank() : null
       if(observerHotelRank) {
         console.log('Classement des Hotels ...')
@@ -288,7 +294,7 @@ class DBFeeder {
           );
         }
       }
-    //End : Inserer HotelRank
+      */
     console.log('Insertion des données terminée')
   }
 
