@@ -62,4 +62,3 @@
     state: present
     project_src: "{{ phrh_directory }}"
   tags: ["deploy"]
-
