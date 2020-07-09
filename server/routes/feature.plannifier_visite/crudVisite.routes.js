@@ -2,6 +2,7 @@ const router = require('express').Router();
 const authStrategy = require('../../lib/utils').authStrategy;
 const ObjectId = require('mongoose').Types.ObjectId;
 const mongoose = require('mongoose');
+const { options } = require('../feature.authentification/auth.routes');
 const Visite = mongoose.model('Visite');
 const User = mongoose.model('User');
 const Hotel = mongoose.model('Hotel');
@@ -72,7 +73,12 @@ router.route('/get/foruser/:id').get(authStrategy(), async (req, res) => {
         "path" : 'visite_id',
         populate: {
             path: 'hotel_id',
-            model: 'Hotel'
+            model: 'Hotel',
+            populate: {
+                path: 'memos',
+                model: 'Memo',
+                options: { sort: { 'date': 'descending' } }
+            },
           } 
     })
 
