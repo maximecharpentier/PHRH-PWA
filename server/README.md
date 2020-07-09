@@ -226,15 +226,15 @@ En cours d'étude
     - @method GET
     - @param {id} : id User
     - @return : mixed 
-        (array[ (Object JSON) ]) : tableau d'object Visite peuplé avec l'hotel
-        (string) : error message
+        - (array[ (Object JSON) ]) : tableau d'object Visite peuplé avec l'hotel
+        - (string) : error message
 
   - **_/gestion/visites/cr/hotel/cancel/many/foruser/:id_** : get les hotels des visites plannifiées et non effectuées pour l'user ayant l'id :id
     - @method GET
     - @param {id} : id User
     - @return : mixed 
-        (array[ (Object JSON) ]) : tableau d'object Visite peuplé avec l'hotel
-        (string) : error message 
+        - (array[ (Object JSON) ]) : tableau d'object Visite peuplé avec l'hotel
+        - (string) : error message 
 
 **feature Gestion utilisateur : CRUD User :**
   - **_/users_** : get All
@@ -301,6 +301,38 @@ En cours d'étude
   - **_/urgences/delete/:id_** : supprimer l'urgence ayant l'id :id
     - @method : DELETE
     - @param {string} : id Urgence
+    - @return : (string) : error/confirm message
+
+**feature Gestion vehicule : CRUD Vehicule & Book vehicule :**
+  - **_/vehicules_** : get All
+    - @method : GET
+    - @param (optionnal) : filter Object : #toDefine
+    - @return : mixed 
+        - (array[ (Object JSON) ]) : tableau d'object model Vehicule
+        - (string) : error message
+
+  - **_/vehicules/get/:id_** : get vehicule by id
+    - @method : GET
+    - @param {string} : id Vehicule
+    - @return : mixed 
+        - (Object JSON) : object model User
+        - (string) : error message
+
+  - **_/vehicules/add_** : ajouter un vehcule
+    - @method : POST
+    - @param : (Object JSON) : object Vehicule conforme au schema (voir schema)
+    - @return : (string) : error/confirm message
+
+  - **_/vehicules/book/foruser/:iduser/:idvehicule_** : book vehicule
+    - @method : GET
+    - @param {string} iduser : id User qui emprunte le vehicule
+    - @param {string} idvehicule : id Vehicule a emprunter
+    - @return : (string) : error/confirm message
+
+  - **_/vehicules/drop/foruser/:iduser_** : rendre le vehicule (inverse de book)
+    - @method : GET
+    - @param {string} iduser : id User qui emprunte le vehicule
+    - @param {string} idvehicule : id Vehicule a emprunter
     - @return : (string) : error/confirm message
 
 **feature Autenthification**
