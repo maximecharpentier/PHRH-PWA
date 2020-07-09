@@ -43,5 +43,5 @@ jobs:
             app.yml \
             --key ~/.ssh/id_digitalocean
             --user ubuntu \
-            --skip-tags "install" \
+            --tags "build,deploy" \
             -v
