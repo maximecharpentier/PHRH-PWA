@@ -17,6 +17,7 @@ var connectWithRetry = function () {
       useNewUrlParser: true,
       useCreateIndex: true,
       useUnifiedTopology: true,
+      useFindAndModify: false
     },
     function (err) {
       if (err) {

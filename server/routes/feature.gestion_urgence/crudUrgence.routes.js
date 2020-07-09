@@ -1,5 +1,7 @@
 const router = require('express').Router();
 const authStrategy = require('../../lib/utils').authStrategy;
+const loadFileIfExist = require('../../lib/utils').loadFileIfExist;
+const ObserverHotelRank = loadFileIfExist('./routes/feature.suggestion_visite/lib/listHotelsRank');
 const mongoose = require('mongoose');
 const Urgence = mongoose.model('Urgence');
 
@@ -13,13 +15,7 @@ const Urgence = mongoose.model('Urgence');
  */
 router.route('/').get(authStrategy(), (req, res) => {
     Urgence.find({})
-        .then(urgences => {
-
-            //notify observer
-            Urgence.notifyObservers({element: urgences[0], origin: "urgence added"}) 
-
-            res.status(200).json(urgences)           
-        })
+        .then(urgences => res.status(200).json(urgences))
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
@@ -55,10 +51,12 @@ router.route('/add').post(authStrategy(), (req, res) => {
 
     //save
     urgence.save()
-        .then(() => {
+        .then( urgence => {
             
-            //update ranking
-            //#REPRNED ICI ET NOTIFY
+            //trigger some updates linked to action : (update ranking par ex)
+            //notify observer
+            const observerHotelRank = ObserverHotelRank ? new ObserverHotelRank() : null
+            if(observerHotelRank) observerHotelRank.notify("urgence added", urgence)            
 
             res.status(200).json('Urgence ajoutée')
         })
@@ -84,12 +82,16 @@ router.route('/edit/:id').post(authStrategy(), (req, res) => {
             propList.forEach(prop => {
                 if(prop in req.body) urgence[prop] = req.body[prop]
             })
+
+            //#Voir si on peux modifier l'hoptel d'une urgence et rajouter l'observer si oui
+            //trigger some updates linked to action : (update ranking par ex)
+            //Urgence.notifyObservers({element: urgence, to: "update"})
             
             urgence.save()
                 .then( urgence => res.status(200).json('Urgence édité avec succès') )
                 .catch( err => res.status(400).json('Erreur: ' + err) )
         })
-        .catch(err => res.status(400).json('Erreur: urgence non treouvée : ' + err))
+        .catch(err => res.status(400).json('Erreur: urgence non trouvée : ' + err))
 })
 
 /**
@@ -100,7 +102,15 @@ router.route('/edit/:id').post(authStrategy(), (req, res) => {
  */
 router.route('/delete/:id').delete(authStrategy(), (req, res) => {
     Urgence.findByIdAndDelete(req.params.id)
-        .then(() => { res.json('Urgence supprimée')})
+        .then( urgence => { 
+
+            //trigger some updates linked to action : (update ranking par ex)
+            //notify observer
+            const observerHotelRank = ObserverHotelRank ? new ObserverHotelRank() : null
+            if(observerHotelRank) observerHotelRank.notify("urgence deleted", urgence)   
+
+            res.json('Urgence supprimée') 
+        })
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 

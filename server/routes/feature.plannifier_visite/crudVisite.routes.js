@@ -231,6 +231,8 @@ router.route('/plannifier').post(authStrategy(), async (req, res) => {
                 res.status(400).json('Erreurs d\'insertion de l\'association visite/user, la visite n\'a pas été enregistrée')
             }
         }
+
+        //#REPRENDRE ICI ET INSERER LES OBSERVERS
         res.status(200).json(msg)
 
     } else {

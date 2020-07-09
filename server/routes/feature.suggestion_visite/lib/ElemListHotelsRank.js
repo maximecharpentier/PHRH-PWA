@@ -2,13 +2,14 @@ const mongoose = require('mongoose');
 const Urgence = mongoose.model('Urgence');
 const Visite = mongoose.model('Visite');
 const Hotel = mongoose.model('Hotel');
-const HotelRankModel = require('../model/hotelrank.model');
+const HotelRank = require('../model/hotelrank.model');
 
 class ElemListHotelsRank {
 
     constructor(rankBehaviour, entity = {}) {
+        this.id =               entity._id ? entity._id : -1
         this.hotel_id =         entity.hotel_id ? entity.hotel_id : null
-        this.score =            entity.score ? entity.score : 0
+        this.score =            entity.score ? entity.score : -1
         this.urgences =         entity.urgences ? entity.urgences : []
         this.isContreVisite =   entity.isContreVisite ? entity.isContreVisite : false
 
@@ -40,31 +41,34 @@ class ElemListHotelsRank {
     }
 
     async insert() {
-        this.entity.hotel_id =  this.hotel_id
-        this.entity.score =     this.score
-        this.entity.urgences =  this.urgences
-        this.entity.isContreVisite = this.isContreVisite
-
-        HotelRankModel.insertIfNotExist(this.entity)
+        let hotelRank = new HotelRank(this)
+        const elem = await HotelRank.insertIfNotExist(hotelRank)
+            
+        return elem
     }
 
     async update() {
-        this.entity.hotel_id =  this.hotel_id
-        this.entity.score =     this.score
-        this.entity.urgences =  this.urgences
-        this.entity.isContreVisite = this.isContreVisite
+        let hotel = await Hotel.findById(this.hotel_id)
+        await this.buildFromHotel(hotel)
+        const elem =  await HotelRank.findByIdAndUpdate(
+            { _id: this.id }, 
+            { $set: this }
+            )
 
-        HotelRankModel.findByIdAndUpdate(
-            { _id: this.entity._id }, 
-            { $set: this.entity }
-        )  
+        return elem
+    }
+
+    async delete() {
+        const elem = await HotelRank.findByIdAndDelete(this.id)
+        
+        return elem
     }
 
     async refreshScore() {
-        console.log('refresh')
         if(this.hotel_id) {
             const hotel = await Hotel.findById(this.hotel_id)
             this.score = await this.rankBehaviour.calculateScoreHotel(hotel)
+            this.update()
         }
     }
 }

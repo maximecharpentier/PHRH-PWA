@@ -27,21 +27,6 @@ const urgenceSchema = new Schema({
     },
 })
 
-urgenceSchema.statics.notifyObservers = function (elem) {
-
-    const loadFileIfExist = require('../lib/utils').loadFileIfExist;
-    const observers = []
-
-    //Hotel rank observer
-    const observerHotelRank = loadFileIfExist('./routes/feature.plannifier_visite/lib/listHotelsRank')
-    if(observerHotelRank !== false) observers.push( new observerHotelRank() )
-
-    //notify observers
-    observers.forEach( observer => {
-        observer.notify(elem)
-    })
-}
-
 const Urgence = mongoose.model('Urgence', urgenceSchema)
 
 module.exports = Urgence

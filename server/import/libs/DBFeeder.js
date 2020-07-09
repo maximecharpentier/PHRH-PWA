@@ -1,5 +1,7 @@
 const path = require('path');
 const XLSXHelper = require('./module_xlsx.helper');
+const loadFileIfExist = require('../../lib/utils').loadFileIfExist;
+const ObserverHotelRank = loadFileIfExist('./routes/feature.suggestion_visite/lib/listHotelsRank');
 const mongoose = require('mongoose');
 const Hotel = mongoose.model('Hotel');
 const Memo = mongoose.model('Memo');
@@ -12,6 +14,7 @@ const Priorisation = mongoose.model('Priorisation');
 const Tache = mongoose.model('Tache');
 const Urgence = mongoose.model('Urgence');
 const Vehicule = mongoose.model('Vehicule');
+const HotelRank = mongoose.model('HotelRank');
 
 class DBFeeder {
 
@@ -41,6 +44,7 @@ class DBFeeder {
     await Urgence.deleteMany({})
     await Vehicule.deleteMany({})
     await Memo.deleteMany({})
+    await HotelRank.deleteMany({})
 
     //TMP : retire les artefacts pour les devs
     mongoose.connection.db.dropCollection('utilisateurs')
@@ -144,6 +148,7 @@ class DBFeeder {
         //End : Inserer visites associées
 
         //Set Hotel base value
+
       }
       else{
         cberror(HotelDB + " invalide")
@@ -268,6 +273,22 @@ class DBFeeder {
       } 
     }
     //End : Inserer vehicules
+
+    //Begin : inserer HotelRank
+      //trigger insertion
+      const observerHotelRank = ObserverHotelRank ? new ObserverHotelRank() : null
+      if(observerHotelRank) {
+        console.log('Classement des Hotels ...')
+        const hotels = await Hotel.find({})
+        const length = hotels.length
+        for (let index = 0; index < length - 1; index++) {
+          await observerHotelRank.notify("hotel added", hotels[index])  //notify observer
+          cbconfirm(
+            "<< Hotel " + (index + 1) + "/" + hotels.length + " classé >>"
+          );
+        }
+      }
+    //End : Inserer HotelRank
     console.log('Insertion des données terminée')
   }
 
@@ -545,13 +566,13 @@ class DBFeeder {
                   //set prop value to default
                   propValue = mapObject['default']
 
-                  console.log('[prop set to default value] cause : jointure échouée, valeur < '
+                  /*console.log('[prop set to default value] cause : jointure échouée, valeur < '
                   + joinPropValue +
                   ' > absente de < ' 
                   + mapInfo['file'] + 
                   ' > à la position < ' 
                   + mapInfo['on'] + 
-                  ' >')
+                  ' >')*/
 
                   break
 
@@ -576,14 +597,14 @@ class DBFeeder {
                 //set prop value to default
                 propValue = mapObject['default']
 
-                console.log('[prop set to default value] cause : erreur instanciation du reader pour le fichier < '
+                console.log('erreur instanciation du reader pour le fichier < '
                 + fileAbsPath +' >')
 
                 break
 
               } else {
 
-                console.log('[prop set to default value] cause : erreur instanciation du reader pour le fichier < '
+                console.log('erreur instanciation du reader pour le fichier < '
                 + fileAbsPath +' >')
 
                 return this.SET_PROP_FAILED

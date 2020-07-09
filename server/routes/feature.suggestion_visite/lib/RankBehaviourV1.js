@@ -72,7 +72,7 @@ class RankBehaviourV1 extends RankBehaviour {
         const PAS_BASE = 0.04
 
         //score de base
-        let SCORE = ((Number(hotel.note)/100)*1)/SCORE_SEUIL_OPTI_VISITE //0>= SCORE <=SCORE_SEUIL_OPTI_VISITE (= au 1er seuil) 
+        let SCORE = SCORE_SEUIL_OPTI_VISITE - (( Number(hotel.note)/100) * SCORE_SEUIL_OPTI_VISITE )//0>= SCORE <=SCORE_SEUIL_OPTI_VISITE (= au 1er seuil) 
 
         //PS : L'ordre des blocks suivants ne doit pas changer pour réaliser la bonne évaluation
 

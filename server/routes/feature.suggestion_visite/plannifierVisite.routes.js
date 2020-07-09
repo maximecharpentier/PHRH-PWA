@@ -17,11 +17,16 @@ const ListHotelRank = require('./lib/ListHotelsRank');
  * @return array[ (Object JSON) ]) : tableau d'object HotelRank
  */
 router.route('/').get(authStrategy(), async (req, res) => {
-    const listHotelRankObj = new ListHotelRank(reset = false)
+    const options = {}
 
-    listHotelRankObj.list(options)
-        .then( list => { res.status(200).json(list) })
-        .catch( err => { res.status(200).json(list) })
+    const listHotelRankObj = new ListHotelRank(reset = true)
+
+    const list = await listHotelRankObj.list(options)
+    if(list.length > 0) {
+        res.status(200).json(list) 
+    } else {
+        res.status(400).json("Liste inéxistante")
+    }
 })
 
 

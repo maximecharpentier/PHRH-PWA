@@ -80,7 +80,7 @@ function loadFileIfExist(fileName) {
   const fs = require('fs');
   const path = require('path');
   const pathToFile = path.join(__dirname, '..', fileName + '.js')
-  console.log(pathToFile)
+  //console.log(pathToFile)
   if(fs.existsSync(pathToFile)) {
     return require(pathToFile)
   } else {
