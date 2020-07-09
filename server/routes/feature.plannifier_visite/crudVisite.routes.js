@@ -123,13 +123,12 @@ router.route('/get/forequipe/:id').get(authStrategy(), async (req, res) => {
             
         }).populate({
             "path" : 'visite_id',
+            
             //INSERER FILTRE ICI : "match": { "cp": { $regex: /^75.*/, $options: 'i' }}
         }).populate({
             "path" : 'user_id',
             //INSERER FILTRE ICI : "match": { "cp": { $regex: /^75.*/, $options: 'i' }}
         })
-
-        console.log(assocsDB[0].visite_id)
 
         //return les visites associées aux users de l'equipe
         //si des visites sont trouvées
