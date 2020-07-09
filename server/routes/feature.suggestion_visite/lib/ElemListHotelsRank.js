@@ -40,6 +40,13 @@ class ElemListHotelsRank {
         }
     }
 
+    async refresh() {
+        if(this.hotel_id) {
+            const hotel = await Hotel.find({})
+            this.buildFromHotel(hotel)
+        }
+    }
+
     async insert() {
         let hotelRank = new HotelRank(this)
         const elem = await HotelRank.insertIfNotExist(hotelRank)

@@ -17,11 +17,10 @@ const ListHotelRank = require('./lib/ListHotelsRank');
  * @return array[ (Object JSON) ]) : tableau d'object HotelRank
  */
 router.route('/').get(authStrategy(), async (req, res) => {
-    const options = {}
 
-    const listHotelRankObj = new ListHotelRank(reset = true)
+    const listHotelRankObj = new ListHotelRank(refresh = false)
 
-    const list = await listHotelRankObj.list(options)
+    const list = await listHotelRankObj.list({})
     if(list.length > 0) {
         res.status(200).json(list) 
     } else {
@@ -51,8 +50,7 @@ router.route('/secteur/:sec').get(authStrategy(), async (req, res) => {
         options['secteur'] = req.params.sec
     }
     
-    const rankBehaviour = new RankBehaviourV1()
-    const listHotelRankObj = new ListHotelRank(rankBehaviour, reset = true)
+    const listHotelRankObj = new ListHotelRank(refresh = false)
 
     const list = await listHotelRankObj.get(options)
     
