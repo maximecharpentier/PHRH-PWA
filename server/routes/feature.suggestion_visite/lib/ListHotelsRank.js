@@ -1,60 +1,95 @@
-const HotelRank = require('../model/hotelrank.model');
-const Hotel = require("../../../model/hotel.model");
+const HotelsRank = require("./HotelRank");
 const ElemListHotelsRank = require("./ElemListHotelsRank");
 
-class ListHotelsRank {
+const mongoose = require('mongoose');
+const HotelRank = require('../model/hotelrank.model');
+const Urgence = mongoose.model('Urgence');
+const Hotel = mongoose.model('Hotel');
+//const Visite = require("../../../model/visite.model");
+const Visite = mongoose.model('Visite');
 
-    constructor(rankBehaviour, reset) {
-        this.listHotelRank = [] //snapshot : image 1:1 de la table HotelRank
-        this.rankBehaviour = rankBehaviour
-        this.reset = reset
+
+class ListHotelsRank extends HotelsRank {
+
+    constructor() {
+        super()
+        this.listHotelRank = [] //snapshot : image 1:1 de la table HotelRank (peu ne pas etre rempli suivant la situation)
+        this.filter = {}
     }
 
-    async get($options) {
+    async get(id = null,  idhotel = null) {
 
-        //reset si nescessaire
-        if(this.reset) {
-            await HotelRank.deleteMany({})
-            this.listHotelRank = []
+        let elem = {}
+
+        if(id) {
+            elem = await HotelRank.findById(id).populate('hotel_id')
         }
 
-        //get sorted list
-        this.listHotelRank = await HotelRank.find({}).populate('hotel_id').sort({score: 'desc'})
+        if(idhotel) {
+            elem = await HotelRank.findOne({hotel_id: idhotel}).populate('hotel_id')
+        }
+
+        return new ElemListHotelsRank(this.rankBehaviour, elem)
+    }
+
+    /**
+     * @desc recupère la liste d'element, lance création si elle n'existe pas, l'efface si this.reset est true
+     * @param {*} $options 
+     * @return {Array} : liste d'element ElemListHotelsRank filtré en fonction des options et ordonné par score descroissant
+     */
+    async list($options = null) {
+
+        //fill this.listHotelRank with ElemListHotelsRank items
+        const tmpList = await HotelRank.find({})
+                                .populate('hotel_id')
+                                .sort({score: 'desc'})
+        tmpList.forEach( (hotelRankDB, index) => {
+            this.listHotelRank[index] = new ElemListHotelsRank(this.rankBehaviour, hotelRankDB) 
+            })
+
         
-        //set snapshot : depuis la table classement existante ou creer la table classement
-        if(!this.listHotelRank.length) {
+        //si le ranking n'a jamais été appelé
+        /*if(!this.listHotelRank.length) {
 
             //create
             await this.set()
-        } 
+        }*/ 
             
         //filters
-        let filteredHotelRank = this.listHotelRank
-        if($options.hasOwnProperty('secteur')) {
-            
+        if($options) {
 
-            //filter snapshot plutot que la requette Mongo
-            filteredHotelRank = filteredHotelRank.filter(hotelElem =>
+            this.filter = $options
 
-                //filter
-                hotelElem.hotel_id.cp
-                    .toString()
-                    .match(new RegExp("^" + $options.secteur + ".*",'g')) !== null
-            )
+            if($options.hasOwnProperty('secteur')) {
+                
+
+                //filter snapshot plutot que la requette Mongo
+                this.listHotelRank = this.listHotelRank.filter(hotelElem =>
+
+                    //filter
+                    hotelElem.hotel_id.cp
+                        .toString()
+                        .match(new RegExp("^" + $options.secteur + ".*",'g')) !== null
+                )
+            }
+            if($options.hasOwnProperty('hotel_id')) {
+
+                //filter snapshot plutot que la requette Mongo
+                this.listHotelRank = this.listHotelRank.filter(hotelElem =>
+
+                    //filter
+                    hotelElem.hotel_id._id.toString() === $options.hotel_id
+                )
+            } 
         }
-        if($options.hasOwnProperty('hotel_id')) {
 
-            //filter snapshot plutot que la requette Mongo
-            filteredHotelRank = filteredHotelRank.filter(hotelElem =>
-
-                //filter
-                hotelElem.hotel_id._id.toString() === $options.hotel_id
-            )
-        } 
-
-        return filteredHotelRank
+        return this.listHotelRank
     }
 
+    /**
+     * @desc : set la liste en base & set snapshot
+     * @param void 
+     */
     async set() {
         //create
         const hotels = await Hotel.find({})
@@ -69,82 +104,108 @@ class ListHotelsRank {
                 await elemHotelRank.buildFromHotel(hotelDB)
 
                 //ajouter l'element
-                await this.create(elemHotelRank)
+                console.log(elemHotelRank)
+                await this.insert(elemHotelRank)
             }
         }
     }
 
-    async update(elem) {
-        //update snapshot
-        await this.updateSnapshot(elem)
+    /**
+     * @desc : update la liste en base & set snapshot
+     * @param elem : Objet ElemListHotelsRank
+     */
+    async replace(elem) {
 
         //update table
-        await HotelRank.findByIdAndUpdate(
-        { _id: elem._id }, 
-        { $set: elem }, 
-        //{ new: true }
-        )
-
-        console.log('Element mis à jour')
+        await elem.update()
     }
 
     /**
-     * @desc : 
-     * @param {*} elem : Objet ElemListHotelRank
+     * @desc : insert un element de la liste dans la base et dans le snapshot
+     * @param elem : Objet ElemListHotelRank
      */
-    async create(elem) {
-        //populate field
-        await elem.populate('hotel_id').execPopulate()
-
-        //update snapshot 
-        await this.updateSnapshot(elem)
+    async add(elem) {
 
         //insert in view
-        await HotelRank.insertIfNotExist(elem)
+        await elem.insert()
 
         //console.log('Element inséré')
     }
 
-    delete($options) {
-        //A VENIR
-    }
-
-     /**
-     * @desc : cette fonction met à jour ou enrichi le snap^shot de la table
-     * avec le nouvel element
-     * @param {*} elem : objet ElemListHotel ou HotelRank model
+    /**
+     * @desc efface un element l'hotel de la liste et du snapshot
+     * @param {*} $options 
      */
-    async updateSnapshot(elem) {
-
-        //convert elem in right class
-        if(!elem instanceof ElemListHotelsRank) {
-            elem = new ElemListHotelsRank(this.rankBehaviour, elem)
-            await elem.buildFromHotel(hotelDB)
-        }
-
-        //check if snapshot need to be updated or filled
-        const indexElem = this.listHotelRank.findIndex(elemHotelRank => elemHotelRank.hotel_id === elem.hotel_id)
-        if(indexElem > 0) {
-            this.listHotelRank[indexElem] = elem
-        } else {
-            this.listHotelRank.push(elem)
-        }
+    remove(elem) {
+        
+        //INUTILE POUR LE MOMENT
     }
 
-    notify(elem) {
+    /**
+     * @desc : trigger (Observer) déclanché sur certaines action pour assurer le maintiens de la liste
+     * @param {*} objet {element: objet concerné, origin: motif du trigger} 
+     */
+    async notify(event, data) {
+        let listElem = {}
+
+        if(data instanceof Visite)  listElem = await this.get(null, data.hotel_id)
+        if(data instanceof Urgence) listElem = await this.get(null, data.hotel_id)
+        if(data instanceof Hotel && 
+           event !== 'hotel added') listElem = await this.get(null, data._id)
+
         //actions possibles :
-            //delete de la liste
-                //qd visite est planiffiée
-                    //elem = Visite
-                    //
-            //ajouter a la liste
-                //qd nouvel hotel est crée
-                //qd une visite est efféctuée
-            //modifier le ranking
-                //qd une visite est plannifiée
-                //qd modification de la note de l'hotel
-                //qd placement d'une urgence
-                //qd le temps passe chaque mois -> pas sur
+        switch(event) {
+            
+            //effacer l'hotel du ranking
+            case 'visite added' :
+                listElem.delete()
+                break
+
+            //(re)insert l'hotel au ranking
+            case 'hotel added' :
+                //creer listElem
+                listElem = new ElemListHotelsRank(this.rankBehaviour)
+                await listElem.buildFromHotel(data)
+
+            case 'visit done' :
+            case 'visit canceled' :
+
+                listElem.insert()
+                break
+
+            //update l'hotel ds le ranking
+            case 'hotel note updated' :
+            case 'urgence added' :
+            case 'urgence deleted' :
+
+                //remove urgence du tableau
+
+                listElem.update()
+                break
+        }
+
+        //always :
+        //refresh le score : une partie du score est calculé
+        //en fonction de la "date courante" du moment ou il est calculé
+        //donc il faut regulièrement le refresh pour assurer une 
+        //adéquation du score avec l'etat courant du metier
+        this.refreshScores()
+    }
+
+    async refreshScores() {
+        const listHotelRank = await this.list()
+
+        listHotelRank.forEach( listElem => {
+            listElem.refreshScore()
+        })
+    }
+
+    async refreshList() {
+        const hotelsRank = this.list()
+        const length = hotelsRank.length
+        for (let index = 0; index < length - 1; index++) {
+            await hotelsRank[index].update()
+        }
     }
 }
 
