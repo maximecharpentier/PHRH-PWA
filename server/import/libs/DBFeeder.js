@@ -15,6 +15,7 @@ const Tache = mongoose.model('Tache');
 const Urgence = mongoose.model('Urgence');
 const Vehicule = mongoose.model('Vehicule');
 const HotelRank = mongoose.model('HotelRank');
+const Notification = mongoose.model('Notification');
 
 class DBFeeder {
 
@@ -45,6 +46,7 @@ class DBFeeder {
     await Vehicule.deleteMany({})
     await Memo.deleteMany({})
     await HotelRank.deleteMany({})
+    await Notification.deleteMany({})
 
     //TMP : retire les artefacts pour les devs
     mongoose.connection.db.dropCollection('utilisateurs')

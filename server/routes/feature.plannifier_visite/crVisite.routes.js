@@ -31,7 +31,7 @@ const Equipe = mongoose.model('Assoc_User_User');
  */
 router.route('/hotel/planned/foruser/:id').get(authStrategy(), async (req, res) => {
 
-    //get tt les visites non effectuées pour l'user    
+    //get tt les visites non effectuées pour l'user ET qui sont anterieures au moment de l'appel   
     if(req.params.id) {
 
         //get tt les visites non effectuées pour l'user
@@ -45,6 +45,7 @@ router.route('/hotel/planned/foruser/:id').get(authStrategy(), async (req, res) 
             "_id" : { "$in": assocs.map(function(el) {
                 return el.visite_id
             })},
+            "date_visite" : { $lt: Date.now() }, 
             "visite_effectue": false 
         })
         .populate('hotel_id')

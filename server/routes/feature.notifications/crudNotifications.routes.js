@@ -3,7 +3,7 @@ const authStrategy = require('../../lib/utils').authStrategy;
 const mongoose = require('mongoose');
 const User = require('../../model/user.model');
 const Urgence = mongoose.model('Urgence');
-const Memo = mongoose.model('Memo');
+const Notification = mongoose.model('Notification');
 
 //const Vehicule = require('../../model/vehicule.model');
 
@@ -82,44 +82,122 @@ router.route('/drop/foruser/:iduser').get(authStrategy(), (req, res) => {
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
+
+
+
+
 /**
- * @route : add
+ * @route : Get notifs pour un user
  * @method POST
- * @param : (Object JSON) : object Vehicule conforme au schema (voir schema)
- * @return : (string) : error/confirm message
+ * @param {object} id : id User
+ * @return : array [Object] : confirm message
  */
-router.route('/urgence_added/:urgence_id').post(authStrategy(), (req, res) => {
+router.route('/get/foruser/:id').get(authStrategy(), async (req, res) => {
+    Notification.find({to: req.params.id})
+        .sort({date_insert: 'desc'})
+        .limit(10)
+        .then( notifs => res.status(200).json(notifs) )
+        .catch( err => res.status(400).json('Erreurs: ' + err) )
+})
+
+/**
+ * @route : notifie l'urgence a tout les intervenants de terrain
+ * @method POST
+ * @param {object} : object {from: userid}
+ * @return : (string) : confirm message
+ */
+router.route('/urgence_added/:urgence_id').post(authStrategy(), async (req, res) => {
     //{from: userid}
     const urgence = await Urgence.findById(req.params.urgence_id)
     const usersVisiteurs = User.find({ fonction: { $nin: ['Superviseur', 'admin'] } })
 
+    let notifObject = {}
+
     for(const user of usersVisiteurs) {
 
         //création de la notif : PS ici c'est une notif a sois meme
-        let notifObject = new Notification({
+        notifObject = new Notification({
             from: req.params.from, 
             to: user._id, 
             elem: urgence, 
             read: false
         })
+
+        await Notification.insertIfNotExist(notifObject)
     }
 
+    //create context custom object
+    notifObject.to = 'visiteurs'
 
+    //emit
+    socket.emit('urgence_added', notifObject)
 
-    //creer model Vehicule
-    const vehicule = new Vehicule({
-        immatriculation :   req.body.immatriculation, 
-        type :              req.body.type, 
-        cp :                Number(req.body.cp), 
-        ville :             req.body.ville, 
-        adresse_parking :   req.body.adresse_parking, 
+    res.status(200).json('Notification envoyée')
+})
+
+/**
+ * @route : envoi la notif de semaine a valider a l'utilisateur
+ * @method GET
+ * @param {string} iduser : id user
+ * @return {object} :  conforme au model Notification
+ */
+router.route('/valid_semaine/:iduser').get(authStrategy(), async (req, res) => {
+    //création de la notif : PS ici c'est une notif a sois meme
+    const notifObject = new Notification({
+        from: req.params.iduser, 
+        to: req.params.iduser, 
+        elem: {_id: -1, message: 'veuillez entrer les hotels que vous avez visité' }, 
+        read: false
     })
 
-    //save
-    vehicule.save()
-        .then(() => res.status(200).json('Vehicule ajouté'))
-        .catch(err => res.status(400).json('Erreurs: ' + err))
+    //save la notification pour l'user
+    await Notification.insertIfNotExist(notifObject)
+
+    //emit
+    //#socket.emit('urgence_added', notifObject)
+
+    res.status(200).json(notifObject)
 })
+
+/**
+ * @route : lis une notification
+ * @method GET
+ * @param {string} id : id Notification
+ * @return {object} : object Notification conforme au model
+ */
+router.route('/notification/read/:id').get(authStrategy(), async (req, res) => {
+    //création de la notif : PS ici c'est une notif a sois meme
+    const notifObject = new Notification({
+        from: req.params.iduser, 
+        to: req.params.iduser, 
+        elem: {_id: -1, message: 'veuillez entrer les hotels que vous avez visité' }, 
+        read: false
+    })
+
+    Notification.findByIdAndUpdate(
+        { _id: req.params.id }, 
+        { $set: { read: true } },
+        //{ new: true }
+        )
+        .then(notif => res.status(200).json(notif))
+        .catch(err => res.status(400).json('Erreurs: ' + err))
+    //emit
+    //#socket.emit('urgence_added', notifObject)
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * @route : edit

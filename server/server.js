@@ -65,7 +65,7 @@ app.use("/gestion/suggestions/visites", suggestionsVisitesRouter);
 const utiliserVehicule = require("./routes/feature.gestion_vehicules/crudVehicule.routes.js");
 app.use("/vehicules", utiliserVehicule);
 
-const notifs = require("./routes/feature.notifications/notifications.routes.js");
+const notifs = require("./routes/feature.notifications/crudNotifications.routes.js");
 app.use("/notifications", notifs);
 
 const authRouter = require("./routes/feature.authentification/auth.routes.js");
