@@ -111,12 +111,12 @@ router.route('/creer/:idusera/:iduserb').post(authStrategy(), (req, res) => {
             {'user_b_id': req.params.iduserb}, 
         ] 
     })
-    .then(assocsDB => {
+    .then( async assocsDB => {
         //si une equipe existe avec l'un ou l'autre user
         if(assocsDB) {
             //on efface d'office les equipes qui comportent l'un ou l'autre
-            for(assocDB of assocsDB) {
-                Equipe.findByIdAndDelete(assocDB._id)
+            for(const assocDB of assocsDB) {
+                await Equipe.findByIdAndDelete(assocDB._id)
             }
             //on créé l'équipe
             const equipe = new Equipe({

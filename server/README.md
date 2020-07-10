@@ -230,11 +230,14 @@ En cours d'étude
         - (string) : error message
 
   - **_/gestion/visites/cr/hotel/cancel/many/foruser/:id_** : get les hotels des visites plannifiées et non effectuées pour l'user ayant l'id :id
-    - @method GET
-    - @param {id} : id User
-    - @return : mixed 
-        - (array[ (Object JSON) ]) : tableau d'object Visite peuplé avec l'hotel
-        - (string) : error message 
+    - @method POST
+    - @param GET {id} : id User
+    - @param POST {object} : { visitesToCancel : [{
+                              "visite_id": (string) visite id,
+                              "raison": (string) le texte
+                            }]
+                          }
+    - @return  (string) : error message 
 
 **feature Gestion utilisateur : CRUD User :**
   - **_/users_** : get All
@@ -356,13 +359,13 @@ En cours d'étude
   2) Placer ces fichiers dans ./server/import/**sources**
   3) Mettez a jour votre fichier **.env** avec les nouveau parametres (voir **.env.sample**)
   4) Editer le fichier ./server/**.env** à votre convenance pour l'insertion :
-  - **RESET_DB** : reset de la base de données
+  - **DUMP_DB** : reset de la base de données
   - **INSERT_TEST_DB** : si a "true" inserer les données de test
   - **INSERT_REAL_DB** : si a "true" importer et inserer les données reelles
   5) Lancer le serveur express : **node server**
   6) Les données vont s'inserer, patientez jusqu'a la fin du chargement ~2min chez moi
   7) Metez la configuration de votre **.env** de nouveau a jour pour eviter :
-  - de supprimer vos données eventuelement par erreur en mettant **RESET_DB** à "false"
+  - de supprimer vos données eventuelement par erreur en mettant **DUMP_DB** à "false"
   - de relancer la procedure d'import pour rien en mettant **INSERT_TEST_DB** et/ou **INSERT_REAL_DB** à "false"
   7) Si vous voulez afficher votre base de données locale dans un GUI :
   - telecharger : MongoDB Compass Comunity : https://www.mongodb.com/download-center/compass (Version Community Edition Stable)

@@ -1,13 +1,18 @@
 const mongoose = require('mongoose');
 const Urgence = mongoose.model('Urgence');
 const Visite = mongoose.model('Visite');
+const Hotel = mongoose.model('Hotel');
 const HotelRank = require('../model/hotelrank.model');
-const RankBehaviour = require('./RankBehaviour');
 
-class ElemListHotelsRank extends HotelRank {
+class ElemListHotelsRank {
 
     constructor(rankBehaviour, entity = {}) {
-        super(entity)
+        this.id =               entity._id ? entity._id : -1
+        this.hotel_id =         entity.hotel_id ? entity.hotel_id : null
+        this.score =            entity.score ? entity.score : -1
+        this.urgences =         entity.urgences ? entity.urgences : []
+        this.isContreVisite =   entity.isContreVisite ? entity.isContreVisite : false
+
         this.rankBehaviour = rankBehaviour
     }
 
@@ -25,7 +30,6 @@ class ElemListHotelsRank extends HotelRank {
     
         //this.listPriorisation = //NON UTILISE ENCORE //list priorisations pour affichage d'infos ds la liste
         
-        this.isContreVisite = false
         const contreVisite = await Visite.findOne({ //ici on part du principe que l'on ne peux pas avoir deux contre-visites pour un meme hotel ce qui selon ma compéhension du metier : n'aurait pas de sens
            hotel_id: hotel._id,
            type: "Contre-visite",
@@ -34,6 +38,37 @@ class ElemListHotelsRank extends HotelRank {
         if(contreVisite) {
             this.isContreVisite = true
         }
+    }
+
+    async refresh() {
+        if(this.hotel_id) {
+            const hotel = await Hotel.find({})
+            return await this.buildFromHotel(hotel)
+        }
+    }
+
+    async insert() {
+        let hotelRank = new HotelRank(this)
+        const elem = await HotelRank.insertIfNotExist(hotelRank)
+            
+        return elem
+    }
+
+    async update() {
+        let hotel = await Hotel.findById(this.hotel_id)
+        await this.buildFromHotel(hotel)
+        const elem =  await HotelRank.findByIdAndUpdate(
+            { _id: this.id }, 
+            { $set: this }
+            )
+
+        return elem
+    }
+
+    async delete() {
+        const elem = await HotelRank.findByIdAndDelete(this.id)
+        
+        return elem
     }
 }
 
