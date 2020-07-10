@@ -19,6 +19,12 @@ resource "aws_security_group" "phrh_g12_security_groups" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   ingress {
+    from_port   = 3002
+    to_port     = 3002
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
     from_port   = 19006
     to_port     = 19006
     protocol    = "tcp"
