@@ -1,5 +1,7 @@
 const router = require('express').Router();
 const authStrategy = require('../../lib/utils').authStrategy;
+const loadFileIfExist = require('../../lib/utils').loadFileIfExist;
+const ObserverHotelRank = loadFileIfExist('./routes/feature.suggestion_visite/lib/listHotelsRank');
 const mongoose = require('mongoose');
 const Hotel = mongoose.model('Hotel');
 const Memo = mongoose.model('Memo');
@@ -101,7 +103,15 @@ router.route('/add').post(authStrategy(), (req, res) => {
 
     //save
     hotel.save()
-        .then(() => res.status(200).json('Hotel ajouté'))
+        .then( hotel => {
+
+            //trigger some updates linked to action : (update ranking par ex)
+            //notify observer
+            const observerHotelRank = ObserverHotelRank ? new ObserverHotelRank() : null
+            if(observerHotelRank) observerHotelRank.notify("hotel added", hotel)
+
+            res.status(200).json('Hotel ajouté')
+        })
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
@@ -121,7 +131,8 @@ router.route('/add/:id/memo').post(authStrategy(), (req, res) => {
 
     //save
     memo.save()
-        .then(memo => {
+        .then( memo => {
+            
             //save key dans hotel
             Hotel.findByIdAndUpdate(
                 { _id: req.params.id }, 
@@ -152,9 +163,13 @@ router.route('/edit/:id').post(authStrategy(), (req, res) => {
         'nom',      'adresse',              'cp',
         'ville',    'nb_chambres_utilise',  'nb_visites_periode',
         'last_time_visited', 'memos', 'nb_chambres']
+        
     const setObject = {}
+
     propList.forEach(prop => {
+
         if(prop in req.body) {
+
             switch (prop) {
                 case 'last_time_visited':
                     setObject[prop] = req.body[prop] ? req.body[prop] : null
@@ -177,7 +192,17 @@ router.route('/edit/:id').post(authStrategy(), (req, res) => {
             "options" : { sort: { 'date': 'descending' } }
             //"match": { "cp": { $regex: /^75.*/, $options: 'i' }}
         })
-        .then(hotel => res.status(200).json('Hotel édité avec succès'))
+        .then( hotel => {
+
+            //trigger some updates linked to action : (update ranking par ex)
+            //notify observer
+            if(req.body.note) { //la note est update
+                const observerHotelRank = ObserverHotelRank ? new ObserverHotelRank() : null
+                if(observerHotelRank) observerHotelRank.notify("hotel note updated", hotel)
+            }
+            
+            res.status(200).json('Hotel édité avec succès')
+        })
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
