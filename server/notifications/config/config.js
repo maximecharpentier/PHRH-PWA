@@ -29,16 +29,19 @@
         //a la route ou l'user met l'info des hotel non visités
             //socket.emit('hotel_non_visité', hotel)
 
-    //Planner > User : urgence_added
+    //emition : Planner > User : urgence_added
         //socket.emit('urgence_added', urgence)
 
     //routes
-        //ds notif router: GET /notifications/valid_semaine/:iduser
-            //socket.emit('validation_semaine', {to: iduser (recup depuis params), elem: "veuillez entrer les hotels que vous avez visité"})
+        OK //read notif : GET /notifications/read/:idnotif
+            //set la notif a read
 
-        //ds notif router: POST /notifications/urgence_added/:urgence_id {from: userid}
-            //urgence = Urgence.findById(:urgence_id)
-            //pour tout les users visiteurs
-                //new notifObject = {from: userid, to: userid, elem: urgence, read: false}
-            //notifObject.to = 'visiteurs' //pour ne fait qu'un seul emit
-            //socket.emit('urgence_added', notifObject)
+        OK //ds notif router: GET /notifications/valid_semaine/:iduser
+                //simulé par un simple retour de call back a l'user: socket.emit('validation_semaine', {to: iduser (recup depuis params), elem: "veuillez entrer les hotels que vous avez visité"})
+
+        OK //ds notif router: POST /notifications/urgence_added/:urgence_id {from: userid}
+                //urgence = Urgence.findById(:urgence_id)
+                //pour tout les users visiteurs
+                    //new notifObject = {from: userid, to: userid, elem: urgence, read: false}
+                //notifObject.to = 'visiteurs' //pour ne fait qu'un seul emit
+                //socket.emit('urgence_added', notifObject)
