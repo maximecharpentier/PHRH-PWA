@@ -41,12 +41,12 @@ notificationSchema.statics.insertIfNotExist = async function(notification) {
     }).exec()
     if (!docs.length){
         try {
-            const userDB = await user.save()
-            return userDB
+            const notificationDB = await notification.save()
+            return notificationDB
         } catch(err) {
             console.log(
                 "Notification invalide : " + '\n' + 
-                user + '\n' +
+                notification + '\n' +
                 "Erreur : " + '\n' +
                 err
             )
