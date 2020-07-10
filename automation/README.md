@@ -7,7 +7,30 @@
 | [phrh-client](https://hub.docker.com/repository/docker/blyndusk/phrh-client) | ![phrh-client](https://img.shields.io/docker/v/blyndusk/phrh-client) |
 | [phrh-server](https://hub.docker.com/repository/docker/blyndusk/phrh-server) | ![phrh-server](https://img.shields.io/docker/v/blyndusk/phrh-server) |
 
+## Replace the current API host with the actual IP adress:
+
+> Current directory: `automation/`
+
+```bash
+source set-ip-adress.sh
+```
+
 ## Terraform
+
+### Config
+
+- Provider: `AWS`
+  - Region: `eu-west-3`
+- Instance: `EC2`
+- Key pair: `SSH RSA`
+- Security Groups:
+  - Ingress:
+    - `22/TCP/0.0.0.0/0`
+    - `3000/TCP/0.0.0.0/0`
+    - `3001/TCP/0.0.0.0/0`
+    - `19006/TCP/0.0.0.0/0`
+  - Egress:
+    - `0/-1/0.0.0.0/0`
 
 1. **Generate** RSA *public/private* key pair:
 

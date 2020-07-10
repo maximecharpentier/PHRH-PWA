@@ -2,6 +2,7 @@
 
 - [Client app](#client-app)
   - [People in charge](#people-in-charge)
+  - [Scripts](#scripts)
   - [Technical choices](#technical-choices)
     - [1. React](#1-react)
     - [2. styled-components](#2-styled-components)
@@ -12,6 +13,20 @@
 - Nicolas Martin
 - Nino Lam
 - Maxime Charpentier
+
+## Scripts
+
+### Install 
+
+```bash
+npm install || yarn
+```
+
+### Start server
+
+```bash
+npm start || yarn start
+```
 
 ## Technical choices
 

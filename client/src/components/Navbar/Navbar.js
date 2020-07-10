@@ -21,7 +21,7 @@ const Navbar = () => {
             <NavLink activeClassName="active" exact to="/">Plannification</NavLink>
           </li>
           <li className="Nav__item">
-            <NavLink activeClassName="active" to="/manage">Gestion des ressourcesssss</NavLink>
+            <NavLink activeClassName="active" to="/manage">Gestion des ressources</NavLink>
           </li>
         </ul>
         <button className="Nav__button">
