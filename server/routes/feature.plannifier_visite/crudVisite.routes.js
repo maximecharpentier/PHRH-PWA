@@ -206,6 +206,7 @@ router.route('/plannifier').post(authStrategy(), async (req, res) => {
 
     if(visiteDB) {
         let msg = "Visite ajouté"
+
         //creer model assoc_user_visites
         let usersToAssoc
 
@@ -237,7 +238,11 @@ router.route('/plannifier').post(authStrategy(), async (req, res) => {
             }
         }
 
-        //#REPRENDRE ICI ET INSERER LES OBSERVERS
+        //trigger some updates linked to action : (update ranking par ex)
+        //notify observer
+        const observerHotelRank = ObserverHotelRank ? new ObserverHotelRank() : null
+        if(observerHotelRank) observerHotelRank.notify("visit added", visiteDB)
+
         res.status(200).json(msg)
 
     } else {
@@ -285,14 +290,17 @@ router.route('/edit/:id').post(authStrategy(), (req, res) => {
         { $set: setObject }, 
         //{ new: true }
         )
+        .then( visite => {
 
-    //Si visites periode < 3 (periode = depuis le un an)
-        //creer priorisation
-            /*
-                type : "visites manquantes"
-                message : ""
-            */
-        .then(visite => res.status(200).json('Visite édité avec succès'))
+            //trigger some updates linked to action : (update ranking par ex)
+            //notify observer
+            if(req.body.visite_effectue == true) { //la note est update
+                const observerHotelRank = ObserverHotelRank ? new ObserverHotelRank() : null
+                if(observerHotelRank) observerHotelRank.notify("visit done", visite)
+            }
+
+            res.status(200).json('Visite édité avec succès')
+        })
         .catch(err => res.status(400).json('Erreurs: ' + err))
 })
 
@@ -304,10 +312,15 @@ router.route('/edit/:id').post(authStrategy(), (req, res) => {
  */
 router.route('/delete/:id').delete(authStrategy(), (req, res) => {
     Visite.findByIdAndDelete(req.params.id)
-        .then(() => { 
+        .then( visite => { 
 
             //supprimer assoc users visite
             const assocsDB = Assoc_user_visite.deleteMany({visite_id: req.params.id})
+
+            //trigger some updates linked to action : (update ranking par ex)
+            //notify observer
+            const observerHotelRank = ObserverHotelRank ? new ObserverHotelRank() : null
+            if(observerHotelRank) observerHotelRank.notify("visite canceled", visite)
 
             res.status(200).json('Visite supprimé')
         })

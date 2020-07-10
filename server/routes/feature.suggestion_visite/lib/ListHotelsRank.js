@@ -157,7 +157,7 @@ class ListHotelsRank extends HotelsRank {
         switch(event) {
             
             //effacer l'hotel du ranking
-            case 'visite added' :
+            case 'visit added' :
                 listElem.delete()
                 break
 
