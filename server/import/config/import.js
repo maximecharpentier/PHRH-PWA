@@ -8,8 +8,8 @@ const BaseValueInsertor = require("../libs/DBFeeder");
 importData()
 
 async function importData() {
-    //case : Clean Database
-    if(process.env.RESET_DB === 'true') {
+    //case : Dump Database
+    if(process.env.DUMP_DB === 'true') {
         await resetDB()
     }
 
@@ -29,7 +29,16 @@ async function resetDB() {
     await BaseValueInsertor.resetDB()
 
     //fin reset 
-    console.log('Base de données éffacée')
+    console.log('Base de données vidée')
+}
+
+async function resetRank() {
+    //TMP : utiliser B
+    //appeler ListHotelsRank.empty()
+    //puis appeler ListHotelsRank
+
+    //fin reset 
+    console.log('Table HotelRank vidée')
 }
 
 async function insertTestDB() {

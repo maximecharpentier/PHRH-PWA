@@ -14,20 +14,21 @@ class RankBehaviourV1 extends RankBehaviour {
     async calculateScoreHotel(hotel) {
         super.calculateScoreHotel(hotel)
 
+        //console.log('entrée')
+
         //vars diverses
         const DATE_DEBUT_PERIODE = {month: 1}
         const DUREE_PERIODE_M = 12
         const NB_VISITES_OPTI_PERIODE = 3
-        const AMELIORATION_SOUHAITEE_NOTE_MOYENNE = 3
-        const CURRENT_NOTE_MOYENNE =  await Hotel.aggregate([{
+        /*const CURRENT_NOTE_MOYENNE =  await Hotel.aggregate([{
             $group: {
                 _id: null,
                 average: {
                     $avg: "$note"
                 }
             }
-        }]).exec().average
-        const NOTE_MOYENNE_SOUHAITEE = CURRENT_NOTE_MOYENNE + AMELIORATION_SOUHAITEE_NOTE_MOYENNE
+        }]).exec().average*/
+
         //return : int : % d'avancement par rapport a la periode
         const CURRENT_AVCMNT_PERIODE = () => {
             const current_month = new Date().getMonth()
@@ -54,10 +55,10 @@ class RankBehaviourV1 extends RankBehaviour {
         const QUARTILE_3_NOTE = 30
         const QUARTILE_4_NOTE = 20
         const getScoreQuartile = () => {
-            if(hotel.note <= QUARTILE_1_NOTE) return 0
-            if(hotel.note <= QUARTILE_2_NOTE) return PAS_BASE
-            if(hotel.note <= QUARTILE_3_NOTE) return PAS_PB_IMPORTANCE_FAIBLE
-            if(hotel.note <= QUARTILE_4_NOTE) return PAS_PB_IMPORTANCE_FORTE
+            if(hotel.note >= QUARTILE_1_NOTE) return 0
+            if(hotel.note >= QUARTILE_2_NOTE) return PAS_BASE
+            if(hotel.note >= QUARTILE_3_NOTE) return PAS_PB_IMPORTANCE_FAIBLE
+            if(hotel.note >= QUARTILE_4_NOTE) return PAS_PB_IMPORTANCE_FORTE
         }
 
         //definitions des seuils = scores definissants des intervales de catégories de classement
@@ -72,7 +73,9 @@ class RankBehaviourV1 extends RankBehaviour {
         const PAS_BASE = 0.04
 
         //score de base
-        let SCORE = ((Number(hotel.note)/100)*1)/SCORE_SEUIL_OPTI_VISITE //0>= SCORE <=SCORE_SEUIL_OPTI_VISITE (= au 1er seuil) 
+        let SCORE = SCORE_SEUIL_OPTI_VISITE - (( Number(hotel.note)/100) * SCORE_SEUIL_OPTI_VISITE )//0>= SCORE <=SCORE_SEUIL_OPTI_VISITE (= au 1er seuil) 
+
+        //console.log('BASE SCORE : ', SCORE)
 
         //PS : L'ordre des blocks suivants ne doit pas changer pour réaliser la bonne évaluation
 
@@ -83,7 +86,7 @@ class RankBehaviourV1 extends RankBehaviour {
          * mais par rapport a la note médiane souhaitée par le métier #REPRNENDREI CI ET LIER LA QUALI ET LE CALCUL DU SCORE
          */
 
-        //si urgence -> OK
+        //si urgence
         const urgences = await Urgence.find({hotel_id: hotel._id})
         if(urgences.length) {
             return SCORE_SEUIL_URGENCE
@@ -99,7 +102,7 @@ class RankBehaviourV1 extends RankBehaviour {
             return SCORE_SEUIL_CONTRE_VISITE
         }
 
-        //si seuil visite urgente -> OK
+        //si seuil visite urgente
         /**
          * Si 70% de la période a été depassé et que seulement 0 ou 1 visites on été faites pour l'hotel
          * On cosidère que la visite presse vraiment vraiment
@@ -119,6 +122,8 @@ class RankBehaviourV1 extends RankBehaviour {
         
         if(hotel.nb_visites_periode < NB_VISITES_OPTI_PERIODE) {
             if(hotel.last_time_visited) {
+
+                //#REPRENDRE ICI ET CREUSER UN PEU AVEC l'HOTEL 5f06acd33cefb638846cf33e
                 /**
                  * tmp : pour la démo on part du principe que toutes les visites on été efféctuées soit 
                  * cette année soit l'année precédente
@@ -158,7 +163,13 @@ class RankBehaviourV1 extends RankBehaviour {
         /**
          * On calcul a partir de la note et du quartile
          */
+        //console.log('OLD SCORE: ', SCORE)
+
         SCORE += getScoreQuartile()
+
+        //console.log('QUARTILE: ', getScoreQuartile())
+        //console.log('SCORE + QUARTILE: ', SCORE)
+
         //si on depace le seuil juste au dessus, on retranche 0.01 pour etre juste en dessous
         if(SCORE >= SCORE_SEUIL_OPTI_VISITE) {
             SCORE = SCORE_SEUIL_OPTI_VISITE - 0.0001

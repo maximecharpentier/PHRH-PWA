@@ -56,8 +56,17 @@ app.use("/gestion/equipes", manageEquipesRouter);
 const plannnifierVisitesRouter = require("./routes/feature.plannifier_visite/crudVisite.routes.js");
 app.use("/gestion/visites", plannnifierVisitesRouter);
 
+const compteRenduVisite = require("./routes/feature.plannifier_visite/crVisite.routes.js");
+app.use("/gestion/visites/cr", compteRenduVisite);
+
 const suggestionsVisitesRouter = require("./routes/feature.suggestion_visite/plannifierVisite.routes.js");
 app.use("/gestion/suggestions/visites", suggestionsVisitesRouter);
+
+const utiliserVehicule = require("./routes/feature.gestion_vehicules/crudVehicule.routes.js");
+app.use("/vehicules", utiliserVehicule);
+
+const notifs = require("./routes/feature.notifications/crudNotifications.routes.js");
+app.use("/notifications", notifs);
 
 const authRouter = require("./routes/feature.authentification/auth.routes.js");
 app.use("/auth", authRouter);
