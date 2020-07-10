@@ -1,6 +1,5 @@
 const HotelsRank = require("./HotelRank");
 const ElemListHotelsRank = require("./ElemListHotelsRank");
-
 const mongoose = require('mongoose');
 const HotelRank = require('../model/hotelrank.model');
 const Urgence = mongoose.model('Urgence');
@@ -87,16 +86,16 @@ class ListHotelsRank extends HotelsRank {
     }
 
     /**
-     * @desc : set la liste en base & set snapshot
+     * @desc : create la liste en base
      * @param void 
      */
-    async set() {
-        //create
+    async reset() {
+        //get les hotels qui ne sont pas en cours de visite
         const hotels = await Hotel.find({})
 
         if(hotels.length) {
 
-            //fill this.listHotelRank
+            //inserer les elements un par un
             for(const hotelDB of hotels) {
 
                 //build list elem
@@ -104,14 +103,13 @@ class ListHotelsRank extends HotelsRank {
                 await elemHotelRank.buildFromHotel(hotelDB)
 
                 //ajouter l'element
-                console.log(elemHotelRank)
-                await this.insert(elemHotelRank)
+                await this.add(elemHotelRank)
             }
         }
     }
 
     /**
-     * @desc : update la liste en base & set snapshot
+     * @desc : update la liste en base
      * @param elem : Objet ElemListHotelsRank
      */
     async replace(elem) {
@@ -189,22 +187,14 @@ class ListHotelsRank extends HotelsRank {
         //en fonction de la "date courante" du moment ou il est calculé
         //donc il faut regulièrement le refresh pour assurer une 
         //adéquation du score avec l'etat courant du metier
-        this.refreshScores()
-    }
-
-    async refreshScores() {
-        const listHotelRank = await this.list()
-
-        listHotelRank.forEach( listElem => {
-            listElem.refreshScore()
-        })
+        this.refreshList()
     }
 
     async refreshList() {
         const hotelsRank = this.list()
         const length = hotelsRank.length
         for (let index = 0; index < length - 1; index++) {
-            await hotelsRank[index].update()
+            await hotelsRank[index].refresh()
         }
     }
 }
