@@ -1,12 +1,12 @@
 const HotelsRank = require("./HotelRank");
 const ElemListHotelsRank = require("./ElemListHotelsRank");
-
 const mongoose = require('mongoose');
 const HotelRank = require('../model/hotelrank.model');
 const Urgence = mongoose.model('Urgence');
 const Hotel = mongoose.model('Hotel');
-//const Visite = require("../../../model/visite.model");
+//const Visite = require("../../../model/visite.model");*
 const Visite = mongoose.model('Visite');
+const Assoc_user_visite = mongoose.model('Assoc_User_Visite');
 
 
 class ListHotelsRank extends HotelsRank {
@@ -87,16 +87,29 @@ class ListHotelsRank extends HotelsRank {
     }
 
     /**
-     * @desc : set la liste en base & set snapshot
+     * @desc : WARNING : Restore toute la liste a sont état de base (= tout les hotels y sont représentés)
+     *         WARNING : pour la cohérence de la liste de suggestion, toutes les visites en cours
+     *         (= non efectuées) seront annulées (= éffacées)
      * @param void 
      */
-    async set() {
-        //create
+    async reset() {
+        //deprogramation de toute les visites
+        Visite.deleteMany({visite_effectué: false})
+        console.log('Déprogrammation de toute les visites non effectuées (=en cours)')
+
+        //effacement des association des visites non effectuées
+        Assoc_user_visite.deleteMany({date_effectue: null})
+
+        //une fois les visites en cours deprogrammées
         const hotels = await Hotel.find({})
+
+         /////Affichage avancement
+         prev10Percent = 0
+         /////Affichage avancement
 
         if(hotels.length) {
 
-            //fill this.listHotelRank
+            //inserer les elements un par un
             for(const hotelDB of hotels) {
 
                 //build list elem
@@ -104,14 +117,25 @@ class ListHotelsRank extends HotelsRank {
                 await elemHotelRank.buildFromHotel(hotelDB)
 
                 //ajouter l'element
-                console.log(elemHotelRank)
-                await this.insert(elemHotelRank)
+                await this.add(elemHotelRank)
+               
+                ///////Affichage avancement
+                let avancement = index * 100 / length
+                let value = Math.floor(avancement/10)
+                if(value > prev10Percent && value <=10) {
+                    console.log(value * 10 + "%")
+                    prev10Percent = value
+                }
+                if(value >= 100)  {
+                    console.log('Rafraichissement terminé')
+                }
+                ///////Affichage avancement
             }
         }
     }
 
     /**
-     * @desc : update la liste en base & set snapshot
+     * @desc : update la liste en base
      * @param elem : Objet ElemListHotelsRank
      */
     async replace(elem) {
@@ -189,22 +213,15 @@ class ListHotelsRank extends HotelsRank {
         //en fonction de la "date courante" du moment ou il est calculé
         //donc il faut regulièrement le refresh pour assurer une 
         //adéquation du score avec l'etat courant du metier
-        this.refreshScores()
-    }
-
-    async refreshScores() {
-        const listHotelRank = await this.list()
-
-        listHotelRank.forEach( listElem => {
-            listElem.refreshScore()
-        })
+        this.refreshList()
     }
 
     async refreshList() {
         const hotelsRank = this.list()
         const length = hotelsRank.length
+
         for (let index = 0; index < length - 1; index++) {
-            await hotelsRank[index].update()
+            await hotelsRank[index].refresh()
         }
     }
 }

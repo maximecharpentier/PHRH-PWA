@@ -42,8 +42,12 @@ class ElemListHotelsRank {
 
     async refresh() {
         if(this.hotel_id) {
-            const hotel = await Hotel.find({})
-            return await this.buildFromHotel(hotel)
+            let hotel = await Hotel.findById(this.hotel_id)
+            await this.buildFromHotel(hotel)
+            const elem =  await HotelRank.findByIdAndUpdate(
+                { _id: this.id }, 
+                { $set: this }
+                )
         }
     }
 
@@ -54,7 +58,7 @@ class ElemListHotelsRank {
         return elem
     }
 
-    async update() {
+    /*async update() {
         let hotel = await Hotel.findById(this.hotel_id)
         await this.buildFromHotel(hotel)
         const elem =  await HotelRank.findByIdAndUpdate(
@@ -63,7 +67,7 @@ class ElemListHotelsRank {
             )
 
         return elem
-    }
+    }*/
 
     async delete() {
         const elem = await HotelRank.findByIdAndDelete(this.id)

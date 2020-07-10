@@ -1,5 +1,7 @@
 const router = require('express').Router();
 const authStrategy = require('../../lib/utils').authStrategy;
+const loadFileIfExist = require('../../lib/utils').loadFileIfExist;
+const ObserverHotelRank = loadFileIfExist('./routes/feature.suggestion_visite/lib/listHotelsRank');
 const ObjectId = require('mongoose').Types.ObjectId;
 const mongoose = require('mongoose');
 const { options } = require('../feature.authentification/auth.routes');
@@ -52,6 +54,7 @@ router.route('/hotel/planned/foruser/:id').get(authStrategy(), async (req, res) 
                 res.status(200).json( visitesWithHotel )
             })
             .catch(err => res.status(400).json('Erreurs: ' + err))
+
     } else {
 
         res.status(400).json('Missing params GET iduser')
@@ -96,8 +99,10 @@ router.route('/hotel/cancel/many/foruser/:id').post(authStrategy(), async (req, 
                 //delete associations
                 await Assoc_user_visite.deleteMany({visite_id: visite_id})
                 
-                //#appeler l'evenement : "visit deleted", elem : visit pour le scoring
-                //A VENIR
+                //trigger some updates linked to action : (update ranking par ex)
+                //notify observer
+                const observerHotelRank = ObserverHotelRank ? new ObserverHotelRank() : null
+                if(observerHotelRank) observerHotelRank.notify("visit canceled", visiteBeforeDelete)
 
                 //#appeler l'evenement : "visit canceled", elem : visit pour notifier superviseur
                 //notification({from: user_id, event: (string), message: })
@@ -121,7 +126,7 @@ router.route('/hotel/cancel/many/foruser/:id').post(authStrategy(), async (req, 
 
                 //maj assocs pour tout ls users
                 await Assoc_user_visite.updateMany(
-                    { "visite_id": visit._id },
+                    { "visite_id": visit.visite_id._id },
                     { "$set": { "date_effectue" : new Date() } })
 
                 //mettre a jour l'hotel nb_visites_période +1, last_time_visited = visite.date //PS : faire attention ici pour le calcul de nb_visites_période, cela dépend de la période
@@ -130,8 +135,10 @@ router.route('/hotel/cancel/many/foruser/:id').post(authStrategy(), async (req, 
                     { $inc : {'nb_visites_periode' : 1 }}
                     )
 
-                //appeler l'evenement : "visit done", elem : visit pour le scoring
-                //#A VENIR                
+                //trigger some updates linked to action : (update ranking par ex)
+                //notify observer
+                const observerHotelRank = ObserverHotelRank ? new ObserverHotelRank() : null
+                if(observerHotelRank) observerHotelRank.notify("visit done", visit.visite_id)                
             }   
 
             res.status(200).json('Informations enregistrées')
