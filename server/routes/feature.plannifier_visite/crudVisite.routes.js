@@ -1,8 +1,9 @@
 const router = require('express').Router();
 const authStrategy = require('../../lib/utils').authStrategy;
+const loadFileIfExist = require('../../lib/utils').loadFileIfExist;
+const ObserverHotelRank = loadFileIfExist('./routes/feature.suggestion_visite/lib/listHotelsRank');
 const ObjectId = require('mongoose').Types.ObjectId;
 const mongoose = require('mongoose');
-const { options } = require('../feature.authentification/auth.routes');
 const Visite = mongoose.model('Visite');
 const User = mongoose.model('User');
 const Hotel = mongoose.model('Hotel');
