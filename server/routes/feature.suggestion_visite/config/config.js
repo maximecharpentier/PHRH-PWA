@@ -6,11 +6,11 @@ require("dotenv").config();
 //cette fonction rebuild toute la liste sans toucher au metier
 //c'est a dire que la liste garde son etat en cours, seul les elements
 //qui la composent sont mis a jour
-if(process.env.REFRESH_RANK === 'true') {
-    refreshRanking()
+if(process.env.RESET_RANK === 'true') {
+    resetRanking()
 }
 
-async function refreshRanking() {
+async function resetRanking() {
 
     //case : Dump Database
     if(process.env.DUMP_DB === 'true') {
@@ -35,7 +35,5 @@ async function refreshRanking() {
 
     const ListHotelRank = require('../lib/ListHotelsRank')
     const listHotelRank = new ListHotelRank()
-    await listHotelRank.refreshList()
-
-    console.log('Refresh du ranking en cours, cela peux prendre plsr minutes...')
+    await listHotelRank.reset()
 }

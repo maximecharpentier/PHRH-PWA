@@ -4,8 +4,9 @@ const mongoose = require('mongoose');
 const HotelRank = require('../model/hotelrank.model');
 const Urgence = mongoose.model('Urgence');
 const Hotel = mongoose.model('Hotel');
-//const Visite = require("../../../model/visite.model");
+//const Visite = require("../../../model/visite.model");*
 const Visite = mongoose.model('Visite');
+const Assoc_user_visite = mongoose.model('Assoc_User_Visite');
 
 
 class ListHotelsRank extends HotelsRank {
@@ -86,12 +87,25 @@ class ListHotelsRank extends HotelsRank {
     }
 
     /**
-     * @desc : create la liste en base
+     * @desc : WARNING : Restore toute la liste a sont état de base (= tout les hotels y sont représentés)
+     *         WARNING : pour la cohérence de la liste de suggestion, toutes les visites en cours
+     *         (= non efectuées) seront annulées (= éffacées)
      * @param void 
      */
     async reset() {
-        //get les hotels qui ne sont pas en cours de visite
+        //deprogramation de toute les visites
+        Visite.deleteMany({visite_effectué: false})
+        console.log('Déprogrammation de toute les visites non effectuées (=en cours)')
+
+        //effacement des association des visites non effectuées
+        Assoc_user_visite.deleteMany({date_effectue: null})
+
+        //une fois les visites en cours deprogrammées
         const hotels = await Hotel.find({})
+
+         /////Affichage avancement
+         prev10Percent = 0
+         /////Affichage avancement
 
         if(hotels.length) {
 
@@ -104,6 +118,18 @@ class ListHotelsRank extends HotelsRank {
 
                 //ajouter l'element
                 await this.add(elemHotelRank)
+               
+                ///////Affichage avancement
+                let avancement = index * 100 / length
+                let value = Math.floor(avancement/10)
+                if(value > prev10Percent && value <=10) {
+                    console.log(value * 10 + "%")
+                    prev10Percent = value
+                }
+                if(value >= 100)  {
+                    console.log('Rafraichissement terminé')
+                }
+                ///////Affichage avancement
             }
         }
     }
@@ -193,6 +219,7 @@ class ListHotelsRank extends HotelsRank {
     async refreshList() {
         const hotelsRank = this.list()
         const length = hotelsRank.length
+
         for (let index = 0; index < length - 1; index++) {
             await hotelsRank[index].refresh()
         }
