@@ -20,11 +20,6 @@ router.route('/').get(authStrategy(), async (req, res) => {
 
     const listHotelRankObj = new ListHotelRank(refresh = true)
 
-    //test
-    const elem = await listHotelRankObj.get('5f06acd53cefb638846cf341')
-    await elem.update()
-    console.log('elem refreshed', elem)
-
     const list = await listHotelRankObj.list({})
     if(list.length > 0) {
         res.status(200).json(list) 

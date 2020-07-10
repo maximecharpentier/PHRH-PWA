@@ -29,6 +29,7 @@ class ListHotelsRank extends HotelsRank {
             elem = await HotelRank.findOne({hotel_id: idhotel}).populate('hotel_id')
         }
 
+        console.log(elem)
         return new ElemListHotelsRank(this.rankBehaviour, elem)
     }
 
@@ -113,7 +114,7 @@ class ListHotelsRank extends HotelsRank {
             for(const hotelDB of hotels) {
 
                 //build list elem
-                const elemHotelRank = new ElemListHotelsRank(this.rankBehaviour)
+                const elemHotelRank = new ElemListHotelsRank(this.rankBehaviour, {})
                 await elemHotelRank.buildFromHotel(hotelDB)
 
                 //ajouter l'element
@@ -188,7 +189,7 @@ class ListHotelsRank extends HotelsRank {
             //(re)insert l'hotel au ranking
             case 'hotel added' :
                 //creer listElem
-                listElem = new ElemListHotelsRank(this.rankBehaviour)
+                listElem = new ElemListHotelsRank(this.rankBehaviour, {})
                 await listElem.buildFromHotel(data)
 
             case 'visit done' :
